@@ -5,7 +5,7 @@ using Radiate.Engines.Statistics.Stats;
 
 namespace Radiate.Client.Components.Store.States;
 
-public record AppState : State
+public record AppState : State<AppState>
 {
     public bool Running { get; set; } = false;
     public string ModelType { get; set; } = "Graph";

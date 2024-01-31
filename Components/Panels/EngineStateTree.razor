@@ -61,8 +61,18 @@
     private HashSet<TreeItemData<EngineState>> GetItems()
     {
         var seen = new HashSet<string>();
-        
         var result = new HashSet<TreeItemData<EngineState>>();
+
+        // if (_items.Any())
+        // {
+        //     foreach (var item in _items.Values)
+        //     {
+        //         var state = State.EngineOutputs.EngineStates[item.Data.EngineId];
+        //         item.Data = state;
+        //     }
+        //     
+        //     return _items.Values.ToHashSet();
+        // }
 
         foreach (var state in State.EngineOutputs.EngineStates.Values)
         {
@@ -70,13 +80,11 @@
             {
                 continue;
             }
-
-            seen.Add(state.EngineId);
             
-            var treeItem = new TreeItemData<EngineState>(GetIcon(state), GetColor(state), state);
-            treeItem.TreeItems = GetTreeItems(state.EngineId, seen, State.EngineOutputs.EngineStates);
-            
-            result.Add(treeItem);
+            foreach (var item in GetTreeItems(state.EngineId, seen, State.EngineOutputs.EngineStates))
+            {
+                result.Add(item);
+            }
         }
         
         _items = result.ToDictionary(x => x.Data.EngineId, x => x);

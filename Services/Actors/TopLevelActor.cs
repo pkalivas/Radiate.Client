@@ -17,7 +17,7 @@ public class TopLevelActor : ReceiveActor
 
     private void RouteTo(IAppStateActorMessage message)
     {
-        var actor = GetIdentifiableChildByConvention<AppStateActor>(message.StateId);
+        var actor = GetIdentifiableChildByConvention<AppStateActor>(message.StateName);
         actor.Tell(message);
     }
     

@@ -34,6 +34,7 @@ public static class ApplicationServiceRegistration
 
     private static IServiceCollection AddStore(this IServiceCollection services) =>
         services
+            .AddSingleton<IDispatcher, Dispatcher>()
             .AddSingleton<IStore, StateStore>(sp =>
             {
                 var store = new StateStore();

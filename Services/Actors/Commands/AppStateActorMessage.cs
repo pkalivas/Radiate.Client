@@ -1,19 +1,13 @@
 using Radiate.Client.Components.Store.Interfaces;
+using Radiate.Client.Components.Store.States;
 
 namespace Radiate.Client.Services.Actors.Commands;
 
-public interface IAppStateMessage
-{
-    Guid StateId { get; }
-}
-
 public interface IAppStateActorMessage
 {
-    Guid StateId { get; }
+    public string StateName => nameof(AppState);
 }
 
-public record AppStateActorMessage<TAction>(IAppStateMessage Action) : IAppStateActorMessage
-    where TAction : IStateAction
+public record AppStateActorMessage(IStateAction Action) : IAppStateActorMessage
 {
-    public Guid StateId => Action.StateId;
 }

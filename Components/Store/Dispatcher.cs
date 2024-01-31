@@ -1,28 +1,21 @@
 using Radiate.Client.Components.Store.Interfaces;
+using Radiate.Client.Services.Actors;
+using Radiate.Client.Services.Actors.Commands;
 
 namespace Radiate.Client.Components.Store;
 
 public class Dispatcher : IDispatcher
 {
-    private readonly IServiceProvider _serviceProvider;
-    private readonly Queue<(object Action, Type ActionType)> _actionQueue = new();
+    private readonly IActorService _actorService;
     
-    public Dispatcher(IServiceProvider serviceProvider)
+    public Dispatcher(IActorService actorService)
     {
-        _serviceProvider = serviceProvider;
+        _actorService = actorService;
     }
     
-    public void Dispatch<TAction, TState>(TAction action)
-        where TAction : IAction<TState>
-        where TState : IState<TState>
+    public void Dispatch(IStateAction stateAction)
     {
-        using var scope = _serviceProvider.CreateScope();
-        var store = scope.ServiceProvider.GetRequiredService<IStore>();
-        
-        var state = store.GetFeature<TState>();
-        
-        
-        
-        throw new NotImplementedException();
+        var message = new AppStateActorMessage(stateAction);
+        _actorService.Tell(message);
     }
 }

@@ -5,7 +5,6 @@ namespace Radiate.Client.Components.Store;
 public class StateStore : IStore
 {
     private readonly Dictionary<string, IState> _states = new();
-    // private readonly Dictionary<string, List<>
     
     public async Task Dispatch<TAction, TState>(TAction action) 
         where TAction : IAction<TState> 

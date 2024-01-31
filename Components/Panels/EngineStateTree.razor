@@ -56,8 +56,6 @@
 
 @code {
     
-    private Dictionary<string, bool> _expanded = new();
-    
     private Dictionary<string, TreeItemData<EngineState>> _items = new();
     
     private HashSet<TreeItemData<EngineState>> GetItems()
@@ -65,7 +63,7 @@
         var seen = new HashSet<string>();
         
         var result = new HashSet<TreeItemData<EngineState>>();
-        
+
         foreach (var state in State.EngineOutputs.EngineStates.Values)
         {
             if (seen.Contains(state.EngineId))
@@ -81,7 +79,9 @@
             result.Add(treeItem);
         }
         
-        return result;
+        _items = result.ToDictionary(x => x.Data.EngineId, x => x);
+
+        return _items.Values.ToHashSet();
     }
     
     private HashSet<TreeItemData<EngineState>> GetTreeItems(string current, HashSet<string> seen, Dictionary<string, EngineState> states)
@@ -90,7 +90,6 @@
         
         var currentEngineState = states[current];
         var currentTreeItem = new TreeItemData<EngineState>(GetIcon(currentEngineState), GetColor(currentEngineState), currentEngineState);
-        currentTreeItem.IsExpanded = _expanded.ContainsKey(current) ? _expanded[current] : true;
         
         foreach (var sub in states[current].SubEngines)
         {

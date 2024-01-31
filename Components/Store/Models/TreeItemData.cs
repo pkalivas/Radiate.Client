@@ -4,9 +4,9 @@ namespace Radiate.Client.Components.Store.Models;
 
 public class TreeItemData<T>
 {
-    public string Icon { get; }
-    public Color Color { get; }
-    public T Data { get; }
+    public string Icon { get; set; }
+    public Color Color { get; set; }
+    public T Data { get; set; }
 
     public bool IsExpanded { get; set; } = true;
     

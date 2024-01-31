@@ -1,14 +1,24 @@
+using Radiate.Client.Components.Store.Actions;
 using Radiate.Client.Components.Store.Interfaces;
+using Radiate.Client.Components.Store.States;
 
 namespace Radiate.Client.Components.Store;
 
 
-// public interface IEffect 
-// {
-//     Task Execute<TState, TAction>(TState state, TAction action, IStore store)
-//         where TState : IState
-//         where TAction : IAction<TState>;
-// }
+public interface IStateActionHandler<in TState, in TAction>
+    where TState : IState<TState>
+    where TAction : IAction<TState>
+{
+    Task Handle(TState state, TAction action, IStore store);
+}
+
+public class TestHandler : IStateActionHandler<AppState, FunctionalAction>
+{
+    public Task Handle(AppState state, FunctionalAction action, IStore store)
+    {
+        throw new NotImplementedException();
+    }
+}
 
 public class StateStore : IStore
 {

@@ -8,6 +8,6 @@ public interface IAppStateActorMessage
     public string StateName => nameof(AppState);
 }
 
-public record AppStateActorMessage(IStateAction Action) : IAppStateActorMessage
+public record AppStateActorMessage(IAppStateAction Action) : IAppStateActorMessage
 {
 }

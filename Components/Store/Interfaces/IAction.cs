@@ -6,6 +6,10 @@ public interface IAction<in TState> where TState : IState<TState>
     Task Reduce(TState feature);
 }
 
+public interface IAppStateAction : IStateAction
+{
+}
+
 public interface IStateAction { }
 
 public record TestAction : IStateAction

@@ -15,7 +15,12 @@ public class Dispatcher : IDispatcher
     
     public void Dispatch(IStateAction stateAction)
     {
-        var message = new AppStateActorMessage(stateAction);
+        var message = stateAction switch
+        {
+            IAppStateAction appStateAction => new AppStateActorMessage(appStateAction),
+            _ => throw new NotImplementedException()
+        };
+        
         _actorService.Tell(message);
     }
 }

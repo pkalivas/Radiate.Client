@@ -1,5 +1,6 @@
 using Radiate.Client.Components.Store;
 using Radiate.Client.Components.Store.Interfaces;
+using Radiate.Client.Components.Store.Reducers;
 using Radiate.Client.Services.Actors;
 using Radiate.Client.Services.Runners;
 using Radiate.Client.Services.Worker;
@@ -34,6 +35,7 @@ public static class ApplicationServiceRegistration
 
     private static IServiceCollection AddStore(this IServiceCollection services) =>
         services
+            .AddScoped<IReducer<AppState>, AppStateReducer>()
             .AddSingleton<IDispatcher, Dispatcher>()
             .AddSingleton<IStore, StateStore>(sp =>
             {

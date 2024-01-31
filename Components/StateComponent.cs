@@ -9,19 +9,16 @@ public abstract class StateComponent : ComponentBase, IDisposable
 {
     [Inject] protected IStore Store { get; set; } = default!;
     [Inject] protected AppState State { get; set; } = default!;
-    [Inject] protected IDispatcher Dispatcher { get; set; } = default!;
     
     protected override Task OnInitializedAsync()
     {
-        Store.GetAction<AppState>().OnChange += StateHasChanged;
-        // Store.GetFeature<AppState>().OnChange += StateHasChanged;
+        Store.GetFeature<AppState>().OnChange += StateHasChanged;
         return base.OnInitializedAsync();
     }
     
     public void Dispose()
     {
-        Store.GetAction<AppState>().OnChange -= StateHasChanged;
-        // Store.GetFeature<AppState>().OnChange -= StateHasChanged;
+        Store.GetFeature<AppState>().OnChange -= StateHasChanged;
     }
     
     protected void Dispatch<TAction>(TAction action)

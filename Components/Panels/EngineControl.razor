@@ -31,8 +31,6 @@ else
     </MudButton>
 }
 
-<MudButton OnClick="@TestDispatch">BBT: @State.Count</MudButton>
-
 @code {
 
     private CancellationTokenSource _cancellationToken;
@@ -54,11 +52,6 @@ else
     {
         _cancellationToken.Cancel();
         Dispatch(new FunctionalAction(state => state.Running = false));
-    }
-
-    private void TestDispatch()
-    {
-        Dispatcher.Dispatch(new CountAction());
     }
     
     private void OnResultCreated(EngineOutputState output) => 

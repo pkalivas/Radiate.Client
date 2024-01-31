@@ -7,8 +7,6 @@ namespace Radiate.Client.Components.Store.States;
 
 public record AppState : StoreState<AppState>
 {
-    public override Guid Id { get; } = new("4DD8DA1B-BF2D-4594-BA9B-6BBDEE551F7E");
-    public int Count { get; set; }
     public bool Running { get; set; } = false;
     public string ModelType { get; set; } = "Graph";
     public string DataSetType { get; set; } = "XOR";

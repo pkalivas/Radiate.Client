@@ -8,5 +8,4 @@ public interface IStore
     
     TState GetFeature<TState>() where TState : IState<TState>;
     void Register<TState>(TState state) where TState : IState<TState>;
-    EventContainer GetAction<TState>() where TState : IState<TState>;   
 }

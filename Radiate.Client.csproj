@@ -7,9 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Akka" Version="1.5.16" />
-      <PackageReference Include="Akka.DependencyInjection" Version="1.5.16" />
-      <PackageReference Include="Akka.Logger.Extensions.Logging" Version="1.4.22" />
       <PackageReference Include="MudBlazor" Version="6.14.0" />
       <PackageReference Include="Plotly.Blazor" Version="4.1.0" />
       <PackageReference Include="Radiate" Version="1.5.0" />

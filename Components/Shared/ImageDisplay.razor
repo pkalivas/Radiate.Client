@@ -1,0 +1,15 @@
+@if (ImageUrl == string.Empty)
+{
+    <MudPaper>
+        <MudText Typo="Typo.body1">No image selected</MudText>
+    </MudPaper>
+}
+else
+{
+    <MudImage Class="rounded" Height="350" Width="350" Title="@ImageTitle" Src="@ImageUrl"/>
+}
+
+@code {
+    [Parameter] public string? ImageTitle { get; set; }
+    [Parameter] public string? ImageUrl { get; set; }
+}

@@ -1,0 +1,125 @@
+@using Radiate.Engines.Entities
+@using Plotly.Blazor.Traces.ScatterLib
+@using Margin = Plotly.Blazor.LayoutLib.Margin
+@using Plotly.Blazor.LayoutLib
+@using Plotly.Blazor.LayoutLib.XAxisLib
+
+@if (Values.Any() && Type != "")
+{
+    <div class="chart-container">
+        <PlotlyChart @bind-Config="config" @bind-Layout="layout" @bind-Data="data" @ref="chart"/>
+    </div>
+}
+else
+{
+    <div class="chart-container">
+        <div class="chart-placeholder">
+            <div class="chart-placeholder-text">No data</div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public string Type { get; set; } = "";
+    [Parameter] public List<float> Values { get; set; } = new();
+
+    private PlotlyChart chart;
+    private Config config = new() { Responsive = true};
+    private Layout layout = new()
+    {
+        Height = 175,
+        Font = new Font
+        {
+            Color = "whitesmoke"
+        },
+        XAxis = new List<XAxis>()
+        {
+            new()
+            {
+                ShowGrid = false
+            }
+        },
+        YAxis = new List<YAxis>()
+        {
+            new()
+            {
+                ShowGrid = false
+            }
+        },
+        PaperBgColor = "rgba(0,0,0,0)",
+        PlotBgColor = "rgba(0,0,0,0)",
+        Margin = new Margin
+        {
+            T = 1,
+            B = 20,
+            L = 25,
+            R = 1
+        },
+    };
+
+    private IList<ITrace> data { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (Values.Any() && Type != "")
+        {
+            data = Type switch
+            {
+                "bar" => new List<ITrace>
+                {
+                    GetBarTrace()
+                },
+                "pie" => new List<ITrace>
+                {
+                    GetPieTrace()
+                },  
+                _ => new List<ITrace>
+                {
+                    new Scatter
+                    {
+                        Name = "ScatterTrace",
+                        Mode = ModeFlag.Lines,
+                        Y = Values.Select(val => (object) val).ToList(),
+                        X = Values.Select((val, idx) => (object) idx).ToList(),
+                    }
+                },
+            };
+            
+            chart?.Update();
+        }
+        
+        base.OnParametersSet();
+    }
+    
+    private Bar GetBarTrace()
+    {
+        var buckets = Values
+            .GroupBy(val => val)
+            .Select(group => new {Value = group.Key, Count = group.Count()})
+            .OrderByDescending(group => group.Count)
+            .ToList();
+        
+        return new Bar
+        {
+            Name = "BarTrace",
+            X = buckets.Select(val => (object) val.Value).ToList(),
+            Y = buckets.Select((val, idx) => (object) val.Count).ToList(),
+        };
+    }
+    
+    private Pie GetPieTrace()
+    {
+        var buckets = Values
+            .GroupBy(val => val)
+            .Select(group => new {Value = group.Key, Count = group.Count()})
+            .OrderByDescending(group => group.Count)
+            .ToList();
+        
+        return new Pie
+        {
+            Name = "PieTrace",
+            Values = buckets.Select(val => (object) val.Value).ToList(),
+            Labels = buckets.Select((val, idx) => (object) val.Count).ToList(),
+        };
+    }
+}

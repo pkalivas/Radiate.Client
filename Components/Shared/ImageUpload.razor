@@ -1,0 +1,38 @@
+@using SixLabors.ImageSharp
+@using SixLabors.ImageSharp.PixelFormats
+@using Color = MudBlazor.Color
+@using Image = SixLabors.ImageSharp.Image
+@using Size = MudBlazor.Size
+@using Radiate.Client.Components.Store.Models
+
+<MudFileUpload T="IBrowserFile" Accept=".png, .jpg" MaximumFileCount="1" FilesChanged="UploadImage">
+    <ButtonTemplate>
+        <MudButton HtmlTag="label"
+                   Size="Size.Small"
+                   Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   StartIcon="@Icons.Material.Filled.CloudUpload"
+                   for="@context.Id">
+            Upload
+        </MudButton>
+    </ButtonTemplate>
+</MudFileUpload>
+
+@code {
+    [Parameter] public int Width { get; set; } 
+    [Parameter] public int Height { get; set; } 
+    [Parameter] public EventCallback<ImageEntity> ImageChanged { get; set; }
+
+    private async Task UploadImage(IBrowserFile file)
+    {
+        var format = "image/argb";
+        var resizedImage = await file.RequestImageFileAsync(format, Width, Height);
+        var buffer = new byte[resizedImage.Size];
+        await resizedImage.OpenReadStream().ReadAsync(buffer);
+        
+        await ImageChanged.InvokeAsync(new ImageEntity
+        {
+            ImageData = Image.Load<Rgba32>(buffer),
+        });
+    }
+}

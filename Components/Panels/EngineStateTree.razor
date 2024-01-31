@@ -1,0 +1,126 @@
+@using Radiate.Engines.Entities
+@using Radiate.Engines.Schema
+@using Radiate.Client.Components.Store.Models
+@inherits StateComponent
+
+<MudTreeView Items="@GetItems()">
+    <ItemTemplate>
+        <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.TreeItems">
+            <Content>
+                <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChild" />
+                
+                <div class="container">
+                    <div class="row border-bottom">
+                        <div class="col">
+                            <div class="d-inline-flex">
+                                <MudIcon Icon="@context.Icon" Class="ml-0 mr-2" Color="@context.Color"/>
+                                <strong>@(context.Data.Name[..3])</strong>
+                            </div>
+                        </div>
+                        
+                        <div class="col">
+                            <div class="d-inline-flex">
+                                <strong>State:</strong>
+                                <div class="pl-2">@context.Data.State</div>
+                            </div>
+                        </div>
+                        
+                        <div class="col">
+                            <div class="d-inline-flex">
+                                <strong>Runs:</strong>
+                                <div class="pl-2">@context.Data.Metrics.Get(MetricNames.Run)?.Statistics?.Sum</div>
+                            </div>
+                        </div>
+                        
+                        <div class="col">
+                            <div class="d-inline-flex">
+                                <strong>Time:</strong>
+                                <div class="pl-2">@TimeSpan.FromMilliseconds(context.Data.Metrics.Get(MetricNames.Time)?.Time?.Sum ?? 0)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="col">
+                            <div class="d-inline-flex">
+                                <strong>Switches:</strong>
+                                <div class="pl-2">@context.Data.Metrics.Get(MetricNames.EngineChange)?.Statistics?.Sum</div>
+                            </div>
+                        </div>   
+                        
+                    </div>
+                </div>
+
+            </Content>
+        </MudTreeViewItem>
+    </ItemTemplate>
+</MudTreeView>
+
+@code {
+    
+    private Dictionary<string, bool> _expanded = new();
+    
+    private Dictionary<string, TreeItemData<EngineState>> _items = new();
+    
+    private HashSet<TreeItemData<EngineState>> GetItems()
+    {
+        var seen = new HashSet<string>();
+        
+        var result = new HashSet<TreeItemData<EngineState>>();
+        
+        foreach (var state in State.EngineOutputs.EngineStates.Values)
+        {
+            if (seen.Contains(state.EngineId))
+            {
+                continue;
+            }
+
+            seen.Add(state.EngineId);
+            
+            var treeItem = new TreeItemData<EngineState>(GetIcon(state), GetColor(state), state);
+            treeItem.TreeItems = GetTreeItems(state.EngineId, seen, State.EngineOutputs.EngineStates);
+            
+            result.Add(treeItem);
+        }
+        
+        return result;
+    }
+    
+    private HashSet<TreeItemData<EngineState>> GetTreeItems(string current, HashSet<string> seen, Dictionary<string, EngineState> states)
+    {
+        seen.Add(current);
+        
+        var currentEngineState = states[current];
+        var currentTreeItem = new TreeItemData<EngineState>(GetIcon(currentEngineState), GetColor(currentEngineState), currentEngineState);
+        currentTreeItem.IsExpanded = _expanded.ContainsKey(current) ? _expanded[current] : true;
+        
+        foreach (var sub in states[current].SubEngines)
+        {
+            foreach (var item in GetTreeItems(sub, seen, states))
+            {
+                currentTreeItem.TreeItems.Add(item);
+            }
+        }
+        
+        return new List<TreeItemData<EngineState>> { currentTreeItem }.ToHashSet();
+    }
+    
+    private static string GetIcon(EngineState state) => state.State switch
+    {
+        EngineStateTypes.Pending => Icons.Material.Filled.Pending,
+        EngineStateTypes.Started => Icons.Material.Filled.Start,
+        EngineStateTypes.Running => Icons.Material.Filled.RunCircle,
+        EngineStateTypes.Stopped => Icons.Material.Filled.Stop,
+        _ => Icons.Custom.FileFormats.FileCode
+    };
+
+    private static Color GetColor(EngineState state) => state.State switch
+    {
+        EngineStateTypes.Pending => Color.Default,
+        EngineStateTypes.Started => Color.Primary,
+        EngineStateTypes.Running => Color.Success,
+        EngineStateTypes.Stopped => Color.Secondary,
+        _ => Color.Default
+    };
+    
+    private static bool HasSwitched(EngineState state) => state.Metrics.Get(MetricNames.EngineChange)?.Statistics?.Sum > 0;
+
+}

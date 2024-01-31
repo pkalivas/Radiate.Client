@@ -1,0 +1,57 @@
+@using Radiate.Engines.Schema
+@using Radiate.Engines.Entities
+@inherits StateComponent
+
+<MudTable Items="@GetMetricsToDisplay()">
+    <HeaderContent>
+        <MudTh>Metric</MudTh>
+        <MudTh>Total</MudTh>
+        <MudTh>Total Time</MudTh>
+        <MudTh>Avg.</MudTh>
+        <MudTh>Avg. Time</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Metric">@context.Name</MudTd>
+        <MudTd DataLabel="Total">@context.Statistics.Sum</MudTd>
+        <MudTd DataLabel="Total Time">@(TimeSpan.FromMilliseconds(context.Time.Sum))</MudTd>
+        <MudTd DataLabel="Avg.">@Math.Round(context.Statistics.Mean, 5)</MudTd>
+        <MudTd DataLabel="Avg. Time">@(TimeSpan.FromMilliseconds(context.Time.Mean))</MudTd>
+    </RowTemplate>
+</MudTable>
+
+
+@code {
+    
+    private List<MetricValue> GetMetricsToDisplay() => DisplayNames()
+            .Select(name => State.EngineOutputs.Metrics.Get(name))
+            .Where(val => val != null)
+            .SelectMany(Flatten)
+            .ToList();
+
+    private List<string> DisplayNames() => new()
+    {
+        MetricNames.Evaluate,
+        MetricNames.Survivors,
+        MetricNames.Offspring,
+        MetricNames.Alter,
+        MetricNames.Stale,
+        MetricNames.Invalid,
+    };
+
+    private List<MetricValue> Flatten(MetricValue value)
+    {
+        if (value.Children.Count == 0)
+        {
+            return new List<MetricValue> { value };
+        }
+        
+        var list = new List<MetricValue>();
+        foreach (var child in value.Children)
+        {
+            list.AddRange(Flatten(child.Value));
+        }
+        
+        return list;
+    }
+
+}

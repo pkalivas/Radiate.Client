@@ -1,0 +1,81 @@
+@using Radiate.Client.Components.Store.States
+@using Radiate.Client.Components.Store.Schema
+@inherits StateComponent
+
+<div class="row">
+    <div class="col">
+        <MudRadioGroup T="string" Value="@State.ModelType" ValueChanged="@OnModelTypeChange" Disabled="@State.Running">
+            <label>Model</label>
+            @foreach (var item in StateOptions.ModelNames)
+            {
+                <div class="row">
+                    <MudRadio T="string" Value="@item" UnCheckedColor="Color.Primary">@item</MudRadio>
+                </div>
+            }
+        </MudRadioGroup>
+    </div>
+    <div class="col">
+        @if (State.ModelType == "Image")
+        {
+            <MudRadioGroup T="string" Value="@State.DataSetType" ValueChanged="@OnDataSetChange" Disabled="@State.Running">
+                <label>DataSet</label>
+                @foreach (var item in StateOptions.ImageDataSetNames)
+                {
+                    <div class="row">
+                        <MudRadio T="string" Value="@item" UnCheckedColor="Color.Primary">@item</MudRadio>
+                    </div>
+                }
+            </MudRadioGroup>
+        }
+        else
+        {
+            <MudRadioGroup T="string" Value="@State.DataSetType" ValueChanged="@OnDataSetChange" Disabled="@State.Running">
+                <label>DataSet</label>
+                @foreach (var item in StateOptions.DataSetNames)
+                {
+                    <div class="row">
+                        <MudRadio T="string" Value="@item" UnCheckedColor="Color.Primary">@item</MudRadio>
+                    </div>
+                }
+            </MudRadioGroup>   
+        }
+    </div>
+    <div class="col">
+        <MudNumericField Label="Population Size"
+                         Variant="Variant.Filled"
+                         Disabled="@State.Running"   
+                         Value="@State.EngineInputs.PopulationSize"
+                         ValueChanged="@((int size) => Dispatch(state => state.EngineInputs.PopulationSize = size))">
+        </MudNumericField>
+        <MudNumericField Label="Mutation Rate"
+                         Variant="Variant.Filled"
+                         Disabled="@State.Running"
+                         Value="@State.EngineInputs.MutationRate"
+                         ValueChanged="@((float rate) => Dispatch(state => state.EngineInputs.MutationRate = rate))">
+        </MudNumericField>
+        <MudNumericField Label="Max Epochs"
+                         Variant="Variant.Filled"
+                         Disabled="@State.Running"
+                         Value="@State.EngineInputs.IterationLimit"
+                         ValueChanged="@((int limit) => Dispatch(state => state.EngineInputs.IterationLimit = limit))">
+        </MudNumericField>
+    </div>
+</div>
+
+
+@code {
+    
+    private void OnModelTypeChange(string value)
+    {
+        Dispatch(state => state.ModelType = value);
+        if (value == "Image")
+        {
+            OnDataSetChange("Polygon");
+        }
+    }
+
+    private void OnDataSetChange(string value)
+    {
+        Dispatch(state => state.DataSetType = value);
+    }
+}

@@ -1,5 +1,6 @@
 using Radiate.Client.Components.Store;
 using Radiate.Client.Components.Store.Interfaces;
+using Radiate.Client.Services.Actors;
 using Radiate.Client.Services.Runners;
 using Radiate.Client.Services.Worker;
 using AppState = Radiate.Client.Components.Store.States.AppState;
@@ -12,7 +13,9 @@ public static class ApplicationServiceRegistration
         services
             .AddStore()
             .AddEngineRunners()
+            .AddSingleton<IActorService, ActorService>()
             .AddSingleton<IWorkItemQueue, WorkItemQueue>()
+            .AddHostedService(sp => (ActorService) sp.GetRequiredService<IActorService>())
             .AddHostedService<BackgroundWorkerService>();
 
 

@@ -44,22 +44,6 @@ public class StateStore : IStore
         _states.Add(typeof(TState).Name, state);
     }
 
-    public void Subscribe<TState, TAction>(string subscriber, Func<TState, TAction, Task> callback) 
-        where TState : IState<TState>
-        where TAction : IAction<TState>
-    {
-        var key = $"{typeof(TState).Name}-{typeof(TAction).Name}";
-        // if (!_subscriptions.ContainsKey(key))
-        // {
-        //     _subscriptions.Add(key, new List<Task>());
-        // }
-        //
-        // if (_subscriptions.TryGetValue(key, out var subscriptions))
-        // {
-        //     
-        // }
-    }
-
     public TState GetFeature<TState>() where TState : IState<TState> =>
         (TState)_states[typeof(TState).Name];
 }

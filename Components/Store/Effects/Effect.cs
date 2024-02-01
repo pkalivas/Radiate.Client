@@ -2,13 +2,13 @@ using Radiate.Client.Components.Store.Interfaces;
 
 namespace Radiate.Client.Components.Store.Effects;
 
-public abstract class RootEffect<TState, TAction> : IEffect<TState, TAction>
+public abstract class Effect<TState, TAction> : IEffect<TState, TAction>
     where TState : class
     where TAction : IAction
 {
     protected readonly IServiceProvider ServiceProvider;
 
-    protected RootEffect(IServiceProvider serviceProvider)
+    protected Effect(IServiceProvider serviceProvider)
     {
         ServiceProvider = serviceProvider;
     }

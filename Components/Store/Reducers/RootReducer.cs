@@ -1,19 +1,14 @@
+using Radiate.Client.Components.Store.Actions;
 using Radiate.Client.Components.Store.Interfaces;
+using Radiate.Client.Components.Store.States;
 
 namespace Radiate.Client.Components.Store.Reducers;
 
-public abstract class RootReducer<TState> : IReducer<TState>, IReducer
-    where TState : class
+public class RootReducer : Reducer<RootFeature>
 {
-    public abstract TState Reduce(TState state, IAction action);
-
-    public IState Reduce(IState feature, IAction action)
+    public override RootFeature Reduce(RootFeature state, IAction action) => action switch
     {
-        if (feature is IState<TState> tState)
-        {
-            return (IState) Reduce(tState.GetValue(), action);
-        }
-
-        throw new InvalidOperationException("Invalid feature type");
-    }
+        NavigateToRunAction navigateToRunAction => state with { CurrentRunId = navigateToRunAction.RunId },
+        _ => state
+    };
 }

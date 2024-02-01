@@ -5,7 +5,7 @@ using Radiate.Engines.Schema;
 
 namespace Radiate.Client.Components.Store.Reducers;
 
-public class AppStateReducer : RootReducer<AppFeature>
+public class AppStateReducer : Reducer<AppFeature>
 {
     public override AppFeature Reduce(AppFeature feature, IAction action) => action switch
     {
@@ -22,7 +22,6 @@ public class AppStateReducer : RootReducer<AppFeature>
         },
         AddEngineOutputAction engineOutputsGeneratedAction => feature with
         {
-            Counter = (int)((engineOutputsGeneratedAction.EngineOutputs.Metrics.Get(MetricNames.Index)?.Statistics?.Sum ?? 0)) % 2 == 0 ? feature.Counter : feature.Counter + 1,
             EngineOutputs = engineOutputsGeneratedAction.EngineOutputs,
             Scores = feature.Scores.Concat(new[] { engineOutputsGeneratedAction.EngineOutputs.Metrics.Get(MetricNames.Score).Statistics.LastValue }).ToList(),
         },

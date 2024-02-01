@@ -31,6 +31,7 @@ app.Lifetime.ApplicationStarted.Register(() =>
 {
     var store = app.Services.GetRequiredService<IStore>();
     store.Register(new AppFeature());
+    store.Register(new RootFeature());
 });
 
 app.Run();

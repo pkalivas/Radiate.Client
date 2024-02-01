@@ -28,7 +28,8 @@
 
     private void OnSelect(TableRowClickEventArgs<RunsState> run)
     {
-        NavigationManager.NavigateTo($"/runs/{run.Item.RunId}");
+        Dispatcher.Dispatch<NavigateToRunAction, RootFeature>(new NavigateToRunAction(run.Item.RunId));
+        // NavigationManager.NavigateTo($"/runs/{run.Item.RunId}");
     }
 
     private async Task OpenDialog()

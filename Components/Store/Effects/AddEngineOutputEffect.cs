@@ -4,7 +4,7 @@ using Radiate.Engines.Schema;
 
 namespace Radiate.Client.Components.Store.Effects;
 
-public class AddEngineOutputEffect : RootEffect<AppFeature, AddEngineOutputAction>
+public class AddEngineOutputEffect : Effect<AppFeature, AddEngineOutputAction>
 {
     public AddEngineOutputEffect(IServiceProvider serviceProvider) : base(serviceProvider) { }
     

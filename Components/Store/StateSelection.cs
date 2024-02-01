@@ -4,33 +4,29 @@ namespace Radiate.Client.Components.Store;
 
 public class StateSelection<T, TK> : State<TK>, IStateSelection<T, TK>
 {
-    private readonly IState<T> _state;
+    private readonly IState<T> _parent;
     private readonly Func<T, TK> _selector;
-    private TK _previousState;
+    private readonly TK _previousState;
     
-    public StateSelection(IState<T> state, Func<T, TK> selector) : base(selector(state.GetValue()))
+    public StateSelection(IState<T> parent, Func<T, TK> selector) : base(selector(parent.GetValue()))
     {
-        _state = state;
+        _parent = parent;
         _selector = selector;
-        _previousState = _selector(_state.GetValue());
+        _previousState = _selector(_parent.GetValue());
 
-        _state.StateChanged += SetState!;
+        _parent.StateChanged += SetState!;
     }
-
-    public TK State => _previousState;
     
     public IState<T1> Select<T1>(Func<TK, T1> selector) => new State<T1>(selector(_previousState));
     
     public void Dispose()
     {
-        _state.StateChanged -= SetState!;
+        _parent.StateChanged -= SetState!;
     }
     
-    public Type GetStateType() => typeof(TK);
-
     private void SetState(object sender, EventArgs args)
     {
-        var newState = _selector((T)_state.GetValue());
+        var newState = _selector(_parent.GetValue());
         
         if (newState.Equals(_previousState))
         {

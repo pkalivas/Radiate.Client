@@ -5,7 +5,7 @@ using Radiate.Client.Services.Worker;
 
 namespace Radiate.Client.Components.Store.Effects;
 
-public class StartEngineEffect : RootEffect<AppFeature, StartEngineAction>
+public class StartEngineEffect : Effect<AppFeature, StartEngineAction>
 {
     public StartEngineEffect(IServiceProvider serviceProvider) : base(serviceProvider) { }
     

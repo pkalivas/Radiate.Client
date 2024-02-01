@@ -27,13 +27,11 @@ public class StateContainer : IStateContainer
     public void SetState<TState>(TState state) where TState : IState<TState>
     {
         _state = state;
-        NotifyStateChanged();
     }
     
     public void SetState(IState state)
     {
         _state = state;
-        NotifyStateChanged();
     }
 
     public TState GetState<TState>() where TState : IState<TState> => (TState) _state;
@@ -135,6 +133,8 @@ public class StateStore : IStore
                 var newState = reducer.Reduce(state, action);
                 stateContainer.SetState(newState!);
             }
+            
+            stateContainer.NotifyStateChanged();
         }
     }
 

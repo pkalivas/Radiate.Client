@@ -1,9 +1,15 @@
 namespace Radiate.Client.Components.Store.Interfaces;
 
-public interface IFeature { }
-
-public interface IFeature<TFeature> : IFeature
-    where TFeature : IFeature<TFeature>, IFeature
+public interface IFeature
 {
-    
+    string Name { get; }
+    IState GetState();
+    Type GetStateType();
+    void SetState(IState state);
+}
+
+public interface IFeature<out TFeature> : IFeature
+    where TFeature : IState<TFeature>
+{
+    TFeature State { get; }
 }

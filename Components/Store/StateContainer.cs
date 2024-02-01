@@ -20,7 +20,7 @@ public class StateContainer : IStateContainer
         _feature = feature;
     }
 
-    public TState GetState<TState>() where TState : IFeature<TState> => (TState) _feature;
+    public TState GetState<TState>() where TState : IFeature<TState>, IState<TState> => (TState) _feature;
     
     public IFeature GetState(Type stateType) => _feature;
 }

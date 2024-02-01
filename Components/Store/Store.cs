@@ -1,7 +1,28 @@
 using System.Collections.Concurrent;
 using Radiate.Client.Components.Store.Interfaces;
+using Radiate.Client.Components.Store.States;
 
 namespace Radiate.Client.Components.Store;
+
+public class State<TState> : StateSelection<TState, TState>
+    where TState : IState<TState>
+{
+    public State(IFeature<TState> feature) : base(feature, (TState) feature.GetState(), val => val)
+    {
+    }
+    
+    public override int GetHashCode() => State.GetHashCode();
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is State<TState> state)
+        {
+            return ReferenceEquals(state, State);
+        }
+
+        return false;
+    }
+}
 
 public class StateStore : IStore
 {
@@ -10,6 +31,7 @@ public class StateStore : IStore
     private readonly IActionSubscriber _actionSubscriber;
     private readonly Dictionary<string, List<IReducer>> _reducers = new();
     private readonly Dictionary<string, List<IEffect>> _effects = new();
+    private readonly Dictionary<string, IFeature> _features = new();
     private readonly Dictionary<string, StateContainer> _stateContainers = new();
     private readonly ConcurrentQueue<IAction> _actionQueue = new();
 
@@ -26,22 +48,26 @@ public class StateStore : IStore
     
     public async Task Dispatch<TAction, TState>(TAction action) 
         where TAction : IAction<TState> 
-        where TState : IFeature<TState>
+        where TState : IFeature<TState>, IState<TState>
     {
         throw new NotImplementedException();
     }
-    
-    public StateContainer GetStateContainer<TState>() where TState : IFeature<TState> =>
-        _stateContainers[typeof(TState).Name];
 
-    public void Register<TState>(TState state) 
-        where TState : IFeature<TState>
+    public State<TState> Select<TState>() where TState : IState<TState> 
     {
-        _stateContainers.Add(typeof(TState).Name, new StateContainer(state));
-    }
+        var feature = (Feature2<TState>)_features[typeof(TState).Name];
+        var newState = new State<TState>(feature);
+        
+        feature.SelectedValueChanged += (sender, state) => newState.OnStateChanged(state);
 
-    public TState GetState<TState>() where TState : IFeature<TState> =>
-        _stateContainers[typeof(TState).Name].GetState<TState>();
+        return newState;
+    }
+    
+    public void Register<TState>(TState state) 
+        where TState : IState<TState>
+    {
+        _features[typeof(TState).Name] = new Feature2<TState>(state);
+    }
     
     public void Notify(IAction action) => _actionSubscriber.Notify(action);
     
@@ -93,28 +119,54 @@ public class StateStore : IStore
                 throw new InvalidOperationException($"Action {actionType.Name} does not implement IAction<TState>");
             }
             
-            var stateContainer = _stateContainers[stateType.Name];
-            var state = stateContainer.GetState(stateType);
-            var actionReducers = _reducers[stateType.Name];
+            var feature = _features[stateType.Name];
+            var reducers = _reducers[stateType.Name];
+            var currentState = feature.GetState();
             
             var tasks = new List<Task>();
-            foreach (var reducer in actionReducers)
+            foreach (var reducer in reducers)
             {
-                state = reducer.Reduce(state, action);
-                stateContainer.SetState(state);
-                stateContainer.NotifyStateChanged();
+                currentState = reducer.Reduce(currentState, action);
+                feature.SetState(currentState);
+                // stateContainer.SetState(state);
+                // stateContainer.NotifyStateChanged();
                 
                 if (_effects.TryGetValue(actionType.Name, out var effects))
                 {
                     tasks.AddRange(effects
-                        .Where(effect => effect.CanHandle(state, action))
-                        .Select(effect => effect.HandleAsync(state, action, _dispatcher)));
+                        .Where(effect => effect.CanHandle(currentState, action))
+                        .Select(effect => effect.HandleAsync(currentState, action, _dispatcher)));
                 }
             }
             
             _actionSubscriber.Notify(action);
             
             Task.Run(async () => await Task.WhenAll(tasks));
+            
+            
+            //
+            // var stateContainer = _stateContainers[stateType.Name];
+            // var state = stateContainer.GetState(stateType);
+            // var actionReducers = _reducers[stateType.Name];
+            
+            // var tasks = new List<Task>();
+            // foreach (var reducer in actionReducers)
+            // {
+            //     state = reducer.Reduce(state, action);
+            //     stateContainer.SetState(state);
+            //     stateContainer.NotifyStateChanged();
+            //     
+            //     if (_effects.TryGetValue(actionType.Name, out var effects))
+            //     {
+            //         tasks.AddRange(effects
+            //             .Where(effect => effect.CanHandle(state, action))
+            //             .Select(effect => effect.HandleAsync(state, action, _dispatcher)));
+            //     }
+            // }
+            //
+            // _actionSubscriber.Notify(action);
+            //
+            // Task.Run(async () => await Task.WhenAll(tasks));
         }
     }
     

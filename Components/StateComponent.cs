@@ -8,18 +8,20 @@ namespace Radiate.Client.Components;
 
 public abstract class StateComponent<T, TState> : ComponentBase, IDisposable
     where T : StateComponent<T, TState>
-    where TState : IFeature<TState>
+    where TState : IState<TState>
 {
     [Inject] protected IStore Store { get; set; } = default!;
     [Inject] protected IDispatcher Dispatcher { get; set; } = default!;
     protected TState State { get; set; } = default!;
+    private State<TState> _state = default!;
     
     protected override Task OnInitializedAsync()
     {
-        State = Store.GetState<TState>();
-        Store.GetStateContainer<TState>().OnChange += () =>
+        _state = Store.Select<TState>();
+        State = _state.State;
+        _state.SelectedValueChanged += (sender, state) =>
         {
-            State = Store.GetState<TState>();
+            State = state;
             InvokeAsync(StateHasChanged);
         };
         
@@ -31,7 +33,12 @@ public abstract class StateComponent<T, TState> : ComponentBase, IDisposable
     
     public void Dispose()
     {
-        Store.GetStateContainer<TState>().OnChange -= StateHasChanged;
+        _state.SelectedValueChanged -= (sender, state) =>
+        {
+            State = state;
+            InvokeAsync(StateHasChanged);
+        };
+        // Store.GetStateContainer<TState>().OnChange -= StateHasChanged;
         Store.UnsubscribeAll(this);
     }
     

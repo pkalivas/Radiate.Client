@@ -12,7 +12,7 @@ public interface IDispatcher
 
 public class Dispatcher : IDispatcher
 {
-    private readonly object SyncRoot = new();
+    private readonly object _syncRoot = new();
     private readonly Queue<IAction> _actionQueue = new();
     private EventHandler<IAction> _onDispatch;
     
@@ -20,7 +20,7 @@ public class Dispatcher : IDispatcher
     {
         add
         {
-            lock (SyncRoot)
+            lock (_syncRoot)
             {
                 _onDispatch += value;
                 while (_actionQueue.Count > 0)
@@ -31,7 +31,7 @@ public class Dispatcher : IDispatcher
         }
         remove
         {
-            lock (SyncRoot)
+            lock (_syncRoot)
             {
                 _onDispatch -= value;
             }
@@ -42,7 +42,7 @@ public class Dispatcher : IDispatcher
         where TAction : IAction
         where TState : IFeature<TState>
     {
-        lock (SyncRoot)
+        lock (_syncRoot)
         {
             _actionQueue.Enqueue(action);
             _onDispatch?.Invoke(this, action);

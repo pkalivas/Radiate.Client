@@ -26,10 +26,17 @@ public class State<T> : IState<T>
             SetState(tReducer.Reduce(Value, action));
         }
     }
-    
-    private void SetState(T state)
+
+    public IState<TK> SelectState<TK>(Func<T, TK> selector) 
     {
-        if (state.Equals(Value))
+        var newState = new StateSelection<T, TK>(this, selector);
+        
+        return newState;
+    }
+
+    protected void SetState(T state)
+    {
+        if (state!.Equals(Value))
         {
             return;
         }

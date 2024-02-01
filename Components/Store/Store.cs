@@ -10,7 +10,7 @@ public class StateStore : IStore
     private readonly IActionSubscriber _actionSubscriber;
     private readonly Dictionary<string, List<IReducer>> _reducers = new();
     private readonly Dictionary<string, List<IEffect>> _effects = new();
-    private readonly Dictionary<string, IState> _states2 = new();
+    private readonly Dictionary<string, IState> _states = new();
     private readonly ConcurrentQueue<IAction> _actionQueue = new();
 
     public StateStore(IDispatcher dispatcher, IEnumerable<IEffect> effects, IEnumerable<IReducer> reducers)
@@ -31,17 +31,12 @@ public class StateStore : IStore
         throw new NotImplementedException();
     }
 
-    public IState<TState> Select<TState>()
-    {
-        var state = _states2[typeof(TState).Name];
-        
-        return (IState<TState>)state;
-    }
+    public IState<TState> Select<TState>() => (IState<TState>)_states[typeof(TState).Name];
     
     public void Register<TState>(TState state) 
         where TState : IFeature<TState>
     {
-        _states2[typeof(TState).Name] = new State<TState>(state);
+        _states[typeof(TState).Name] = new State<TState>(state);
     }
     
     public void Notify(IAction action) => _actionSubscriber.Notify(action);
@@ -94,7 +89,7 @@ public class StateStore : IStore
                 throw new InvalidOperationException($"Action {actionType.Name} does not implement IAction<TState>");
             }
             
-            var states = _states2[stateType.Name];
+            var states = _states[stateType.Name];
             var reducers = _reducers[stateType.Name];
             
             var tasks = new List<Task>();

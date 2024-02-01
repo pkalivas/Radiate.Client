@@ -11,5 +11,6 @@ public interface IState : IStateChangeNotifier
 public interface IState<T> : IState
 {
     T GetValue();
+    IState<TK> SelectState<TK>(Func<T, TK> selector);
     event EventHandler<T>? SelectedValueChanged;
 }

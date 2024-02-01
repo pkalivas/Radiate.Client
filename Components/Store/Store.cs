@@ -24,7 +24,16 @@ public class StateStore : IStore
 
     private bool IsDispatching { get; set; }
     
+    public List<IState> GetStates() => _states.Values.ToList();
+    
     public IState<TState> Select<TState>() => (IState<TState>)_states[typeof(TState).Name];
+    
+    public IState<TState> Select<TState>(Func<StateStore, TState> selector)
+    {
+        _states[typeof(TState).Name] = new StateSelection<TState, TState>(new State<TState>(selector(this)), s => s);
+        return (IState<TState>) _states[typeof(TState).Name];
+    }
+
 
     public void Selctors<T>(Func<StateStore, IState<T>> selector)
     {

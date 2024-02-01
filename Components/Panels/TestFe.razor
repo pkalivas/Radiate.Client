@@ -1,7 +1,7 @@
-@inherits StateComponent<TestFe, Radiate.Client.Components.Store.Selectors.IndexState>
+@using System.Text.Json
+@* @inherits StateComponent<TestFe, StateChangeState> *@
 
-@State.Index
-@Changes
+@* @(JsonSerializer.Serialize(State)); *@
 
 @code {
     

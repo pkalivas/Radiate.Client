@@ -13,7 +13,7 @@ public class State<T> : IState<T>
     
     public T GetValue() => Value;
     public IState GetState() => this;
-    public string Name => GetType().Name;
+    public string Name => Value.GetType().Name;
     public void SetState(IState state) => SetState((T)state);
 
     public int ChangeCount { get; private set; }

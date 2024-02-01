@@ -52,16 +52,16 @@ public class PolygonEngineRunner : IEngineRunner
         // resultCallback(Map(result, 500, 500));
     };
 
-    public RunInput GetInputs(AppState state) => new()
+    public RunInput GetInputs(AppFeature feature) => new()
     {
         Inputs = new List<RunInputValue>
         {
-            new("TargetImage", state.ImageState.Target.ImageDataString(), nameof(String)),
-            new("PolygonCount", state.EngineInputs.NumShapes.ToString(), nameof(Int32)),
-            new("PolygonLength", state.EngineInputs.NumVertices.ToString(), nameof(Int32)),
-            new("PopulationSize", state.EngineInputs.PopulationSize.ToString(), nameof(Int32)),
-            new("MutationRate", state.EngineInputs.MutationRate.ToString(), nameof(Single)),
-            new("IterationLimit", state.EngineInputs.IterationLimit.ToString(), nameof(Int32)),
+            new("TargetImage", feature.ImageState.Target.ImageDataString(), nameof(String)),
+            new("PolygonCount", feature.EngineInputs.NumShapes.ToString(), nameof(Int32)),
+            new("PolygonLength", feature.EngineInputs.NumVertices.ToString(), nameof(Int32)),
+            new("PopulationSize", feature.EngineInputs.PopulationSize.ToString(), nameof(Int32)),
+            new("MutationRate", feature.EngineInputs.MutationRate.ToString(), nameof(Single)),
+            new("IterationLimit", feature.EngineInputs.IterationLimit.ToString(), nameof(Int32)),
         }
     };
 

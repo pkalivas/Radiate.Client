@@ -5,19 +5,19 @@ using Radiate.Client.Services.Worker;
 
 namespace Radiate.Client.Components.Store.Effects;
 
-public class StartEngineEffect : RootEffect<AppState, StartEngineAction>
+public class StartEngineEffect : RootEffect<AppFeature, StartEngineAction>
 {
     public StartEngineEffect(IServiceProvider serviceProvider) : base(serviceProvider) { }
     
-    public override async Task HandleAsync(AppState state, StartEngineAction action, IDispatcher dispatcher)
+    public override async Task HandleAsync(AppFeature feature, StartEngineAction action, IDispatcher dispatcher)
     {
         await using var scope = ServiceProvider.CreateAsyncScope();
         var engineRunnerFactory = scope.ServiceProvider.GetRequiredService<EngineRunnerFactory>();
         var workItemQueue = scope.ServiceProvider.GetRequiredService<IWorkItemQueue>();
         
-        var runner = engineRunnerFactory($"{state.ModelType}_{state.DataSetType}");
-        var inputs = runner.GetInputs(state);
+        var runner = engineRunnerFactory($"{feature.ModelType}_{feature.DataSetType}");
+        var inputs = runner.GetInputs(feature);
         
-        workItemQueue.Enqueue(runner.Run(inputs, state.CancellationTokenSource));
+        workItemQueue.Enqueue(runner.Run(inputs, feature.CancellationTokenSource));
     }
 }

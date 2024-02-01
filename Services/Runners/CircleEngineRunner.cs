@@ -49,12 +49,12 @@ public class CircleEngineRunner : IEngineRunner
         // resultCallback(Map(result, 500, 500));
     };
 
-    public RunInput GetInputs(AppState state) => new()
+    public RunInput GetInputs(AppFeature feature) => new()
     {
         Inputs = new List<RunInputValue>
         {
-            new("TargetImage", state.ImageState.Target.ImageDataString(), nameof(String)),
-            new("NumCircles", state.EngineInputs.NumShapes.ToString(), nameof(Int32)),
+            new("TargetImage", feature.ImageState.Target.ImageDataString(), nameof(String)),
+            new("NumCircles", feature.EngineInputs.NumShapes.ToString(), nameof(Int32)),
             new("MutationRate", "0.1", nameof(Single)),
             new("IterationLimit", "1000", nameof(Int32)),
             new("PopulationSize", "100", nameof(Int32))

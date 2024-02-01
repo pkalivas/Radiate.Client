@@ -2,13 +2,13 @@ using Microsoft.AspNetCore.Components;
 using Radiate.Client.Components.Store;
 using Radiate.Client.Components.Store.Actions;
 using Radiate.Client.Components.Store.Interfaces;
-using AppState = Radiate.Client.Components.Store.States.AppState;
+using Radiate.Client.Components.Store.States;
 
 namespace Radiate.Client.Components;
 
 public abstract class StateComponent<T, TState> : ComponentBase, IDisposable
     where T : StateComponent<T, TState>
-    where TState : IState<TState>
+    where TState : IFeature<TState>
 {
     [Inject] protected IStore Store { get; set; } = default!;
     [Inject] protected IDispatcher Dispatcher { get; set; } = default!;
@@ -17,7 +17,7 @@ public abstract class StateComponent<T, TState> : ComponentBase, IDisposable
     protected override Task OnInitializedAsync()
     {
         State = Store.GetState<TState>();
-        Store.GetStateContainer<AppState>().OnChange += () =>
+        Store.GetStateContainer<TState>().OnChange += () =>
         {
             State = Store.GetState<TState>();
             InvokeAsync(StateHasChanged);
@@ -31,7 +31,7 @@ public abstract class StateComponent<T, TState> : ComponentBase, IDisposable
     
     public void Dispose()
     {
-        Store.GetStateContainer<AppState>().OnChange -= StateHasChanged;
+        Store.GetStateContainer<TState>().OnChange -= StateHasChanged;
         Store.UnsubscribeAll(this);
     }
     
@@ -43,8 +43,8 @@ public abstract class StateComponent<T, TState> : ComponentBase, IDisposable
         }));
     
     protected void Dispatch<TAction>(TAction action)
-        where TAction : IAction<AppState> => Dispatcher.Dispatch<TAction, AppState>(action);
+        where TAction : IAction<AppFeature> => Dispatcher.Dispatch<TAction, AppFeature>(action);
 
-    protected void Dispatch(Action<AppState> act) =>
-        Store.Dispatch<FunctionalAction, AppState>(new FunctionalAction(act));
+    protected void Dispatch(Action<AppFeature> act) =>
+        Store.Dispatch<FunctionalAction, AppFeature>(new FunctionalAction(act));
 }

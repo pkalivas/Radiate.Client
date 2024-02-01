@@ -4,23 +4,23 @@ namespace Radiate.Client.Components.Store;
 
 public class StateContainer : IStateContainer
 {
-    private IState _state = default!;
+    private IFeature _feature = default!;
     
     public event Action? OnChange;
     
-    public StateContainer(IState state)
+    public StateContainer(IFeature feature)
     {
-        _state = state;
+        _feature = feature;
     }
     
     public void NotifyStateChanged() => OnChange?.Invoke();
     
-    public void SetState(IState state)
+    public void SetState(IFeature feature)
     {
-        _state = state;
+        _feature = feature;
     }
 
-    public TState GetState<TState>() where TState : IState<TState> => (TState) _state;
+    public TState GetState<TState>() where TState : IFeature<TState> => (TState) _feature;
     
-    public IState GetState(Type stateType) => _state;
+    public IFeature GetState(Type stateType) => _feature;
 }

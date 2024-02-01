@@ -5,31 +5,31 @@ using Radiate.Engines.Schema;
 
 namespace Radiate.Client.Components.Store.Reducers;
 
-public class AppStateReducer : RootReducer<AppState>
+public class AppStateReducer : RootReducer<AppFeature>
 {
-    public override AppState Reduce(AppState state, IAction action) => action switch
+    public override AppFeature Reduce(AppFeature feature, IAction action) => action switch
     {
-        StartEngineAction _ => state with
+        StartEngineAction _ => feature with
         {
             Running = true,
             CancellationTokenSource = new CancellationTokenSource()
         },
-        RunCreatedAction runCreatedAction => state with
+        RunCreatedAction runCreatedAction => feature with
         {
-            Runs = state.Runs.Concat(new[] { runCreatedAction.Run }).ToList(),
+            Runs = feature.Runs.Concat(new[] { runCreatedAction.Run }).ToList(),
             Running = false,
             Scores = new()
         },
-        AddEngineOutputAction engineOutputsGeneratedAction => state with
+        AddEngineOutputAction engineOutputsGeneratedAction => feature with
         {
             EngineOutputs = engineOutputsGeneratedAction.EngineOutputs,
-            Scores = state.Scores.Concat(new[] { engineOutputsGeneratedAction.EngineOutputs.Metrics.Get(MetricNames.Score).Statistics.LastValue }).ToList(),
+            Scores = feature.Scores.Concat(new[] { engineOutputsGeneratedAction.EngineOutputs.Metrics.Get(MetricNames.Score).Statistics.LastValue }).ToList(),
         },
-        RunCompletedAction _ => state with
+        RunCompletedAction _ => feature with
         {
             Running = false,
             CancellationTokenSource = null
         },
-        _ => state
+        _ => feature
     };
 }

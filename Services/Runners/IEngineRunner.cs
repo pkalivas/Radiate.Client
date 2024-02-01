@@ -8,5 +8,5 @@ public interface IEngineRunner
 {
     Func<CancellationToken, Task> Run(RunInput inputs, CancellationTokenSource cts);
 
-    RunInput GetInputs(AppState state);
+    RunInput GetInputs(AppFeature feature);
 }

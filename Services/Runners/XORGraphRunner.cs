@@ -55,7 +55,7 @@ public class XORGraphRunner : IEngineRunner
     
         var result = engine.Fit()
             .Limit(Limits.Accuracy(0.01f), Limits.Iteration(iterationLimit))
-            .Peek(res => _dispatcher.Dispatch<AddEngineOutputAction, AppState>(new AddEngineOutputAction(Map(res))))
+            .Peek(res => _dispatcher.Dispatch<AddEngineOutputAction, AppFeature>(new AddEngineOutputAction(Map(res))))
             // .Peek(res => resultCallback(Map(res)))
             .TakeWhile(_ => !cts.IsCancellationRequested && !token.IsCancellationRequested)
             .ToResult();
@@ -63,11 +63,11 @@ public class XORGraphRunner : IEngineRunner
         // resultCallback(Map(result));
     };
 
-    public RunInput GetInputs(AppState state) => new()
+    public RunInput GetInputs(AppFeature feature) => new()
     {
         Inputs = new List<RunInputValue>
         {
-            new("IterationLimit", state.EngineInputs.IterationLimit.ToString(), nameof(Int32))
+            new("IterationLimit", feature.EngineInputs.IterationLimit.ToString(), nameof(Int32))
         }
     };
     

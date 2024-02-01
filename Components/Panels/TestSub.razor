@@ -1,17 +1,14 @@
 @using Radiate.Client.Components.Store.Interfaces
-@inherits StateComponent<TestSub, AppState>
-
-@count
+@inherits StateComponent<TestSub, AppFeature>
+@inject ILogger<TestSub> Logger
 
 @code {
-    private int count = 0;
     
     protected override void OnStateInitialized()
     {
         Subscribe<IAction>(act =>
         {
-            count++;
+            Logger.LogInformation("Received action {Action}", act);
         });
     }
-
 }

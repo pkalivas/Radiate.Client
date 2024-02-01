@@ -7,6 +7,7 @@ using Radiate.Client.Components.Store.States;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
+    .AddLogging(builder => builder.AddConsole())
     .AddServices()
     .AddMudServices()
     .AddRazorComponents()
@@ -29,7 +30,7 @@ app.MapRazorComponents<App>()
 app.Lifetime.ApplicationStarted.Register(() =>
 {
     var store = app.Services.GetRequiredService<IStore>();
-    store.Register(new AppState());
+    store.Register(new AppFeature());
 });
 
 app.Run();

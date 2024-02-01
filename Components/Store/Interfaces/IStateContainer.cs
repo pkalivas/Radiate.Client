@@ -4,5 +4,5 @@ public interface IStateContainer
 {
     event Action OnChange;
     void NotifyStateChanged();
-    TState GetState<TState>() where TState : IState<TState>;
+    TState GetState<TState>() where TState : IFeature<TState>;
 }

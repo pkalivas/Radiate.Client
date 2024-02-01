@@ -3,6 +3,6 @@ using Radiate.Client.Components.Store.States;
 
 namespace Radiate.Client.Components.Store.Actions;
 
-public record FunctionalAction(Action<AppState> Act) : IAction<AppState>
+public record FunctionalAction(Action<AppFeature> Act) : IAction<AppFeature>
 {
 }

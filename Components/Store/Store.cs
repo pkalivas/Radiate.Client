@@ -1,6 +1,5 @@
 using System.Collections.Concurrent;
 using Radiate.Client.Components.Store.Interfaces;
-using Radiate.Client.Components.Store.Subscribers;
 
 namespace Radiate.Client.Components.Store;
 
@@ -22,26 +21,26 @@ public class StateStore : IStore
         SetEffects(effects);
         SetReducers(reducers);
     }
-    
-    public bool IsDispatching { get; private set; }
+
+    private bool IsDispatching { get; set; }
     
     public async Task Dispatch<TAction, TState>(TAction action) 
         where TAction : IAction<TState> 
-        where TState : IState<TState>
+        where TState : IFeature<TState>
     {
         throw new NotImplementedException();
     }
     
-    public StateContainer GetStateContainer<TState>() where TState : IState<TState> =>
+    public StateContainer GetStateContainer<TState>() where TState : IFeature<TState> =>
         _stateContainers[typeof(TState).Name];
 
     public void Register<TState>(TState state) 
-        where TState : IState<TState>
+        where TState : IFeature<TState>
     {
         _stateContainers.Add(typeof(TState).Name, new StateContainer(state));
     }
 
-    public TState GetState<TState>() where TState : IState<TState> =>
+    public TState GetState<TState>() where TState : IFeature<TState> =>
         _stateContainers[typeof(TState).Name].GetState<TState>();
     
     public void Notify(IAction action) => _actionSubscriber.Notify(action);
@@ -105,8 +104,6 @@ public class StateStore : IStore
                 stateContainer.SetState(state);
                 stateContainer.NotifyStateChanged();
                 
-                _actionSubscriber.Notify(action);
-                
                 if (_effects.TryGetValue(actionType.Name, out var effects))
                 {
                     tasks.AddRange(effects
@@ -114,6 +111,8 @@ public class StateStore : IStore
                         .Select(effect => effect.HandleAsync(state, action, _dispatcher)));
                 }
             }
+            
+            _actionSubscriber.Notify(action);
             
             Task.Run(async () => await Task.WhenAll(tasks));
         }

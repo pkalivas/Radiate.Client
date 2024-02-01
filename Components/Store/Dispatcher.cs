@@ -7,7 +7,7 @@ public interface IDispatcher
     event EventHandler<IAction> OnDispatch;
     void Dispatch<TAction, TState>(TAction action) 
         where TAction : IAction
-        where TState : IState<TState>;   
+        where TState : IFeature<TState>;   
 }
 
 public class Dispatcher : IDispatcher
@@ -40,7 +40,7 @@ public class Dispatcher : IDispatcher
     
     public void Dispatch<TAction, TState>(TAction action) 
         where TAction : IAction
-        where TState : IState<TState>
+        where TState : IFeature<TState>
     {
         lock (SyncRoot)
         {

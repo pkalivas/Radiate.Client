@@ -2,7 +2,7 @@ namespace Radiate.Client.Components.Store.Interfaces;
 
 public interface IReducer
 {
-    IState Reduce(IState state, IAction action);
+    IFeature Reduce(IFeature feature, IAction action);
 }
 
 public interface IReducer<TState>

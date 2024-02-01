@@ -2,12 +2,12 @@ namespace Radiate.Client.Components.Store.Interfaces;
 
 public interface IEffect
 {
-    bool CanHandle(IState state, IAction action);
-    Task HandleAsync(IState state, IAction action, IDispatcher dispatcher);
+    bool CanHandle(IFeature feature, IAction action);
+    Task HandleAsync(IFeature feature, IAction action, IDispatcher dispatcher);
 }
 
 public interface IEffect<in TState, in TAction> : IEffect
-    where TState : IState<TState>
+    where TState : IFeature<TState>
 {
     Task HandleAsync(TState state, TAction action, IDispatcher dispatcher);
 }

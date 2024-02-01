@@ -40,7 +40,8 @@ else
 
     private void Start()
     {
-        Dispatch(new StartEngineAction());
+        Dispatcher.Dispatch<StartEngineAction, AppFeature>(new StartEngineAction());
+        // Dispatch(new StartEngineAction());
         // _cancellationToken = new CancellationTokenSource();
         //
         // var runner = Runner($"{State.ModelType}_{State.DataSetType}");

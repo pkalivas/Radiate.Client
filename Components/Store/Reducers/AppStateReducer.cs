@@ -14,12 +14,12 @@ public class AppStateReducer : Reducer<AppFeature>
             Running = true,
             CancellationTokenSource = new CancellationTokenSource()
         },
-        RunCreatedAction runCreatedAction => feature with
-        {
-            Runs = feature.Runs.Concat(new[] { runCreatedAction.Run }).ToList(),
-            Running = false,
-            Scores = new()
-        },
+        // RunCreatedAction runCreatedAction => feature with
+        // {
+        //     Runs = feature.Runs.Concat(new[] { runCreatedAction.Run }).ToList(),
+        //     Running = false,
+        //     Scores = new()
+        // },
         AddEngineOutputAction engineOutputsGeneratedAction => feature with
         {
             EngineOutputs = engineOutputsGeneratedAction.EngineOutputs,

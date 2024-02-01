@@ -25,6 +25,11 @@ public class StateStore : IStore
     private bool IsDispatching { get; set; }
     
     public IState<TState> Select<TState>() => (IState<TState>)_states[typeof(TState).Name];
+
+    public void Selctors<T>(Func<StateStore, IState<T>> selector)
+    {
+        _states[typeof(T).Name] = selector(this);
+    }
     
     public void Register<TState>(TState state) 
         where TState : IFeature<TState>

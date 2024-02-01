@@ -2,6 +2,5 @@ namespace Radiate.Client.Components.Store.Interfaces;
 
 public interface IAction { }
 
-public interface IAction<in TState> : IAction
-    where TState : IFeature<TState> { }
+public interface IAction<in TState> : IAction { }
     

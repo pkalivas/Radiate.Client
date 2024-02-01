@@ -5,9 +5,9 @@ namespace Radiate.Client.Components.Store;
 public interface IDispatcher
 {
     event EventHandler<IAction> OnDispatch;
-    void Dispatch<TAction, TState>(TAction action) 
-        where TAction : IAction
-        where TState : IFeature<TState>;   
+
+    void Dispatch<TAction, TState>(TAction action)
+        where TAction : IAction;
 }
 
 public class Dispatcher : IDispatcher
@@ -40,7 +40,6 @@ public class Dispatcher : IDispatcher
     
     public void Dispatch<TAction, TState>(TAction action) 
         where TAction : IAction
-        where TState : IFeature<TState>
     {
         lock (_syncRoot)
         {

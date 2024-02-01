@@ -63,11 +63,11 @@
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
     
-    private RunsState RunState { get; set; }
+    private RunState RunState { get; set; }
 
     protected override void OnInitialized()
     {
-        RunState = new RunsState();
+        RunState = new RunState();
         base.OnInitialized();
     }
 

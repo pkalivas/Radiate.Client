@@ -3,4 +3,4 @@ using Radiate.Client.Components.Store.States;
 
 namespace Radiate.Client.Components.Store.Actions;
 
-public record RunCreatedAction(RunsState Run) : IAction<AppFeature>;
+public record RunCreatedAction(RunState Run) : IAction<RootFeature>;

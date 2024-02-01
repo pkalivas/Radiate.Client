@@ -4,7 +4,7 @@ public record RootFeature : Feature<RootFeature>
 {
     public Guid CurrentRunId { get; init; } = Guid.NewGuid();
     public RouteFeature? Route { get; init; } = new();
-    public Dictionary<Guid, RunFeature> Runs { get; init; } = new();
+    public Dictionary<Guid, RunState> Runs { get; init; } = new();
 }
 
 public record RouteFeature : Feature<RouteFeature>
@@ -13,7 +13,7 @@ public record RouteFeature : Feature<RouteFeature>
     public Guid RunId { get; init; } = Guid.NewGuid();
 }
 
-public record RunFeature : Feature<RunFeature>
+public record RunState : Feature<RunState>
 {
     public Guid RunId { get; init; } = Guid.NewGuid();
     public string Status { get; init; } = "";

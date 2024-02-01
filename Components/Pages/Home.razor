@@ -2,7 +2,7 @@
 @rendermode InteractiveServer
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
-@inherits StateComponent<Home, AppFeature>
+@inherits StateComponent<Home, RootFeature>
 
 <MudPaper Elevation="25" Class="mt-4 ml-4 mr-4 px-8">
     <MudToolBar>
@@ -11,7 +11,7 @@
         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OpenDialog">New Run</MudButton>
     </MudToolBar>
 </MudPaper>
-<MudTable OnRowClick="@((TableRowClickEventArgs<RunsState> args) => OnSelect(args))" Items="@State.Runs" Class="ml-4 mr-4 px-8">
+<MudTable OnRowClick="@((TableRowClickEventArgs<RunState> args) => OnSelect(args))" Items="@State.Runs.Values.ToList()" Class="ml-4 mr-4 px-8">
     <HeaderContent>
         <MudTh>Model</MudTh>
         <MudTh>Data Set</MudTh>
@@ -25,11 +25,11 @@
 </MudTable>
 
 @code {
-
-    private void OnSelect(TableRowClickEventArgs<RunsState> run)
+    
+    private void OnSelect(TableRowClickEventArgs<RunState> run)
     {
-        Dispatcher.Dispatch<NavigateToRunAction, RootFeature>(new NavigateToRunAction(run.Item.RunId));
-        // NavigationManager.NavigateTo($"/runs/{run.Item.RunId}");
+        // Dispatcher.Dispatch<NavigateToRunAction, RootFeature>(new NavigateToRunAction(run.Item.RunId));
+        NavigationManager.NavigateTo($"/runs/{run.Item.RunId}");
     }
 
     private async Task OpenDialog()
@@ -46,7 +46,7 @@
 
         if (!result.Canceled)
         {
-            Dispatch(new RunCreatedAction((RunsState)result.Data));
+            Dispatcher.Dispatch<RunCreatedAction, RootFeature>(new RunCreatedAction((RunState)result.Data));
         }
     }
 }

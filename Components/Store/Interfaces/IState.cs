@@ -2,6 +2,7 @@ namespace Radiate.Client.Components.Store.Interfaces;
 
 public interface IState : IStateChangeNotifier
 {
+    int ChangeCount { get; }
     string Name { get; }
     IState GetState();
     void SetState(IState state);

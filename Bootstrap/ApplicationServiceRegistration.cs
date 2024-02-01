@@ -2,7 +2,6 @@ using Radiate.Client.Components.Store;
 using Radiate.Client.Components.Store.Effects;
 using Radiate.Client.Components.Store.Interfaces;
 using Radiate.Client.Components.Store.Reducers;
-using Radiate.Client.Services;
 using Radiate.Client.Services.Runners;
 using Radiate.Client.Services.Worker;
 
@@ -14,7 +13,6 @@ public static class ApplicationServiceRegistration
         services
             .AddStore()
             .AddEngineRunners()
-            .AddScoped<InputsService>()
             .AddSingleton<IWorkItemQueue, WorkItemQueue>()
             .AddHostedService<BackgroundWorkerService>();
 

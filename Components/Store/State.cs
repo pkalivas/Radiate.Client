@@ -16,6 +16,8 @@ public class State<T> : IState<T>
     public string Name => GetType().Name;
     public void SetState(IState state) => SetState((T)state);
 
+    public int ChangeCount { get; private set; }
+    
     public event EventHandler<T>? SelectedValueChanged;
     public event EventHandler? StateChanged;
 
@@ -42,6 +44,7 @@ public class State<T> : IState<T>
         }
         
         Value = state;
+        ChangeCount++;
         SelectedValueChanged?.Invoke(this, Value);
         StateChanged?.Invoke(this, EventArgs.Empty);
     }

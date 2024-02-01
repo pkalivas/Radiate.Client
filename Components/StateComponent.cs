@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using Radiate.Client.Components.Store;
-using Radiate.Client.Components.Store.Actions;
 using Radiate.Client.Components.Store.Interfaces;
 using Radiate.Client.Components.Store.States;
 
@@ -12,6 +11,9 @@ public abstract class StateComponent<T, TState> : ComponentBase, IDisposable
     [Inject] protected IStore Store { get; set; } = default!;
     [Inject] protected IDispatcher Dispatcher { get; set; } = default!;
     protected TState State { get; set; } = default!;
+    
+    protected int Changes { get; private set; }
+    
     private IState<TState> _state = default!;
     
     protected override Task OnInitializedAsync()
@@ -38,16 +40,11 @@ public abstract class StateComponent<T, TState> : ComponentBase, IDisposable
             callback(act);
             StateHasChanged();
         }));
-    
-    protected void Dispatch<TAction>(TAction action)
-        where TAction : IAction<AppFeature> => Dispatcher.Dispatch<TAction, AppFeature>(action);
 
-    // protected void Dispatch(Action<AppFeature> act) =>
-    //     Store.Dispatch<FunctionalAction, AppFeature>(new FunctionalAction(act));
-    
     private void SetState(object sender, TState state)
     {
         State = state;
+        Changes++;
         InvokeAsync(StateHasChanged);
     }
 }

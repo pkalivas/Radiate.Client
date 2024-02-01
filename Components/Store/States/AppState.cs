@@ -7,6 +7,7 @@ namespace Radiate.Client.Components.Store.States;
 
 public record AppState : StoreState<AppState>
 {
+    public CancellationTokenSource CancellationTokenSource { get; set; } = new();
     public bool Running { get; set; } = false;
     public string ModelType { get; set; } = "Graph";
     public string DataSetType { get; set; } = "XOR";
@@ -26,9 +27,13 @@ public record AppState : StoreState<AppState>
 public record RunsState
 {
     public Guid RunId { get; set; }
+    public CancellationTokenSource CancellationTokenSource { get; set; } = new();
     public string RunName { get; set; } = "";
     public string RunType { get; set; } = "";
     public string Status { get; set; } = "";
+    public int PopulationSize { get; set; } = 50;
+    public float MutationRate { get; set; } = 0.02f;
+    public int IterationLimit { get; set; } = 1000;
 }
 
 public record EngineInputsState

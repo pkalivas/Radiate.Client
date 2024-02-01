@@ -11,6 +11,7 @@ public record AppState : StoreState<AppState>
     public string ModelType { get; set; } = "Graph";
     public string DataSetType { get; set; } = "XOR";
     public List<float> Scores { get; set; } = new();
+    public List<RunsState> Runs { get; set; } = new();
     public EngineOutputState EngineOutputs { get; set; } = new();
     public EngineInputsState EngineInputs { get; set; } = new();
     public ImageState ImageState { get; set; } = new();
@@ -20,6 +21,14 @@ public record AppState : StoreState<AppState>
         var stats = EngineOutputs.Metrics.Get(name);
         return stats?.Statistics;
     }
+}
+
+public record RunsState
+{
+    public Guid RunId { get; set; }
+    public string RunName { get; set; } = "";
+    public string RunType { get; set; } = "";
+    public string Status { get; set; } = "";
 }
 
 public record EngineInputsState

@@ -25,10 +25,6 @@ public class XORGraphRunner : IEngineRunner
         var frame = new TensorFrame(inputs, answers);
     
         var regression = Architect.Graph<float>().ToRegression(frame);
-
-        // var engine = Engine.Genetic(regression).Async()
-        //     .Setup(EngineSetup.Neat<float>())
-        //     .Build();
         
         var engineOne = Engine.Genetic(regression).Async()
             .Setup(EngineSetup.Neat<float>())

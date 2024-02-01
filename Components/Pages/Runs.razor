@@ -1,0 +1,39 @@
+@page "/runs"
+@rendermode InteractiveServer
+@inject IDialogService DialogService
+@inherits StateComponent
+
+<MudPaper Elevation="25" Class="mt-4 ml-4 mr-4 px-8">
+    <MudToolBar>
+        Engine Runs
+        <MudSpacer />
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OpenDialog">New Run</MudButton>
+    </MudToolBar>
+</MudPaper>
+<MudTable Items="@State.Runs" Class="ml-4 mr-4 px-8">
+    <HeaderContent>
+        <MudTh>Model</MudTh>
+        <MudTh>Data Set</MudTh>
+        <MudTh>Status</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Model">@context.RunName</MudTd>
+        <MudTd DataLabel="Data Set">@context.RunType</MudTd>
+        <MudTd DataLabel="Status">@context.Status</MudTd>
+    </RowTemplate>
+</MudTable>
+
+@code {
+
+    private void OpenDialog()
+    {
+        var options = new DialogOptions()
+        {
+            MaxWidth = MaxWidth.Small, 
+            FullWidth = true,
+            CloseOnEscapeKey = true
+        };
+        
+        DialogService.Show<NewRunDialog>("Run Dialog", options);
+    }
+}

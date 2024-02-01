@@ -3,7 +3,7 @@ using Radiate.Client.Services.Runners;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Statistics.Stats;
 
-namespace Radiate.Client.Components.Store.States;
+namespace Radiate.Client.Components.Store.States.Features;
 
 public record AppFeature : Feature<AppFeature>
 {

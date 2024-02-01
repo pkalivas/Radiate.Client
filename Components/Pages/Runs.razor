@@ -1,7 +1,7 @@
 @page "/runs/{runId:guid}"
 @rendermode InteractiveServer
 @using Radiate.Engines.Schema
-@inherits StateComponent<Runs, AppFeature>
+@inherits StateComponent<Runs, Radiate.Client.Components.Store.States.Features.AppFeature>
 
 <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
     <MudGrid>

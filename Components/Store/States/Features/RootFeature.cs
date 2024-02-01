@@ -1,4 +1,5 @@
-namespace Radiate.Client.Components.Store.States;
+
+namespace Radiate.Client.Components.Store.States.Features;
 
 public record RootFeature : Feature<RootFeature>
 {
@@ -13,7 +14,7 @@ public record RouteFeature : Feature<RouteFeature>
     public Guid RunId { get; init; } = Guid.NewGuid();
 }
 
-public record RunState : Feature<RunState>
+public record RunState
 {
     public Guid RunId { get; init; } = Guid.NewGuid();
     public string Status { get; init; } = "";

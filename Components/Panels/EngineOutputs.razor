@@ -1,6 +1,6 @@
 @using Radiate.Engines.Schema
 @using Radiate.Engines.Entities
-@inherits StateComponent<EngineOutputs, AppFeature>
+@inherits StateComponent<EngineOutputs, Radiate.Client.Components.Store.States.Features.AppFeature>
 
 <MudTable Items="@GetMetricsToDisplay()">
     <HeaderContent>

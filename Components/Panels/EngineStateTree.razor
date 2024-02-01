@@ -1,7 +1,7 @@
 @using Radiate.Engines.Entities
 @using Radiate.Engines.Schema
 @using Radiate.Client.Components.Store.Models
-@inherits StateComponent<EngineStateTree, AppFeature>
+@inherits StateComponent<EngineStateTree, Radiate.Client.Components.Store.States.Features.AppFeature>
 
 <MudTreeView Items="@GetItems()">
     <ItemTemplate>

@@ -9,11 +9,11 @@
 @using Dispatcher = Akka.Dispatch.Dispatcher
 @using Radiate.Client.Components.Store.Interfaces
 @using Radiate.Client.Components.Store.States.Features
-@inherits StateComponent<EngineControl, AppFeature>
+@inherits StateComponent<EngineControl, RunState>
 @inject IWorkItemQueue WorkItemQueue
 @inject EngineRunnerFactory Runner
 
-@if (State.Running)
+@if (State.IsRunning)
 {
     <MudButton Class="w-100"
                Size="Size.Small"
@@ -41,7 +41,7 @@ else
 
     private void Start()
     {
-        Dispatcher.Dispatch<StartEngineAction, AppFeature>(new StartEngineAction());
+        Dispatcher.Dispatch<StartEngineAction, RootFeature>(new StartEngineAction());
         // Dispatch(new StartEngineAction());
         // _cancellationToken = new CancellationTokenSource();
         //

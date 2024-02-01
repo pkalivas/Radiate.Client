@@ -1,6 +1,6 @@
 @using Radiate.Engines.Schema
 @using Radiate.Engines.Entities
-@inherits StateComponent<EngineOutputs, Radiate.Client.Components.Store.States.Features.AppFeature>
+@inherits StateComponent<EngineOutputs, Radiate.Client.Components.Store.States.Features.RunState>
 
 <MudTable Items="@GetMetricsToDisplay()">
     <HeaderContent>
@@ -24,7 +24,7 @@
 @code {
     
     private List<MetricValue> GetMetricsToDisplay() => DisplayNames()
-            .Select(name => State.EngineOutputs.Metrics.Get(name))
+            .Select(name => State.Outputs.Metrics.Get(name))
             .Where(val => val != null)
             .SelectMany(Flatten)
             .ToList();

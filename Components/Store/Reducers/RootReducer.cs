@@ -1,7 +1,7 @@
 using Radiate.Client.Components.Store.Actions;
 using Radiate.Client.Components.Store.Interfaces;
-using Radiate.Client.Components.Store.States;
 using Radiate.Client.Components.Store.States.Features;
+using Radiate.Engines.Schema;
 
 namespace Radiate.Client.Components.Store.Reducers;
 
@@ -10,10 +10,43 @@ public class RootReducer : Reducer<RootFeature>
     public override RootFeature Reduce(RootFeature state, IAction action) => action switch
     {
         NavigateToRunAction navigateToRunAction => state with { CurrentRunId = navigateToRunAction.RunId },
-        RunCreatedAction runCreatedAction => state with
-        {
-            Runs = state.Runs.Values.Concat(new[] { runCreatedAction.Run }).ToDictionary(run => run.RunId),
-        },
+        RunCreatedAction runCreatedAction => AddRun(state, runCreatedAction),
+        AddEngineOutputAction engineOutputsGeneratedAction => AddOutput(state, engineOutputsGeneratedAction),
+        RunCompletedAction runCompletedAction => RunCompleted(state, runCompletedAction),
+        StartEngineAction startEngineAction => StartEngine(state, startEngineAction),
         _ => state
     };
+
+    private static RootFeature AddOutput(RootFeature state, AddEngineOutputAction action)
+    {
+        var engineOutputsGeneratedAction = action.EngineOutputs;
+        state.Runs[state.CurrentRunId] = state.Runs[state.CurrentRunId] with
+        {
+            Outputs = engineOutputsGeneratedAction,
+            Scores = state.Runs[state.CurrentRunId].Scores.Concat(new[]
+            {
+                engineOutputsGeneratedAction.Metrics.Get(MetricNames.Score).Statistics.LastValue
+            }).ToList(),
+        };
+
+        return state with {Runs = state.Runs};// Counter = state.Counter + 1};
+    }
+    
+    private static RootFeature AddRun(RootFeature state, RunCreatedAction action)
+    {
+        state.Runs[action.Run.RunId] = action.Run;
+        return state with { Runs = state.Runs };
+    }
+    
+    private static RootFeature RunCompleted(RootFeature state, RunCompletedAction action)
+    {
+        state.Runs[state.CurrentRunId] = state.Runs[state.CurrentRunId] with { IsRunning = false };
+        return state with { Runs = state.Runs };
+    }
+    
+    private static RootFeature StartEngine(RootFeature state, StartEngineAction action)
+    {
+        state.Runs[state.CurrentRunId] = state.Runs[state.CurrentRunId] with { IsRunning = true };
+        return state with { Runs = state.Runs };
+    }
 }

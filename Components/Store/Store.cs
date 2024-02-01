@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using Radiate.Client.Components.Store.Interfaces;
+using Radiate.Optimizers.Evolution.Genome.Interfaces;
 
 namespace Radiate.Client.Components.Store;
 
@@ -26,16 +27,16 @@ public class StateStore : IStore
     
     public List<IState> GetStates() => _states.Values.ToList();
     
-    public IState<TState> Select<TState>() => (IState<TState>)_states[typeof(TState).Name];
+    public IState<TState> Select<TState>() where TState : ICopy<TState> => (IState<TState>)_states[typeof(TState).Name];
     
-    public IState<TState> Select<TState>(Func<StateStore, TState> selector)
+    public IState<TState> Select<TState>(Func<StateStore, TState> selector)where TState : ICopy<TState>
     {
         _states[typeof(TState).Name] = new StateSelection<TState, TState>(new State<TState>(selector(this)), s => s);
         return (IState<TState>) _states[typeof(TState).Name];
     }
 
 
-    public void Selctors<T>(Func<StateStore, IState<T>> selector)
+    public void Selctors<T>(Func<StateStore, IState<T>> selector) where T : ICopy<T>
     {
         _states[typeof(T).Name] = selector(this);
     }

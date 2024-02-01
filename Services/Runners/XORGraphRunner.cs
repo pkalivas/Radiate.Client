@@ -1,6 +1,5 @@
 using Radiate.Client.Components.Store;
 using Radiate.Client.Components.Store.Actions;
-using Radiate.Client.Components.Store.States;
 using Radiate.Client.Components.Store.States.Features;
 using Radiate.Data;
 using Radiate.Engines;
@@ -56,19 +55,19 @@ public class XORGraphRunner : IEngineRunner
     
         var result = engine.Fit()
             .Limit(Limits.Accuracy(0.01f), Limits.Iteration(iterationLimit))
-            .Peek(res => _dispatcher.Dispatch<AddEngineOutputAction, AppFeature>(new AddEngineOutputAction(Map(res))))
-            // .Peek(res => resultCallback(Map(res)))
+            .Peek(res => _dispatcher.Dispatch<AddEngineOutputAction, RootFeature>(new AddEngineOutputAction(Map(res))))
             .TakeWhile(_ => !cts.IsCancellationRequested && !token.IsCancellationRequested)
             .ToResult();
         
-        // resultCallback(Map(result));
+        _dispatcher.Dispatch<AddEngineOutputAction, RootFeature>(new AddEngineOutputAction(Map(result)));
+        _dispatcher.Dispatch<RunCompletedAction, RootFeature>(new RunCompletedAction());
     };
 
-    public RunInput GetInputs(AppFeature feature) => new()
+    public RunInput GetInputs(EngineInputsState feature) => new()
     {
         Inputs = new List<RunInputValue>
         {
-            new("IterationLimit", feature.EngineInputs.IterationLimit.ToString(), nameof(Int32))
+            new("IterationLimit", feature.IterationLimit.ToString(), nameof(Int32))
         }
     };
     

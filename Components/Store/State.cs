@@ -1,8 +1,9 @@
 using Radiate.Client.Components.Store.Interfaces;
+using Radiate.Optimizers.Evolution.Genome.Interfaces;
 
 namespace Radiate.Client.Components.Store;
 
-public class State<T> : IState<T>
+public class State<T> : IState<T> where T : ICopy<T>
 {
     private T Value { get; set; }
     
@@ -25,20 +26,20 @@ public class State<T> : IState<T>
     {
         if (reducer is IReducer<T> tReducer)
         {
-            SetState(tReducer.Reduce(Value, action));
+            SetState(tReducer.Reduce(Value.Copy(), action));
         }
     }
 
-    public IState<TK> SelectState<TK>(Func<T, TK> selector) 
+    public IState<TK> SelectState<TK>(Func<T, TK> selector)  where TK : ICopy<TK>
     {
         var newState = new StateSelection<T, TK>(this, selector);
-        
+
         return newState;
     }
 
     protected void SetState(T state)
     {
-        if (state!.Equals(Value))
+        if (Equals(state, Value))
         {
             return;
         }

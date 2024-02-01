@@ -29,7 +29,7 @@
     
     private void OnSelect(TableRowClickEventArgs<RunState> run)
     {
-        // Dispatcher.Dispatch<NavigateToRunAction, RootFeature>(new NavigateToRunAction(run.Item.RunId));
+        Dispatcher.Dispatch<NavigateToRunAction, RootFeature>(new NavigateToRunAction(run.Item.RunId));
         NavigationManager.NavigateTo($"/runs/{run.Item.RunId}");
     }
 

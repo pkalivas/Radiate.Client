@@ -11,6 +11,7 @@ public class Subscription
 
 public class ActionSubscriber : IActionSubscriber
 {
+    private readonly object _lock = new();
     private readonly Dictionary<Type, List<Subscription>> _subscriptions = new();
     
     public void Subscribe<TAction>(object subscriber, Action<TAction> callback) where TAction : IAction
@@ -46,13 +47,16 @@ public class ActionSubscriber : IActionSubscriber
 
     public void UnsubscribeAll(object subscriber)
     {
-        var subscriberType = subscriber.GetType();
-        
-        foreach (var subscription in _subscriptions.Values.SelectMany(subscriptions => subscriptions))
+        lock (_lock)
         {
-            if (subscription.SubsciberType == subscriberType)
+            var subscriberType = subscriber.GetType();
+        
+            foreach (var subscription in _subscriptions.Values.SelectMany(subscriptions => subscriptions))
             {
-                _subscriptions[subscription.ActionType].Remove(subscription);
+                if (subscription.SubsciberType == subscriberType)
+                {
+                    _subscriptions[subscription.ActionType].Remove(subscription);
+                }
             }
         }
     }

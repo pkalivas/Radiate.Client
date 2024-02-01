@@ -1,4 +1,3 @@
-using Radiate.Client.Components.Store.States;
 using Radiate.Client.Components.Store.States.Features;
 using Radiate.Client.Services.Genome;
 using Radiate.Engines;
@@ -53,16 +52,16 @@ public class PolygonEngineRunner : IEngineRunner
         // resultCallback(Map(result, 500, 500));
     };
 
-    public RunInput GetInputs(AppFeature feature) => new()
+    public RunInput GetInputs(EngineInputsState feature) => new()
     {
         Inputs = new List<RunInputValue>
         {
-            new("TargetImage", feature.ImageState.Target.ImageDataString(), nameof(String)),
-            new("PolygonCount", feature.EngineInputs.NumShapes.ToString(), nameof(Int32)),
-            new("PolygonLength", feature.EngineInputs.NumVertices.ToString(), nameof(Int32)),
-            new("PopulationSize", feature.EngineInputs.PopulationSize.ToString(), nameof(Int32)),
-            new("MutationRate", feature.EngineInputs.MutationRate.ToString(), nameof(Single)),
-            new("IterationLimit", feature.EngineInputs.IterationLimit.ToString(), nameof(Int32)),
+            // new("TargetImage", feature.ImageState.Target.ImageDataString(), nameof(String)),
+            // new("PolygonCount", feature.EngineInputs.NumShapes.ToString(), nameof(Int32)),
+            // new("PolygonLength", feature.EngineInputs.NumVertices.ToString(), nameof(Int32)),
+            // new("PopulationSize", feature.EngineInputs.PopulationSize.ToString(), nameof(Int32)),
+            // new("MutationRate", feature.EngineInputs.MutationRate.ToString(), nameof(Single)),
+            // new("IterationLimit", feature.EngineInputs.IterationLimit.ToString(), nameof(Int32)),
         }
     };
 

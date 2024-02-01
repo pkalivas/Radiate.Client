@@ -1,9 +1,10 @@
 using Radiate.Client.Components.Store.Interfaces;
+using Radiate.Optimizers.Evolution.Genome.Interfaces;
 
 namespace Radiate.Client.Components.Store.Effects;
 
 public abstract class Effect<TState, TAction> : IEffect<TState, TAction>
-    where TState : class
+    where TState : class, ICopy<TState>
     where TAction : IAction
 {
     protected readonly IServiceProvider ServiceProvider;

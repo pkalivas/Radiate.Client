@@ -1,4 +1,3 @@
-using Radiate.Client.Components.Store.States;
 using Radiate.Client.Components.Store.States.Features;
 using Radiate.Client.Services.Genome;
 using Radiate.Engines;
@@ -50,12 +49,12 @@ public class CircleEngineRunner : IEngineRunner
         // resultCallback(Map(result, 500, 500));
     };
 
-    public RunInput GetInputs(AppFeature feature) => new()
+    public RunInput GetInputs(EngineInputsState feature) => new()
     {
         Inputs = new List<RunInputValue>
         {
-            new("TargetImage", feature.ImageState.Target.ImageDataString(), nameof(String)),
-            new("NumCircles", feature.EngineInputs.NumShapes.ToString(), nameof(Int32)),
+            // new("TargetImage", feature.Target.ImageDataString(), nameof(String)),
+            // new("NumCircles", feature.EngineInputs.NumShapes.ToString(), nameof(Int32)),
             new("MutationRate", "0.1", nameof(Single)),
             new("IterationLimit", "1000", nameof(Int32)),
             new("PopulationSize", "100", nameof(Int32))

@@ -22,6 +22,22 @@ public record AppFeature : Feature<AppFeature>
         var stats = EngineOutputs.Metrics.Get(name);
         return stats?.Statistics;
     }
+
+    public override AppFeature Copy()
+    {
+        return new()
+        {
+            CancellationTokenSource = CancellationTokenSource,
+            Running = Running,
+            ModelType = ModelType,
+            DataSetType = DataSetType,
+            Scores = Scores.ToList(),
+            Runs = Runs.ToList(),
+            EngineOutputs = EngineOutputs,
+            EngineInputs = EngineInputs,
+            ImageState = ImageState
+        };
+    }
 }
 
 public record RunsState
@@ -71,6 +87,16 @@ public class EngineOutputState
         }
 
         return (T)Convert.ChangeType(output.Value, typeof(T));
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is EngineOutputState state &&
+               EngineState == state.EngineState &&
+               EngineId == state.EngineId &&
+               EqualityComparer<MetricSet>.Default.Equals(Metrics, state.Metrics) &&
+               EqualityComparer<Dictionary<string, EngineState>>.Default.Equals(EngineStates, state.EngineStates) &&
+               EqualityComparer<List<RunOutputValue>>.Default.Equals(Outputs, state.Outputs);
     }
 }
 

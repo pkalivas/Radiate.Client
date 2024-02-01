@@ -26,18 +26,17 @@ public record AppState : StoreState<AppState>
 
 public record RunsState
 {
-    public Guid RunId { get; set; }
-    public CancellationTokenSource CancellationTokenSource { get; set; } = new();
+    public Guid RunId { get; set; } = Guid.NewGuid();
     public string RunName { get; set; } = "";
     public string RunType { get; set; } = "";
     public string Status { get; set; } = "";
-    public int PopulationSize { get; set; } = 50;
-    public float MutationRate { get; set; } = 0.02f;
-    public int IterationLimit { get; set; } = 1000;
+    public EngineInputsState Inputs { get; set; } = new();
 }
 
 public record EngineInputsState
 {
+    public string ModelType { get; set; } = "Graph";
+    public string DataSetType { get; set; } = "XOR";
     public int PopulationSize { get; set; } = 50;
     public float MutationRate { get; set; } = 0.02f;
     public int IterationLimit { get; set; } = 1000;

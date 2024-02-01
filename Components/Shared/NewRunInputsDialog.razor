@@ -1,13 +1,15 @@
 @using Radiate.Client.Components.Store.Schema
-@using Radiate.Client.Services.Runners
-@inherits StateComponent
-@inject IWorkItemQueue WorkItemQueue
-@inject EngineRunnerFactory Runner
 
 <MudDialog>
     <DialogContent>
         <div>
-            <MudSelect SelectedValuesChanged="@OnModelChange" MultiSelection="false" HelperText="Model To Run" T="string" Label="Model" Variant="Variant.Text">
+            <MudSelect SelectedValuesChanged="@OnModelChange" 
+                       Value="@RunState.Inputs.ModelType" 
+                       MultiSelection="false"
+                       HelperText="Model To Run"
+                       T="string"
+                       Label="Model"
+                       Variant="Variant.Text">
                 @foreach (var model in StateOptions.ModelNames)
                 {
                     <MudSelectItem Value="@model"/>
@@ -15,7 +17,13 @@
             </MudSelect>
         </div>
         <div>
-            <MudSelect SelectedValuesChanged="@OnDataSetChange" HelperText="DataSet To Run" T="string" Label="DataSet" Variant="Variant.Text">
+            <MudSelect SelectedValuesChanged="@OnDataSetChange"
+                       Value="@RunState.Inputs.DataSetType" 
+                       MultiSelection="false"
+                       HelperText="DataSet To Run"
+                       T="string" 
+                       Label="DataSet"
+                       Variant="Variant.Text">
                 @foreach (var data in StateOptions.DataSetNames)
                 {
                     <MudSelectItem Value="@data"/>
@@ -28,18 +36,18 @@
             <div class="col">
                 <MudNumericField Label="Population Size"
                                  Variant="Variant.Filled"
-                                 Value="@State.EngineInputs.PopulationSize"
-                                 ValueChanged="@((int size) => Dispatch(state => state.EngineInputs.PopulationSize = size))">
+                                 Value="@RunState.Inputs.PopulationSize"
+                                 ValueChanged="@((int size) => RunState.Inputs.PopulationSize = size)">
                 </MudNumericField>
                 <MudNumericField Label="Mutation Rate"
                                  Variant="Variant.Filled"
-                                 Value="@State.EngineInputs.MutationRate"
-                                 ValueChanged="@((float rate) => Dispatch(state => state.EngineInputs.MutationRate = rate))">
+                                 Value="@RunState.Inputs.MutationRate"
+                                 ValueChanged="@((float rate) => RunState.Inputs.MutationRate = rate)">
                 </MudNumericField>
                 <MudNumericField Label="Max Epochs"
                                  Variant="Variant.Filled"
-                                 Value="@State.EngineInputs.IterationLimit"
-                                 ValueChanged="@((int limit) => Dispatch(state => state.EngineInputs.IterationLimit = limit))">
+                                 Value="@RunState.Inputs.IterationLimit"
+                                 ValueChanged="@((int limit) => RunState.Inputs.IterationLimit = limit)">
                 </MudNumericField>
             </div>    
         </div>
@@ -67,16 +75,16 @@
 
     void Submit()
     {
-        MudDialog.Close(DialogResult.Ok(true));  
+        MudDialog.Close(DialogResult.Ok(RunState));  
     } 
 
     private void OnModelChange(IEnumerable<string> model)
     {
-        Dispatch(state => state.ModelType = model.First());
+        RunState.Inputs.ModelType = model.First();
     }
     
     private void OnDataSetChange(IEnumerable<string> value)
     {
-        Dispatch(state => state.DataSetType = value.First());
+        RunState.Inputs.DataSetType = value.First();
     }
 }

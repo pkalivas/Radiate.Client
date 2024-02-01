@@ -34,6 +34,8 @@
             CloseOnEscapeKey = true
         };
         
-        DialogService.Show<NewRunInputs>("Run Dialog", options);
+        var dialogRef = DialogService.Show<NewRunInputsDialog>("Run Dialog", options);
+        
+        
     }
 }

@@ -8,17 +8,16 @@ namespace Radiate.Client.Components;
 
 public abstract class StateComponent<T, TState> : ComponentBase, IDisposable
     where T : StateComponent<T, TState>
-    where TState : IState<TState>
 {
     [Inject] protected IStore Store { get; set; } = default!;
     [Inject] protected IDispatcher Dispatcher { get; set; } = default!;
     protected TState State { get; set; } = default!;
-    private State<TState> _state = default!;
+    private IState<TState> _state = default!;
     
     protected override Task OnInitializedAsync()
     {
         _state = Store.Select<TState>();
-        State = _state.State;
+        State = _state.GetValue();
         _state.SelectedValueChanged += SetState!;
         
         OnStateInitialized();

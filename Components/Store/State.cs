@@ -2,22 +2,41 @@ using Radiate.Client.Components.Store.Interfaces;
 
 namespace Radiate.Client.Components.Store;
 
-public class State<TState> : StateSelection<TState, TState>
-    where TState : IState<TState>
+public class State<T> : IState<T>
 {
-    public State(IState<TState> state) : base(state, val => val)
+    private T Value { get; set; }
+    
+    public State(T value)
     {
+        Value = value;
     }
     
-    public override int GetHashCode() => State.GetHashCode();
+    public T GetValue() => Value;
+    public IState GetState() => this;
+    public string Name => GetType().Name;
+    public void SetState(IState state) => SetState((T)state);
 
-    public override bool Equals(object? obj)
+    public event EventHandler<T>? SelectedValueChanged;
+    public event EventHandler? StateChanged;
+
+    public void Reduce(IReducer reducer, IAction action)
     {
-        if (obj is State<TState> state)
+        if (reducer is IReducer<T> tReducer)
         {
-            return ReferenceEquals(state, State);
+            SetState(tReducer.Reduce(Value, action));
         }
-
-        return false;
+    }
+    
+    private void SetState(T state)
+    {
+        if (state.Equals(Value))
+        {
+            return;
+        }
+        
+        Value = state;
+        SelectedValueChanged?.Invoke(this, Value);
+        StateChanged?.Invoke(this, EventArgs.Empty);
     }
 }
+

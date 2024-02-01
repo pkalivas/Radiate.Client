@@ -24,7 +24,7 @@ public class StateSelection<T, TK> : IStateSelection<T, TK>
     public event EventHandler? StateChanged;
     public event EventHandler<TK>? SelectedValueChanged;
     
-    public State<T1> Select<T1>(Func<TK, T1> selector) where T1 : IState<T1> => 
+    public IState<T1> Select<T1>(Func<TK, T1> selector) where T1 : IState<T1> => 
         new State<T1>(selector(_previousState));
     
     public void Dispose()

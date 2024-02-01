@@ -4,9 +4,9 @@ public interface IStore : IDisposable, IActionSubscriber
 {
     Task Dispatch<TAction, TState>(TAction action)
         where TAction : IAction<TState>
-        where TState : IFeature<TState>, IState<TState>;
+        where TState : IFeature<TState>;
     
     void Register<TState>(TState state) where TState : IFeature<TState>;
 
-    State<TState> Select<TState>() where TState : IState<TState>;
+    IState<TState> Select<TState>(); // where TState : IState<TState>;
 }

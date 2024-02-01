@@ -1,6 +1,5 @@
 using System.Collections.Concurrent;
 using Radiate.Client.Components.Store.Interfaces;
-using Radiate.Client.Components.Store.States;
 
 namespace Radiate.Client.Components.Store;
 
@@ -11,8 +10,7 @@ public class StateStore : IStore
     private readonly IActionSubscriber _actionSubscriber;
     private readonly Dictionary<string, List<IReducer>> _reducers = new();
     private readonly Dictionary<string, List<IEffect>> _effects = new();
-    private readonly Dictionary<string, IFeature> _features = new();
-    private readonly Dictionary<string, IState> _states = new();
+    private readonly Dictionary<string, IState> _states2 = new();
     private readonly ConcurrentQueue<IAction> _actionQueue = new();
 
     public StateStore(IDispatcher dispatcher, IEnumerable<IEffect> effects, IEnumerable<IReducer> reducers)
@@ -28,29 +26,22 @@ public class StateStore : IStore
     
     public async Task Dispatch<TAction, TState>(TAction action) 
         where TAction : IAction<TState> 
-        where TState : IFeature<TState>, IState<TState>
+        where TState : IFeature<TState>
     {
         throw new NotImplementedException();
     }
 
-    public State<TState> Select<TState>() where TState : IState<TState>
+    public IState<TState> Select<TState>()
     {
-        var feature = (IState<TState>)_features[typeof(TState).Name];
-        if (_states.TryGetValue(typeof(TState).Name, out var state))
-        {
-            return (State<TState>)state;
-        }
+        var state = _states2[typeof(TState).Name];
         
-        var newState = new State<TState>(feature);
-        _states[typeof(TState).Name] = newState;
-        
-        return newState;
+        return (IState<TState>)state;
     }
     
     public void Register<TState>(TState state) 
         where TState : IFeature<TState>
     {
-        _features[typeof(TState).Name] = new Feature2<TState>(state);
+        _states2[typeof(TState).Name] = new State<TState>(state);
     }
     
     public void Notify(IAction action) => _actionSubscriber.Notify(action);
@@ -102,16 +93,15 @@ public class StateStore : IStore
             {
                 throw new InvalidOperationException($"Action {actionType.Name} does not implement IAction<TState>");
             }
-
-            var feature = _features[stateType.Name];
+            
+            var states = _states2[stateType.Name];
             var reducers = _reducers[stateType.Name];
-            var currentState = feature.GetState();
             
             var tasks = new List<Task>();
             foreach (var reducer in reducers)
             {
-                currentState = reducer.Reduce(currentState, action);
-                feature.SetState(currentState);
+                states.Reduce(reducer, action);
+                var currentState = states.GetState();
                 
                 if (_effects.TryGetValue(actionType.Name, out var effects))
                 {

@@ -4,9 +4,12 @@ public interface IState : IStateChangeNotifier
 {
     string Name { get; }
     IState GetState();
+    void SetState(IState state);
+    public void Reduce(IReducer reducer, IAction action);
 }
 
-public interface IState<out TState> : IState
-    where TState : IState<TState>
+public interface IState<T> : IState
 {
+    T GetValue();
+    event EventHandler<T>? SelectedValueChanged;
 }

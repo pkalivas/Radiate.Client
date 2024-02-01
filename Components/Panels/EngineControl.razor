@@ -8,7 +8,7 @@
 @using Radiate.Client.Components.Store.Models
 @using Dispatcher = Akka.Dispatch.Dispatcher
 @using Radiate.Client.Components.Store.Interfaces
-@inherits StateComponent
+@inherits StateComponent<EngineControl, AppState>
 @inject IWorkItemQueue WorkItemQueue
 @inject EngineRunnerFactory Runner
 

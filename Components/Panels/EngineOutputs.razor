@@ -1,6 +1,6 @@
 @using Radiate.Engines.Schema
 @using Radiate.Engines.Entities
-@inherits StateComponent
+@inherits StateComponent<EngineOutputs, AppState>
 
 <MudTable Items="@GetMetricsToDisplay()">
     <HeaderContent>
@@ -18,6 +18,8 @@
         <MudTd DataLabel="Avg. Time">@(TimeSpan.FromMilliseconds(context.Time.Mean))</MudTd>
     </RowTemplate>
 </MudTable>
+
+<TestSub/>
 
 @code {
     

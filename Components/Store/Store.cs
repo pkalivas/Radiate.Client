@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using Radiate.Client.Components.Store.Interfaces;
+using Radiate.Client.Components.Store.Subscribers;
 
 namespace Radiate.Client.Components.Store;
 
@@ -7,6 +8,7 @@ public class StateStore : IStore
 {
     private readonly object _syncRoot = new();
     private readonly IDispatcher _dispatcher;
+    private readonly IActionSubscriber _actionSubscriber;
     private readonly Dictionary<string, List<IReducer>> _reducers = new();
     private readonly Dictionary<string, List<IEffect>> _effects = new();
     private readonly Dictionary<string, StateContainer> _stateContainers = new();
@@ -16,6 +18,7 @@ public class StateStore : IStore
     {
         _dispatcher = dispatcher;
         _dispatcher.OnDispatch += ActionDispatched!;
+        _actionSubscriber = new ActionSubscriber();
         SetEffects(effects);
         SetReducers(reducers);
     }
@@ -38,16 +41,20 @@ public class StateStore : IStore
         _stateContainers.Add(typeof(TState).Name, new StateContainer(state));
     }
 
-    public bool IsRegistered<TState>() where TState : IState<TState> =>
-        _stateContainers.ContainsKey(typeof(TState).Name);
-
-    public TState GetFeature<TState>() where TState : IState<TState> =>
+    public TState GetState<TState>() where TState : IState<TState> =>
         _stateContainers[typeof(TState).Name].GetState<TState>();
+    
+    public void Notify(IAction action) => _actionSubscriber.Notify(action);
+    
+    public void Subscribe<TAction>(object subscriber, Action<TAction> callback) where TAction : IAction =>
+        _actionSubscriber.Subscribe(subscriber, callback);
 
-    public void Dispose()
-    {
-        _dispatcher.OnDispatch -= ActionDispatched;
-    }
+    public void Unsubscribe<TAction>(object subscriber) where TAction : IAction =>
+        _actionSubscriber.Unsubscribe<TAction>(subscriber);
+
+    public void UnsubscribeAll(object subscriber) => _actionSubscriber.UnsubscribeAll(subscriber);
+
+    public void Dispose() =>  _dispatcher.OnDispatch -= ActionDispatched!;
     
     private void ActionDispatched(object sender, IAction action)
     {
@@ -97,6 +104,8 @@ public class StateStore : IStore
                 state = reducer.Reduce(state, action);
                 stateContainer.SetState(state);
                 stateContainer.NotifyStateChanged();
+                
+                _actionSubscriber.Notify(action);
                 
                 if (_effects.TryGetValue(actionType.Name, out var effects))
                 {

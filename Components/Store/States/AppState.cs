@@ -5,7 +5,7 @@ using Radiate.Engines.Statistics.Stats;
 
 namespace Radiate.Client.Components.Store.States;
 
-public record AppState : StoreState<AppState>
+public record AppState : State<AppState>
 {
     public CancellationTokenSource CancellationTokenSource { get; set; } = new();
     public bool Running { get; set; } = false;

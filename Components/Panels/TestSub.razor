@@ -1,0 +1,17 @@
+@using Radiate.Client.Components.Store.Interfaces
+@inherits StateComponent<TestSub, AppState>
+
+@count
+
+@code {
+    private int count = 0;
+    
+    protected override void OnStateInitialized()
+    {
+        Subscribe<IAction>(act =>
+        {
+            count++;
+        });
+    }
+
+}

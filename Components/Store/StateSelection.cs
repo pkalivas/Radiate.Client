@@ -24,10 +24,8 @@ public class StateSelection<T, TK> : IStateSelection<T, TK>
     public event EventHandler? StateChanged;
     public event EventHandler<TK>? SelectedValueChanged;
     
-    public T1 Select<T1>(Func<TK, T1> selector) where T1 : IState<T1>
-    {
-        throw new NotImplementedException();
-    }
+    public State<T1> Select<T1>(Func<TK, T1> selector) where T1 : IState<T1> => 
+        new State<T1>(selector(_previousState));
     
     public void Dispose()
     {
@@ -37,7 +35,7 @@ public class StateSelection<T, TK> : IStateSelection<T, TK>
     }
 
     public string Name => _state.Name;
-    public IState GetState() => _state.GetState();
+    public IState GetState() => _state;
 
     public Type GetStateType() => typeof(TK);
     public void SetState(IState state)

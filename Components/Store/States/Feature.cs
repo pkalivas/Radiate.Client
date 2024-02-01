@@ -32,7 +32,8 @@ public class Feature2<TState> : IFeature<TState>, IStateSelection<TState, TState
 
     public event EventHandler? StateChanged;
     public event EventHandler<TState>? SelectedValueChanged;
-    public T Select<T>(Func<TState, T> selector) where T : IState<T> => selector(_state);
+    public State<T> Select<T>(Func<TState, T> selector) where T : IState<T> => 
+        new State<T>(selector(_state));
 
     public void Dispose()
     {

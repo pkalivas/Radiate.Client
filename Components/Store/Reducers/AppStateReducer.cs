@@ -22,6 +22,7 @@ public class AppStateReducer : RootReducer<AppFeature>
         },
         AddEngineOutputAction engineOutputsGeneratedAction => feature with
         {
+            Counter = (int)((engineOutputsGeneratedAction.EngineOutputs.Metrics.Get(MetricNames.Index)?.Statistics?.Sum ?? 0)) % 5 == 0 ? feature.Counter : feature.Counter + 1,
             EngineOutputs = engineOutputsGeneratedAction.EngineOutputs,
             Scores = feature.Scores.Concat(new[] { engineOutputsGeneratedAction.EngineOutputs.Metrics.Get(MetricNames.Score).Statistics.LastValue }).ToList(),
         },

@@ -6,7 +6,7 @@
 
 @code {
 
-    private int Counter { get; set; } = 0;
+    public int Counter { get; set; }
     protected override void OnStateInitialized()
     {
         Subscribe<IAction>(act =>

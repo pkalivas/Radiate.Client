@@ -19,11 +19,7 @@ public abstract class StateComponent<T, TState> : ComponentBase, IDisposable
     {
         _state = Store.Select<TState>();
         State = _state.State;
-        _state.SelectedValueChanged += (sender, state) =>
-        {
-            State = state;
-            InvokeAsync(StateHasChanged);
-        };
+        _state.SelectedValueChanged += SetState!;
         
         OnStateInitialized();
         return base.OnInitializedAsync();
@@ -33,12 +29,7 @@ public abstract class StateComponent<T, TState> : ComponentBase, IDisposable
     
     public void Dispose()
     {
-        _state.SelectedValueChanged -= (sender, state) =>
-        {
-            State = state;
-            InvokeAsync(StateHasChanged);
-        };
-        // Store.GetStateContainer<TState>().OnChange -= StateHasChanged;
+        _state.SelectedValueChanged -= SetState!;
         Store.UnsubscribeAll(this);
     }
     
@@ -54,4 +45,10 @@ public abstract class StateComponent<T, TState> : ComponentBase, IDisposable
 
     protected void Dispatch(Action<AppFeature> act) =>
         Store.Dispatch<FunctionalAction, AppFeature>(new FunctionalAction(act));
+    
+    private void SetState(object sender, TState state)
+    {
+        State = state;
+        InvokeAsync(StateHasChanged);
+    }
 }

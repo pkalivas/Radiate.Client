@@ -8,6 +8,7 @@ namespace Radiate.Client.Components.Store.States;
 
 public record AppFeature : Feature<AppFeature>
 {
+    public int Counter { get; set; } = 0;
     public CancellationTokenSource CancellationTokenSource { get; set; } = new();
     public bool Running { get; set; } = false;
     public string ModelType { get; set; } = "Graph";

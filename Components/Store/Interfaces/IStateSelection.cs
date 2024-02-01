@@ -5,6 +5,6 @@ public interface IStateSelection<out TFeature, TSelected> : IState<TSelected>, I
     where TSelected : IState<TSelected>
 {
     event EventHandler<TSelected> SelectedValueChanged;
-    T Select<T>(Func<TSelected, T> selector)
+    State<T> Select<T>(Func<TSelected, T> selector)
         where T : IState<T>;
 }

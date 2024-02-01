@@ -3,36 +3,6 @@ using Radiate.Client.Components.Store.Interfaces;
 
 namespace Radiate.Client.Components.Store;
 
-public interface IStateContainer
-{
-    event Action OnChange;
-    void NotifyStateChanged();
-    TState GetState<TState>() where TState : IState<TState>;
-}
-
-public class StateContainer : IStateContainer
-{
-    private IState _state = default!;
-    public event Action? OnChange;
-    
-    public StateContainer(IState state)
-    {
-        _state = state;
-    }
-    
-    public void NotifyStateChanged() => OnChange?.Invoke();
-    
-    public void SetState(IState state)
-    {
-        _state = state;
-    }
-
-    public TState GetState<TState>() where TState : IState<TState> => (TState) _state;
-    
-    public IState GetState(Type stateType) => _state;
-}
-
-
 public class StateStore : IStore
 {
     private readonly object _syncRoot = new();
@@ -45,7 +15,7 @@ public class StateStore : IStore
     public StateStore(IDispatcher dispatcher, IEnumerable<IEffect> effects, IEnumerable<IReducer> reducers)
     {
         _dispatcher = dispatcher;
-        _dispatcher.OnDispatch += ActionDispatched;
+        _dispatcher.OnDispatch += ActionDispatched!;
         SetEffects(effects);
         SetReducers(reducers);
     }
@@ -57,6 +27,26 @@ public class StateStore : IStore
         where TState : IState<TState>
     {
         throw new NotImplementedException();
+    }
+    
+    public StateContainer GetStateContainer<TState>() where TState : IState<TState> =>
+        _stateContainers[typeof(TState).Name];
+
+    public void Register<TState>(TState state) 
+        where TState : IState<TState>
+    {
+        _stateContainers.Add(typeof(TState).Name, new StateContainer(state));
+    }
+
+    public bool IsRegistered<TState>() where TState : IState<TState> =>
+        _stateContainers.ContainsKey(typeof(TState).Name);
+
+    public TState GetFeature<TState>() where TState : IState<TState> =>
+        _stateContainers[typeof(TState).Name].GetState<TState>();
+
+    public void Dispose()
+    {
+        _dispatcher.OnDispatch -= ActionDispatched;
     }
     
     private void ActionDispatched(object sender, IAction action)
@@ -105,17 +95,18 @@ public class StateStore : IStore
             foreach (var reducer in actionReducers)
             {
                 state = reducer.Reduce(state, action);
-                stateContainer.SetState(state!);
+                stateContainer.SetState(state);
                 stateContainer.NotifyStateChanged();
                 
                 if (_effects.TryGetValue(actionType.Name, out var effects))
                 {
-                    foreach (var effect in effects.Where(effect => effect.CanHandle(state, action)))
-                    {
-                        tasks.Add(Task.Run(async () => await effect.HandleAsync(state, action, _dispatcher)));
-                    }
+                    tasks.AddRange(effects
+                        .Where(effect => effect.CanHandle(state, action))
+                        .Select(effect => effect.HandleAsync(state, action, _dispatcher)));
                 }
             }
+            
+            Task.Run(async () => await Task.WhenAll(tasks));
         }
     }
     
@@ -167,26 +158,5 @@ public class StateStore : IStore
             
             actionReducers.Add(reducer);
         }
-    }
-
-
-    public StateContainer GetStateContainer<TState>() where TState : IState<TState> =>
-        _stateContainers[typeof(TState).Name];
-
-    public void Register<TState>(TState state) 
-        where TState : IState<TState>
-    {
-        _stateContainers.Add(typeof(TState).Name, new StateContainer(state));
-    }
-
-    public bool IsRegistered<TState>() where TState : IState<TState> =>
-        _stateContainers.ContainsKey(typeof(TState).Name);
-
-    public TState GetFeature<TState>() where TState : IState<TState> =>
-        _stateContainers[typeof(TState).Name].GetState<TState>();
-
-    public void Dispose()
-    {
-        _dispatcher.OnDispatch -= ActionDispatched;
     }
 }

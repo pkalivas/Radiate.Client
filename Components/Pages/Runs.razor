@@ -6,11 +6,11 @@
 <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
     <MudGrid>
         
-        @* <MudItem xs="12" sm="6" md="10"> *@
-        @*     <MudPaper Elevation="2" Class="pa-4" Style="height: 250px;"> *@
-        @*         <EngineInputs/> *@
-        @*     </MudPaper> *@
-        @* </MudItem> *@
+        <MudItem xs="12" sm="6" md="10">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 250px;">
+                <EngineInputs/>
+            </MudPaper>
+        </MudItem>
 
         <MudItem xs="12" sm="6" md="2">
             <MudPaper Elevation="2" Class="pa-4" Style="height: 250px;">
@@ -76,62 +76,5 @@
 </MudContainer>
 
 @code {
-
     [Parameter] public Guid RunId { get; set; }
-
 }
-
-
-@* @page "/runs" *@
-@* @rendermode InteractiveServer *@
-@* @inject IDialogService DialogService *@
-@* @inject NavigationManager NavigationManager *@
-@* @inherits StateComponent *@
-@* *@
-@* <MudPaper Elevation="25" Class="mt-4 ml-4 mr-4 px-8"> *@
-@*     <MudToolBar> *@
-@*         Engine Runs *@
-@*         <MudSpacer /> *@
-@*         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OpenDialog">New Run</MudButton> *@
-@*     </MudToolBar> *@
-@* </MudPaper> *@
-@* <MudTable Items="@State.Runs" Class="ml-4 mr-4 px-8"> *@
-@*     <HeaderContent> *@
-@*         <MudTh>Model</MudTh> *@
-@*         <MudTh>Data Set</MudTh> *@
-@*         <MudTh>Status</MudTh> *@
-@*     </HeaderContent> *@
-@*     <RowTemplate> *@
-@*         <MudTd DataLabel="Model">@context.Inputs.ModelType</MudTd> *@
-@*         <MudTd DataLabel="Data Set">@context.Inputs.DataSetType</MudTd> *@
-@*         <MudTd DataLabel="Status">@context.Status</MudTd> *@
-@*     </RowTemplate> *@
-@* </MudTable> *@
-@* *@
-@* @State.Runs.Count *@
-@* *@
-@* @code { *@
-@*      *@
-@*     private async Task OnSelect(RunsState run, int index) *@
-@*     { *@
-@*         // await NavigationManager.NavigateTo($"/").RouteAsync($"/runs/{run.RunId}"); *@
-@*     } *@
-@*      *@
-@*     private async Task OpenDialog() *@
-@*     { *@
-@*         var options = new DialogOptions *@
-@*         { *@
-@*             MaxWidth = MaxWidth.Small,  *@
-@*             FullWidth = true, *@
-@*             CloseOnEscapeKey = true *@
-@*         }; *@
-@*          *@
-@*         var dialogRef = await DialogService.ShowAsync<NewRunInputsDialog>("Run Dialog", options); *@
-@*         var result = await dialogRef.Result; *@
-@* *@
-@*         if (!result.Canceled) *@
-@*         { *@
-@*             Dispatch(new RunCreatedAction((RunsState)result.Data)); *@
-@*         } *@
-@*     } *@
-@* } *@

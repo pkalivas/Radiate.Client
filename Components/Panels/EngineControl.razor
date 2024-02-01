@@ -51,15 +51,16 @@ else
 
     private void Start()
     {
-        _cancellationToken = new CancellationTokenSource();
-        
-        var runner = Runner($"{State.ModelType}_{State.DataSetType}");
-        var inputs = runner.GetInputs(State);
-
-        Dispatch(new FunctionalAction(state => state.Running = true));
-        Dispatch(state => state.Scores.Clear());
-        WorkItemQueue.Enqueue(runner.Run(inputs, _cancellationToken, OnResultCreated));
-        
+        // Dispatch(new StartEngineAction("", ""));
+        // _cancellationToken = new CancellationTokenSource();
+        //
+        // var runner = Runner($"{State.ModelType}_{State.DataSetType}");
+        // var inputs = runner.GetInputs(State);
+        //
+        // Dispatch(new FunctionalAction(state => state.Running = true));
+        // Dispatch(state => state.Scores.Clear());
+        // WorkItemQueue.Enqueue(runner.Run(inputs, _cancellationToken, OnResultCreated));
+        //
     }
 
     private void Stop()

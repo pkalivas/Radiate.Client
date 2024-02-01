@@ -1,4 +1,5 @@
 using Radiate.Client.Components.Store;
+using Radiate.Client.Components.Store.Effects;
 using Radiate.Client.Components.Store.Interfaces;
 using Radiate.Client.Components.Store.Reducers;
 using Radiate.Client.Services;
@@ -34,13 +35,8 @@ public static class ApplicationServiceRegistration
 
     private static IServiceCollection AddStore(this IServiceCollection services) =>
         services
+            .AddTransient<IEffect, StartEngineEffect>()
+            .AddTransient<IReducer, AppStateReducer>()
             .AddSingleton<IDispatcher, Dispatcher>()
-            .AddSingleton<IStore, StateStore>(sp =>
-            {
-                var dispatcher = sp.GetRequiredService<IDispatcher>();
-                var store = new StateStore(dispatcher);
-                store.Register(new AppState());
-                return store;
-            })
-            .AddScoped<AppState>(sp => sp.GetRequiredService<IStore>().GetFeature<AppState>());
+            .AddSingleton<IStore, StateStore>();
 }

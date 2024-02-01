@@ -28,8 +28,6 @@ public record AppState : StoreState<AppState>
 public record RunsState
 {
     public Guid RunId { get; set; } = Guid.NewGuid();
-    public string RunName { get; set; } = "";
-    public string RunType { get; set; } = "";
     public string Status { get; set; } = "";
     public EngineInputsState Inputs { get; set; } = new();
 }

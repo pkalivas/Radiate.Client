@@ -1,8 +1,6 @@
 @page "/runs"
 @rendermode InteractiveServer
 @inject IDialogService DialogService
-@inject IDispatcher Dispatcher
-@using Radiate.Client.Components.Store.Interfaces
 @inherits StateComponent
 
 <MudPaper Elevation="25" Class="mt-4 ml-4 mr-4 px-8">
@@ -19,11 +17,13 @@
         <MudTh>Status</MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Model">@context.RunName</MudTd>
-        <MudTd DataLabel="Data Set">@context.RunType</MudTd>
+        <MudTd DataLabel="Model">@context.Inputs.ModelType</MudTd>
+        <MudTd DataLabel="Data Set">@context.Inputs.DataSetType</MudTd>
         <MudTd DataLabel="Status">@context.Status</MudTd>
     </RowTemplate>
 </MudTable>
+
+@State.Runs.Count
 
 @code {
     
@@ -41,7 +41,7 @@
 
         if (!result.Canceled)
         {
-            
+            Dispatch(new RunCreatedAction((RunsState)result.Data));
         }
     }
 }

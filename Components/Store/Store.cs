@@ -24,11 +24,6 @@ public class StateContainer : IStateContainer
     
     public void NotifyStateChanged() => OnChange?.Invoke();
     
-    public void SetState<TState>(TState state) where TState : IState<TState>
-    {
-        _state = state;
-    }
-    
     public void SetState(IState state)
     {
         _state = state;
@@ -45,30 +40,24 @@ public class StateStore : IStore
     private readonly object _syncRoot = new();
     private readonly IDispatcher _dispatcher;
     private readonly Dictionary<string, List<IReducer>> _reducers = new();
+    private readonly Dictionary<string, List<IEffect>> _effects = new();
     private readonly Dictionary<string, StateContainer> _stateContainers = new();
     private readonly ConcurrentQueue<IAction> _actionQueue = new();
 
-    public StateStore(IDispatcher dispatcher)
+    public StateStore(IDispatcher dispatcher, IEnumerable<IEffect> effects, IEnumerable<IReducer> reducers)
     {
         _dispatcher = dispatcher;
         _dispatcher.OnDispatch += ActionDispatched;
+        SetEffects(effects);
+        SetReducers(reducers);
     }
-    
     public bool IsDispatching { get; private set; }
     
     public async Task Dispatch<TAction, TState>(TAction action) 
-        where TAction : IAction<TState, TAction> 
+        where TAction : IAction<TState> 
         where TState : IState<TState>
     {
-        if (_stateContainers.TryGetValue(action.StateName, out var container))
-        {
-            var state = container.GetState<TState>();
-            await action.Reduce(state);
-            container.SetState(state);
-            return;
-        }
-        
-        throw new InvalidOperationException($"Feature {action.StateName} not found");
+        throw new NotImplementedException();
     }
     
     private void ActionDispatched(object sender, IAction action)
@@ -100,7 +89,7 @@ public class StateStore : IStore
         {
             var actionType = action.GetType();
             var stateType = actionType.GetInterfaces()
-                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IAction<,>))
+                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IAction<>))
                 .Select(i => i.GetGenericArguments()[0])
                 .FirstOrDefault();
             
@@ -111,32 +100,78 @@ public class StateStore : IStore
             
             var stateContainer = _stateContainers[stateType.Name];
             var state = stateContainer.GetState(stateType);
+            var actionReducers = _reducers[stateType.Name];
             
-            if (!_reducers.TryGetValue(actionType.Name, out var actionReducers))
-            {
-                actionReducers = new List<IReducer>();
-                var reducerType = typeof(IReducer<>).MakeGenericType(stateType);
-                var reducers = AppDomain.CurrentDomain.GetAssemblies()
-                    .SelectMany(a => a.GetTypes())
-                    .Where(t => t.GetInterfaces().Contains(reducerType));
-                
-                foreach (var reducer in reducers)
-                {
-                    actionReducers.Add((IReducer) Activator.CreateInstance(reducer)!);
-                }
-                
-                _reducers.Add(actionType.Name, actionReducers);
-            }
-            
+            var tasks = new List<Task>();
             foreach (var reducer in actionReducers)
             {
                 var newState = reducer.Reduce(state, action);
                 stateContainer.SetState(newState!);
+                stateContainer.NotifyStateChanged();
+                
+                if (_effects.TryGetValue(actionType.Name, out var effects))
+                {
+                    foreach (var effect in effects.Where(effect => effect.CanHandle(newState, action)))
+                    {
+                        tasks.Add(Task.Run(async () => await effect.HandleAsync(newState, action, _dispatcher)));
+                    }
+                }
             }
             
             stateContainer.NotifyStateChanged();
         }
     }
+    
+    private void SetEffects(IEnumerable<IEffect> effects)
+    {
+        foreach (var effect in effects)
+        {
+            var effectType = effect.GetType();
+            var actionType = effectType.GetInterfaces()
+                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEffect<,>))
+                .Select(i => i.GetGenericArguments()[1])
+                .FirstOrDefault();
+            
+            if (actionType == null)
+            {
+                throw new InvalidOperationException($"Effect {effectType.Name} does not implement IEffect<TState, TAction>");
+            }
+            
+            if (!_effects.TryGetValue(actionType.Name, out var actionEffects))
+            {
+                actionEffects = new List<IEffect>();
+                _effects.Add(actionType.Name, actionEffects);
+            }
+            
+            actionEffects.Add(effect);
+        }
+    }
+    
+    private void SetReducers(IEnumerable<IReducer> reducers)
+    {
+        foreach (var reducer in reducers)
+        {
+            var reducerType = reducer.GetType();
+            var actionType = reducerType.GetInterfaces()
+                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IReducer<>))
+                .Select(i => i.GetGenericArguments()[0])
+                .FirstOrDefault();
+            
+            if (actionType == null)
+            {
+                throw new InvalidOperationException($"Reducer {reducerType.Name} does not implement IReducer<TState>");
+            }
+            
+            if (!_reducers.TryGetValue(actionType.Name, out var actionReducers))
+            {
+                actionReducers = new List<IReducer>();
+                _reducers.Add(actionType.Name, actionReducers);
+            }
+            
+            actionReducers.Add(reducer);
+        }
+    }
+
 
     public StateContainer GetStateContainer<TState>() where TState : IState<TState> =>
         _stateContainers[typeof(TState).Name];
@@ -146,6 +181,9 @@ public class StateStore : IStore
     {
         _stateContainers.Add(typeof(TState).Name, new StateContainer(state));
     }
+
+    public bool IsRegistered<TState>() where TState : IState<TState> =>
+        _stateContainers.ContainsKey(typeof(TState).Name);
 
     public TState GetFeature<TState>() where TState : IState<TState> =>
         _stateContainers[typeof(TState).Name].GetState<TState>();

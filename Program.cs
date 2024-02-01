@@ -1,6 +1,8 @@
 using MudBlazor.Services;
 using Radiate.Client.Bootstrap;
 using Radiate.Client.Components;
+using Radiate.Client.Components.Store.Interfaces;
+using Radiate.Client.Components.Store.States;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,5 +25,11 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+app.Lifetime.ApplicationStarted.Register(() =>
+{
+    var store = app.Services.GetRequiredService<IStore>();
+    store.Register(new AppState());
+});
 
 app.Run();

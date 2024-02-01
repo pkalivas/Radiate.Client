@@ -73,10 +73,7 @@
 
     void Cancel() => MudDialog.Cancel();
 
-    void Submit()
-    {
-        MudDialog.Close(DialogResult.Ok(RunState));  
-    } 
+    void Submit() => MudDialog.Close(DialogResult.Ok(RunState)); 
 
     private void OnModelChange(IEnumerable<string> model)
     {

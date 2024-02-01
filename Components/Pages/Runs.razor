@@ -1,6 +1,8 @@
 @page "/runs"
 @rendermode InteractiveServer
 @inject IDialogService DialogService
+@inject IDispatcher Dispatcher
+@using Radiate.Client.Components.Store.Interfaces
 @inherits StateComponent
 
 <MudPaper Elevation="25" Class="mt-4 ml-4 mr-4 px-8">
@@ -24,18 +26,22 @@
 </MudTable>
 
 @code {
-
-    private void OpenDialog()
+    
+    private async Task OpenDialog()
     {
-        var options = new DialogOptions()
+        var options = new DialogOptions
         {
             MaxWidth = MaxWidth.Small, 
             FullWidth = true,
             CloseOnEscapeKey = true
         };
         
-        var dialogRef = DialogService.Show<NewRunInputsDialog>("Run Dialog", options);
-        
-        
+        var dialogRef = await DialogService.ShowAsync<NewRunInputsDialog>("Run Dialog", options);
+        var result = await dialogRef.Result;
+
+        if (!result.Canceled)
+        {
+            
+        }
     }
 }

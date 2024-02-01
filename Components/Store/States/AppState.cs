@@ -7,6 +7,7 @@ namespace Radiate.Client.Components.Store.States;
 
 public record AppState : StoreState<AppState>
 {
+    public int Count { get; set; }
     public CancellationTokenSource CancellationTokenSource { get; set; } = new();
     public bool Running { get; set; } = false;
     public string ModelType { get; set; } = "Graph";

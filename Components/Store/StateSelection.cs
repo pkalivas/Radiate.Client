@@ -6,18 +6,20 @@ public class StateSelection<T, TK> : IStateSelection<T, TK>
     where T : IState<T>
     where TK : IState<TK>
 {
-    private readonly IFeature<T> _feature;
+    private readonly IState<T> _state;
     private readonly Func<T, TK> _selector;
-    private TK? _previousState;
+    private TK _previousState;
     
-    public StateSelection(IFeature<T> feature, TK state, Func<T, TK> selector)
+    public StateSelection(IState<T> state, Func<T, TK> selector)
     {
-        _feature = feature;
+        _state = state;
         _selector = selector;
-        _previousState = state;
+        _previousState = _selector((T)_state.GetState());
+
+        _state.StateChanged += SetState!;
     }
-    
-    public TK State => _selector(_feature.State);
+
+    public TK State => _previousState;
 
     public event EventHandler? StateChanged;
     public event EventHandler<TK>? SelectedValueChanged;
@@ -27,24 +29,34 @@ public class StateSelection<T, TK> : IStateSelection<T, TK>
         throw new NotImplementedException();
     }
     
-    public void OnStateChanged(T val)
+    public void Dispose()
     {
-        var newState = _selector(val);
+        _state.StateChanged -= SetState!;
+        StateChanged = null;
+        SelectedValueChanged = null;
+    }
+
+    public string Name => _state.Name;
+    public IState GetState() => _state.GetState();
+
+    public Type GetStateType() => typeof(TK);
+    public void SetState(IState state)
+    {
+        _previousState = (TK)state;
+        
+        StateChanged?.Invoke(this, EventArgs.Empty);
+        SelectedValueChanged?.Invoke(this, _previousState);
+    }
+
+    private void SetState(object sender, EventArgs args)
+    {
+        var newState = _selector((T)_state.GetState());
         
         if (newState.Equals(_previousState))
         {
             return;
         }
-        
-        _previousState = newState;
-        
-        StateChanged?.Invoke(this, EventArgs.Empty);
-        SelectedValueChanged?.Invoke(this, newState);
-    }
 
-    public void Dispose()
-    {
-        StateChanged = null;
-        SelectedValueChanged = null;
+        SetState(newState);
     }
 }

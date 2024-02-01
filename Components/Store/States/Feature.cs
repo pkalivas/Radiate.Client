@@ -3,7 +3,7 @@ using Radiate.Client.Components.Store.Interfaces;
 namespace Radiate.Client.Components.Store.States;
 
 public class Feature2<TState> : IFeature<TState>, IStateSelection<TState, TState>
-    where TState : IState<TState>
+    where TState : IState<TState>, IFeature<TState>
 {
     private TState _state = default!;
     
@@ -42,12 +42,13 @@ public class Feature2<TState> : IFeature<TState>, IStateSelection<TState, TState
 }
 
 
-public abstract record Feature<TState> : IFeature<TState>, IState<TState>
+public abstract record Feature<TState> : IFeature<TState>
     where TState : IFeature<TState>, IState<TState>
 {
     public string Name => GetType().Name;
     public IState GetState() => State;
     public Type GetStateType() => typeof(TState);
+    
     public void SetState(IState state)
     {
         throw new NotImplementedException();

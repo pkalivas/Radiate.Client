@@ -2,12 +2,16 @@
 @inherits StateComponent<TestSub, AppFeature>
 @inject ILogger<TestSub> Logger
 
+@Counter
+
 @code {
-    
+
+    private int Counter { get; set; } = 0;
     protected override void OnStateInitialized()
     {
         Subscribe<IAction>(act =>
         {
+            Counter++;
             Logger.LogInformation("Received action {Action}", act);
         });
     }

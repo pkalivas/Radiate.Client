@@ -7,7 +7,7 @@ public interface IEffect
 }
 
 public interface IEffect<in TState, in TAction> : IEffect
-    where TState : IState<TState>
+    where TState : IFeature<TState>
 {
     Task HandleAsync(TState state, TAction action, IDispatcher dispatcher);
 }

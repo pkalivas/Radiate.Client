@@ -3,7 +3,7 @@ using Radiate.Client.Components.Store.Interfaces;
 namespace Radiate.Client.Components.Store.Effects;
 
 public abstract class RootEffect<TState, TAction> : IEffect<TState, TAction>
-    where TState : class, IState<TState>
+    where TState : class, IFeature<TState>
     where TAction : IAction
 {
     protected readonly IServiceProvider ServiceProvider;

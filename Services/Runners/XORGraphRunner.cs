@@ -1,3 +1,5 @@
+using Radiate.Client.Components.Store;
+using Radiate.Client.Components.Store.Actions;
 using Radiate.Client.Components.Store.States;
 using Radiate.Data;
 using Radiate.Engines;
@@ -17,7 +19,11 @@ namespace Radiate.Client.Services.Runners;
 
 public class XORGraphRunner : IEngineRunner
 {
-    public Func<CancellationToken, Task> Run(RunInput command, CancellationTokenSource cts, Action<EngineOutputState> resultCallback) => async token =>
+    private readonly IDispatcher _dispatcher;
+    
+    public XORGraphRunner(IDispatcher dispatcher) => _dispatcher = dispatcher;
+    
+    public Func<CancellationToken, Task> Run(RunInput command, CancellationTokenSource cts) => async token =>
     {
         var iterationLimit = command.GetInputValue<int>("IterationLimit");
         
@@ -49,11 +55,12 @@ public class XORGraphRunner : IEngineRunner
     
         var result = engine.Fit()
             .Limit(Limits.Accuracy(0.01f), Limits.Iteration(iterationLimit))
-            .Peek(res => resultCallback(Map(res)))
+            .Peek(res => _dispatcher.Dispatch<AddEngineOutputAction, AppState>(new AddEngineOutputAction(Map(res))))
+            // .Peek(res => resultCallback(Map(res)))
             .TakeWhile(_ => !cts.IsCancellationRequested && !token.IsCancellationRequested)
             .ToResult();
         
-        resultCallback(Map(result));
+        // resultCallback(Map(result));
     };
 
     public RunInput GetInputs(AppState state) => new()

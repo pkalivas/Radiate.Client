@@ -1,47 +1,137 @@
-@page "/runs"
+@page "/runs/{runId:guid}"
 @rendermode InteractiveServer
-@inject IDialogService DialogService
+@using Radiate.Engines.Schema
 @inherits StateComponent
 
-<MudPaper Elevation="25" Class="mt-4 ml-4 mr-4 px-8">
-    <MudToolBar>
-        Engine Runs
-        <MudSpacer />
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OpenDialog">New Run</MudButton>
-    </MudToolBar>
-</MudPaper>
-<MudTable Items="@State.Runs" Class="ml-4 mr-4 px-8">
-    <HeaderContent>
-        <MudTh>Model</MudTh>
-        <MudTh>Data Set</MudTh>
-        <MudTh>Status</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Model">@context.Inputs.ModelType</MudTd>
-        <MudTd DataLabel="Data Set">@context.Inputs.DataSetType</MudTd>
-        <MudTd DataLabel="Status">@context.Status</MudTd>
-    </RowTemplate>
-</MudTable>
+<MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
+    <MudGrid>
+        
+        @* <MudItem xs="12" sm="6" md="10"> *@
+        @*     <MudPaper Elevation="2" Class="pa-4" Style="height: 250px;"> *@
+        @*         <EngineInputs/> *@
+        @*     </MudPaper> *@
+        @* </MudItem> *@
 
-@State.Runs.Count
+        <MudItem xs="12" sm="6" md="2">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 250px;">
+                <EngineControl/>
+            </MudPaper>
+        </MudItem>
+
+        @if (State.ModelType == "Image")
+        {
+            <MudItem xs="12" sm="6" md="12">
+                <MudPaper>
+                    <ImageInputs/>
+                </MudPaper>
+            </MudItem>
+        }
+
+        <MudItem xs="12" sm="6" md="4">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
+                <MetricDisplay Metric="@(State.EngineOutputs.Metrics.Get(MetricNames.FitnessDistribution))">
+                    <Chart Values="@(State.GetStats(MetricNames.FitnessDistribution)?.LastSequence.ToList())" Type="line"/>
+                </MetricDisplay>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" sm="6" md="4">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
+                <MetricDisplay Metric="@(State.EngineOutputs.Metrics.Get(MetricNames.GenomeSizeDistribution))">
+                    <Chart Values="@(State.GetStats(MetricNames.GenomeSizeDistribution)?.LastSequence.ToList())" Type="pie"></Chart>
+                </MetricDisplay>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" sm="12" md="4">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
+                <MetricDisplay Metric="@(State.EngineOutputs.Metrics.Get(MetricNames.AgeDistribution))">
+                    <Chart Values="@(State.GetStats(MetricNames.AgeDistribution)?.LastSequence.ToList())" Type="bar"></Chart>
+                </MetricDisplay>            
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" sm="6">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudPaper Elevation="2" Class="pa-4 overflow-auto" Style="height: 200px;">
+                        <EngineStateTree/>
+                    </MudPaper>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
+                        <MetricValueDisplay Value="@State.GetStats(MetricNames.Score)?.LastValue">
+                            <Chart Values="@State.Scores" Type="line"/>
+                        </MetricValueDisplay>
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+        </MudItem>
+
+        <MudItem xs="12" sm="6">
+            <EngineOutputs/>
+        </MudItem>
+
+    </MudGrid>
+</MudContainer>
 
 @code {
-    
-    private async Task OpenDialog()
-    {
-        var options = new DialogOptions
-        {
-            MaxWidth = MaxWidth.Small, 
-            FullWidth = true,
-            CloseOnEscapeKey = true
-        };
-        
-        var dialogRef = await DialogService.ShowAsync<NewRunInputsDialog>("Run Dialog", options);
-        var result = await dialogRef.Result;
 
-        if (!result.Canceled)
-        {
-            Dispatch(new RunCreatedAction((RunsState)result.Data));
-        }
-    }
+    [Parameter] public Guid RunId { get; set; }
+
 }
+
+
+@* @page "/runs" *@
+@* @rendermode InteractiveServer *@
+@* @inject IDialogService DialogService *@
+@* @inject NavigationManager NavigationManager *@
+@* @inherits StateComponent *@
+@* *@
+@* <MudPaper Elevation="25" Class="mt-4 ml-4 mr-4 px-8"> *@
+@*     <MudToolBar> *@
+@*         Engine Runs *@
+@*         <MudSpacer /> *@
+@*         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OpenDialog">New Run</MudButton> *@
+@*     </MudToolBar> *@
+@* </MudPaper> *@
+@* <MudTable Items="@State.Runs" Class="ml-4 mr-4 px-8"> *@
+@*     <HeaderContent> *@
+@*         <MudTh>Model</MudTh> *@
+@*         <MudTh>Data Set</MudTh> *@
+@*         <MudTh>Status</MudTh> *@
+@*     </HeaderContent> *@
+@*     <RowTemplate> *@
+@*         <MudTd DataLabel="Model">@context.Inputs.ModelType</MudTd> *@
+@*         <MudTd DataLabel="Data Set">@context.Inputs.DataSetType</MudTd> *@
+@*         <MudTd DataLabel="Status">@context.Status</MudTd> *@
+@*     </RowTemplate> *@
+@* </MudTable> *@
+@* *@
+@* @State.Runs.Count *@
+@* *@
+@* @code { *@
+@*      *@
+@*     private async Task OnSelect(RunsState run, int index) *@
+@*     { *@
+@*         // await NavigationManager.NavigateTo($"/").RouteAsync($"/runs/{run.RunId}"); *@
+@*     } *@
+@*      *@
+@*     private async Task OpenDialog() *@
+@*     { *@
+@*         var options = new DialogOptions *@
+@*         { *@
+@*             MaxWidth = MaxWidth.Small,  *@
+@*             FullWidth = true, *@
+@*             CloseOnEscapeKey = true *@
+@*         }; *@
+@*          *@
+@*         var dialogRef = await DialogService.ShowAsync<NewRunInputsDialog>("Run Dialog", options); *@
+@*         var result = await dialogRef.Result; *@
+@* *@
+@*         if (!result.Canceled) *@
+@*         { *@
+@*             Dispatch(new RunCreatedAction((RunsState)result.Data)); *@
+@*         } *@
+@*     } *@
+@* } *@

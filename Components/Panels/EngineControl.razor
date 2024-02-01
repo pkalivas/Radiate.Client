@@ -34,24 +34,14 @@ else
     </MudButton>
 }
 
-
-<MudButton OnClick="@IncrementCount">
-    CLICK ME : @State.Count
-</MudButton>
-
 @code {
 
     private CancellationTokenSource _cancellationToken;
-    
-    private void IncrementCount()
-    {
-        Dispatcher.Dispatch<CountAction, AppState>(new CountAction());
-    }
 
 
     private void Start()
     {
-        // Dispatch(new StartEngineAction("", ""));
+        Dispatch(new StartEngineAction());
         // _cancellationToken = new CancellationTokenSource();
         //
         // var runner = Runner($"{State.ModelType}_{State.DataSetType}");
@@ -59,34 +49,33 @@ else
         //
         // Dispatch(new FunctionalAction(state => state.Running = true));
         // Dispatch(state => state.Scores.Clear());
-        // WorkItemQueue.Enqueue(runner.Run(inputs, _cancellationToken, OnResultCreated));
-        //
+        // WorkItemQueue.Enqueue(runner.Run(inputs, State.CancellationTokenSource));
     }
 
     private void Stop()
     {
-        _cancellationToken.Cancel();
-        Dispatch(new FunctionalAction(state => state.Running = false));
+        // _cancellationToken.Cancel();
+        // Dispatch(new FunctionalAction(state => state.Running = false));
     }
     
-    private void OnResultCreated(EngineOutputState output) => 
-        InvokeAsync(() =>
-        {
-            Dispatch(new FunctionalAction(state => state.EngineOutputs = output));
-            Dispatch(state => state.Scores.Add(output.Metrics.Get(MetricNames.Score).Statistics.LastValue));
-            
-            if (output.Outputs.Any(val => val.Name == "Image"))
-            {
-                var image = output.GetOutputValue<string>("Image");
-                Dispatch(state => state.ImageState.Current = new ImageEntity
-                {
-                    ImageData = Image.Load<Rgba32>(Convert.FromBase64String(image)),
-                });
-            }
-
-            if (output.EngineState is EngineStateTypes.Stopped)
-            {
-                Dispatch(state => state.Running = false);
-            }
-        });
+    // private void OnResultCreated(EngineOutputState output) => 
+    //     InvokeAsync(() =>
+    //     {
+    //         Dispatch(new FunctionalAction(state => state.EngineOutputs = output));
+    //         Dispatch(state => state.Scores.Add(output.Metrics.Get(MetricNames.Score).Statistics.LastValue));
+    //         
+    //         if (output.Outputs.Any(val => val.Name == "Image"))
+    //         {
+    //             var image = output.GetOutputValue<string>("Image");
+    //             Dispatch(state => state.ImageState.Current = new ImageEntity
+    //             {
+    //                 ImageData = Image.Load<Rgba32>(Convert.FromBase64String(image)),
+    //             });
+    //         }
+    //
+    //         if (output.EngineState is EngineStateTypes.Stopped)
+    //         {
+    //             Dispatch(state => state.Running = false);
+    //         }
+    //     });
 }

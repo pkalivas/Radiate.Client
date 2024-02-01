@@ -5,7 +5,6 @@ using Radiate.Client.Components.Store.Reducers;
 using Radiate.Client.Services;
 using Radiate.Client.Services.Runners;
 using Radiate.Client.Services.Worker;
-using AppState = Radiate.Client.Components.Store.States.AppState;
 
 namespace Radiate.Client.Bootstrap;
 
@@ -36,6 +35,7 @@ public static class ApplicationServiceRegistration
     private static IServiceCollection AddStore(this IServiceCollection services) =>
         services
             .AddTransient<IEffect, StartEngineEffect>()
+            .AddTransient<IEffect, AddEngineOutputEffect>()
             .AddTransient<IReducer, AppStateReducer>()
             .AddSingleton<IDispatcher, Dispatcher>()
             .AddSingleton<IStore, StateStore>();

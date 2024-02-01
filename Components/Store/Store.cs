@@ -1,7 +1,5 @@
 using System.Collections.Concurrent;
 using Radiate.Client.Components.Store.Interfaces;
-using Radiate.Client.Components.Store.Reducers;
-using Radiate.Client.Components.Store.States;
 
 namespace Radiate.Client.Components.Store;
 
@@ -51,6 +49,7 @@ public class StateStore : IStore
         SetEffects(effects);
         SetReducers(reducers);
     }
+    
     public bool IsDispatching { get; private set; }
     
     public async Task Dispatch<TAction, TState>(TAction action) 
@@ -105,15 +104,15 @@ public class StateStore : IStore
             var tasks = new List<Task>();
             foreach (var reducer in actionReducers)
             {
-                var newState = reducer.Reduce(state, action);
-                stateContainer.SetState(newState!);
+                state = reducer.Reduce(state, action);
+                stateContainer.SetState(state!);
                 stateContainer.NotifyStateChanged();
                 
                 if (_effects.TryGetValue(actionType.Name, out var effects))
                 {
-                    foreach (var effect in effects.Where(effect => effect.CanHandle(newState, action)))
+                    foreach (var effect in effects.Where(effect => effect.CanHandle(state, action)))
                     {
-                        tasks.Add(Task.Run(async () => await effect.HandleAsync(newState, action, _dispatcher)));
+                        tasks.Add(Task.Run(async () => await effect.HandleAsync(state, action, _dispatcher)));
                     }
                 }
             }

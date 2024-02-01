@@ -14,7 +14,7 @@ namespace Radiate.Client.Services.Runners;
 
 public class CircleEngineRunner : IEngineRunner
 {
-    public Func<CancellationToken, Task> Run(RunInput command, CancellationTokenSource cts, Action<EngineOutputState> resultCallback) => async token =>
+    public Func<CancellationToken, Task> Run(RunInput command, CancellationTokenSource cts) => async token =>
     {
         var targetImage = command.GetInputValue<string>("TargetImage");
         var numCircles = command.GetInputValue<int>("NumCircles");
@@ -42,11 +42,11 @@ public class CircleEngineRunner : IEngineRunner
 
         var result = engine.Fit()
             .Limit(Limits.Iteration(iterationLimit))
-            .Peek(res => resultCallback(Map(res, image.Height, image.Width)))
+            // .Peek(res => resultCallback(Map(res, image.Height, image.Width)))
             .TakeWhile(_ => !cts.IsCancellationRequested && !token.IsCancellationRequested)
             .ToResult();
         
-        resultCallback(Map(result, 500, 500));
+        // resultCallback(Map(result, 500, 500));
     };
 
     public RunInput GetInputs(AppState state) => new()

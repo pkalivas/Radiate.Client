@@ -6,6 +6,13 @@ public abstract class RootEffect<TState, TAction> : IEffect<TState, TAction>
     where TState : class, IState<TState>
     where TAction : IAction
 {
+    protected readonly IServiceProvider ServiceProvider;
+
+    protected RootEffect(IServiceProvider serviceProvider)
+    {
+        ServiceProvider = serviceProvider;
+    }
+
     public abstract Task HandleAsync(TState state, TAction action, IDispatcher dispatcher);
 
     public bool CanHandle(IState state, IAction action) => state is TState && action is TAction;

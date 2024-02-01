@@ -6,7 +6,7 @@ public delegate IEngineRunner EngineRunnerFactory(string name);
 
 public interface IEngineRunner
 {
-    Func<CancellationToken, Task> Run(RunInput inputs, CancellationTokenSource cts, Action<EngineOutputState> resultCallback);
+    Func<CancellationToken, Task> Run(RunInput inputs, CancellationTokenSource cts);
 
     RunInput GetInputs(AppState state);
 }

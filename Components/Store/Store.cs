@@ -116,8 +116,6 @@ public class StateStore : IStore
                     }
                 }
             }
-            
-            stateContainer.NotifyStateChanged();
         }
     }
     

@@ -5,21 +5,10 @@
 @Counter
 
 @code {
-
-    public class TempSubs
-    {
-        public int Count { get; set; }
-        
-        public override bool Equals(object obj)
-        {
-            return obj is TempSubs subs && Count == subs.Count;
-        }
-    }
-
+    
     public int Counter { get; set; }
     
-    private IState<TempSubs> _state;
-    
+
     protected override void OnStateInitialized()
     {
         Subscribe<IAction>(act =>
@@ -27,19 +16,6 @@
             Counter++;
             Logger.LogInformation("Received action {Action}", act);
         });
-
-        _state = Store.Select<AppFeature>()
-            .SelectState(feature => new TempSubs { Count = feature.Counter });
-
-        _state.SelectedValueChanged += OnValueChanged;
     }
-    
-    private void OnValueChanged(object sender, TempSubs e)
-    {
-        InvokeAsync(() =>
-        {
-            Counter = e.Count;
-            StateHasChanged();
-        });
-    }
+
 }

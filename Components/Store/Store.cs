@@ -24,13 +24,6 @@ public class StateStore : IStore
 
     private bool IsDispatching { get; set; }
     
-    public async Task Dispatch<TAction, TState>(TAction action) 
-        where TAction : IAction<TState> 
-        where TState : IFeature<TState>
-    {
-        throw new NotImplementedException();
-    }
-
     public IState<TState> Select<TState>() => (IState<TState>)_states[typeof(TState).Name];
     
     public void Register<TState>(TState state) 

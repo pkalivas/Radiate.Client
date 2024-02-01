@@ -4,27 +4,27 @@
 <div class="row px-3">
     <div class="col">
         
-        @if (State.DataSetType == "Polygon")
-        {
-            <MudNumericField Label="Polygon Count"
-                             Variant="Variant.Filled"
-                             Value="@State.EngineInputs.NumShapes"
-                             ValueChanged="@((int num) => Dispatch(state => state.EngineInputs.NumShapes = num))">
-            </MudNumericField>
-            <MudNumericField Class="mt-2" Label="Polygon Edges"
-                             Variant="Variant.Filled"
-                             Value="@State.EngineInputs.NumVertices"
-                             ValueChanged="@((int edges) => Dispatch(state => state.EngineInputs.NumVertices = edges))">
-            </MudNumericField>
-        }
-        else if (State.DataSetType == "Circle")
-        {
-            <MudNumericField Label="Circle Count"
-                             Variant="Variant.Filled"
-                             Value="@State.EngineInputs.NumShapes"
-                             ValueChanged="@((int num) => Dispatch(state => state.EngineInputs.NumShapes = num))">
-            </MudNumericField>
-        }
+        @* @if (State.DataSetType == "Polygon") *@
+        @* { *@
+        @*     <MudNumericField Label="Polygon Count" *@
+        @*                      Variant="Variant.Filled" *@
+        @*                      Value="@State.EngineInputs.NumShapes" *@
+        @*                      ValueChanged="@((int num) => Dispatch(state => state.EngineInputs.NumShapes = num))"> *@
+        @*     </MudNumericField> *@
+        @*     <MudNumericField Class="mt-2" Label="Polygon Edges" *@
+        @*                      Variant="Variant.Filled" *@
+        @*                      Value="@State.EngineInputs.NumVertices" *@
+        @*                      ValueChanged="@((int edges) => Dispatch(state => state.EngineInputs.NumVertices = edges))"> *@
+        @*     </MudNumericField> *@
+        @* } *@
+        @* else if (State.DataSetType == "Circle") *@
+        @* { *@
+        @*     <MudNumericField Label="Circle Count" *@
+        @*                      Variant="Variant.Filled" *@
+        @*                      Value="@State.EngineInputs.NumShapes" *@
+        @*                      ValueChanged="@((int num) => Dispatch(state => state.EngineInputs.NumShapes = num))"> *@
+        @*     </MudNumericField> *@
+        @* } *@
 
         <div class="mt-3">
             <ImageUpload Height="@State.ImageState.ImageHeight"
@@ -44,6 +44,6 @@
         
     private void OnTargetImageChanged(ImageEntity image)
     {
-        Dispatch(state => state.ImageState.Target = image);
+        // Dispatch(state => state.ImageState.Target = image);
     }
 }

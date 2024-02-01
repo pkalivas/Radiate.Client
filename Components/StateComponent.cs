@@ -42,8 +42,8 @@ public abstract class StateComponent<T, TState> : ComponentBase, IDisposable
     protected void Dispatch<TAction>(TAction action)
         where TAction : IAction<AppFeature> => Dispatcher.Dispatch<TAction, AppFeature>(action);
 
-    protected void Dispatch(Action<AppFeature> act) =>
-        Store.Dispatch<FunctionalAction, AppFeature>(new FunctionalAction(act));
+    // protected void Dispatch(Action<AppFeature> act) =>
+    //     Store.Dispatch<FunctionalAction, AppFeature>(new FunctionalAction(act));
     
     private void SetState(object sender, TState state)
     {

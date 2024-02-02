@@ -1,0 +1,26 @@
+
+<div class="container">
+    <div class="row mb-2">
+        
+        <div class="col">
+            <div class="d-inline-flex w-100">
+                <div>
+                    <h5>@Title</h5>
+                </div>
+                <MudSpacer/>
+                <div class="pl-2">@Options</div>
+            </div>
+        </div>
+        
+    </div>
+    <MudDivider/>
+    <div class="row mt-2">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; }
+    [Parameter] public RenderFragment Options { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+}

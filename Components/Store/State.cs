@@ -6,10 +6,12 @@ namespace Radiate.Client.Components.Store;
 public class State<T> : IState<T> where T : ICopy<T>
 {
     private T Value { get; set; }
+    private readonly ThrottledInvoker _throttledInvoker;
     
     public State(T value)
     {
         Value = value;
+        _throttledInvoker = new ThrottledInvoker(ThrottledInvoke);
     }
     
     public T GetValue() => Value;
@@ -46,6 +48,11 @@ public class State<T> : IState<T> where T : ICopy<T>
         
         Value = state;
         ChangeCount++;
+        _throttledInvoker.Invoke(40);
+    }
+    
+    private void ThrottledInvoke()
+    {
         SelectedValueChanged?.Invoke(this, Value);
         StateChanged?.Invoke(this, EventArgs.Empty);
     }

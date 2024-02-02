@@ -9,6 +9,7 @@
 @using Dispatcher = Akka.Dispatch.Dispatcher
 @using Radiate.Client.Components.Store.Interfaces
 @using Radiate.Client.Components.Store.States.Features
+@using SixLabors.ImageSharp.Drawing
 @inherits StateComponent<EngineControl, RunState>
 @inject IWorkItemQueue WorkItemQueue
 @inject EngineRunnerFactory Runner
@@ -25,13 +26,17 @@
 }
 else
 {
-    <MudButton Class="w-100"
-               Size="Size.Small"
-               Variant="Variant.Filled"
-               Color="Color.Tertiary"
-               OnClick="@Start">
-        Start
+    <MudButton Size="Size.Small" Color="Color.Tertiary" Variant="Variant.Filled" Class="float-right" OnClick="@Start">
+        <MudIcon Icon="@Icons.Material.Filled.PlayArrow" Class="ml-0 mr-2" Size="Size.Small"/>
+        Run
     </MudButton>
+    @* <MudButton Class="w-100" *@
+    @*            Size="Size.Small" *@
+    @*            Variant="Variant.Filled" *@
+    @*            Color="Color.Tertiary" *@
+    @*            OnClick="@Start"> *@
+    @*     Start *@
+    @* </MudButton> *@
 }
 
 @code {

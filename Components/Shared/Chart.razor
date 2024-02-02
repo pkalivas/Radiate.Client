@@ -4,7 +4,7 @@
 @using Plotly.Blazor.LayoutLib
 @using Plotly.Blazor.LayoutLib.XAxisLib
 
-@if (Values.Any() && Type != "")
+@if (Values.Any() && Type != "" && layout != null)
 {
     <div class="chart-container">
         <PlotlyChart @bind-Config="config" @bind-Layout="layout" @bind-Data="data" @ref="chart"/>
@@ -20,47 +20,51 @@ else
 }
 
 @code {
+    [Parameter] public int Height { get; set; } = 500;
     [Parameter] public string Type { get; set; } = "";
     [Parameter] public List<float> Values { get; set; } = new();
 
     private PlotlyChart chart;
     private Config config = new() { Responsive = true};
-    private Layout layout = new()
-    {
-        Height = 175,
-        Font = new Font
-        {
-            Color = "whitesmoke"
-        },
-        XAxis = new List<XAxis>()
-        {
-            new()
-            {
-                ShowGrid = false
-            }
-        },
-        YAxis = new List<YAxis>()
-        {
-            new()
-            {
-                ShowGrid = false
-            }
-        },
-        PaperBgColor = "rgba(0,0,0,0)",
-        PlotBgColor = "rgba(0,0,0,0)",
-        Margin = new Margin
-        {
-            T = 1,
-            B = 20,
-            L = 25,
-            R = 1
-        },
-    };
+
+    private Layout? layout;
 
     private IList<ITrace> data { get; set; }
 
     protected override void OnParametersSet()
     {
+        layout = new()
+        {
+            Height = Height,
+            Font = new Font
+            {
+                Color = "whitesmoke"
+            },
+            XAxis = new List<XAxis>()
+            {
+                new()
+                {
+                    ShowGrid = false
+                }
+            },
+            YAxis = new List<YAxis>()
+            {
+                new()
+                {
+                    ShowGrid = false
+                }
+            },
+            PaperBgColor = "rgba(0,0,0,0)",
+            PlotBgColor = "rgba(0,0,0,0)",
+            Margin = new Margin
+            {
+                T = 1,
+                B = 20,
+                L = 25,
+                R = 1
+            },
+        };
+        
         if (Values.Any() && Type != "")
         {
             data = Type switch
@@ -86,6 +90,12 @@ else
             };
             
             chart?.Update();
+        }
+        
+        if (Height != layout.Height)
+        {
+            layout.Height = Height;
+            StateHasChanged();
         }
         
         base.OnParametersSet();

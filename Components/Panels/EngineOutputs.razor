@@ -2,26 +2,48 @@
 @using Radiate.Engines.Entities
 @inherits StateComponent<EngineOutputs, Radiate.Client.Components.Store.States.RunState>
 
-<MudTable Items="@GetMetricsToDisplay()">
+
+<MudToggleGroup T="string" SelectionMode="SelectionMode.SingleSelection" @bind-Value="paramType" Color="Color.Primary" CheckMark FixedContent>
+    <MudToggleItem Value="@("total")" Text="Total" />
+    <MudToggleItem Value="@("avg")" Text="Average" />
+</MudToggleGroup>
+
+<MudTable Items="@GetMetricsToDisplay()" ItemSize="25">
     <HeaderContent>
         <MudTh>Metric</MudTh>
-        <MudTh>Total</MudTh>
-        <MudTh>Total Time</MudTh>
-        <MudTh>Avg.</MudTh>
-        <MudTh>Avg. Time</MudTh>
+        @if (paramType == "total")
+        {
+            <MudTh>Total</MudTh>
+            <MudTh>Total Time</MudTh>
+        }
+        else
+        {
+            <MudTh>Avg.</MudTh>
+            <MudTh>Avg. Time</MudTh>
+        }
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Metric">@context.Name</MudTd>
-        <MudTd DataLabel="Total">@context.Statistics.Sum</MudTd>
-        <MudTd DataLabel="Total Time">@(TimeSpan.FromMilliseconds(context.Time.Sum))</MudTd>
-        <MudTd DataLabel="Avg.">@Math.Round(context.Statistics.Mean, 5)</MudTd>
-        <MudTd DataLabel="Avg. Time">@(TimeSpan.FromMilliseconds(context.Time.Mean))</MudTd>
+        
+        @if (paramType == "total")
+        {
+            <MudTd DataLabel="Total">@context.Statistics.Sum</MudTd>
+            <MudTd DataLabel="Total Time">@(TimeSpan.FromMilliseconds(context.Time.Sum).ToString())</MudTd>
+        }
+        else
+        {
+            <MudTd DataLabel="Avg.">@Math.Round(context.Statistics.Mean, 5)</MudTd>
+            <MudTd DataLabel="Avg. Time">@(TimeSpan.FromMilliseconds(context.Time.Mean))</MudTd>
+        }
+        
     </RowTemplate>
 </MudTable>
 
 <TestSub/>
 
 @code {
+
+    private string paramType = "total";
     
     private List<MetricValue> GetMetricsToDisplay() => DisplayNames()
             .Select(name => State.Outputs.Metrics.Get(name))

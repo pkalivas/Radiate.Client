@@ -2,18 +2,12 @@
 @inherits StateComponent<TestSub, Radiate.Client.Components.Store.States.Features.RootFeature>
 @inject ILogger<TestSub> Logger
 
-@Counter
-
 @code {
     
-    public int Counter { get; set; }
-    
-
     protected override void OnStateInitialized()
     {
         Subscribe<IAction>(act =>
         {
-            Counter++;
             Logger.LogInformation("Received action {Action}", act);
         });
     }

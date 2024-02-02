@@ -1,6 +1,5 @@
 @using Radiate.Engines.Entities
 @using Radiate.Engines.Schema
-@inject IDialogService DialogService
 
 @if (EngineState == null)
 {
@@ -11,11 +10,11 @@
 else
 {
     <div class="container">
-        <div class="row border-bottom">
+        <div class="row">
             <div class="col">
                 <div class="d-inline-flex">
-                    <MudIcon Icon="@GetIcon(EngineState)" Class="ml-0 mr-2" Color="@GetColor(EngineState)"/>
-                    <strong>@(EngineState.Name[..3])</strong>
+                   <MudIcon Icon="@GetIcon(EngineState)" Class="ml-0 mr-2" Color="@GetColor(EngineState)"/>
+                    <strong>@(EngineState.Name[..3])</strong>       
                 </div>
             </div>
                         
@@ -45,39 +44,15 @@ else
                     <strong>Switches:</strong>
                     <div class="pl-2">@EngineState.Metrics.Get(MetricNames.EngineChange)?.Statistics?.Sum</div>
                 </div>
-            </div>   
-                        
+            </div>
         </div>
+        
     </div>
-    
-    @if (EngineState.SubEngines.Any())
-    {
-        <MudButton OnClick="@OpenEngineTree"
-                   Class="mt-2"
-                   Size="Size.Small"
-                   Color="Color.Inherit"
-                   Variant="Variant.Text">
-            Engine Tree
-        </MudButton>   
-    }
 }
 
 @code {
     [Parameter] public EngineState? EngineState { get; set; }
-
-    private async Task OpenEngineTree()
-    {
-        var options = new DialogOptions
-        {
-            MaxWidth = MaxWidth.Medium,
-            FullWidth = true,
-            CloseOnEscapeKey = true,
-        };
-
-        var dialogRef = await DialogService.ShowAsync<EngineStateTree>("Engine Tree Dialog", options);
-        await dialogRef.Result;
-    }
-
+    
     private static string GetIcon(EngineState state) => state.State switch
     {
         EngineStateTypes.Pending => Icons.Material.Filled.Pending,

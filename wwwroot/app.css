@@ -71,5 +71,5 @@ h1:focus {
 }
 
 .border-bottom {
-  border-bottom: 1px solid #ebedf3 !important;
+  border-bottom: .5px solid #ebedf3 !important;
 }

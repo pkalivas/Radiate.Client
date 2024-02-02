@@ -34,7 +34,8 @@ public class StateStore : IStore
         _states[typeof(TState).Name] = new StateSelection<TState, TState>(new State<TState>(selector(this)), s => s);
         return (IState<TState>) _states[typeof(TState).Name];
     }
-
+    
+    public event Action? ActionsProcessed;
 
     public void Selctors<T>(Func<StateStore, IState<T>> selector) where T : ICopy<T>
     {
@@ -118,6 +119,8 @@ public class StateStore : IStore
             
             Task.Run(async () => await Task.WhenAll(tasks));
         }
+        
+        ActionsProcessed?.Invoke();
     }
     
     private void SetEffects(IEnumerable<IEffect> effects)

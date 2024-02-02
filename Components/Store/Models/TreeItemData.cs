@@ -8,7 +8,7 @@ public class TreeItemData<T>
     public Color Color { get; set; }
     public T Data { get; set; }
 
-    public bool IsExpanded { get; set; } = true;
+    public bool IsExpanded { get; set; } = false;
     
     public HashSet<TreeItemData<T>> TreeItems { get; set; } = new();
 

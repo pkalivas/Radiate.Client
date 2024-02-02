@@ -12,10 +12,14 @@ namespace Radiate.Client.Components.Store.Selectors;
 
 public record EngineTreeState : ICopy<EngineTreeState>
 {
+    public Guid RunId { get; init; }
     public HashSet<TreeItemData<EngineState>> TreeItems { get; init; } = new();
+    public Dictionary<string, bool> Expanded { get; init; } = new();
     
     public EngineTreeState Copy() => new()
     {
+        RunId = RunId,
+        Expanded = Expanded.ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
         TreeItems = TreeItems.ToHashSet()
     };
 }
@@ -30,7 +34,9 @@ public static class EngineTreeSelector
                 {
                     return new EngineTreeState
                     {
-                        TreeItems = GetItems(state.Runs[state.CurrentRunId].Outputs.EngineStates, engineTree)
+                        RunId = state.CurrentRunId,
+                        TreeItems = GetItems(state.Runs[state.CurrentRunId].Outputs.EngineStates, engineTree),
+                        Expanded = engineTree
                     };
                 }
                 
@@ -38,7 +44,9 @@ public static class EngineTreeSelector
                 {
                     return new EngineTreeState
                     {
-                        TreeItems = GetItems(run.Outputs.EngineStates, new Dictionary<string, bool>())
+                        RunId = state.CurrentRunId,
+                        TreeItems = GetItems(run.Outputs.EngineStates, new Dictionary<string, bool>()),
+                        Expanded = new Dictionary<string, bool>()
                     };
                 }
 
@@ -76,14 +84,7 @@ public static class EngineTreeSelector
         var currentEngineState = states[current];
         var currentTreeItem = new TreeItemData<EngineState>(GetIcon(currentEngineState), GetColor(currentEngineState), currentEngineState);
         
-        if (expanded.TryGetValue(current, out var isExpanded))
-        {
-            currentTreeItem.IsExpanded = isExpanded;
-        }
-        else
-        {
-            currentTreeItem.IsExpanded = false;
-        }
+        currentTreeItem.IsExpanded = expanded.GetValueOrDefault(current, false);
         
         foreach (var sub in states[current].SubEngines)
         {

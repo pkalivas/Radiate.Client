@@ -15,6 +15,7 @@ public record RootFeature : Feature<RootFeature>
         {
             CurrentRunId = CurrentRunId,
             Route = Route?.Copy(),
+            UiState = UiState.Copy(),
             Runs = Runs.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Copy())
         };
     }

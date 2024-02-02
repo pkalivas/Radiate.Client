@@ -14,6 +14,7 @@ public class RootReducer : Reducer<RootFeature>
         AddEngineOutputAction engineOutputsGeneratedAction => AddOutput(state, engineOutputsGeneratedAction),
         RunCompletedAction runCompletedAction => RunCompleted(state, runCompletedAction),
         StartEngineAction startEngineAction => StartEngine(state, startEngineAction),
+        SetEngineTreeExpandedAction setTreeExpansionsAction => SetTreeExpansions(state, setTreeExpansionsAction),
         _ => state
     };
 
@@ -50,5 +51,11 @@ public class RootReducer : Reducer<RootFeature>
     {
         state.Runs[state.CurrentRunId] = state.Runs[state.CurrentRunId] with { IsRunning = true };
         return state with { Runs = state.Runs };
+    }
+    
+    private static RootFeature SetTreeExpansions(RootFeature state, SetEngineTreeExpandedAction action)
+    {
+        state.UiState.EngineStateExpanded[action.RunId] = action.Expanded;
+        return state with { UiState = state.UiState };
     }
 }

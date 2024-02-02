@@ -41,20 +41,12 @@ else
 
     private void Start()
     {
-        Dispatcher.Dispatch<StartEngineAction, RootFeature>(new StartEngineAction());
-        // Dispatch(new StartEngineAction());
-        // _cancellationToken = new CancellationTokenSource();
-        //
-        // var runner = Runner($"{State.ModelType}_{State.DataSetType}");
-        // var inputs = runner.GetInputs(State);
-        //
-        // Dispatch(new FunctionalAction(state => state.Running = true));
-        // Dispatch(state => state.Scores.Clear());
-        // WorkItemQueue.Enqueue(runner.Run(inputs, State.CancellationTokenSource));
+        Dispatcher.Dispatch<StartEngineAction, RootFeature>(new StartEngineAction(State.RunId));
     }
 
     private void Stop()
     {
+        Dispatcher.Dispatch<CancelEngineRunAction, RootFeature>(new CancelEngineRunAction(State.RunId));
         // _cancellationToken.Cancel();
         // Dispatch(new FunctionalAction(state => state.Running = false));
     }

@@ -3,4 +3,4 @@ using Radiate.Client.Components.Store.States.Features;
 
 namespace Radiate.Client.Components.Store.Actions;
 
-public record CancelEngineRunAction : IAction<RootFeature>;
+public record CancelEngineRunAction(Guid RunId) : IAction<RootFeature>;

@@ -10,15 +10,6 @@ public record RootFeature : Feature<RootFeature>
     public Guid CurrentRunId { get; init; } = Guid.NewGuid();
     public RouteFeature? Route { get; init; } = new();
     public Dictionary<Guid, RunState> Runs { get; init; } = new();
-
-    public override int GetHashCode()
-    {
-        return Hash.Of(typeof(RouteFeature))
-            .And(Route)
-            .And(Runs)
-            .And(Name)
-            .Value;
-    }
     
     public override RootFeature Copy()
     {

@@ -80,10 +80,6 @@ public class XORGraphRunner : IEngineRunner
             EngineId = output.EngineId,
             EngineStates = output.EngineStates,
             Metrics = output.Metrics,
-            Outputs = new List<RunOutputValue>
-            {
-                new("Display", output.ToString(), nameof(String))
-            }
         };
     }
 

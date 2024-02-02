@@ -1,7 +1,7 @@
 using Radiate.Client.Components.Store.Actions;
 using Radiate.Client.Components.Store.States.Features;
-using Radiate.Client.Services.Runners;
-using Radiate.Client.Services.Worker;
+using Radiate.Client.Services.Actors;
+using Radiate.Client.Services.Actors.Commands;
 
 namespace Radiate.Client.Components.Store.Effects;
 
@@ -12,14 +12,10 @@ public class StartEngineEffect : Effect<RootFeature, StartEngineAction>
     public override async Task HandleAsync(RootFeature feature, StartEngineAction action, IDispatcher dispatcher)
     {
         await using var scope = ServiceProvider.CreateAsyncScope();
-        var engineRunnerFactory = scope.ServiceProvider.GetRequiredService<EngineRunnerFactory>();
-        var workItemQueue = scope.ServiceProvider.GetRequiredService<IWorkItemQueue>();
-
-        var currentRun = feature.Runs[feature.CurrentRunId];
+        var actorService = scope.ServiceProvider.GetRequiredService<IActorService>();
         
-        var runner = engineRunnerFactory($"{currentRun.Inputs.ModelType}_{currentRun.Inputs.DataSetType}");
-        var inputs = runner.GetInputs(currentRun.Inputs);
+        var currentRun = feature.Runs[action.RunId];
         
-        workItemQueue.Enqueue(runner.Run(inputs, new CancellationTokenSource()));
+        actorService.Tell(new RunsActorMessage<StartRunCommand>(new StartRunCommand(currentRun.RunId, currentRun.Inputs)));
     }
 }

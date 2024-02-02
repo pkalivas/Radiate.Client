@@ -2,6 +2,7 @@ using Radiate.Client.Components.Store;
 using Radiate.Client.Components.Store.Effects;
 using Radiate.Client.Components.Store.Interfaces;
 using Radiate.Client.Components.Store.Reducers;
+using Radiate.Client.Services.Actors;
 using Radiate.Client.Services.Runners;
 using Radiate.Client.Services.Worker;
 
@@ -13,8 +14,10 @@ public static class ApplicationServiceRegistration
         services
             .AddStore()
             .AddEngineRunners()
+            .AddSingleton<IActorService, ActorService>()
             .AddSingleton<IWorkItemQueue, WorkItemQueue>()
-            .AddHostedService<BackgroundWorkerService>();
+            .AddHostedService<BackgroundWorkerService>()
+            .AddHostedService(sp => (ActorService)sp.GetRequiredService<IActorService>());
 
 
     private static IServiceCollection AddEngineRunners(this IServiceCollection services) =>
@@ -33,6 +36,7 @@ public static class ApplicationServiceRegistration
     private static IServiceCollection AddStore(this IServiceCollection services) =>
         services
             .AddTransient<IEffect, StartEngineEffect>()
+            .AddTransient<IEffect, CancelEngineEffect>()
             .AddTransient<IEffect, NavigateToEffect>()
             .AddTransient<IReducer, RootReducer>()
             .AddSingleton<IDispatcher, Dispatcher>()

@@ -16,6 +16,7 @@ public class RootReducer : Reducer<RootFeature>
         StartEngineAction startEngineAction => StartEngine(state, startEngineAction),
         SetEngineTreeExpandedAction setTreeExpansionsAction => SetTreeExpansions(state, setTreeExpansionsAction),
         LayoutChangedAction layoutChangedAction => LayoutChanged(state, layoutChangedAction),
+        UpdateCurrentImageAction updateImageAction => UpdateCurrentImage(state, updateImageAction),
         _ => state
     };
 
@@ -64,4 +65,10 @@ public class RootReducer : Reducer<RootFeature>
     {
         UiState = state.UiState with { IsSidebarOpen = action.IsSidebarOpen }
     };
+
+    private static RootFeature UpdateCurrentImage(RootFeature state, UpdateCurrentImageAction action)
+    {
+	    state.Images[action.RunId] = state.Images[action.RunId] with { Current = action.Image };
+	    return state with { Images = state.Images };
+    }
 }

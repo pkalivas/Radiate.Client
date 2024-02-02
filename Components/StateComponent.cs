@@ -18,7 +18,7 @@ public abstract class StateComponent<T, TState> : ComponentBase, IDisposable
     
     protected override Task OnInitializedAsync()
     {
-        _state = Store.Select<TState>();
+        _state = Store.GetState<TState>();
         State = _state.GetValue();
         _state.SelectedValueChanged += SetState!;
         

@@ -17,7 +17,7 @@ public class LayoutState : ICopy<LayoutState>
 public static class LayoutStateSelector
 {
     public static IState<LayoutState> Select(StateStore store) => 
-        store.Select<RootFeature>()
+        store.GetState<RootFeature>()
             .SelectState(feature => feature.UiState)
             .SelectState(state => new LayoutState
             {

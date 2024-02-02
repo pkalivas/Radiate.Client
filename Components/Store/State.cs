@@ -5,7 +5,10 @@ namespace Radiate.Client.Components.Store;
 
 public class State<T> : IState<T> where T : ICopy<T>
 {
-    private T Value { get; set; }
+	public event EventHandler<T>? SelectedValueChanged;
+	public event EventHandler? StateChanged;
+
+	private T Value { get; set; }
     private readonly ThrottledInvoker _throttledInvoker;
     
     public State(T value)
@@ -21,8 +24,6 @@ public class State<T> : IState<T> where T : ICopy<T>
 
     public int ChangeCount { get; private set; }
     
-    public event EventHandler<T>? SelectedValueChanged;
-    public event EventHandler? StateChanged;
 
     public void Reduce(IReducer reducer, IAction action)
     {
@@ -32,12 +33,8 @@ public class State<T> : IState<T> where T : ICopy<T>
         }
     }
 
-    public IState<TK> SelectState<TK>(Func<T, TK> selector)  where TK : ICopy<TK>
-    {
-        var newState = new StateSelection<T, TK>(this, selector);
-
-        return newState;
-    }
+    public IState<TK> SelectState<TK>(Func<T, TK> selector)
+	    where TK : ICopy<TK> => new StateSelection<T, TK>(this, selector);
 
     protected void SetState(T state)
     {

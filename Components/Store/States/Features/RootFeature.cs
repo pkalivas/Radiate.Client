@@ -8,6 +8,7 @@ public record RootFeature : Feature<RootFeature>
     public RouteFeature? Route { get; init; } = new();
     public UiState UiState { get; init; } = new();
     public Dictionary<Guid, RunState> Runs { get; init; } = new();
+    public Dictionary<Guid, ImageState> Images { get; set; } = new();
     
     public override RootFeature Copy()
     {
@@ -16,7 +17,8 @@ public record RootFeature : Feature<RootFeature>
             CurrentRunId = CurrentRunId,
             Route = Route?.Copy(),
             UiState = UiState.Copy(),
-            Runs = Runs.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Copy())
+            Runs = Runs.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Copy()),
+            Images = Images.ToDictionary(key => key.Key, val => val.Value.Copy())
         };
     }
 }

@@ -1,43 +1,43 @@
 @using Radiate.Client.Components.Store.Schema
-@inherits StateComponent<EngineInputs, Radiate.Client.Components.Store.States.Features.AppFeature>
+@inherits StateComponent<EngineInputs, Radiate.Client.Components.Store.States.Features.RootFeature>
 
 <div class="row">
     <div class="col">
-        <MudRadioGroup T="string" Value="@State.ModelType" ValueChanged="@OnModelTypeChange" Disabled="@State.Running">
-            <label>Model</label>
-            @foreach (var item in StateOptions.ModelNames)
-            {
-                <div class="row">
-                    <MudRadio T="string" Value="@item" UnCheckedColor="Color.Primary">@item</MudRadio>
-                </div>
-            }
-        </MudRadioGroup>
-    </div>
-    <div class="col">
-        @if (State.ModelType == "Image")
-        {
-            <MudRadioGroup T="string" Value="@State.DataSetType" ValueChanged="@OnDataSetChange" Disabled="@State.Running">
-                <label>DataSet</label>
-                @foreach (var item in StateOptions.ImageDataSetNames)
-                {
-                    <div class="row">
-                        <MudRadio T="string" Value="@item" UnCheckedColor="Color.Primary">@item</MudRadio>
-                    </div>
-                }
-            </MudRadioGroup>
-        }
-        else
-        {
-            <MudRadioGroup T="string" Value="@State.DataSetType" ValueChanged="@OnDataSetChange" Disabled="@State.Running">
-                <label>DataSet</label>
-                @foreach (var item in StateOptions.DataSetNames)
-                {
-                    <div class="row">
-                        <MudRadio T="string" Value="@item" UnCheckedColor="Color.Primary">@item</MudRadio>
-                    </div>
-                }
-            </MudRadioGroup>   
-        }
+    @*     <MudRadioGroup T="string" Value="@State.ModelType" ValueChanged="@OnModelTypeChange" Disabled="@State.Running"> *@
+    @*         <label>Model</label> *@
+    @*         @foreach (var item in StateOptions.ModelNames) *@
+    @*         { *@
+    @*             <div class="row"> *@
+    @*                 <MudRadio T="string" Value="@item" UnCheckedColor="Color.Primary">@item</MudRadio> *@
+    @*             </div> *@
+    @*         } *@
+    @*     </MudRadioGroup> *@
+    @* </div> *@
+    @* <div class="col"> *@
+    @*     @if (State.ModelType == "Image") *@
+    @*     { *@
+    @*         <MudRadioGroup T="string" Value="@State.DataSetType" ValueChanged="@OnDataSetChange" Disabled="@State.Running"> *@
+    @*             <label>DataSet</label> *@
+    @*             @foreach (var item in StateOptions.ImageDataSetNames) *@
+    @*             { *@
+    @*                 <div class="row"> *@
+    @*                     <MudRadio T="string" Value="@item" UnCheckedColor="Color.Primary">@item</MudRadio> *@
+    @*                 </div> *@
+    @*             } *@
+    @*         </MudRadioGroup> *@
+    @*     } *@
+    @*     else *@
+    @*     { *@
+    @*         <MudRadioGroup T="string" Value="@State.DataSetType" ValueChanged="@OnDataSetChange" Disabled="@State.Running"> *@
+    @*             <label>DataSet</label> *@
+    @*             @foreach (var item in StateOptions.DataSetNames) *@
+    @*             { *@
+    @*                 <div class="row"> *@
+    @*                     <MudRadio T="string" Value="@item" UnCheckedColor="Color.Primary">@item</MudRadio> *@
+    @*                 </div> *@
+    @*             } *@
+    @*         </MudRadioGroup>    *@
+    @*     } *@
     </div>
     <div class="col">
         @* <MudNumericField Label="Population Size" *@

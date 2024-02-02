@@ -33,9 +33,7 @@ public static class ApplicationServiceRegistration
     private static IServiceCollection AddStore(this IServiceCollection services) =>
         services
             .AddTransient<IEffect, StartEngineEffect>()
-            .AddTransient<IEffect, AddEngineOutputEffect>()
             .AddTransient<IEffect, NavigateToEffect>()
-            .AddTransient<IReducer, AppStateReducer>()
             .AddTransient<IReducer, RootReducer>()
             .AddSingleton<IDispatcher, Dispatcher>()
             .AddSingleton<IStore, StateStore>();

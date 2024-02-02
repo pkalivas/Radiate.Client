@@ -1,44 +1,44 @@
 @using Radiate.Client.Components.Store.Models
-@inherits StateComponent<ImageInputs, Radiate.Client.Components.Store.States.Features.AppFeature>
+@inherits StateComponent<ImageInputs, Radiate.Client.Components.Store.States.Features.RootFeature>
 
-<div class="row px-3">
-    <div class="col">
-        
-        @* @if (State.DataSetType == "Polygon") *@
-        @* { *@
-        @*     <MudNumericField Label="Polygon Count" *@
-        @*                      Variant="Variant.Filled" *@
-        @*                      Value="@State.EngineInputs.NumShapes" *@
-        @*                      ValueChanged="@((int num) => Dispatch(state => state.EngineInputs.NumShapes = num))"> *@
-        @*     </MudNumericField> *@
-        @*     <MudNumericField Class="mt-2" Label="Polygon Edges" *@
-        @*                      Variant="Variant.Filled" *@
-        @*                      Value="@State.EngineInputs.NumVertices" *@
-        @*                      ValueChanged="@((int edges) => Dispatch(state => state.EngineInputs.NumVertices = edges))"> *@
-        @*     </MudNumericField> *@
-        @* } *@
-        @* else if (State.DataSetType == "Circle") *@
-        @* { *@
-        @*     <MudNumericField Label="Circle Count" *@
-        @*                      Variant="Variant.Filled" *@
-        @*                      Value="@State.EngineInputs.NumShapes" *@
-        @*                      ValueChanged="@((int num) => Dispatch(state => state.EngineInputs.NumShapes = num))"> *@
-        @*     </MudNumericField> *@
-        @* } *@
-
-        <div class="mt-3">
-            <ImageUpload Height="@State.ImageState.ImageHeight"
-                         Width="@State.ImageState.ImageWidth"
-                         ImageChanged="@OnTargetImageChanged"/>
-        </div>
-    </div>
-    <div class="col">
-        <ImageDisplay ImageTitle="Target" ImageUrl="@State.ImageState.Target.ImageDisplay"/>
-    </div>
-    <div class="col">
-        <ImageDisplay ImageTitle="Current" ImageUrl="@State.ImageState.Current.ImageDisplay"/>
-    </div>
-</div>
+@* <div class="row px-3"> *@
+@*     <div class="col"> *@
+@*          *@
+@*         $1$ @if (State.DataSetType == "Polygon") #1# *@
+@*         $1$ { #1# *@
+@*         $1$     <MudNumericField Label="Polygon Count" #1# *@
+@*         $1$                      Variant="Variant.Filled" #1# *@
+@*         $1$                      Value="@State.EngineInputs.NumShapes" #1# *@
+@*         $1$                      ValueChanged="@((int num) => Dispatch(state => state.EngineInputs.NumShapes = num))"> #1# *@
+@*         $1$     </MudNumericField> #1# *@
+@*         $1$     <MudNumericField Class="mt-2" Label="Polygon Edges" #1# *@
+@*         $1$                      Variant="Variant.Filled" #1# *@
+@*         $1$                      Value="@State.EngineInputs.NumVertices" #1# *@
+@*         $1$                      ValueChanged="@((int edges) => Dispatch(state => state.EngineInputs.NumVertices = edges))"> #1# *@
+@*         $1$     </MudNumericField> #1# *@
+@*         $1$ } #1# *@
+@*         $1$ else if (State.DataSetType == "Circle") #1# *@
+@*         $1$ { #1# *@
+@*         $1$     <MudNumericField Label="Circle Count" #1# *@
+@*         $1$                      Variant="Variant.Filled" #1# *@
+@*         $1$                      Value="@State.EngineInputs.NumShapes" #1# *@
+@*         $1$                      ValueChanged="@((int num) => Dispatch(state => state.EngineInputs.NumShapes = num))"> #1# *@
+@*         $1$     </MudNumericField> #1# *@
+@*         $1$ } #1# *@
+@* *@
+@*         <div class="mt-3"> *@
+@*             <ImageUpload Height="@State.ImageState.ImageHeight" *@
+@*                          Width="@State.ImageState.ImageWidth" *@
+@*                          ImageChanged="@OnTargetImageChanged"/> *@
+@*         </div> *@
+@*     </div> *@
+@*     <div class="col"> *@
+@*         <ImageDisplay ImageTitle="Target" ImageUrl="@State.ImageState.Target.ImageDisplay"/> *@
+@*     </div> *@
+@*     <div class="col"> *@
+@*         <ImageDisplay ImageTitle="Current" ImageUrl="@State.ImageState.Current.ImageDisplay"/> *@
+@*     </div> *@
+@* </div> *@
 
 @code {
         

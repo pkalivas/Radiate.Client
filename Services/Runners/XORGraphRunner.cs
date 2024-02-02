@@ -1,5 +1,6 @@
 using Radiate.Client.Components.Store;
 using Radiate.Client.Components.Store.Actions;
+using Radiate.Client.Components.Store.States;
 using Radiate.Client.Components.Store.States.Features;
 using Radiate.Data;
 using Radiate.Engines;
@@ -63,7 +64,7 @@ public class XORGraphRunner : IEngineRunner
         _dispatcher.Dispatch<RunCompletedAction, RootFeature>(new RunCompletedAction());
     };
 
-    public RunInput GetInputs(EngineInputsState feature) => new()
+    public RunInput GetInputs(RunInputState feature) => new()
     {
         Inputs = new List<RunInputValue>
         {
@@ -71,9 +72,9 @@ public class XORGraphRunner : IEngineRunner
         }
     };
     
-    private static EngineOutputState Map(EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> output)
+    private static RunOutputsState Map(EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> output)
     {
-        return new EngineOutputState
+        return new RunOutputsState
         {
             EngineState = output.GetState(output.EngineId),
             EngineId = output.EngineId,

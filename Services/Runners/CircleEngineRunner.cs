@@ -1,3 +1,4 @@
+using Radiate.Client.Components.Store.States;
 using Radiate.Client.Components.Store.States.Features;
 using Radiate.Client.Services.Genome;
 using Radiate.Engines;
@@ -49,7 +50,7 @@ public class CircleEngineRunner : IEngineRunner
         // resultCallback(Map(result, 500, 500));
     };
 
-    public RunInput GetInputs(EngineInputsState feature) => new()
+    public RunInput GetInputs(RunInputState feature) => new()
     {
         Inputs = new List<RunInputValue>
         {
@@ -60,11 +61,11 @@ public class CircleEngineRunner : IEngineRunner
             new("PopulationSize", "100", nameof(Int32))
         }
     };
-    private static EngineOutputState Map(EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome> output, int height, int width)
+    private static RunOutputsState Map(EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome> output, int height, int width)
     {
         var model = output.GetModel().Draw(width, height);
         
-        return new EngineOutputState
+        return new RunOutputsState
         {
             EngineState = output.GetState(output.EngineId),
             EngineStates = output.EngineStates,

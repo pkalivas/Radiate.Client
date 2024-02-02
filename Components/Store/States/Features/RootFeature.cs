@@ -42,8 +42,8 @@ public record RunState : ICopy<RunState>
     public Guid RunId { get; init; } = Guid.NewGuid();
     public bool IsRunning { get; init; }
     public string Status { get; init; } = "";
-    public EngineInputsState Inputs { get; init; } = new();
-    public EngineOutputState Outputs { get; init; } = new();
+    public RunInputState Inputs { get; init; } = new();
+    public RunOutputsState Outputs { get; init; } = new();
     public List<float> Scores { get; init; } = new();
 
     public RunState Copy()

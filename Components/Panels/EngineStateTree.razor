@@ -1,7 +1,7 @@
 @using Radiate.Engines.Entities
 @using Radiate.Engines.Schema
 @using Radiate.Client.Components.Store.Models
-@inherits StateComponent<EngineStateTree, Radiate.Client.Components.Store.States.Features.AppFeature>
+@inherits StateComponent<EngineStateTree, Radiate.Client.Components.Store.States.Features.RunState>
 
 <MudTreeView Items="@GetItems()">
     <ItemTemplate>
@@ -74,14 +74,14 @@
         //     return _items.Values.ToHashSet();
         // }
 
-        foreach (var state in State.EngineOutputs.EngineStates.Values)
+        foreach (var state in State.Outputs.EngineStates.Values)
         {
             if (seen.Contains(state.EngineId))
             {
                 continue;
             }
             
-            foreach (var item in GetTreeItems(state.EngineId, seen, State.EngineOutputs.EngineStates))
+            foreach (var item in GetTreeItems(state.EngineId, seen, State.Outputs.EngineStates))
             {
                 result.Add(item);
             }

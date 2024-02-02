@@ -23,13 +23,15 @@ public class RootReducer : Reducer<RootFeature>
         state.Runs[state.CurrentRunId] = state.Runs[state.CurrentRunId] with
         {
             Outputs = engineOutputsGeneratedAction,
-            Scores = state.Runs[state.CurrentRunId].Scores.Concat(new[]
-            {
-                engineOutputsGeneratedAction.Metrics.Get(MetricNames.Score).Statistics.LastValue
-            }).ToList(),
+            Scores = state.Runs[state.CurrentRunId].Scores
+                .Concat(new[]
+                {
+                    engineOutputsGeneratedAction.Metrics.Get(MetricNames.Score).Statistics.LastValue
+                })
+                .ToList(),
         };
 
-        return state with {Runs = state.Runs};// Counter = state.Counter + 1};
+        return state with { Runs = state.Runs };
     }
     
     private static RootFeature AddRun(RootFeature state, RunCreatedAction action)

@@ -38,6 +38,7 @@ public static class ApplicationServiceRegistration
             .AddTransient<IEffect, StartEngineEffect>()
             .AddTransient<IEffect, CancelEngineEffect>()
             .AddTransient<IEffect, NavigateToEffect>()
+            .AddTransient<IEffect, RunOutputEffect>()
             .AddTransient<IReducer, RootReducer>()
             .AddSingleton<IDispatcher, Dispatcher>()
             .AddSingleton<IStore, StateStore>();

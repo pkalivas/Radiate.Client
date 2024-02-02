@@ -1,9 +1,9 @@
 @using Radiate.Engines.Entities
 @using Radiate.Engines.Schema
 @using Radiate.Client.Components.Store.Models
-@inherits StateComponent<EngineStateTree, Radiate.Client.Components.Store.States.Features.RunState>
+@inherits StateComponent<EngineStateTree, Radiate.Client.Components.Store.Selectors.EngineTreeState>
 
-<MudTreeView Items="@GetItems()">
+<MudTreeView Items="@State.TreeItems">
     <ItemTemplate>
         <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.TreeItems">
             <Content>
@@ -58,76 +58,65 @@
     
     private Dictionary<string, TreeItemData<EngineState>> _items = new();
     
-    private HashSet<TreeItemData<EngineState>> GetItems()
-    {
-        var seen = new HashSet<string>();
-        var result = new HashSet<TreeItemData<EngineState>>();
-
-        // if (_items.Any())
-        // {
-        //     foreach (var item in _items.Values)
-        //     {
-        //         var state = State.EngineOutputs.EngineStates[item.Data.EngineId];
-        //         item.Data = state;
-        //     }
-        //     
-        //     return _items.Values.ToHashSet();
-        // }
-
-        foreach (var state in State.Outputs.EngineStates.Values)
-        {
-            if (seen.Contains(state.EngineId))
-            {
-                continue;
-            }
-            
-            foreach (var item in GetTreeItems(state.EngineId, seen, State.Outputs.EngineStates))
-            {
-                result.Add(item);
-            }
-        }
-        
-        _items = result.ToDictionary(x => x.Data.EngineId, x => x);
-
-        return _items.Values.ToHashSet();
-    }
-    
-    private HashSet<TreeItemData<EngineState>> GetTreeItems(string current, HashSet<string> seen, Dictionary<string, EngineState> states)
-    {
-        seen.Add(current);
-        
-        var currentEngineState = states[current];
-        var currentTreeItem = new TreeItemData<EngineState>(GetIcon(currentEngineState), GetColor(currentEngineState), currentEngineState);
-        
-        foreach (var sub in states[current].SubEngines)
-        {
-            foreach (var item in GetTreeItems(sub, seen, states))
-            {
-                currentTreeItem.TreeItems.Add(item);
-            }
-        }
-        
-        return new List<TreeItemData<EngineState>> { currentTreeItem }.ToHashSet();
-    }
-    
-    private static string GetIcon(EngineState state) => state.State switch
-    {
-        EngineStateTypes.Pending => Icons.Material.Filled.Pending,
-        EngineStateTypes.Started => Icons.Material.Filled.Start,
-        EngineStateTypes.Running => Icons.Material.Filled.RunCircle,
-        EngineStateTypes.Stopped => Icons.Material.Filled.Stop,
-        _ => Icons.Custom.FileFormats.FileCode
-    };
-
-    private static Color GetColor(EngineState state) => state.State switch
-    {
-        EngineStateTypes.Pending => Color.Default,
-        EngineStateTypes.Started => Color.Primary,
-        EngineStateTypes.Running => Color.Success,
-        EngineStateTypes.Stopped => Color.Secondary,
-        _ => Color.Default
-    };
-    
-    private static bool HasSwitched(EngineState state) => state.Metrics.Get(MetricNames.EngineChange)?.Statistics?.Sum > 0;
+    // private HashSet<TreeItemData<EngineState>> GetItems()
+    // {
+    //     var seen = new HashSet<string>();
+    //     var result = new HashSet<TreeItemData<EngineState>>();
+    //
+    //     foreach (var state in State.Outputs.EngineStates.Values)
+    //     {
+    //         if (seen.Contains(state.EngineId))
+    //         {
+    //             continue;
+    //         }
+    //         
+    //         foreach (var item in GetTreeItems(state.EngineId, seen, State.Outputs.EngineStates))
+    //         {
+    //             result.Add(item);
+    //         }
+    //     }
+    //     
+    //     _items = result.ToDictionary(x => x.Data.EngineId, x => x);
+    //
+    //     return _items.Values.ToHashSet();
+    // }
+    //
+    // private HashSet<TreeItemData<EngineState>> GetTreeItems(string current, HashSet<string> seen, Dictionary<string, EngineState> states)
+    // {
+    //     seen.Add(current);
+    //     
+    //     var currentEngineState = states[current];
+    //     var currentTreeItem = new TreeItemData<EngineState>(GetIcon(currentEngineState), GetColor(currentEngineState), currentEngineState);
+    //     
+    //     foreach (var sub in states[current].SubEngines)
+    //     {
+    //         foreach (var item in GetTreeItems(sub, seen, states))
+    //         {
+    //             currentTreeItem.TreeItems.Add(item);
+    //         }
+    //     }
+    //     
+    //     return new List<TreeItemData<EngineState>> { currentTreeItem }.ToHashSet();
+    // }
+    //
+    // private static string GetIcon(EngineState state) => state.State switch
+    // {
+    //     EngineStateTypes.Pending => Icons.Material.Filled.Pending,
+    //     EngineStateTypes.Started => Icons.Material.Filled.Start,
+    //     EngineStateTypes.Running => Icons.Material.Filled.RunCircle,
+    //     EngineStateTypes.Stopped => Icons.Material.Filled.Stop,
+    //     _ => Icons.Custom.FileFormats.FileCode
+    // };
+    //
+    // private static Color GetColor(EngineState state) => state.State switch
+    // {
+    //     EngineStateTypes.Pending => Color.Default,
+    //     EngineStateTypes.Started => Color.Primary,
+    //     EngineStateTypes.Running => Color.Success,
+    //     EngineStateTypes.Stopped => Color.Secondary,
+    //     _ => Color.Default
+    // };
+    //
+    // private static bool HasSwitched(EngineState state) => state.Metrics.Get(MetricNames.EngineChange)?.Statistics?.Sum > 0;
 
 }

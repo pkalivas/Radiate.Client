@@ -6,13 +6,14 @@
     <MudGrid>
         
         <MudItem xs="12" sm="6" md="10">
-            <MudPaper Elevation="2" Class="pa-4" Style="height: 250px;">
-                <EngineInputs/>
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 150px;">
+                @* <EngineInputs/> *@
+                <EngineStateTree/>
             </MudPaper>
         </MudItem>
 
         <MudItem xs="12" sm="6" md="2">
-            <MudPaper Elevation="2" Class="pa-4" Style="height: 250px;">
+            <MudPaper Elevation="2" Class="pa-4" Style="height: 150px;">
                 <EngineControl/>
             </MudPaper>
         </MudItem>
@@ -52,11 +53,11 @@
 
         <MudItem xs="12" sm="6">
             <MudGrid>
-                <MudItem xs="12">
-                    <MudPaper Elevation="2" Class="pa-4 overflow-auto" Style="height: 200px;">
-                        <EngineStateTree/>
-                    </MudPaper>
-                </MudItem>
+                @* <MudItem xs="12"> *@
+                @*     <MudPaper Elevation="2" Class="pa-4 overflow-auto" Style="height: 200px;"> *@
+                @*         <EngineStateTree/> *@
+                @*     </MudPaper> *@
+                @* </MudItem> *@
                 <MudItem xs="12">
                     <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
                         <MetricValueDisplay Value="@State.Score">

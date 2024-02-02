@@ -7,7 +7,7 @@ namespace Radiate.Client.Components.Store.Selectors;
 public static class RunSelectors
 {
     public static IState<RunState> Select(StateStore store) => 
-        store.Select<RootFeature>().SelectState(state =>
+        store.GetState<RootFeature>().SelectState(state =>
         {
             if (state.Runs.TryGetValue(state.CurrentRunId, out var run))
             {

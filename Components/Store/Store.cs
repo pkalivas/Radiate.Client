@@ -6,7 +6,9 @@ namespace Radiate.Client.Components.Store;
 
 public class StateStore : IStore
 {
-    private readonly object _syncRoot = new();
+	public event Action? ActionsProcessed;
+
+	private readonly object _syncRoot = new();
     private readonly IDispatcher _dispatcher;
     private readonly IActionSubscriber _actionSubscriber;
     private readonly Dictionary<string, List<IReducer>> _reducers = new();
@@ -24,37 +26,26 @@ public class StateStore : IStore
     }
 
     private bool IsDispatching { get; set; }
+
     
     public List<IState> GetStates() => _states.Values.ToList();
     
-    public IState<TState> Select<TState>() where TState : ICopy<TState> => (IState<TState>)_states[typeof(TState).Name];
+    public IState<TState> GetState<TState>()
+	    where TState : ICopy<TState> => (IState<TState>)_states[typeof(TState).Name];
     
-    public IState<TState> Select<TState>(Func<StateStore, TState> selector)where TState : ICopy<TState>
-    {
-        _states[typeof(TState).Name] = new StateSelection<TState, TState>(new State<TState>(selector(this)), s => s);
-        return (IState<TState>) _states[typeof(TState).Name];
-    }
+    public void RegisterSelector<T>(Func<StateStore, IState<T>> selector) 
+	    where T : ICopy<T> => _states[typeof(T).Name] = selector(this);
     
-    public event Action? ActionsProcessed;
-
-    public void Selctors<T>(Func<StateStore, IState<T>> selector) where T : ICopy<T>
-    {
-        _states[typeof(T).Name] = selector(this);
-    }
-    
-    public void Register<TState>(TState state) 
-        where TState : IFeature<TState>
-    {
-        _states[typeof(TState).Name] = new State<TState>(state);
-    }
+    public void RegisterFeature<TState>(TState state) 
+        where TState : IFeature<TState> => _states[typeof(TState).Name] = new State<TState>(state);
     
     public void Notify(IAction action) => _actionSubscriber.Notify(action);
     
-    public void Subscribe<TAction>(object subscriber, Action<TAction> callback) where TAction : IAction =>
-        _actionSubscriber.Subscribe(subscriber, callback);
+    public void Subscribe<TAction>(object subscriber, Action<TAction> callback) 
+	    where TAction : IAction => _actionSubscriber.Subscribe(subscriber, callback);
 
-    public void Unsubscribe<TAction>(object subscriber) where TAction : IAction =>
-        _actionSubscriber.Unsubscribe<TAction>(subscriber);
+    public void Unsubscribe<TAction>(object subscriber) 
+	    where TAction : IAction => _actionSubscriber.Unsubscribe<TAction>(subscriber);
 
     public void UnsubscribeAll(object subscriber) => _actionSubscriber.UnsubscribeAll(subscriber);
 

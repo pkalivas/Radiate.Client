@@ -29,13 +29,13 @@
     
     protected override Task OnInitializedAsync()
     {
-        Store.Select<LayoutState>().SelectedValueChanged += SetDrawerOpen!;
+        Store.GetState<LayoutState>().SelectedValueChanged += SetDrawerOpen!;
         return base.OnInitializedAsync();
     }
 
     public void Dispose()
     {
-        Store.Select<LayoutState>().SelectedValueChanged -= SetDrawerOpen!;
+        Store.GetState<LayoutState>().SelectedValueChanged -= SetDrawerOpen!;
     }
     
     private void SetDrawerOpen(object sender, LayoutState state)

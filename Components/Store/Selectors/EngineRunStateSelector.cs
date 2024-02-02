@@ -37,7 +37,7 @@ public record EngineRunState : ICopy<EngineRunState>
 public static class EngineRunStateSelector
 {
     public static IState<EngineRunState> Select(StateStore store) => 
-        store.Select<RootFeature>()
+        store.GetState<RootFeature>()
             .SelectState(state =>
             {
                 if (state.UiState.EngineStateExpanded.TryGetValue(state.CurrentRunId, out var engineTree))

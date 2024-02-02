@@ -31,13 +31,13 @@ app.MapRazorComponents<App>()
 app.Lifetime.ApplicationStarted.Register(() =>
 {
     var store = app.Services.GetRequiredService<IStore>();
-    store.Register(new RootFeature());
+    store.RegisterFeature(new RootFeature());
     
-    store.Selctors(RunSelectors.Select);
-    store.Selctors(MetricsSelectors.Select);
-    store.Selctors(EngineRunStateSelector.Select);
-    store.Selctors(LayoutStateSelector.Select);
-    store.Selctors(InputsSelectors.Select);
+    store.RegisterSelector(RunSelectors.Select);
+    store.RegisterSelector(MetricsSelectors.Select);
+    store.RegisterSelector(EngineRunStateSelector.Select);
+    store.RegisterSelector(LayoutStateSelector.Select);
+    store.RegisterSelector(InputsSelectors.Select);
 });
 
 app.Run();

@@ -30,7 +30,7 @@ public record MetricsState : ICopy<MetricsState>
 public static class MetricsSelectors
 {
     public static IState<MetricsState> Select(StateStore store) =>
-        store.Select<RootFeature>()
+        store.GetState<RootFeature>()
             .SelectState(feature =>
             {
                 if (!feature.Runs.ContainsKey(feature.CurrentRunId))

@@ -1,64 +1,106 @@
-@inherits StateComponent<EngineInputs, Radiate.Client.Components.Store.States.Features.RootFeature>
+@inherits StateComponent<EngineInputs, Radiate.Client.Components.Store.States.RunInputState>
 
-<div class="row">
-    <div class="col">
-    @*     <MudRadioGroup T="string" Value="@State.ModelType" ValueChanged="@OnModelTypeChange" Disabled="@State.Running"> *@
-    @*         <label>Model</label> *@
-    @*         @foreach (var item in StateOptions.ModelNames) *@
-    @*         { *@
-    @*             <div class="row"> *@
-    @*                 <MudRadio T="string" Value="@item" UnCheckedColor="Color.Primary">@item</MudRadio> *@
-    @*             </div> *@
-    @*         } *@
-    @*     </MudRadioGroup> *@
-    @* </div> *@
-    @* <div class="col"> *@
-    @*     @if (State.ModelType == "Image") *@
-    @*     { *@
-    @*         <MudRadioGroup T="string" Value="@State.DataSetType" ValueChanged="@OnDataSetChange" Disabled="@State.Running"> *@
-    @*             <label>DataSet</label> *@
-    @*             @foreach (var item in StateOptions.ImageDataSetNames) *@
-    @*             { *@
-    @*                 <div class="row"> *@
-    @*                     <MudRadio T="string" Value="@item" UnCheckedColor="Color.Primary">@item</MudRadio> *@
-    @*                 </div> *@
-    @*             } *@
-    @*         </MudRadioGroup> *@
-    @*     } *@
-    @*     else *@
-    @*     { *@
-    @*         <MudRadioGroup T="string" Value="@State.DataSetType" ValueChanged="@OnDataSetChange" Disabled="@State.Running"> *@
-    @*             <label>DataSet</label> *@
-    @*             @foreach (var item in StateOptions.DataSetNames) *@
-    @*             { *@
-    @*                 <div class="row"> *@
-    @*                     <MudRadio T="string" Value="@item" UnCheckedColor="Color.Primary">@item</MudRadio> *@
-    @*                 </div> *@
-    @*             } *@
-    @*         </MudRadioGroup>    *@
-    @*     } *@
-    </div>
-    <div class="col">
-        @* <MudNumericField Label="Population Size" *@
-        @*                  Variant="Variant.Filled" *@
-        @*                  Disabled="@State.Running"    *@
-        @*                  Value="@State.EngineInputs.PopulationSize" *@
-        @*                  ValueChanged="@((int size) => Dispatch(state => state.EngineInputs.PopulationSize = size))"> *@
-        @* </MudNumericField> *@
-        @* <MudNumericField Label="Mutation Rate" *@
-        @*                  Variant="Variant.Filled" *@
-        @*                  Disabled="@State.Running" *@
-        @*                  Value="@State.EngineInputs.MutationRate" *@
-        @*                  ValueChanged="@((float rate) => Dispatch(state => state.EngineInputs.MutationRate = rate))"> *@
-        @* </MudNumericField> *@
-        @* <MudNumericField Label="Max Epochs" *@
-        @*                  Variant="Variant.Filled" *@
-        @*                  Disabled="@State.Running" *@
-        @*                  Value="@State.EngineInputs.IterationLimit" *@
-        @*                  ValueChanged="@((int limit) => Dispatch(state => state.EngineInputs.IterationLimit = limit))"> *@
-        @* </MudNumericField> *@
+<div class="container mt-2">
+    <div class="row">
+        
+        <div class="col">
+            <div class="d-inline-flex border-bottom">
+                <strong>Model:</strong>
+                <div class="pl-2">@State.ModelType</div>
+            </div>
+        </div>
+
+
+        <div class="col">
+            <div class="d-inline-flex border-bottom">
+                <strong>Data:</strong>
+                <div class="pl-2">@State.DataSetType</div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="d-inline-flex border-bottom">
+                <strong>Pop. Size:</strong>
+                <div class="pl-2">@State.PopulationSize</div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="d-inline-flex border-bottom">
+                <strong>Mutation Rate:</strong>
+                <div class="pl-2">@State.MutationRate</div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="d-inline-flex border-bottom">
+                <strong>Inter. Limit:</strong>
+                <div class="pl-2">@State.IterationLimit</div>
+            </div>
+        </div>
+
     </div>
 </div>
+
+@* <div class="row"> *@
+@*     <div class="col"> *@
+@*     $1$     <MudRadioGroup T="string" Value="@State.ModelType" ValueChanged="@OnModelTypeChange" Disabled="@State.Running"> #1# *@
+@*     $1$         <label>Model</label> #1# *@
+@*     $1$         @foreach (var item in StateOptions.ModelNames) #1# *@
+@*     $1$         { #1# *@
+@*     $1$             <div class="row"> #1# *@
+@*     $1$                 <MudRadio T="string" Value="@item" UnCheckedColor="Color.Primary">@item</MudRadio> #1# *@
+@*     $1$             </div> #1# *@
+@*     $1$         } #1# *@
+@*     $1$     </MudRadioGroup> #1# *@
+@*     $1$ </div> #1# *@
+@*     $1$ <div class="col"> #1# *@
+@*     $1$     @if (State.ModelType == "Image") #1# *@
+@*     $1$     { #1# *@
+@*     $1$         <MudRadioGroup T="string" Value="@State.DataSetType" ValueChanged="@OnDataSetChange" Disabled="@State.Running"> #1# *@
+@*     $1$             <label>DataSet</label> #1# *@
+@*     $1$             @foreach (var item in StateOptions.ImageDataSetNames) #1# *@
+@*     $1$             { #1# *@
+@*     $1$                 <div class="row"> #1# *@
+@*     $1$                     <MudRadio T="string" Value="@item" UnCheckedColor="Color.Primary">@item</MudRadio> #1# *@
+@*     $1$                 </div> #1# *@
+@*     $1$             } #1# *@
+@*     $1$         </MudRadioGroup> #1# *@
+@*     $1$     } #1# *@
+@*     $1$     else #1# *@
+@*     $1$     { #1# *@
+@*     $1$         <MudRadioGroup T="string" Value="@State.DataSetType" ValueChanged="@OnDataSetChange" Disabled="@State.Running"> #1# *@
+@*     $1$             <label>DataSet</label> #1# *@
+@*     $1$             @foreach (var item in StateOptions.DataSetNames) #1# *@
+@*     $1$             { #1# *@
+@*     $1$                 <div class="row"> #1# *@
+@*     $1$                     <MudRadio T="string" Value="@item" UnCheckedColor="Color.Primary">@item</MudRadio> #1# *@
+@*     $1$                 </div> #1# *@
+@*     $1$             } #1# *@
+@*     $1$         </MudRadioGroup>    #1# *@
+@*     $1$     } #1# *@
+@*     </div> *@
+@*     <div class="col"> *@
+@*         $1$ <MudNumericField Label="Population Size" #1# *@
+@*         $1$                  Variant="Variant.Filled" #1# *@
+@*         $1$                  Disabled="@State.Running" #1# *@
+@*         $1$                  Value="@State.EngineInputs.PopulationSize" #1# *@
+@*         $1$                  ValueChanged="@((int size) => Dispatch(state => state.EngineInputs.PopulationSize = size))"> #1# *@
+@*         $1$ </MudNumericField> #1# *@
+@*         $1$ <MudNumericField Label="Mutation Rate" #1# *@
+@*         $1$                  Variant="Variant.Filled" #1# *@
+@*         $1$                  Disabled="@State.Running" #1# *@
+@*         $1$                  Value="@State.EngineInputs.MutationRate" #1# *@
+@*         $1$                  ValueChanged="@((float rate) => Dispatch(state => state.EngineInputs.MutationRate = rate))"> #1# *@
+@*         $1$ </MudNumericField> #1# *@
+@*         $1$ <MudNumericField Label="Max Epochs" #1# *@
+@*         $1$                  Variant="Variant.Filled" #1# *@
+@*         $1$                  Disabled="@State.Running" #1# *@
+@*         $1$                  Value="@State.EngineInputs.IterationLimit" #1# *@
+@*         $1$                  ValueChanged="@((int limit) => Dispatch(state => state.EngineInputs.IterationLimit = limit))"> #1# *@
+@*         $1$ </MudNumericField> #1# *@
+@*     </div> *@
+@* </div> *@
 
 @code {
     

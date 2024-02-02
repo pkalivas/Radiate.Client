@@ -7,6 +7,7 @@ namespace Radiate.Client.Components.Store.States;
 public record RunState : ICopy<RunState>
 {
     public Guid RunId { get; init; } = Guid.NewGuid();
+    public int Index { get; init; }
     public bool IsRunning { get; init; }
     public string Status { get; init; } = "";
     public RunInputState Inputs { get; init; } = new();

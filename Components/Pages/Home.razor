@@ -14,11 +14,13 @@
 </MudPaper>
 <MudTable OnRowClick="@((TableRowClickEventArgs<RunState> args) => OnSelect(args))" Items="@State.Runs.Values.ToList()" Class="ml-4 mr-4 px-8">
     <HeaderContent>
+        <MudTh></MudTh>
         <MudTh>Model</MudTh>
         <MudTh>Data Set</MudTh>
         <MudTh>Status</MudTh>
     </HeaderContent>
     <RowTemplate>
+        <MudTd>@context.Index</MudTd>
         <MudTd DataLabel="Model">@context.Inputs.ModelType</MudTd>
         <MudTd DataLabel="Data Set">@context.Inputs.DataSetType</MudTd>
         <MudTd DataLabel="Status">@context.Status</MudTd>

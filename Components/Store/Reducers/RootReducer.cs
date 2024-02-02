@@ -38,7 +38,7 @@ public class RootReducer : Reducer<RootFeature>
     
     private static RootFeature AddRun(RootFeature state, RunCreatedAction action)
     {
-        state.Runs[action.Run.RunId] = action.Run;
+        state.Runs[action.Run.RunId] = action.Run with { Index = state.Runs.Count };
         return state with { Runs = state.Runs };
     }
     

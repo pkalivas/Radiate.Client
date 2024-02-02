@@ -72,7 +72,7 @@ public class XORGraphRunner : IEngineRunner
         }
     };
     
-    private static RunOutputsState Map(EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> output)
+    private static RunOutputsState Map(EngineHandle output)
     {
         return new RunOutputsState
         {

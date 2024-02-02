@@ -115,7 +115,7 @@
             CloseOnEscapeKey = true,
         };
 
-        var dialogRef = await DialogService.ShowAsync<EngineStateTree>("Engine Tree Dialog", options);
+        var dialogRef = await DialogService.ShowAsync<EngineStateTree>("Engine Tree", options);
         await dialogRef.Result;
     }
 }

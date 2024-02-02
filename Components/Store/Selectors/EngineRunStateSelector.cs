@@ -1,5 +1,5 @@
 using MudBlazor;
-using Radiate.Client.Components.Panels;
+using Plotly.Blazor;
 using Radiate.Client.Components.Store.Interfaces;
 using Radiate.Client.Components.Store.Models;
 using Radiate.Client.Components.Store.States;
@@ -10,47 +10,61 @@ using Radiate.Optimizers.Evolution.Genome.Interfaces;
 
 namespace Radiate.Client.Components.Store.Selectors;
 
-public record EngineTreeState : ICopy<EngineTreeState>
+public record EngineRunState : ICopy<EngineRunState>
 {
     public Guid RunId { get; init; }
     public HashSet<TreeItemData<EngineState>> TreeItems { get; init; } = new();
     public Dictionary<string, bool> Expanded { get; init; } = new();
+    public RunInputState Inputs { get; set; } = new();
+    public EngineState? CurrentEngineState { get; set; }
     
-    public EngineTreeState Copy() => new()
+    public EngineRunState Copy() => new()
     {
         RunId = RunId,
         Expanded = Expanded.ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
-        TreeItems = TreeItems.ToHashSet()
+        TreeItems = TreeItems.ToHashSet(),
+        Inputs = Inputs.Copy(),
+        CurrentEngineState = new EngineState
+        {
+            EngineId = CurrentEngineState?.EngineId,
+            State = CurrentEngineState?.State,
+            SubEngines = CurrentEngineState?.SubEngines.ToList(),
+            Metrics = CurrentEngineState?.Metrics
+        }
     };
 }
 
-public static class EngineTreeSelector
+public static class EngineRunStateSelector
 {
-    public static IState<EngineTreeState> Select(StateStore store) => 
+    public static IState<EngineRunState> Select(StateStore store) => 
         store.Select<RootFeature>()
             .SelectState(state =>
             {
                 if (state.UiState.EngineStateExpanded.TryGetValue(state.CurrentRunId, out var engineTree))
                 {
-                    return new EngineTreeState
+                    return new EngineRunState
                     {
                         RunId = state.CurrentRunId,
                         TreeItems = GetItems(state.Runs[state.CurrentRunId].Outputs.EngineStates, engineTree),
-                        Expanded = engineTree
+                        Expanded = engineTree,
+                        Inputs = state.Runs[state.CurrentRunId].Inputs,
+                        CurrentEngineState = state.Runs[state.CurrentRunId]?.Outputs?.EngineStates.FirstOrDefault().Value
                     };
                 }
                 
                 if (state.Runs.TryGetValue(state.CurrentRunId, out var run))
                 {
-                    return new EngineTreeState
+                    return new EngineRunState
                     {
                         RunId = state.CurrentRunId,
                         TreeItems = GetItems(run.Outputs.EngineStates, new Dictionary<string, bool>()),
-                        Expanded = new Dictionary<string, bool>()
+                        Expanded = new Dictionary<string, bool>(),
+                        Inputs = run.Inputs,
+                        CurrentEngineState = run?.Outputs?.EngineStates.FirstOrDefault().Value
                     };
                 }
 
-                return new EngineTreeState();
+                return new EngineRunState();
             });
     
     private static HashSet<TreeItemData<EngineState>> GetItems(Dictionary<string, EngineState> states, Dictionary<string, bool> expanded)

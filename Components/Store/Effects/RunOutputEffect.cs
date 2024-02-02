@@ -12,7 +12,7 @@ public class RunOutputEffect : Effect<RootFeature, AddEngineOutputAction>
         if (!state.UiState.EngineStateExpanded.ContainsKey(state.CurrentRunId))
         {
             dispatcher.Dispatch<SetEngineTreeExpandedAction, RootFeature>(new SetEngineTreeExpandedAction(state.CurrentRunId, action.EngineOutputs.EngineStates
-                .ToDictionary(key => key.Key, _ => false)));
+                .ToDictionary(key => key.Key, _ => true)));
         }
         
         return Task.CompletedTask;

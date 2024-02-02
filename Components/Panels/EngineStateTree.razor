@@ -1,61 +1,69 @@
 @using Radiate.Engines.Entities
 @using Radiate.Engines.Schema
 @using Radiate.Client.Components.Store.Models
-@inherits StateComponent<EngineStateTree, EngineTreeState>
+@inherits StateComponent<EngineStateTree, EngineRunState>
 
+<MudDialog>
+    <DialogContent>
+        
+        <MudTreeView Items="@State.TreeItems">
+            <ItemTemplate>
+                <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.TreeItems" OnClick="@(() => OnSelectedValueChanged(context))">
+                    <Content>
+                        <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChild"/>
 
-<MudTreeView Items="@State.TreeItems">
-    <ItemTemplate>
-        <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.TreeItems" OnClick="@(() => OnSelectedValueChanged(context))">
-            <Content>
-                <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChild" />
-                
-                <div class="container">
-                    <div class="row border-bottom">
-                        <div class="col">
-                            <div class="d-inline-flex">
-                                <MudIcon Icon="@context.Icon" Class="ml-0 mr-2" Color="@context.Color"/>
-                                <strong>@(context.Data.Name[..3])</strong>
-                            </div>
-                        </div>
-                        
-                        <div class="col">
-                            <div class="d-inline-flex">
-                                <strong>State:</strong>
-                                <div class="pl-2">@context.Data.State</div>
-                            </div>
-                        </div>
-                        
-                        <div class="col">
-                            <div class="d-inline-flex">
-                                <strong>Runs:</strong>
-                                <div class="pl-2">@context.Data.Metrics.Get(MetricNames.Run)?.Statistics?.Sum</div>
-                            </div>
-                        </div>
-                        
-                        <div class="col">
-                            <div class="d-inline-flex">
-                                <strong>Time:</strong>
-                                <div class="pl-2">@TimeSpan.FromMilliseconds(context.Data.Metrics.Get(MetricNames.Time)?.Time?.Sum ?? 0)</div>
-                            </div>
-                        </div>
-                        
-                        <div class="col">
-                            <div class="d-inline-flex">
-                                <strong>Switches:</strong>
-                                <div class="pl-2">@context.Data.Metrics.Get(MetricNames.EngineChange)?.Statistics?.Sum</div>
-                            </div>
-                        </div>   
-                        
-                    </div>
-                </div>
+                        <div class="container">
+                            <div class="row border-bottom">
+                                <div class="col">
+                                    <div class="d-inline-flex">
+                                        <MudIcon Icon="@context.Icon" Class="ml-0 mr-2" Color="@context.Color"/>
+                                        <strong>@(context.Data.Name[..3])</strong>
+                                    </div>
+                                </div>
 
-            </Content>
-        </MudTreeViewItem>
-    </ItemTemplate>
-</MudTreeView>
+                                <div class="col">
+                                    <div class="d-inline-flex">
+                                        <strong>State:</strong>
+                                        <div class="pl-2">@context.Data.State</div>
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="d-inline-flex">
+                                        <strong>Runs:</strong>
+                                        <div class="pl-2">@context.Data.Metrics.Get(MetricNames.Run)?.Statistics?.Sum</div>
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="d-inline-flex">
+                                        <strong>Time:</strong>
+                                        <div class="pl-2">@TimeSpan.FromMilliseconds(context.Data.Metrics.Get(MetricNames.Time)?.Time?.Sum ?? 0)</div>
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="d-inline-flex">
+                                        <strong>Switches:</strong>
+                                        <div class="pl-2">@context.Data.Metrics.Get(MetricNames.EngineChange)?.Statistics?.Sum</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </Content>
+                </MudTreeViewItem>
+            </ItemTemplate>
+        </MudTreeView>
+
+    </DialogContent>
+</MudDialog>
+
 
 @code {
+    
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
     
     private void OnSelectedValueChanged(TreeItemData<EngineState> context)
     {

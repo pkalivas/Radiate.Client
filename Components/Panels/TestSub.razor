@@ -1,6 +1,7 @@
 @using Radiate.Client.Components.Store.Interfaces
 @inherits StateComponent<TestSub, Radiate.Client.Components.Store.States.Features.RootFeature>
 @inject ILogger<TestSub> Logger
+@inject Redux.Store<RootFeature> Store
 
 @code {
     
@@ -8,6 +9,7 @@
     {
         Subscribe<IAction>(act =>
         {
+            Store.Dispatch(act);
             Logger.LogInformation("Received action {Action}", act);
         });
     }

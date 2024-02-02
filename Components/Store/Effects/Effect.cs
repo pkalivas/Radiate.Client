@@ -1,5 +1,7 @@
 using Radiate.Client.Components.Store.Interfaces;
+using Radiate.Client.Components.Store.States.Features;
 using Radiate.Optimizers.Evolution.Genome.Interfaces;
+using Redux;
 
 namespace Radiate.Client.Components.Store.Effects;
 
@@ -27,4 +29,8 @@ public abstract class Effect<TState, TAction> : IEffect<TState, TAction>
 
         return Task.CompletedTask;
     }
+}
+
+public static class TestEffects
+{
 }

@@ -2,9 +2,12 @@ using Radiate.Client.Components.Store;
 using Radiate.Client.Components.Store.Effects;
 using Radiate.Client.Components.Store.Interfaces;
 using Radiate.Client.Components.Store.Reducers;
+using Radiate.Client.Components.Store.States.Features;
 using Radiate.Client.Services.Actors;
 using Radiate.Client.Services.Runners;
 using Radiate.Client.Services.Worker;
+using Redux;
+using Redux.Interfaces;
 
 namespace Radiate.Client.Bootstrap;
 
@@ -13,6 +16,7 @@ public static class ApplicationServiceRegistration
     public static IServiceCollection AddServices(this IServiceCollection services) =>
         services
             .AddStore()
+            .AddReflow()
             .AddEngineRunners()
             .AddSingleton<IActorService, ActorService>()
             .AddSingleton<IWorkItemQueue, WorkItemQueue>()
@@ -42,4 +46,20 @@ public static class ApplicationServiceRegistration
             .AddTransient<IReducer, RootReducer>()
             .AddSingleton<IDispatcher, Dispatcher>()
             .AddSingleton<IStore, StateStore>();
+    
+    private static IServiceCollection AddReflow(this IServiceCollection services) => 
+        services
+            .AddTransient<IEffect<RootFeature>, TestE>()
+            .AddSingleton<Store<RootFeature>>(sp =>
+            {
+                var store = new Store<RootFeature>(RootReducer.CreateReducers(), new RootFeature());
+                
+                var serviceProvidedEffects = sp.GetServices<IEffect<RootFeature>>();
+                
+                // var effect = Effects.CreateEffect<RootFeature>((store) => store.);
+                
+                store.RegisterEffects(serviceProvidedEffects.ToArray());
+                
+                return store;
+            });
 }

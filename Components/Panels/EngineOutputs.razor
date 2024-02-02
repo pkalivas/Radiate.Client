@@ -1,7 +1,8 @@
 @using Radiate.Engines.Schema
 @using Radiate.Engines.Entities
-@inherits StateComponent<EngineOutputs, Radiate.Client.Components.Store.States.RunState>
-
+@using System.Reactive.Linq
+@* @inherits StateComponent<EngineOutputs, Radiate.Client.Components.Store.States.RunState> *@
+@inherits StoreComponent<RunState>
 
 <MudToggleGroup T="string" SelectionMode="SelectionMode.SingleSelection" @bind-Value="paramType" Color="Color.Primary" CheckMark FixedContent>
     <MudToggleItem Value="@("total")" Text="Total" />
@@ -39,14 +40,14 @@
     </RowTemplate>
 </MudTable>
 
-<TestSub/>
-
 @code {
+
+    protected override IObservable<RunState> Select() => Store.Select(RunSelectors.SelectCurrentRun);
 
     private string paramType = "total";
     
     private List<MetricValue> GetMetricsToDisplay() => DisplayNames()
-            .Select(name => State.Outputs.Metrics.Get(name))
+            .Select(name => Model?.Outputs.Metrics.Get(name))
             .Where(val => val != null)
             .SelectMany(Flatten)
             .ToList();
@@ -76,5 +77,4 @@
         
         return list;
     }
-
 }

@@ -2,11 +2,25 @@ using Radiate.Client.Components.Store.Actions;
 using Radiate.Client.Components.Store.Interfaces;
 using Radiate.Client.Components.Store.States.Features;
 using Radiate.Engines.Schema;
+using Redux;
+using Redux.Reducers;
 
 namespace Radiate.Client.Components.Store.Reducers;
 
 public class RootReducer : Reducer<RootFeature>
 {
+    public static IEnumerable<On<RootFeature>> CreateReducers() => new List<On<RootFeature>>
+    {
+        Reducer.On<NavigateToRunAction, RootFeature>((state, action) => state with { CurrentRunId = action.RunId }),
+        Reducer.On<RunCreatedAction, RootFeature>(AddRun),
+        Reducer.On<AddEngineOutputAction, RootFeature>(AddOutput),
+        Reducer.On<RunCompletedAction, RootFeature>(RunCompleted),
+        Reducer.On<StartEngineAction, RootFeature>(StartEngine),
+        Reducer.On<SetEngineTreeExpandedAction, RootFeature>(SetTreeExpansions),
+        Reducer.On<LayoutChangedAction, RootFeature>(LayoutChanged),
+        Reducer.On<UpdateCurrentImageAction, RootFeature>(UpdateCurrentImage),
+    };
+    
     public override RootFeature Reduce(RootFeature state, IAction action) => action switch
     {
         NavigateToRunAction navigateToRunAction => state with { CurrentRunId = navigateToRunAction.RunId },

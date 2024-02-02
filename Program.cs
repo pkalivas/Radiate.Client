@@ -36,6 +36,7 @@ app.Lifetime.ApplicationStarted.Register(() =>
     store.Selctors(RunSelectors.Select);
     store.Selctors(MetricsSelectors.Select);
     store.Selctors(EngineRunStateSelector.Select);
+    store.Selctors(LayoutStateSelector.Select);
 });
 
 app.Run();

@@ -1,4 +1,7 @@
-﻿@inherits LayoutComponentBase
+﻿@using Radiate.Client.Components.Store.Interfaces
+@using Radiate.Client.Components.Store.States.Features
+@inherits LayoutComponentBase
+@implements IDisposable
 
 <MudThemeProvider IsDarkMode="true"/>
 <MudDialogProvider/>
@@ -6,6 +9,7 @@
 
 <MudLayout>
     <MudAppBar>
+        <MudButton OnClick="@(() => Dispatcher.Dispatch<LayoutChangedAction, RootFeature>(new LayoutChangedAction { IsSidebarOpen = !_drawerOpen }))"><MudIcon Icon="@Icons.Material.Filled.Menu"></MudIcon></MudButton>
         Radiate Client
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen">
@@ -19,9 +23,33 @@
 
 @code {
     bool _drawerOpen = true;
-
-    void DrawerToggle()
+    
+    [Inject] private IStore Store { get; set; }
+    [Inject] private IDispatcher Dispatcher { get; set; }
+    
+    protected override Task OnInitializedAsync()
     {
-        _drawerOpen = !_drawerOpen;
+        Store.Select<LayoutState>().SelectedValueChanged += SetDrawerOpen!;
+        return base.OnInitializedAsync();
     }
+
+    void DrawerToggle(bool open)
+    {
+        Dispatcher.Dispatch<LayoutChangedAction, RootFeature>(new LayoutChangedAction { IsSidebarOpen = open });
+    }
+
+    public void Dispose()
+    {
+        Store.Select<LayoutState>().SelectedValueChanged -= SetDrawerOpen!;
+    }
+    
+    private void SetDrawerOpen(object sender, LayoutState state)
+    {
+        InvokeAsync(() =>
+        {
+            _drawerOpen = state.IsSidebarOpen;
+            StateHasChanged();
+        });
+    }
+
 }

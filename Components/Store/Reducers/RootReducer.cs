@@ -15,6 +15,7 @@ public class RootReducer : Reducer<RootFeature>
         RunCompletedAction runCompletedAction => RunCompleted(state, runCompletedAction),
         StartEngineAction startEngineAction => StartEngine(state, startEngineAction),
         SetEngineTreeExpandedAction setTreeExpansionsAction => SetTreeExpansions(state, setTreeExpansionsAction),
+        LayoutChangedAction layoutChangedAction => LayoutChanged(state, layoutChangedAction),
         _ => state
     };
 
@@ -58,4 +59,9 @@ public class RootReducer : Reducer<RootFeature>
         state.UiState.EngineStateExpanded[action.RunId] = action.Expanded;
         return state with { UiState = state.UiState };
     }
+    
+    private static RootFeature LayoutChanged(RootFeature state, LayoutChangedAction action) => state with
+    {
+        UiState = state.UiState with { IsSidebarOpen = action.IsSidebarOpen }
+    };
 }

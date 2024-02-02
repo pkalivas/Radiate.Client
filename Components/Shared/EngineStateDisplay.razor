@@ -38,6 +38,13 @@ else
                     <div class="pl-2">@TimeSpan.FromMilliseconds(EngineState.Metrics.Get(MetricNames.Time)?.Time?.Sum ?? 0)</div>
                 </div>
             </div>
+            
+            <div class="col">
+                <div class="d-inline-flex">
+                    <strong>Score:</strong>
+                    <div class="pl-2">@(Math.Round(EngineState.Metrics.Get(MetricNames.Score)?.Statistics?.LastValue ?? 0, 4))</div>
+                </div>
+            </div>
                         
             <div class="col">
                 <div class="d-inline-flex">

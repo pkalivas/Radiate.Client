@@ -33,11 +33,6 @@
         return base.OnInitializedAsync();
     }
 
-    void DrawerToggle(bool open)
-    {
-        Dispatcher.Dispatch<LayoutChangedAction, RootFeature>(new LayoutChangedAction { IsSidebarOpen = open });
-    }
-
     public void Dispose()
     {
         Store.Select<LayoutState>().SelectedValueChanged -= SetDrawerOpen!;

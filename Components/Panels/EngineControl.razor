@@ -30,31 +30,13 @@ else
         <MudIcon Icon="@Icons.Material.Filled.PlayArrow" Class="ml-0 mr-2" Size="Size.Small"/>
         Run
     </MudButton>
-    @* <MudButton Class="w-100" *@
-    @*            Size="Size.Small" *@
-    @*            Variant="Variant.Filled" *@
-    @*            Color="Color.Tertiary" *@
-    @*            OnClick="@Start"> *@
-    @*     Start *@
-    @* </MudButton> *@
 }
 
 @code {
+    
+    private void Start() => Dispatcher.Dispatch<StartEngineAction, RootFeature>(new StartEngineAction(State.RunId));
 
-    private CancellationTokenSource _cancellationToken;
-
-
-    private void Start()
-    {
-        Dispatcher.Dispatch<StartEngineAction, RootFeature>(new StartEngineAction(State.RunId));
-    }
-
-    private void Stop()
-    {
-        Dispatcher.Dispatch<CancelEngineRunAction, RootFeature>(new CancelEngineRunAction(State.RunId));
-        // _cancellationToken.Cancel();
-        // Dispatch(new FunctionalAction(state => state.Running = false));
-    }
+    private void Stop() => Dispatcher.Dispatch<CancelEngineRunAction, RootFeature>(new CancelEngineRunAction(State.RunId));
     
     // private void OnResultCreated(EngineOutputState output) => 
     //     InvokeAsync(() =>

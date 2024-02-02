@@ -8,7 +8,7 @@
     <MudToggleItem Value="@("avg")" Text="Average" />
 </MudToggleGroup>
 
-<MudTable Items="@GetMetricsToDisplay()" ItemSize="25">
+<MudTable Items="@GetMetricsToDisplay()" ItemSize="25" Elevation="0">
     <HeaderContent>
         <MudTh>Metric</MudTh>
         @if (paramType == "total")

@@ -17,18 +17,28 @@
             </MudSelect>
         </div>
         <div>
-            <MudSelect SelectedValuesChanged="@OnDataSetChange"
-                       Value="@RunState.Inputs.DataSetType" 
-                       MultiSelection="false"
-                       HelperText="DataSet To Run"
-                       T="string" 
-                       Label="DataSet"
-                       Variant="Variant.Text">
-                @foreach (var data in StateOptions.DataSetNames)
+	        <MudSelect SelectedValuesChanged="@OnDataSetChange"
+	                   Value="@RunState.Inputs.DataSetType"
+	                   MultiSelection="false"
+	                   HelperText="DataSet To Run"
+	                   T="string"
+	                   Label="DataSet"
+	                   Variant="Variant.Text">
+                @if (RunState.Inputs.ModelType == "Image")
                 {
-                    <MudSelectItem Value="@data"/>
+                    @foreach (var data in StateOptions.ImageDataSetNames)
+                    {
+	                    <MudSelectItem Value="@data"/>
+                    }
                 }
-            </MudSelect>
+                else
+                {
+	                @foreach (var data in StateOptions.DataSetNames)
+	                {
+		                <MudSelectItem Value="@data"/>
+	                }
+                }
+	        </MudSelect>
         </div>
         <div class="mt-3">
             <h5>Genetic Inputs</h5>
@@ -77,7 +87,17 @@
 
     private void OnModelChange(IEnumerable<string> model)
     {
+        var selectedModel = model.First();
+        if (RunState.Inputs.ModelType == "Image" && selectedModel != "Image")
+        {
+	        RunState.Inputs.DataSetType = "Graph";
+        }
+
         RunState.Inputs.ModelType = model.First();
+        if (RunState.Inputs.ModelType == "Image")
+        {
+	        RunState.Inputs.DataSetType = "Polygon";
+        }
     }
     
     private void OnDataSetChange(IEnumerable<string> value)

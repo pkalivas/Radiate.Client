@@ -50,13 +50,10 @@ public class ActionSubscriber : IActionSubscriber
         lock (_lock)
         {
             var subscriberType = subscriber.GetType();
-        
-            foreach (var subscription in _subscriptions.Values.SelectMany(subscriptions => subscriptions))
+            
+            foreach (var key in _subscriptions.Keys)
             {
-                if (subscription.SubsciberType == subscriberType)
-                {
-                    _subscriptions[subscription.ActionType].Remove(subscription);
-                }
+                _subscriptions[key].RemoveAll(subscription => subscription.SubsciberType == subscriberType);
             }
         }
     }

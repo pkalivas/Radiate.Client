@@ -31,7 +31,7 @@ public abstract class StateComponent<T, TState> : ComponentBase, IDisposable
     public void Dispose()
     {
         _state.SelectedValueChanged -= SetState!;
-        Store.UnsubscribeAll(this);
+        InvokeAsync(() => Store.UnsubscribeAll(this));
     }
     
     protected void Dispatch<TAction>(TAction action)

@@ -20,8 +20,8 @@ public class StateSelection<T, TK> : State<TK>, IStateSelection<T, TK>
         _parent.SelectedValueChanged += SetState!;
     }
     
-    public IState<T1> Select<T1>(Func<TK, T1> selector) where T1 : ICopy<T1> =>
-        new State<T1>(selector(_previousState));
+    public IState<T1> Select<T1>(Func<TK, T1> selector) 
+	    where T1 : ICopy<T1> => new State<T1>(selector(_previousState));
     
     public void Dispose()
     {

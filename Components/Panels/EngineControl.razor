@@ -1,18 +1,7 @@
-@using Radiate.Client.Services.Runners
-@using Radiate.Engines.Schema
-@using SixLabors.ImageSharp
-@using SixLabors.ImageSharp.PixelFormats
 @using Color = MudBlazor.Color
 @using Image = SixLabors.ImageSharp.Image
 @using Size = MudBlazor.Size
-@using Radiate.Client.Components.Store.Models
-@using Dispatcher = Akka.Dispatch.Dispatcher
-@using Radiate.Client.Components.Store.Interfaces
-@using Radiate.Client.Components.Store.States.Features
-@using SixLabors.ImageSharp.Drawing
 @inherits StateComponent<EngineControl, RunState>
-@inject IWorkItemQueue WorkItemQueue
-@inject EngineRunnerFactory Runner
 
 @if (State.IsRunning)
 {

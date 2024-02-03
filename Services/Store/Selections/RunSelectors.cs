@@ -7,13 +7,13 @@ namespace Radiate.Client.Services.Store.Selections;
 
 public static class RunSelectors
 {
-    public static readonly ISelectorWithoutProps<RootState, RunModel> SelectCurrentRun = Selectors
+    public static readonly ISelector<RootState, RunModel> SelectCurrentRun = Selectors
         .CreateSelector<RootState, RunModel>(state => state.Runs.TryGetValue(state.CurrentRunId, out var run) ? run : new RunModel());
     
-    public static readonly ISelectorWithoutProps<RootState, RunInputsModel> SelectCurrentRunInputs = Selectors
+    public static readonly ISelector<RootState, RunInputsModel> SelectCurrentRunInputs = Selectors
         .CreateSelector<RootState, RunModel, RunInputsModel>(SelectCurrentRun, run => run.Inputs);
     
-    public static readonly ISelectorWithoutProps<RootState, MetricsModel> SelectCurrentMetrics = Selectors
+    public static readonly ISelector<RootState, MetricsModel> SelectCurrentMetrics = Selectors
         .CreateSelector<RootState, RunModel, MetricsModel>(SelectCurrentRun, run => new MetricsModel
         {
             Index = run.Scores.Count,

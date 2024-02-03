@@ -9,7 +9,7 @@ namespace Radiate.Client.Services.Store.Selections;
 
 public static class EngineRunStateSelector
 {
-    public static readonly ISelectorWithoutProps<RootState, EngineModel> SelectEngineRunState = Selectors
+    public static readonly ISelector<RootState, EngineModel> SelectEngineRunState = Selectors
         .CreateSelector<RootState, EngineModel>(state =>
         {
             if (state.UiFeature.EngineStateExpanded.TryGetValue(state.CurrentRunId, out var engineTree))

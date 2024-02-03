@@ -25,15 +25,18 @@ public abstract class EngineRunner<T> : IEngineRunner where T : IRunInput<T>
     
     public async Task StartRun(Guid runId, RunInput inputs, CancellationTokenSource cts)
     {
-        var pause = _store.ObserveAction<PauseEngineRunAction>()
+        var pause = _store.OnAction<PauseEngineRunAction>()
+            .Select(pair => pair.Action)
             .Where(action => action.RunId == runId)
             .Subscribe(_ => _pause.OnNext(true));
         
-        var resume = _store.ObserveAction<ResumeEngineRunAction>()
+        var resume = _store.OnAction<ResumeEngineRunAction>()
+            .Select(pair => pair.Action)
             .Where(action => action.RunId == runId)
             .Subscribe(_ => _pause.OnNext(false));
         
-        var cancel = _store.ObserveAction<CancelEngineRunAction>()
+        var cancel = _store.OnAction<CancelEngineRunAction>()
+            .Select(pair => pair.Action)
             .Where(action => action.RunId == runId)
             .Subscribe(_ => _pause.OnNext(false));
         

@@ -5,7 +5,7 @@ namespace Radiate.Client.Services.Store.Selections;
 
 public static class LayoutStateSelector
 {
-    public static ISelectorWithoutProps<RootState, LayoutModel> SelectLayoutState = 
+    public static ISelector<RootState, LayoutModel> SelectLayoutState = 
         Reflow.Selectors.Selectors.CreateSelector<RootState, LayoutModel>(state => new LayoutModel
         {
             IsSidebarOpen = state.UiFeature.IsSidebarOpen

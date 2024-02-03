@@ -2,6 +2,7 @@ using System.Reactive.Linq;
 using Microsoft.AspNetCore.Components;
 using Radiate.Client.Services.Store;
 using Reflow;
+using Reflow.Interfaces;
 
 namespace Radiate.Client.Components;
 
@@ -27,12 +28,14 @@ public abstract class StoreComponent<TModel> : ComponentBase, IDisposable
     
     protected virtual void OnSubscribed() { }
     
-    protected void Dispatch(object action) => Store.Dispatch(action);
+    protected void Dispatch<TAction>(TAction action) where TAction : IAction =>
+        Store.Dispatch(action);
 
     protected void Subscribe<TAction>(Action<TAction> callback)
     {
         _subscriptions.Add(Store
-            .ObserveAction<TAction>()
+            .OnAction<TAction>()
+            .Select(pair => pair.Action)
             .Subscribe(callback));
     }
 

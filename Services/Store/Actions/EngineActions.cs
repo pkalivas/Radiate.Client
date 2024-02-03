@@ -1,15 +1,16 @@
 using Radiate.Client.Services.Store.Models;
+using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Store.Actions;
 
-public record StartEngineAction(Guid RunId, RunInputsModel Inputs);
+public record StartEngineAction(Guid RunId, RunInputsModel Inputs) : IAction;
 
-public record PauseEngineRunAction(Guid RunId);
+public record PauseEngineRunAction(Guid RunId) : IAction;
 
-public record ResumeEngineRunAction(Guid RunId);
+public record ResumeEngineRunAction(Guid RunId) : IAction;
 
-public record CancelEngineRunAction(Guid RunId);
+public record CancelEngineRunAction(Guid RunId) : IAction;
 
-public record EngineStoppedAction;
+public record EngineStoppedAction : IAction;
 
-public record AddEngineOutputAction(RunOutputsModel EngineOutputs);
+public record AddEngineOutputAction(RunOutputsModel EngineOutputs) : IAction;

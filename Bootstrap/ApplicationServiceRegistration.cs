@@ -43,7 +43,7 @@ public static class ApplicationServiceRegistration
 
                 if (serviceProvidedEffects != null)
                 {
-                    store.RegisterEffects(serviceProvidedEffects.CreateEffects().ToArray());
+                    store.Register(serviceProvidedEffects.CreateEffects().ToArray());
                 }
                 
                 return store;

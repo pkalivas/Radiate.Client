@@ -1,9 +1,10 @@
 using Radiate.Client.Services.Store.Models;
 using Radiate.Client.Services.Store.States.Features;
+using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Store;
 
-public record RootState
+public record RootState : IState
 {
     public Guid CurrentRunId { get; init; } = Guid.NewGuid();
     public RouteFeature? Route { get; init; } = new();

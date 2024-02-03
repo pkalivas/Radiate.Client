@@ -14,7 +14,7 @@
         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OpenDialog">New Run</MudButton>
     </MudToolBar>
 </MudPaper>
-<MudTable OnRowClick="@((TableRowClickEventArgs<RunModel> args) => OnSelect(args))" Items="@Model.Runs.Values.ToList()" Class="ml-4 mr-4 px-8">
+<MudTable OnRowClick="@((TableRowClickEventArgs<RunModel> args) => OnSelect(args))" Items="@Model?.Runs.Values.ToList()" Class="ml-4 mr-4 px-8">
     <HeaderContent>
         <MudTh></MudTh>
         <MudTh>Model</MudTh>

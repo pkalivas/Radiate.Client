@@ -15,7 +15,10 @@ public abstract class StoreComponent<TModel> : ComponentBase, IDisposable
     
     protected override Task OnInitializedAsync()
     {
-        _subscriptions.Add(Select().Subscribe(SetModel));
+        _subscriptions.Add(Select()
+            .Where(val => val != null)
+            .DistinctUntilChanged()
+            .Subscribe(SetModel));
         OnSubscribed();
         return base.OnInitializedAsync();
     }

@@ -49,6 +49,7 @@ public class RootEffects : IEffectRegistry<RootState>
     {
         Run = store => store
             .On<AddEngineOutputAction>()
+            .Throttle(TimeSpan.FromMilliseconds(100))
             .Select(dispatchedAction =>
             {
                 var state = dispatchedAction.State;

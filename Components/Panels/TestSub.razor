@@ -3,13 +3,19 @@
 @inject ILogger<TestSub> Logger
 @inherits StoreComponent<Radiate.Client.Services.Store.RootState>
 
+@count
+
 @code {
     
+    private int count = 0;
     protected override void OnSubscribed()
     {
         Subscribe<object>(act =>
         {
+            count++;
             Logger.LogInformation($"Received action {act.GetType().FullName}", act);
+
+            InvokeAsync(StateHasChanged);
         });
     }
 }

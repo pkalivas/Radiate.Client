@@ -12,6 +12,7 @@
     <MudAppBar>
         <MudButton OnClick="@(() => Store.Dispatch(new LayoutChangedAction { IsSidebarOpen = !_drawerOpen }))"><MudIcon Icon="@Icons.Material.Filled.Menu"></MudIcon></MudButton>
         Radiate Client
+        <TestSub/>
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen">
         <NavMenu/>
@@ -20,9 +21,6 @@
         @Body
     </MudMainContent>
 </MudLayout>
-
-<TestSub/>
-
 
 @code {
     bool _drawerOpen = true;

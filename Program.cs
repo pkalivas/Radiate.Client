@@ -33,11 +33,8 @@ app.Lifetime.ApplicationStarted.Register(() =>
     var store = app.Services.GetRequiredService<IStore>();
     store.RegisterFeature(new RootFeature());
     
-    store.RegisterSelector(RunSelectors.Select);
     store.RegisterSelector(MetricsSelectors.Select);
-    store.RegisterSelector(EngineRunStateSelector.Select);
     store.RegisterSelector(LayoutStateSelector.Select);
-    store.RegisterSelector(InputsSelectors.Select);
 });
 
 app.Run();

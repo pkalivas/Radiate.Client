@@ -1,9 +1,11 @@
 @using Color = MudBlazor.Color
 @using Image = SixLabors.ImageSharp.Image
 @using Size = MudBlazor.Size
-@inherits StateComponent<EngineControl, RunState>
+@using Radiate.Schema
+@* @inherits StateComponent<EngineControl, RunState> *@
+@inherits StoreComponent<RunState>
 
-@if (State.IsRunning)
+@if (Model.IsRunning)
 {
     <MudButton Class="w-100"
                Size="Size.Small"
@@ -29,7 +31,9 @@ else
 
 @code {
     
-    private void Start() => Dispatcher.Dispatch<StartEngineAction, RootFeature>(new StartEngineAction(State.RunId));
+    private void Start() => Store.Dispatch(new StartEngineAction(Model.RunId));
 
-    private void Stop() => Dispatcher.Dispatch<CancelEngineRunAction, RootFeature>(new CancelEngineRunAction(State.RunId));
+    private void Stop() => Store.Dispatch(new CancelEngineRunAction(Model.RunId));
+    
+    protected override IObservable<RunState> Select() => Store.Select(RunSelectors.SelectCurrentRun);
 }

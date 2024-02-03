@@ -3,6 +3,7 @@ using Radiate.Client.Components.Store.States.Features;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Schema;
 using Radiate.Optimizers.Evolution.Genome.Interfaces;
+using Reflow.Interfaces;
 
 namespace Radiate.Client.Components.Store.Selectors;
 
@@ -50,4 +51,25 @@ public static class MetricsSelectors
                     Scores = lastRun.Outputs.Metrics.Get(MetricNames.Score)
                 };
             });
+
+    public static readonly ISelectorWithoutProps<RootFeature, MetricsState> SelectCurrentMetrics =
+        Reflow.Selectors.Selectors.CreateSelector<RootFeature, MetricsState>(state =>
+        {
+            if (!state.Runs.ContainsKey(state.CurrentRunId))
+            {
+                return new MetricsState();
+            }
+
+            var lastRun = state.Runs[state.CurrentRunId];
+
+            return new MetricsState
+            {
+                Index = lastRun.Scores.Count,
+                ScoresList = state.Runs[state.CurrentRunId].Scores,
+                Fitness = lastRun.Outputs.Metrics.Get(MetricNames.FitnessDistribution),
+                GenomeSize = lastRun.Outputs.Metrics.Get(MetricNames.GenomeSizeDistribution),
+                PopulationAge = lastRun.Outputs.Metrics.Get(MetricNames.AgeDistribution),
+                Scores = lastRun.Outputs.Metrics.Get(MetricNames.Score)
+            };
+        });
 }

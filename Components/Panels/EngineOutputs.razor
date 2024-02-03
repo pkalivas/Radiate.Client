@@ -1,7 +1,6 @@
 @using Radiate.Engines.Schema
 @using Radiate.Engines.Entities
 @using System.Reactive.Linq
-@* @inherits StateComponent<EngineOutputs, Radiate.Client.Components.Store.States.RunState> *@
 @inherits StoreComponent<RunState>
 
 <MudToggleGroup T="string" SelectionMode="SelectionMode.SingleSelection" @bind-Value="paramType" Color="Color.Primary" CheckMark FixedContent>

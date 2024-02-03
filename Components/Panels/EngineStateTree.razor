@@ -1,11 +1,11 @@
 @using Radiate.Engines.Entities
 @using Radiate.Client.Components.Store.Models
-@inherits StateComponent<EngineStateTree, EngineRunState>
+@inherits StoreComponent<EngineRunState>
 
 <MudDialog>
     <DialogContent>
         
-        <MudTreeView Items="@State.TreeItems">
+        <MudTreeView Items="@Model.TreeItems">
             <ItemTemplate>
                 <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.TreeItems" OnClick="@(() => OnSelectedValueChanged(context))">
                     <Content>
@@ -26,8 +26,11 @@
     
     private void OnSelectedValueChanged(TreeItemData<EngineState> context)
     {
-        var data = State.TreeItems.ToDictionary(key => key.Data.EngineId, value => value.IsExpanded);
+        var data = Model.TreeItems.ToDictionary(key => key.Data.EngineId, value => value.IsExpanded);
         data[context.Data.EngineId] = !context.IsExpanded;
-        Dispatch(new SetEngineTreeExpandedAction(State.RunId, data));
+        Dispatch(new SetEngineTreeExpandedAction(Model.RunId, data));
     }
+    
+    protected override IObservable<EngineRunState> Select() =>
+        Store.Select(EngineRunStateSelector.SelectEngineRunState);
 }

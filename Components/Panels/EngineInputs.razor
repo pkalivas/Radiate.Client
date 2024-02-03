@@ -1,4 +1,5 @@
-@inherits StateComponent<EngineInputs, Radiate.Client.Components.Store.States.RunInputState>
+@* @inherits StateComponent<EngineInputs, Radiate.Client.Components.Store.States.RunInputState> *@
+@inherits StoreComponent<RunInputState>
 
 <div class="container mt-2">
     <div class="row">
@@ -6,7 +7,7 @@
         <div class="col">
             <div class="d-inline-flex border-bottom">
                 <strong>Model:</strong>
-                <div class="pl-2">@State.ModelType</div>
+                <div class="pl-2">@Model.ModelType</div>
             </div>
         </div>
 
@@ -14,28 +15,28 @@
         <div class="col">
             <div class="d-inline-flex border-bottom">
                 <strong>Data:</strong>
-                <div class="pl-2">@State.DataSetType</div>
+                <div class="pl-2">@Model.DataSetType</div>
             </div>
         </div>
 
         <div class="col">
             <div class="d-inline-flex border-bottom">
                 <strong>Pop. Size:</strong>
-                <div class="pl-2">@State.PopulationSize</div>
+                <div class="pl-2">@Model.PopulationSize</div>
             </div>
         </div>
 
         <div class="col">
             <div class="d-inline-flex border-bottom">
                 <strong>Mutation Rate:</strong>
-                <div class="pl-2">@State.MutationRate</div>
+                <div class="pl-2">@Model.MutationRate</div>
             </div>
         </div>
 
         <div class="col">
             <div class="d-inline-flex border-bottom">
                 <strong>Inter. Limit:</strong>
-                <div class="pl-2">@State.IterationLimit</div>
+                <div class="pl-2">@Model.IterationLimit</div>
             </div>
         </div>
 
@@ -117,4 +118,7 @@
     {
         // Dispatch(state => state.DataSetType = value);
     }
+
+    protected override IObservable<RunInputState> Select() => Store.Select(InputsSelectors.SelectCurrentRunInputs);
+
 }

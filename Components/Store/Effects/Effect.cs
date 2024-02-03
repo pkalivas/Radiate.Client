@@ -1,7 +1,8 @@
+using Radiate.Client.Components.Store.Actions;
 using Radiate.Client.Components.Store.Interfaces;
 using Radiate.Client.Components.Store.States.Features;
 using Radiate.Optimizers.Evolution.Genome.Interfaces;
-using Redux;
+using Reflow.Effects;
 
 namespace Radiate.Client.Components.Store.Effects;
 
@@ -33,4 +34,25 @@ public abstract class Effect<TState, TAction> : IEffect<TState, TAction>
 
 public static class TestEffects
 {
+    public static Effect<RootFeature> EngineOutputEffect = new()
+    {
+        Run = store => store.ObserveAction<AddEngineOutputAction>(),
+            // .Where(state => s)
+        Dispatch = true
+    };
+    // {
+    //     if (!state.UiState.EngineStateExpanded.ContainsKey(state.CurrentRunId))
+    //     {
+    //         var treeExpansions = action.EngineOutputs.EngineStates.ToDictionary(val => val.Key, _ => true);
+    //         dispatcher.Dispatch<SetEngineTreeExpandedAction, RootFeature>(new SetEngineTreeExpandedAction(state.CurrentRunId, treeExpansions));
+    //     }
+    //
+    //     if (action.EngineOutputs.Outputs.Any(val => val.Name == "Image"))
+    //     {
+    //         var imageString = action.EngineOutputs.GetOutputValue<string>("Image");
+    //         var imageData = SixLabors.ImageSharp.Image.Load<SixLabors.ImageSharp.PixelFormats.Rgba32>(Convert.FromBase64String(imageString));
+    //     }
+    //     
+    //     return Task.CompletedTask;
+    // });
 }

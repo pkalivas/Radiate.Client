@@ -1,28 +1,41 @@
+using System.Reactive.Linq;
 using Radiate.Client.Components.Store.Actions;
+using Radiate.Client.Components.Store.Interfaces;
 using Radiate.Client.Components.Store.States.Features;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
+using Reflow.Interfaces;
 
 namespace Radiate.Client.Components.Store.Effects;
 
-public class RunOutputEffect : Effect<RootFeature, AddEngineOutputAction>
+public class RunOutputEffect : IEffect<RootFeature>
 {
-    public RunOutputEffect(IServiceProvider serviceProvider) : base(serviceProvider) { }
-
-    public override Task HandleAsync(RootFeature state, AddEngineOutputAction action, IDispatcher dispatcher)
+    public RunOutputEffect()
     {
-        if (!state.UiState.EngineStateExpanded.ContainsKey(state.CurrentRunId))
+        Run = store => store
+            .ObserveAction<AddEngineOutputAction>()
+            .Select(action => HandleAsync(store.State, action));
+    }
+    
+    public Func<Reflow.Store<RootFeature>, IObservable<object>>? Run { get; set; }
+    public bool Dispatch { get; set; } = true;
+    
+    private IAction HandleAsync(RootFeature feature, object action)
+    {
+        if (action is AddEngineOutputAction addEngineOutputAction)
         {
-	        var treeExpansions = action.EngineOutputs.EngineStates.ToDictionary(val => val.Key, _ => true);
-            dispatcher.Dispatch<SetEngineTreeExpandedAction, RootFeature>(new SetEngineTreeExpandedAction(state.CurrentRunId, treeExpansions));
+            if (!feature.UiState.EngineStateExpanded.ContainsKey(feature.CurrentRunId))
+            {
+                var treeExpansions = addEngineOutputAction.EngineOutputs.EngineStates.ToDictionary(val => val.Key, _ => true);
+                return new SetEngineTreeExpandedAction(feature.CurrentRunId, treeExpansions);
+            }
         }
 
-        if (action.EngineOutputs.Outputs.Any(val => val.Name == "Image"))
-        {
-	        var imageString = action.EngineOutputs.GetOutputValue<string>("Image");
-	        var imageData = Image.Load<Rgba32>(Convert.FromBase64String(imageString));
-        }
-        
-        return Task.CompletedTask;
+        return new NoopAction();
     }
 }
+
+
+// if (addEngineOutputAction.EngineOutputs.Outputs.Any(val => val.Name == "Image"))
+// {
+//     var imageString = addEngineOutputAction.EngineOutputs.GetOutputValue<string>("Image");
+//     var imageData = Image.Load<Rgba32>(Convert.FromBase64String(imageString));
+// }

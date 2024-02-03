@@ -11,7 +11,6 @@ using Radiate.Extensions.Engines;
 using Radiate.Extensions.Evolution.Alterers;
 using Radiate.Extensions.Evolution.Architects;
 using Radiate.Extensions.Evolution.Architects.Nodes;
-using Radiate.Extensions.Evolution.Programs;
 using Radiate.Optimizers.Evolution.Interceptors;
 using Radiate.Optimizers.Evolution.Selectors;
 using Radiate.Tensors;

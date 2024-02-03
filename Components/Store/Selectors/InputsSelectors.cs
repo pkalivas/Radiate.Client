@@ -1,20 +1,20 @@
 using Radiate.Client.Components.Store.Interfaces;
 using Radiate.Client.Components.Store.States;
 using Radiate.Client.Components.Store.States.Features;
+using Reflow.Interfaces;
 
 namespace Radiate.Client.Components.Store.Selectors;
 
 public static class InputsSelectors
 {
-    public static IState<RunInputState> Select(StateStore store) => 
-        store.GetState<RootFeature>()
-            .SelectState(state =>
+    public static ISelectorWithoutProps<RootFeature, RunInputState> SelectCurrentRunInputs = 
+        Reflow.Selectors.Selectors.CreateSelector<RootFeature, RunInputState>(state =>
+        {
+            if (state.Runs.TryGetValue(state.CurrentRunId, out var run))
             {
-                if (state.Runs.TryGetValue(state.CurrentRunId, out var run))
-                {
-                    return run.Inputs;
-                }
-                
-                return new RunInputState();
-            });    
+                return run.Inputs;
+            }
+
+            return new RunInputState();
+        });
 }

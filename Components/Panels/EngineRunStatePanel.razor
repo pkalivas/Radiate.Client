@@ -1,8 +1,10 @@
-@inherits StateComponent<EngineRunStatePanel, EngineRunState>
+@inherits StoreComponent<EngineRunState>
 
-    <EngineStateDisplay EngineState="@State.CurrentEngineState"/>
-
+<EngineStateDisplay EngineState="@Model.CurrentEngineState"/>
 
 @code {
-    
+
+    protected override IObservable<EngineRunState> Select() =>
+        Store.Select(EngineRunStateSelector.SelectEngineRunState);
+
 }

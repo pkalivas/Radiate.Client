@@ -1,6 +1,4 @@
-﻿@using Radiate.Client.Components.Store.Interfaces
-@inherits LayoutComponentBase
-@implements IDisposable
+﻿@inherits LayoutComponentBase
 
 <MudThemeProvider IsDarkMode="true"/>
 <MudDialogProvider/>
@@ -8,7 +6,7 @@
 
 <MudLayout>
     <MudAppBar>
-        <MudButton OnClick="@(() => Dispatcher.Dispatch<LayoutChangedAction, RootFeature>(new LayoutChangedAction { IsSidebarOpen = !_drawerOpen }))"><MudIcon Icon="@Icons.Material.Filled.Menu"></MudIcon></MudButton>
+        <MudButton OnClick="@(() => Store.Dispatch(new LayoutChangedAction { IsSidebarOpen = !_drawerOpen }))"><MudIcon Icon="@Icons.Material.Filled.Menu"></MudIcon></MudButton>
         Radiate Client
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen">
@@ -25,27 +23,17 @@
 @code {
     bool _drawerOpen = true;
     
-    [Inject] private IStore Store { get; set; }
-    [Inject] private IDispatcher Dispatcher { get; set; }
+    [Inject] private Reflow.Store<RootFeature> Store { get; set; }
     
     protected override Task OnInitializedAsync()
     {
-        Store.GetState<LayoutState>().SelectedValueChanged += SetDrawerOpen!;
+        Store.Select(LayoutStateSelector.SelectLayoutState).Subscribe(SetDrawerOpen);
         return base.OnInitializedAsync();
     }
-
-    public void Dispose()
-    {
-        Store.GetState<LayoutState>().SelectedValueChanged -= SetDrawerOpen!;
-    }
     
-    private void SetDrawerOpen(object sender, LayoutState state)
+    private void SetDrawerOpen(LayoutState state) => InvokeAsync(() =>
     {
-        InvokeAsync(() =>
-        {
-            _drawerOpen = state.IsSidebarOpen;
-            StateHasChanged();
-        });
-    }
-
+        _drawerOpen = state.IsSidebarOpen;
+        StateHasChanged();
+    });
 }

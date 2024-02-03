@@ -1,7 +1,7 @@
 @page "/runs/{runId:guid}"
 @rendermode InteractiveServer
 @inject IDialogService DialogService
-@inherits StateComponent<Runs, Radiate.Client.Components.Store.Selectors.MetricsState>
+@inherits StoreComponent<MetricsState>
 
 <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
     <MudGrid>
@@ -52,24 +52,24 @@
 
                 <MudItem md="6">
                     <MudPaper Elevation="2" Class="pa-4" Style="height: 150px;">
-                        <MetricDisplay Metric="@(State.GenomeSize)">
-                            <Chart Values="@(State.GenomeSize?.Statistics.LastSequence.ToList())" Type="pie" Height="125"></Chart>
+                        <MetricDisplay Metric="@(Model.GenomeSize)">
+                            <Chart Values="@(Model.GenomeSize?.Statistics.LastSequence.ToList())" Type="pie" Height="125"></Chart>
                         </MetricDisplay>
                     </MudPaper>
                 </MudItem>
 
                 <MudItem md="6">
                     <MudPaper Elevation="2" Class="pa-4" Style="height: 150px;">
-                        <MetricDisplay Metric="@(State.PopulationAge)">
-                            <Chart Values="@(State.PopulationAge?.Statistics?.LastSequence.ToList())" Type="bar" Height="125"></Chart>
+                        <MetricDisplay Metric="@(Model.PopulationAge)">
+                            <Chart Values="@(Model.PopulationAge?.Statistics?.LastSequence.ToList())" Type="bar" Height="125"></Chart>
                         </MetricDisplay>
                     </MudPaper>
                 </MudItem>
 
                 <MudItem md="12">
                     <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
-                        <MetricValueDisplay Value="@State.Score">
-                            <Chart Values="@State.ScoresList" Type="line" Height="175"/>
+                        <MetricValueDisplay Value="@Model.Score">
+                            <Chart Values="@Model.ScoresList" Type="line" Height="175"/>
                         </MetricValueDisplay>
                     </MudPaper>
                 </MudItem>
@@ -80,8 +80,8 @@
             <MudGrid>
             <MudItem md="12">
                 <MudPaper Elevation="2" Class="pa-4" Style="height: 150px;">
-                    <MetricDisplay Metric="@(State.Fitness)">
-                        <Chart Values="@(State.Fitness?.Statistics?.LastSequence.ToList())" Type="line" Height="125"/>
+                    <MetricDisplay Metric="@(Model.Fitness)">
+                        <Chart Values="@(Model.Fitness?.Statistics?.LastSequence.ToList())" Type="line" Height="125"/>
                     </MetricDisplay>
                     </MudPaper>
                 </MudItem>
@@ -118,4 +118,6 @@
         var dialogRef = await DialogService.ShowAsync<EngineStateTree>("Engine Tree", options);
         await dialogRef.Result;
     }
+
+    protected override IObservable<MetricsState> Select() => Store.Select(MetricsSelectors.SelectCurrentMetrics);
 }

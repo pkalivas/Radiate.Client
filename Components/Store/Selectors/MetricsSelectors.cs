@@ -1,4 +1,3 @@
-using Radiate.Client.Components.Store.Interfaces;
 using Radiate.Client.Components.Store.States.Features;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Schema;
@@ -30,27 +29,27 @@ public record MetricsState : ICopy<MetricsState>
 
 public static class MetricsSelectors
 {
-    public static IState<MetricsState> Select(StateStore store) =>
-        store.GetState<RootFeature>()
-            .SelectState(feature =>
-            {
-                if (!feature.Runs.ContainsKey(feature.CurrentRunId))
-                {
-                    return new MetricsState();
-                }
-                
-                var lastRun = feature.Runs[feature.CurrentRunId];
-                
-                return new MetricsState
-                {
-                    Index = lastRun.Scores.Count,
-                    ScoresList = feature.Runs[feature.CurrentRunId].Scores,
-                    Fitness = lastRun.Outputs.Metrics.Get(MetricNames.FitnessDistribution),
-                    GenomeSize = lastRun.Outputs.Metrics.Get(MetricNames.GenomeSizeDistribution),
-                    PopulationAge = lastRun.Outputs.Metrics.Get(MetricNames.AgeDistribution),
-                    Scores = lastRun.Outputs.Metrics.Get(MetricNames.Score)
-                };
-            });
+    // public static IState<MetricsState> Select(StateStore store) =>
+    //     store.GetState<RootFeature>()
+    //         .SelectState(feature =>
+    //         {
+    //             if (!feature.Runs.ContainsKey(feature.CurrentRunId))
+    //             {
+    //                 return new MetricsState();
+    //             }
+    //             
+    //             var lastRun = feature.Runs[feature.CurrentRunId];
+    //             
+    //             return new MetricsState
+    //             {
+    //                 Index = lastRun.Scores.Count,
+    //                 ScoresList = feature.Runs[feature.CurrentRunId].Scores,
+    //                 Fitness = lastRun.Outputs.Metrics.Get(MetricNames.FitnessDistribution),
+    //                 GenomeSize = lastRun.Outputs.Metrics.Get(MetricNames.GenomeSizeDistribution),
+    //                 PopulationAge = lastRun.Outputs.Metrics.Get(MetricNames.AgeDistribution),
+    //                 Scores = lastRun.Outputs.Metrics.Get(MetricNames.Score)
+    //             };
+    //         });
 
     public static readonly ISelectorWithoutProps<RootFeature, MetricsState> SelectCurrentMetrics =
         Reflow.Selectors.Selectors.CreateSelector<RootFeature, MetricsState>(state =>

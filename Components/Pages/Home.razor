@@ -2,7 +2,8 @@
 @rendermode InteractiveServer
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
-@inherits StateComponent<Home, RootFeature>
+@* @inherits StateComponent<Home, RootFeature> *@
+@inherits StoreComponent<RootFeature>
 
 <MudPaper Elevation="25" Class="mt-4 ml-4 mr-4 px-8">
     <MudToolBar>
@@ -11,7 +12,7 @@
         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OpenDialog">New Run</MudButton>
     </MudToolBar>
 </MudPaper>
-<MudTable OnRowClick="@((TableRowClickEventArgs<RunState> args) => OnSelect(args))" Items="@State.Runs.Values.ToList()" Class="ml-4 mr-4 px-8">
+<MudTable OnRowClick="@((TableRowClickEventArgs<RunState> args) => OnSelect(args))" Items="@Model.Runs.Values.ToList()" Class="ml-4 mr-4 px-8">
     <HeaderContent>
         <MudTh></MudTh>
         <MudTh>Model</MudTh>
@@ -30,7 +31,7 @@
     
     private void OnSelect(TableRowClickEventArgs<RunState> run)
     {
-        Dispatcher.Dispatch<NavigateToRunAction, RootFeature>(new NavigateToRunAction(run.Item.RunId));
+        Dispatch(new NavigateToRunAction(run.Item.RunId));
         NavigationManager.NavigateTo($"/runs/{run.Item.RunId}");
     }
 
@@ -48,7 +49,9 @@
 
         if (!result.Canceled)
         {
-            Dispatcher.Dispatch<RunCreatedAction, RootFeature>(new RunCreatedAction((RunState)result.Data));
+            Dispatch(new RunCreatedAction((RunState)result.Data));
         }
     }
+
+    protected override IObservable<RootFeature> Select() => Store.Select();
 }

@@ -14,14 +14,15 @@ using Radiate.Extensions.Evolution.Architects.Nodes;
 using Radiate.Optimizers.Evolution.Interceptors;
 using Radiate.Optimizers.Evolution.Selectors;
 using Radiate.Tensors;
+using Reflow;
 
 namespace Radiate.Client.Services.Runners;
 
 public class XORGraphRunner : IEngineRunner
 {
-    private readonly IDispatcher _dispatcher;
+    private readonly Store<RootFeature> _dispatcher;
     
-    public XORGraphRunner(IDispatcher dispatcher) => _dispatcher = dispatcher;
+    public XORGraphRunner(Store<RootFeature> dispatcher) => _dispatcher = dispatcher;
     
     public Func<CancellationToken, Task> Run(RunInput command, CancellationTokenSource cts) => async token =>
     {
@@ -55,12 +56,12 @@ public class XORGraphRunner : IEngineRunner
     
         var result = engine.Fit()
             .Limit(Limits.Accuracy(0.01f), Limits.Iteration(iterationLimit))
-            .Peek(res => _dispatcher.Dispatch<AddEngineOutputAction, RootFeature>(new AddEngineOutputAction(Map(res))))
+            .Peek(res => _dispatcher.Dispatch(new AddEngineOutputAction(Map(res))))
             .TakeWhile(_ => !cts.IsCancellationRequested && !token.IsCancellationRequested)
             .ToResult();
         
-        _dispatcher.Dispatch<AddEngineOutputAction, RootFeature>(new AddEngineOutputAction(Map(result)));
-        _dispatcher.Dispatch<RunCompletedAction, RootFeature>(new RunCompletedAction());
+        _dispatcher.Dispatch(new AddEngineOutputAction(Map(result)));
+        _dispatcher.Dispatch(new RunCompletedAction());
     };
 
     public RunInput GetInputs(RunInputState feature) => new()

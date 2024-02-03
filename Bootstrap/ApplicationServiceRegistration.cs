@@ -1,6 +1,4 @@
-using Radiate.Client.Components.Store;
 using Radiate.Client.Components.Store.Effects;
-using Radiate.Client.Components.Store.Interfaces;
 using Radiate.Client.Components.Store.Reducers;
 using Radiate.Client.Components.Store.States.Features;
 using Radiate.Client.Services.Actors;
@@ -15,7 +13,6 @@ public static class ApplicationServiceRegistration
 {
     public static IServiceCollection AddServices(this IServiceCollection services) =>
         services
-            .AddStore()
             .AddReflow()
             .AddEngineRunners()
             .AddSingleton<IActorService, ActorService>()
@@ -37,11 +34,10 @@ public static class ApplicationServiceRegistration
                 _ => throw new ArgumentException($"Runner with name {name} not found.")
             });
 
-    private static IServiceCollection AddStore(this IServiceCollection services) =>
-        services
-            .AddTransient<IReducer, RootReducer>()
-            .AddSingleton<IDispatcher, Dispatcher>()
-            .AddSingleton<IStore, StateStore>();
+    // private static IServiceCollection AddStore(this IServiceCollection services) =>
+    //     services
+    //         .AddSingleton<IDispatcher, Dispatcher>()
+    //         .AddSingleton<IStore, StateStore>();
     
     private static IServiceCollection AddReflow(this IServiceCollection services) => 
         services

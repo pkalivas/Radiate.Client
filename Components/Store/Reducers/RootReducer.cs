@@ -1,12 +1,11 @@
 using Radiate.Client.Components.Store.Actions;
-using Radiate.Client.Components.Store.Interfaces;
 using Radiate.Client.Components.Store.States.Features;
 using Radiate.Engines.Schema;
 using Reflow.Reducers;
 
 namespace Radiate.Client.Components.Store.Reducers;
 
-public class RootReducer : Reducer<RootFeature>
+public static class RootReducer
 {
     public static IEnumerable<On<RootFeature>> CreateReducers() => new List<On<RootFeature>>
     {
@@ -20,19 +19,6 @@ public class RootReducer : Reducer<RootFeature>
         Reducer.On<UpdateCurrentImageAction, RootFeature>(UpdateCurrentImage),
     };
     
-    public override RootFeature Reduce(RootFeature state, IAction action) => action switch
-    {
-        NavigateToRunAction navigateToRunAction => state with { CurrentRunId = navigateToRunAction.RunId },
-        RunCreatedAction runCreatedAction => AddRun(state, runCreatedAction),
-        AddEngineOutputAction engineOutputsGeneratedAction => AddOutput(state, engineOutputsGeneratedAction),
-        RunCompletedAction runCompletedAction => RunCompleted(state, runCompletedAction),
-        StartEngineAction startEngineAction => StartEngine(state, startEngineAction),
-        SetEngineTreeExpandedAction setTreeExpansionsAction => SetTreeExpansions(state, setTreeExpansionsAction),
-        LayoutChangedAction layoutChangedAction => LayoutChanged(state, layoutChangedAction),
-        UpdateCurrentImageAction updateImageAction => UpdateCurrentImage(state, updateImageAction),
-        _ => state
-    };
-
     private static RootFeature AddOutput(RootFeature state, AddEngineOutputAction action)
     {
         var engineOutputsGeneratedAction = action.EngineOutputs;

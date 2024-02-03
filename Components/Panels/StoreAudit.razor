@@ -1,35 +1,34 @@
 @using Radiate.Client.Components.Store.Interfaces
-@implements IDisposable
 
-@foreach (var state in Store.GetStates())
-{
-    <div class="d-inline-flex w-100 pl-2">
-        <strong>@state.Name:</strong>
-        <MudSpacer/>
-        <div class="pr-2">@state.ChangeCount</div>
-    </div>
-}
+@* @foreach (var state in Store.GetStates()) *@
+@* { *@
+@*     <div class="d-inline-flex w-100 pl-2"> *@
+@*         <strong>@state.Name:</strong> *@
+@*         <MudSpacer/> *@
+@*         <div class="pr-2">@state.ChangeCount</div> *@
+@*     </div> *@
+@* } *@
 
 @code {
     
-    [Inject] public IStore Store { get; set; }
-    
-    private ThrottledInvoker _throttledInvoker;
-
-    protected override Task OnInitializedAsync()
-    {
-        _throttledInvoker = new ThrottledInvoker(OnProcess);
-        Store.ActionsProcessed += _throttledInvoker.Invoke;
-        return base.OnInitializedAsync();
-    }
-
-    private void OnProcess()
-    {
-        InvokeAsync(StateHasChanged);
-    }
-
-    public void Dispose()
-    {
-        Store.ActionsProcessed -= _throttledInvoker.Invoke;
-    }
+    // [Inject] public IStore Store { get; set; }
+    //
+    // private ThrottledInvoker _throttledInvoker;
+    //
+    // protected override Task OnInitializedAsync()
+    // {
+    //     _throttledInvoker = new ThrottledInvoker(OnProcess);
+    //     Store.ActionsProcessed += _throttledInvoker.Invoke;
+    //     return base.OnInitializedAsync();
+    // }
+    //
+    // private void OnProcess()
+    // {
+    //     InvokeAsync(StateHasChanged);
+    // }
+    //
+    // public void Dispose()
+    // {
+    //     Store.ActionsProcessed -= _throttledInvoker.Invoke;
+    // }
 }

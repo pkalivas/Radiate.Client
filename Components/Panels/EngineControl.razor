@@ -33,7 +33,7 @@ else
 
 @code {
     
-    private void Start() => Store.Dispatch(new StartEngineAction(Model.RunId));
+    private void Start() => Store.Dispatch(new StartEngineAction(Model.RunId, Model.Inputs));
 
     private void Stop() => Store.Dispatch(new CancelEngineRunAction(Model.RunId));
     

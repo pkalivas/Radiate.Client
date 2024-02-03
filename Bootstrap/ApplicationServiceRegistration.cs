@@ -1,5 +1,4 @@
-using Radiate.Client.Components.Store.Effects;
-using Radiate.Client.Components.Store.Reducers;
+using Radiate.Client.Components.Store;
 using Radiate.Client.Components.Store.States;
 using Radiate.Client.Services.Actors;
 using Radiate.Client.Services.Runners;
@@ -33,25 +32,17 @@ public static class ApplicationServiceRegistration
                 "Image_Polygon" => sp.GetRequiredService<PolygonEngineRunner>(),
                 _ => throw new ArgumentException($"Runner with name {name} not found.")
             });
-
-    // private static IServiceCollection AddStore(this IServiceCollection services) =>
-    //     services
-    //         .AddSingleton<IDispatcher, Dispatcher>()
-    //         .AddSingleton<IStore, StateStore>();
     
     private static IServiceCollection AddReflow(this IServiceCollection services) => 
         services
-            .AddTransient<IEffect<RootState>, StartEngineEffect>()
-            // .AddTransient<StartEngineEffect>()
-            .AddTransient<IEffect<RootState>, RunOutputEffect>()
-            .AddTransient<IEffect<RootState>, CancelEngineEffect>()
+            .AddTransient<IEffectRegistry<RootState>, RootEffects>()
             .AddSingleton<Store<RootState>>(sp =>
             {
                 var store = new Store<RootState>(RootReducer.CreateReducers(), new RootState());
                 
-                var serviceProvidedEffects = sp.GetServices<IEffect<RootState>>();
+                var serviceProvidedEffects = sp.GetService<IEffectRegistry<RootState>>();
                 
-                store.RegisterEffects(serviceProvidedEffects.ToArray());
+                store.RegisterEffects(serviceProvidedEffects.CreateEffects().ToArray());
                 
                 return store;
             });

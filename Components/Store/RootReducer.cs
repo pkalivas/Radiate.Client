@@ -3,7 +3,7 @@ using Radiate.Client.Components.Store.States;
 using Radiate.Engines.Schema;
 using Reflow.Reducers;
 
-namespace Radiate.Client.Components.Store.Reducers;
+namespace Radiate.Client.Components.Store;
 
 public static class RootReducer
 {

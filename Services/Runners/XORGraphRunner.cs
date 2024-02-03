@@ -20,25 +20,6 @@ public class XORGraphRunner : EngineRunner<RunInputsModel>
 {
     public XORGraphRunner(Store<RootState> store) : base(store) { }
 
-     public override RunInput GetInputs(RunInputsModel model) => new()
-    {
-        Inputs = new List<RunInputValue>
-        {
-            new("IterationLimit", model.IterationLimit.ToString(), nameof(Int32))
-        }
-    };
-
-    protected override RunOutputsModel MapToOutput(EngineHandle output)
-    {
-        return new RunOutputsModel
-        {
-            EngineState = output.GetState(output.EngineId),
-            EngineId = output.EngineId,
-            EngineStates = output.EngineStates,
-            Metrics = output.Metrics,
-        };    
-    }
-
     protected override async Task<EngineHandle> Fit(RunInput input, CancellationTokenSource cts, Action<EngineHandle> onEngineComplete)
     {
         var iterationLimit = input.GetInputValue<int>("IterationLimit");
@@ -68,12 +49,26 @@ public class XORGraphRunner : EngineRunner<RunInputsModel>
                     engineThree.Limit(Limits.Iteration(1))))
             .Limit(Limits.Seconds(1000));
 
-        var result = engine.Fit()
+        return engine.Fit()
             .Limit(Limits.Accuracy(0.01f), Limits.Iteration(iterationLimit))
             .Peek(res => onEngineComplete(res))
             .TakeWhile(_ => !cts.IsCancellationRequested)
             .ToResult();
-        
-        return result;
     }
+    
+    public override RunInput GetInputs(RunInputsModel model) => new()
+    {
+        Inputs = new List<RunInputValue>
+        {
+            new("IterationLimit", model.IterationLimit.ToString(), nameof(Int32))
+        }
+    };
+
+    protected override RunOutputsModel MapToOutput(EngineHandle output) => new()
+    {
+        EngineState = output.GetState(output.EngineId),
+        EngineId = output.EngineId,
+        EngineStates = output.EngineStates,
+        Metrics = output.Metrics,
+    };    
 }

@@ -10,6 +10,7 @@ public record RunOutputsModel
     public MetricSet Metrics { get; init; } = new();
     public Dictionary<string, EngineState> EngineStates { get; init; } = new();
     public List<RunOutputValue> Outputs { get; init; } = new();
+    public ImageModel Image { get; set; } = new();
     
     public T GetOutputValue<T>(string name)
     {

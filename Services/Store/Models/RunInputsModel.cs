@@ -11,4 +11,5 @@ public record RunInputsModel : IRunInput<RunInputsModel>
     public int IterationLimit { get; set; } = 1000;
     public int NumShapes { get; set; } = 150;
     public int NumVertices { get; set; } = 4;
+    public ImageModel TargetImage { get; set; } = new();
 }

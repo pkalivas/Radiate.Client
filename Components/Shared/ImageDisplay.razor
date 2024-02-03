@@ -1,4 +1,4 @@
-@if (ImageUrl == string.Empty)
+@if (string.IsNullOrEmpty(ImageUrl))
 {
     <MudPaper>
         <MudText Typo="Typo.body1">No image selected</MudText>

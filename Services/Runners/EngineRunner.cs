@@ -43,7 +43,7 @@ public abstract class EngineRunner<T> : IEngineRunner where T : IRunInput<T>
             
             if (_pause.Value)
             {
-                _pause.Where(p => !p).FirstAsync().Wait();
+                _pause.Where(val => !val).FirstAsync().Wait();
             }
         });
         

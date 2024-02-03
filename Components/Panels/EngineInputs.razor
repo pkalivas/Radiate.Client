@@ -1,4 +1,5 @@
-@inherits StoreComponent<RunInputsFeature>
+@using Radiate.Client.Components.Store.Selections
+@inherits StoreComponent<RunInputsModel>
 
 <div class="container mt-2">
     <div class="row">
@@ -118,6 +119,6 @@
         // Dispatch(state => state.DataSetType = value);
     }
 
-    protected override IObservable<RunInputsFeature> Select() => Store.Select(InputsSelectors.SelectCurrentRunInputs);
+    protected override IObservable<RunInputsModel> Select() => Store.Select(RunSelectors.SelectCurrentRunInputs);
 
 }

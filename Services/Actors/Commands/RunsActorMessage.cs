@@ -1,5 +1,4 @@
-using Radiate.Client.Components.Store.States;
-using Radiate.Client.Components.Store.States.Features;
+using Radiate.Client.Components.Store.Models;
 
 namespace Radiate.Client.Services.Actors.Commands;
 
@@ -19,6 +18,6 @@ public record RunsActorMessage<T>(T Message) : IRunsActorMessage where T : IRuns
 }
 
 
-public record StartRunCommand(Guid RunId, RunInputsFeature Inputs) : IRunsCommand;
+public record StartRunCommand(Guid RunId, RunInputsModel Inputs) : IRunsCommand;
 
 public record StopRunCommand(Guid RunId) : IRunsCommand;

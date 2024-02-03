@@ -1,6 +1,5 @@
 @using Radiate.Engines.Entities
-@using Radiate.Client.Components.Store.Models
-@inherits StoreComponent<EngineRunState>
+@inherits StoreComponent<EngineModel>
 
 <MudDialog>
     <DialogContent>
@@ -31,6 +30,6 @@
         Dispatch(new SetEngineTreeExpandedAction(Model.RunId, data));
     }
     
-    protected override IObservable<EngineRunState> Select() =>
+    protected override IObservable<EngineModel> Select() =>
         Store.Select(EngineRunStateSelector.SelectEngineRunState);
 }

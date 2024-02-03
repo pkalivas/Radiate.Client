@@ -1,7 +1,6 @@
-namespace Radiate.Client.Components.Store.States.Features;
+namespace Radiate.Client.Components.Store.Models;
 
-
-public record RunInputsFeature
+public record RunInputsModel
 {
     public string ModelType { get; set; } = "Graph";
     public string DataSetType { get; set; } = "XOR";

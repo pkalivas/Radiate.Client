@@ -1,31 +1,21 @@
 using MudBlazor;
 using Radiate.Client.Components.Store.Models;
 using Radiate.Client.Components.Store.States;
-using Radiate.Client.Components.Store.States.Features;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Schema;
 using Reflow.Interfaces;
+using Reflow.Selectors;
 
-namespace Radiate.Client.Components.Store.Selectors;
-
-public record EngineRunState
-{
-    public Guid RunId { get; init; }
-    public HashSet<TreeItemData<EngineState>> TreeItems { get; init; } = new();
-    public Dictionary<string, bool> Expanded { get; init; } = new();
-    public RunInputsFeature Inputs { get; set; } = new();
-    public EngineState? CurrentEngineState { get; set; }
-}
+namespace Radiate.Client.Components.Store.Selections;
 
 public static class EngineRunStateSelector
 {
-    
-    public static ISelectorWithoutProps<RootState, EngineRunState> SelectEngineRunState = 
-        Reflow.Selectors.Selectors.CreateSelector<RootState, EngineRunState>(state =>
+    public static readonly ISelectorWithoutProps<RootState, EngineModel> SelectEngineRunState = Selectors
+        .CreateSelector<RootState, EngineModel>(state =>
         {
             if (state.UiFeature.EngineStateExpanded.TryGetValue(state.CurrentRunId, out var engineTree))
             {
-                return new EngineRunState
+                return new EngineModel
                 {
                     RunId = state.CurrentRunId,
                     TreeItems = GetItems(state.Runs[state.CurrentRunId].Outputs.EngineStates, engineTree),
@@ -37,7 +27,7 @@ public static class EngineRunStateSelector
             
             if (state.Runs.TryGetValue(state.CurrentRunId, out var run))
             {
-                return new EngineRunState
+                return new EngineModel
                 {
                     RunId = state.CurrentRunId,
                     TreeItems = GetItems(run.Outputs.EngineStates, new Dictionary<string, bool>()),
@@ -47,7 +37,7 @@ public static class EngineRunStateSelector
                 };
             }
 
-            return new EngineRunState();
+            return new EngineModel();
         });
     
     private static HashSet<TreeItemData<EngineState>> GetItems(Dictionary<string, EngineState> states, Dictionary<string, bool> expanded)
@@ -111,7 +101,4 @@ public static class EngineRunStateSelector
         EngineStateTypes.Stopped => Color.Secondary,
         _ => Color.Default
     };
-    
-    private static bool HasSwitched(EngineState state) => state.Metrics.Get(MetricNames.EngineChange)?.Statistics?.Sum > 0;
-
 }

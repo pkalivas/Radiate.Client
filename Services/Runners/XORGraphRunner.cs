@@ -1,4 +1,5 @@
 using Radiate.Client.Components.Store.Actions;
+using Radiate.Client.Components.Store.Models;
 using Radiate.Client.Components.Store.States;
 using Radiate.Client.Components.Store.States.Features;
 using Radiate.Data;
@@ -63,17 +64,17 @@ public class XORGraphRunner : IEngineRunner
         _dispatcher.Dispatch(new RunCompletedAction());
     };
 
-    public RunInput GetInputs(RunInputsFeature feature) => new()
+    public RunInput GetInputs(RunInputsModel model) => new()
     {
         Inputs = new List<RunInputValue>
         {
-            new("IterationLimit", feature.IterationLimit.ToString(), nameof(Int32))
+            new("IterationLimit", model.IterationLimit.ToString(), nameof(Int32))
         }
     };
     
-    private static RunOutputsFeature Map(EngineHandle output)
+    private static RunOutputsModel Map(EngineHandle output)
     {
-        return new RunOutputsFeature
+        return new RunOutputsModel
         {
             EngineState = output.GetState(output.EngineId),
             EngineId = output.EngineId,

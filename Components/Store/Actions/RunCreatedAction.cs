@@ -1,7 +1,7 @@
 using Radiate.Client.Components.Store.Interfaces;
+using Radiate.Client.Components.Store.Models;
 using Radiate.Client.Components.Store.States;
-using Radiate.Client.Components.Store.States.Features;
 
 namespace Radiate.Client.Components.Store.Actions;
 
-public record RunCreatedAction(RunFeature Run) : IAction<RootState>;
+public record RunCreatedAction(RunModel Run) : IAction<RootState>;

@@ -1,9 +1,9 @@
 using Radiate.Client.Services.Runners;
 using Radiate.Engines.Entities;
 
-namespace Radiate.Client.Components.Store.States.Features;
+namespace Radiate.Client.Components.Store.Models;
 
-public class RunOutputsFeature
+public record RunOutputsModel
 {
     public string EngineState { get; set; } = "";
     public string EngineId { get; set; } = "";
@@ -24,15 +24,5 @@ public class RunOutputsFeature
         }
 
         return (T)Convert.ChangeType(output.Value, typeof(T));
-    }
-
-    public override bool Equals(object? obj)
-    {
-        return obj is RunOutputsFeature state &&
-               EngineState == state.EngineState &&
-               EngineId == state.EngineId &&
-               EqualityComparer<MetricSet>.Default.Equals(Metrics, state.Metrics) &&
-               EqualityComparer<Dictionary<string, EngineState>>.Default.Equals(EngineStates, state.EngineStates) &&
-               EqualityComparer<List<RunOutputValue>>.Default.Equals(Outputs, state.Outputs);
     }
 }

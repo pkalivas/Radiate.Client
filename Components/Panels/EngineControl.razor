@@ -3,8 +3,9 @@
 @using Size = MudBlazor.Size
 @using Radiate.Schema
 @using Radiate.Client.Components.Store.States.Features
+@using Radiate.Client.Components.Store.Selections
 @* @inherits StateComponent<EngineControl, RunState> *@
-@inherits StoreComponent<RunFeature>
+@inherits StoreComponent<RunModel>
 
 @if (Model.IsRunning)
 {
@@ -36,5 +37,5 @@ else
 
     private void Stop() => Store.Dispatch(new CancelEngineRunAction(Model.RunId));
     
-    protected override IObservable<RunFeature> Select() => Store.Select(RunSelectors.SelectCurrentRun);
+    protected override IObservable<RunModel> Select() => Store.Select(RunSelectors.SelectCurrentRun);
 }

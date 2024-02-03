@@ -1,8 +1,6 @@
-using Radiate.Client.Components.Store.Models;
+namespace Radiate.Client.Components.Store.Models;
 
-namespace Radiate.Client.Components.Store.States.Features;
-
-public record ImageFeature
+public record ImageModel
 {
     public int ImageWidth { get; set; } = 50;
     public int ImageHeight { get; set; } = 50;

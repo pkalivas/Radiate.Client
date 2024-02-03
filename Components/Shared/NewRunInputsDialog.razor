@@ -1,11 +1,10 @@
 @using Radiate.Client.Components.Store.Schema
-@using Radiate.Client.Components.Store.States.Features
 
 <MudDialog>
     <DialogContent>
         <div>
             <MudSelect SelectedValuesChanged="@OnModelChange" 
-                       Value="@RunFeature.Inputs.ModelType" 
+                       Value="@RunModel.Inputs.ModelType" 
                        MultiSelection="false"
                        HelperText="Model To Run"
                        T="string"
@@ -19,13 +18,13 @@
         </div>
         <div>
 	        <MudSelect SelectedValuesChanged="@OnDataSetChange"
-	                   Value="@RunFeature.Inputs.DataSetType"
+	                   Value="@RunModel.Inputs.DataSetType"
 	                   MultiSelection="false"
 	                   HelperText="DataSet To Run"
 	                   T="string"
 	                   Label="DataSet"
 	                   Variant="Variant.Text">
-                @if (RunFeature.Inputs.ModelType == "Image")
+                @if (RunModel.Inputs.ModelType == "Image")
                 {
                     @foreach (var data in StateOptions.ImageDataSetNames)
                     {
@@ -47,18 +46,18 @@
             <div class="col">
                 <MudNumericField Label="Population Size"
                                  Variant="Variant.Filled"
-                                 Value="@RunFeature.Inputs.PopulationSize"
-                                 ValueChanged="@((int size) => RunFeature.Inputs.PopulationSize = size)">
+                                 Value="@RunModel.Inputs.PopulationSize"
+                                 ValueChanged="@((int size) => RunModel.Inputs.PopulationSize = size)">
                 </MudNumericField>
                 <MudNumericField Label="Mutation Rate"
                                  Variant="Variant.Filled"
-                                 Value="@RunFeature.Inputs.MutationRate"
-                                 ValueChanged="@((float rate) => RunFeature.Inputs.MutationRate = rate)">
+                                 Value="@RunModel.Inputs.MutationRate"
+                                 ValueChanged="@((float rate) => RunModel.Inputs.MutationRate = rate)">
                 </MudNumericField>
                 <MudNumericField Label="Max Epochs"
                                  Variant="Variant.Filled"
-                                 Value="@RunFeature.Inputs.IterationLimit"
-                                 ValueChanged="@((int limit) => RunFeature.Inputs.IterationLimit = limit)">
+                                 Value="@RunModel.Inputs.IterationLimit"
+                                 ValueChanged="@((int limit) => RunModel.Inputs.IterationLimit = limit)">
                 </MudNumericField>
             </div>    
         </div>
@@ -74,35 +73,35 @@
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
     
-    private RunFeature RunFeature { get; set; }
+    private RunModel RunModel { get; set; }
 
     protected override void OnInitialized()
     {
-        RunFeature = new RunFeature();
+        RunModel = new RunModel();
         base.OnInitialized();
     }
 
     void Cancel() => MudDialog.Cancel();
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(RunFeature)); 
+    void Submit() => MudDialog.Close(DialogResult.Ok(RunModel)); 
 
     private void OnModelChange(IEnumerable<string> model)
     {
         var selectedModel = model.First();
-        if (RunFeature.Inputs.ModelType == "Image" && selectedModel != "Image")
+        if (RunModel.Inputs.ModelType == "Image" && selectedModel != "Image")
         {
-	        RunFeature.Inputs.DataSetType = "Graph";
+	        RunModel.Inputs.DataSetType = "Graph";
         }
 
-        RunFeature.Inputs.ModelType = model.First();
-        if (RunFeature.Inputs.ModelType == "Image")
+        RunModel.Inputs.ModelType = model.First();
+        if (RunModel.Inputs.ModelType == "Image")
         {
-	        RunFeature.Inputs.DataSetType = "Polygon";
+	        RunModel.Inputs.DataSetType = "Polygon";
         }
     }
     
     private void OnDataSetChange(IEnumerable<string> value)
     {
-        RunFeature.Inputs.DataSetType = value.First();
+        RunModel.Inputs.DataSetType = value.First();
     }
 }

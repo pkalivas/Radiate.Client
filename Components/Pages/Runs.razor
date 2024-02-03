@@ -1,7 +1,7 @@
 @page "/runs/{runId:guid}"
 @rendermode InteractiveServer
 @inject IDialogService DialogService
-@inherits StoreComponent<MetricsState>
+@inherits StoreComponent<MetricsModel>
 
 <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
     <MudGrid>
@@ -119,5 +119,5 @@
         await dialogRef.Result;
     }
 
-    protected override IObservable<MetricsState> Select() => Store.Select(MetricsSelectors.SelectCurrentMetrics);
+    protected override IObservable<MetricsModel> Select() => Store.Select(RunSelectors.SelectCurrentMetrics);
 }

@@ -1,4 +1,4 @@
-using Radiate.Client.Components.Store.States;
+using Radiate.Client.Components.Store.Models;
 using Radiate.Client.Components.Store.States.Features;
 using Radiate.Client.Services.Genome;
 using Radiate.Engines;
@@ -53,7 +53,7 @@ public class PolygonEngineRunner : IEngineRunner
         // resultCallback(Map(result, 500, 500));
     };
 
-    public RunInput GetInputs(RunInputsFeature feature) => new()
+    public RunInput GetInputs(RunInputsModel model) => new()
     {
         Inputs = new List<RunInputValue>
         {
@@ -66,12 +66,12 @@ public class PolygonEngineRunner : IEngineRunner
         }
     };
 
-    private static RunOutputsFeature Map(EngineOutput<GeneticEpoch<PolygonGene>, PolygonChromosome> output, int height, int width)
+    private static RunOutputsModel Map(EngineOutput<GeneticEpoch<PolygonGene>, PolygonChromosome> output, int height, int width)
     {
         var state = output.GetState(output.EngineId);
         var model = output.GetModel().Draw(width, height);
         
-        var result = new RunOutputsFeature
+        var result = new RunOutputsModel
         {
             EngineState = state,
             EngineId = output.EngineId,

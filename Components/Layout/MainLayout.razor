@@ -31,9 +31,9 @@
         return base.OnInitializedAsync();
     }
     
-    private void SetDrawerOpen(LayoutState state) => InvokeAsync(() =>
+    private void SetDrawerOpen(LayoutModel model) => InvokeAsync(() =>
     {
-        _drawerOpen = state.IsSidebarOpen;
+        _drawerOpen = model.IsSidebarOpen;
         StateHasChanged();
     });
 }

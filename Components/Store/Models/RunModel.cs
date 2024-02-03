@@ -1,20 +1,21 @@
+using Radiate.Client.Components.Store.States.Features;
 using Radiate.Schema;
 
-namespace Radiate.Client.Components.Store.States.Features;
+namespace Radiate.Client.Components.Store.Models;
 
-public record RunFeature
+public record RunModel
 {
     public Guid RunId { get; init; } = Guid.NewGuid();
     public int Index { get; init; }
     public bool IsRunning { get; init; }
     public string Status { get; init; } = "";
-    public RunInputsFeature Inputs { get; init; } = new();
-    public RunOutputsFeature Outputs { get; init; } = new();
+    public RunInputsModel Inputs { get; init; } = new();
+    public RunOutputsModel Outputs { get; init; } = new();
     public List<float> Scores { get; init; } = new();
     
     public override int GetHashCode()
     {
-        return Hash.Of(typeof(RunFeature))
+        return Hash.Of(typeof(RunModel))
             .And(RunId)
             .And(IsRunning)
             .And(Status)

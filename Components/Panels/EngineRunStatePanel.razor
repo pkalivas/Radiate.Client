@@ -1,10 +1,11 @@
-@inherits StoreComponent<EngineRunState>
+@using Radiate.Client.Components.Store.Selections
+@inherits StoreComponent<EngineModel>
 
 <EngineStateDisplay EngineState="@Model.CurrentEngineState"/>
 
 @code {
 
-    protected override IObservable<EngineRunState> Select() =>
+    protected override IObservable<EngineModel> Select() =>
         Store.Select(EngineRunStateSelector.SelectEngineRunState);
 
 }

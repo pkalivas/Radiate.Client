@@ -1,5 +1,6 @@
 using Radiate.Client.Services.Genome;
 using Radiate.Client.Services.Runners.Interfaces;
+using Radiate.Client.Services.Store;
 using Radiate.Client.Services.Store.Models;
 using Radiate.Engines;
 using Radiate.Engines.Entities;
@@ -8,78 +9,64 @@ using Radiate.Extensions;
 using Radiate.Optimizers.Evolution.Alterers;
 using Radiate.Optimizers.Evolution.Codex;
 using Radiate.Optimizers.Evolution.Genome;
+using Reflow.Interfaces;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace Radiate.Client.Services.Runners;
 
-public class CircleEngineRunner : IEngineRunner
+public class CircleEngineRunner : EngineRunner<GeneticEpoch<CircleGene>, CircleChromosome>
 {
-    public Task StartRun(Guid runId, RunInput inputs, CancellationTokenSource cts)
-    {
-        throw new NotImplementedException();
-    }
+    public CircleEngineRunner(IStore<RootState> store) : base(store) { }
 
-    public Func<CancellationToken, Task> Run(Guid runId, RunInput command, CancellationTokenSource cts) => async token =>
+    protected override async Task<EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome>> Fit(RunInputsModel inputs,
+        CancellationTokenSource cts,
+        Action<EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome>> onEngineComplete)
     {
-        var targetImage = command.GetInputValue<string>("TargetImage");
-        var numCircles = command.GetInputValue<int>("NumCircles");
-        var mutationRate = command.GetInputValue<float>("MutationRate");
-        var iterationLimit = command.GetInputValue<int>("IterationLimit");
-        var populationSize = command.GetInputValue<int>("PopulationSize");
         
-        var image = Image.Load<Rgba32>(Convert.FromBase64String(targetImage));
+        var imageInput = inputs.ImageInputs;
+        var populationInput = inputs.PopulationInputs;
+        var iterationLimit = inputs.LimitInputs.IterationLimit;
         
+        var image = imageInput.TargetImage.ImageData;
+
         var codex = new Codex<CircleGene, CircleChromosome>()
             .Encoder(() => Genotype.Create(new CircleChromosome(Enumerable
-                .Range(0, numCircles)
+                .Range(0, imageInput.NumShapes)
                 .Select(_ => new CircleGene(Circle.NewRandom()))
                 .ToArray())))
             .Decoder(geno => (CircleChromosome)geno.GetChromosome());
 
         var engine = Engine.Genetic(codex).Async()
-            .PopulationSize(populationSize)
+            .PopulationSize(populationInput.PopulationSize)
             .Minimizing()
             .Alterers(
-                new CircleMutator(mutationRate, 0.1f),
+                new CircleMutator(populationInput.MutationRate, 0.1f),
                 new MeanCrossover<CircleGene>(),
                 new UniformCrossover<CircleGene>(0.5f))
             .Build(geno => Fitness(geno, image));
-
-        var result = engine.Fit()
+        
+        return engine.Fit()
             .Limit(Limits.Iteration(iterationLimit))
-            // .Peek(res => resultCallback(Map(res, image.Height, image.Width)))
-            .TakeWhile(_ => !cts.IsCancellationRequested && !token.IsCancellationRequested)
+            .Peek(onEngineComplete)
+            .TakeWhile(_ => !cts.IsCancellationRequested)
             .ToResult();
-        
-        // resultCallback(Map(result, 500, 500));
-    };
-
-    public RunInput GetInputs(RunInputsModel model) => new()
+    }
+    
+    protected override RunOutputsModel MapToOutput(EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome> output)
     {
-        Inputs = new List<RunInputValue>
-        {
-            // new("TargetImage", feature.Target.ImageDataString(), nameof(String)),
-            // new("NumCircles", feature.EngineInputs.NumShapes.ToString(), nameof(Int32)),
-            new("MutationRate", "0.1", nameof(Single)),
-            new("IterationLimit", "1000", nameof(Int32)),
-            new("PopulationSize", "100", nameof(Int32))
-        }
-    };
-    private static RunOutputsModel Map(EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome> output, int height, int width)
-    {
-        var model = output.GetModel().Draw(width, height);
+        var state = output.GetState(output.EngineId);
+        var model = output.GetModel().Draw(500, 500);
         
-        return new RunOutputsModel
+        return  new RunOutputsModel
         {
-            EngineState = output.GetState(output.EngineId),
-            EngineStates = output.EngineStates,
+            EngineState = state,
             EngineId = output.EngineId,
+            EngineStates = output.EngineStates,
             Metrics = output.Metrics,
-            Outputs = new List<RunOutputValue>
+            ImageOutput = new ImageOutput
             {
-                new("Image", model.ImageDataString(), nameof(String)),
-                new("Display", output.ToString(), nameof(String))
+                Image = model
             }
         };
     }

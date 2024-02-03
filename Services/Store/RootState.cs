@@ -9,7 +9,6 @@ public record RootState : IState
     public RouteFeature? Route { get; init; } = new();
     public UiModel UiModel { get; init; } = new();
     public Dictionary<Guid, RunModel> Runs { get; init; } = new();
-    public Dictionary<Guid, ImageModel> Images { get; set; } = new();
 }
 
 public record RouteFeature

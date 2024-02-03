@@ -49,18 +49,18 @@
                         <div class="col">
                             <MudNumericField Label="Population Size"
                                              Variant="Variant.Filled"
-                                             Value="@RunModel.Inputs.PopulationSize"
-                                             ValueChanged="@((int size) => RunModel.Inputs.PopulationSize = size)">
+                                             Value="@RunModel.Inputs.PopulationInputs.PopulationSize"
+                                             ValueChanged="@((int size) => RunModel.Inputs.PopulationInputs.PopulationSize = size)">
                             </MudNumericField>
                             <MudNumericField Label="Mutation Rate"
                                              Variant="Variant.Filled"
-                                             Value="@RunModel.Inputs.MutationRate"
-                                             ValueChanged="@((float rate) => RunModel.Inputs.MutationRate = rate)">
+                                             Value="@RunModel.Inputs.PopulationInputs.MutationRate"
+                                             ValueChanged="@((float rate) => RunModel.Inputs.PopulationInputs.MutationRate = rate)">
                             </MudNumericField>
                             <MudNumericField Label="Max Epochs"
                                              Variant="Variant.Filled"
-                                             Value="@RunModel.Inputs.IterationLimit"
-                                             ValueChanged="@((int limit) => RunModel.Inputs.IterationLimit = limit)">
+                                             Value="@RunModel.Inputs.LimitInputs.IterationLimit"
+                                             ValueChanged="@((int limit) => RunModel.Inputs.LimitInputs.IterationLimit = limit)">
                             </MudNumericField>
                         </div>
                         @if (RunModel.Inputs.ModelType == "Image")
@@ -68,15 +68,15 @@
                             <div class="col">
                                 <MudNumericField Label="Num Shapes"
                                                  Variant="Variant.Filled"
-                                                 Value="@RunModel.Inputs.NumShapes"
-                                                 ValueChanged="@((int limit) => RunModel.Inputs.NumShapes = limit)">
+                                                 Value="@RunModel.Inputs.ImageInputs.NumShapes"
+                                                 ValueChanged="@((int limit) => RunModel.Inputs.ImageInputs.NumShapes = limit)">
                                 </MudNumericField>
                                 @if (RunModel.Inputs.DataSetType == "Polygon")
                                 {
                                     <MudNumericField Label="Num Vertices"
                                                      Variant="Variant.Filled"
-                                                     Value="@RunModel.Inputs.NumVertices"
-                                                     ValueChanged="@((int limit) => RunModel.Inputs.NumVertices = limit)">
+                                                     Value="@RunModel.Inputs.ImageInputs.NumVertices"
+                                                     ValueChanged="@((int limit) => RunModel.Inputs.ImageInputs.NumVertices = limit)">
                                     </MudNumericField>
                                 }
                             </div>
@@ -94,11 +94,11 @@
                     <div class="row mb-2 mt-3">
                         <div class="col-9">
                              <ImageDisplay ImageTitle="Upload"
-                                            ImageUrl="@RunModel.Inputs.TargetImage.Image.ImageDisplay"/>
+                                            ImageUrl="@RunModel.Inputs.ImageInputs.TargetImage.ImageDisplay"/>
                         </div>
                         <div class="col-3">
-                            <ImageUpload Height="@RunModel.Inputs.TargetImage.ImageHeight"
-                                         Width="@RunModel.Inputs.TargetImage.ImageWidth"
+                            <ImageUpload Height="@RunModel.Inputs.ImageInputs.Height"
+                                         Width="@RunModel.Inputs.ImageInputs.Width"
                                          ImageChanged="@TargetImageChanged"/>
                         </div>
                     </div>
@@ -151,6 +151,6 @@
 
     private void TargetImageChanged(ImageEntity image)
     {
-        RunModel.Inputs.TargetImage.Image = image;
+        RunModel.Inputs.ImageInputs.TargetImage = image;
     }
 }

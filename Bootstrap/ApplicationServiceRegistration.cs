@@ -25,12 +25,12 @@ public static class ApplicationServiceRegistration
             .AddScoped<XORGraphRunner>()
             .AddScoped<CircleEngineRunner>()
             .AddScoped<PolygonEngineRunner>()
-            .AddScoped<EngineRunnerFactory>(sp => name => name switch
+            .AddScoped<EngineRunnerFactory>(sp => (model, data) => (model, data) switch
             {
-                "Graph_XOR" => sp.GetRequiredService<XORGraphRunner>(),
-                "Image_Circle" => sp.GetRequiredService<CircleEngineRunner>(),
-                "Image_Polygon" => sp.GetRequiredService<PolygonEngineRunner>(),
-                _ => throw new ArgumentException($"Runner with name {name} not found.")
+                ("Graph", "XOR") => sp.GetRequiredService<XORGraphRunner>(),
+                ("Image", "Circle") => sp.GetRequiredService<CircleEngineRunner>(),
+                ("Image", "Polygon") => sp.GetRequiredService<PolygonEngineRunner>(),
+                _ => throw new ArgumentException($"Runner {model} {data}.")
             });
     
     private static IServiceCollection AddReflow(this IServiceCollection services) => 

@@ -1,5 +1,6 @@
 using Radiate.Client.Services.Runners;
 using Radiate.Engines.Entities;
+using Radiate.Extensions.Evolution.Architects.Groups;
 
 namespace Radiate.Client.Services.Store.Models;
 
@@ -9,21 +10,27 @@ public record RunOutputsModel
     public string EngineId { get; set; } = "";
     public MetricSet Metrics { get; init; } = new();
     public Dictionary<string, EngineState> EngineStates { get; init; } = new();
-    public List<RunOutputValue> Outputs { get; init; } = new();
-    public ImageModel Image { get; set; } = new();
-    
-    public T GetOutputValue<T>(string name)
-    {
-        if (Outputs.Count == 0)
-        {
-            return default!;
-        }
-        var output = Outputs.FirstOrDefault(x => x.Name == name);
-        if (output == null)
-        {
-            throw new ArgumentException($"Output with name {name} not found.");
-        }
+    public ImageOutput ImageOutput { get; set; } = new();
+    public GraphOutput GraphOutput { get; set; } = new();
+}
 
-        return (T)Convert.ChangeType(output.Value, typeof(T));
+public record GraphOutput
+{
+    public string Type { get; set; } = "";
+    public object Graph { get; set; } = new();
+
+    public Graph<T> GetGraph<T>()
+    {
+        if (Graph is Graph<T> graph)
+        {
+            return graph;
+        }
+        
+        throw new Exception("Graph is not of the expected type");
     }
+}
+
+public record ImageOutput
+{
+    public ImageEntity Image { get; set; } = new();
 }

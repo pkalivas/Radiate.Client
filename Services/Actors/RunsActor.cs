@@ -31,14 +31,14 @@ public class RunsActor : ReceiveActor
             _cancellationTokenSource = new CancellationTokenSource();
         }
         
-        var runner = runFactory($"{message.Message.Inputs.ModelType}_{message.Message.Inputs.DataSetType}");
-        var inputs = runner.GetInputs(message.Message.Inputs);
+        var inputs = message.Message.Inputs;
+        var runner = runFactory(inputs.ModelType, inputs.DataSetType);
         
         workItemQueue.Enqueue(async token =>
         {
             await Task.Run(async () =>
             {
-                await runner.StartRun(message.RunId, inputs, _cancellationTokenSource);
+                await runner.StartRun(message.RunId, message.Message.Inputs, _cancellationTokenSource);
             }, token);
         });
     }

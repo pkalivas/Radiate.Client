@@ -1,5 +1,6 @@
 using Radiate.Client.Services.Genome;
 using Radiate.Client.Services.Runners.Interfaces;
+using Radiate.Client.Services.Store;
 using Radiate.Client.Services.Store.Models;
 using Radiate.Engines;
 using Radiate.Engines.Entities;
@@ -14,84 +15,61 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace Radiate.Client.Services.Runners;
 
-public class PolygonEngineRunner : IEngineRunner
+public class PolygonEngineRunner : EngineRunner<GeneticEpoch<PolygonGene>, PolygonChromosome>
 {
-    public Task StartRun(Guid runId, RunInput inputs, CancellationTokenSource cts)
-    {
-        throw new NotImplementedException();
-    }
+    public PolygonEngineRunner(Reflow.Interfaces.IStore<RootState> store) : base(store) { }
 
-    public Func<CancellationToken, Task> Run(Guid runId, RunInput command, CancellationTokenSource cts) => async token =>
+    protected override async Task<EngineOutput<GeneticEpoch<PolygonGene>, PolygonChromosome>> Fit(RunInputsModel inputs, 
+        CancellationTokenSource cts,
+        Action<EngineOutput<GeneticEpoch<PolygonGene>, PolygonChromosome>> onEngineComplete)
     {
-        var targetImage = command.GetInputValue<string>("TargetImage");
-        var polygonCount = command.GetInputValue<int>("PolygonCount");
-        var polygonLength = command.GetInputValue<int>("PolygonLength");
-        var mutationRate = command.GetInputValue<float>("MutationRate");
-        var iterationLimit = command.GetInputValue<int>("IterationLimit");
-        var populationSize = command.GetInputValue<int>("PopulationSize");
+        var imageInput = inputs.ImageInputs;
+        var populationInput = inputs.PopulationInputs;
+        var iterationLimit = inputs.LimitInputs.IterationLimit;
         
-        var image = Image.Load<Rgba32>(Convert.FromBase64String(targetImage));
+        var image = imageInput.TargetImage.ImageData;
 
         var random = RandomRegistry.GetRandom();
         var codex = new Codex<PolygonGene, PolygonChromosome>()
             .Encoder(() => Genotype.Create(new PolygonChromosome(Enumerable
-                .Range(0, polygonCount)
-                .Select(_ => new PolygonGene(Polygon.NewRandom(polygonLength, random)))
+                .Range(0, imageInput.NumShapes)
+                .Select(_ => new PolygonGene(Polygon.NewRandom(imageInput.NumVertices, random)))
                 .ToArray())))
             .Decoder(geno => (PolygonChromosome)geno.GetChromosome());
 
         var engine = Engine.Genetic(codex).Async()
-            .PopulationSize(populationSize)
+            .PopulationSize(populationInput.PopulationSize)
             .Minimizing()
             .Alterers(
-                new PolygonMutator(mutationRate, 0.1f),
+                new PolygonMutator(populationInput.MutationRate, 0.1f),
                 new MeanCrossover<PolygonGene>(),
                 new UniformCrossover<PolygonGene>(0.5f))
             .Build(geno => Fitness(geno, image));
         
-        var result = engine.Fit()
+        return engine.Fit()
             .Limit(Limits.Iteration(iterationLimit))
-            // .Peek(res => resultCallback(Map(res, image.Height, image.Width)))
-            .TakeWhile(_ => !cts.IsCancellationRequested && !token.IsCancellationRequested)
+            .Peek(onEngineComplete)
+            .TakeWhile(_ => !cts.IsCancellationRequested)
             .ToResult();
-        
-        // resultCallback(Map(result, 500, 500));
-    };
-
-    public RunInput GetInputs(RunInputsModel model) => new()
-    {
-        Inputs = new List<RunInputValue>
-        {
-            // new("TargetImage", feature.ImageState.Target.ImageDataString(), nameof(String)),
-            // new("PolygonCount", feature.EngineInputs.NumShapes.ToString(), nameof(Int32)),
-            // new("PolygonLength", feature.EngineInputs.NumVertices.ToString(), nameof(Int32)),
-            // new("PopulationSize", feature.EngineInputs.PopulationSize.ToString(), nameof(Int32)),
-            // new("MutationRate", feature.EngineInputs.MutationRate.ToString(), nameof(Single)),
-            // new("IterationLimit", feature.EngineInputs.IterationLimit.ToString(), nameof(Int32)),
-        }
-    };
-
-    private static RunOutputsModel Map(EngineOutput<GeneticEpoch<PolygonGene>, PolygonChromosome> output, int height, int width)
+    }
+    
+    protected override RunOutputsModel MapToOutput(EngineOutput<GeneticEpoch<PolygonGene>, PolygonChromosome> output)
     {
         var state = output.GetState(output.EngineId);
-        var model = output.GetModel().Draw(width, height);
+        var model = output.GetModel().Draw(500, 500);
         
-        var result = new RunOutputsModel
+        return  new RunOutputsModel
         {
             EngineState = state,
             EngineId = output.EngineId,
             EngineStates = output.EngineStates,
             Metrics = output.Metrics,
-            Outputs = new List<RunOutputValue>
+            ImageOutput = new ImageOutput
             {
-                new("Image", model.ImageDataString(), nameof(String)),
-                new("Display", output.ToString(), nameof(String))
+                Image = model
             }
         };
-        
-        return result;
     }
-    
     
     public static float Fitness(PolygonChromosome chromosome, Image<Rgba32> target)
     {

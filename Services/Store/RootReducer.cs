@@ -117,7 +117,7 @@ public static class RootReducer
         {
             Outputs = run.Outputs with
             {
-                Image = run.Outputs.Image with
+                ImageOutput = run.Outputs.ImageOutput with
                 {
                     Image = action.Image
                 }

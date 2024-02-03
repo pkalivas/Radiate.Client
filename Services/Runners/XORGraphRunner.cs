@@ -8,7 +8,9 @@ using Radiate.Extensions;
 using Radiate.Extensions.Engines;
 using Radiate.Extensions.Evolution.Alterers;
 using Radiate.Extensions.Evolution.Architects;
+using Radiate.Extensions.Evolution.Architects.Groups;
 using Radiate.Extensions.Evolution.Architects.Nodes;
+using Radiate.Extensions.Evolution.Programs;
 using Radiate.Optimizers.Evolution.Interceptors;
 using Radiate.Optimizers.Evolution.Selectors;
 using Radiate.Tensors;
@@ -16,13 +18,15 @@ using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Runners;
 
-public class XORGraphRunner : EngineRunner<RunInputsModel>
+public class XORGraphRunner : EngineRunner<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>
 {
     public XORGraphRunner(IStore<RootState> store) : base(store) { }
 
-    protected override async Task<EngineHandle> Fit(RunInput input, CancellationTokenSource cts, Action<EngineHandle> onEngineComplete)
+    protected override async Task<EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>> Fit(RunInputsModel input,
+        CancellationTokenSource cts,
+        Action<EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>> onEngineComplete)
     {
-        var iterationLimit = input.GetInputValue<int>("IterationLimit");
+        var iterationLimit = input.LimitInputs.IterationLimit;
         
         var (inputs, answers) = await new XOR().LoadDataSet();
         var frame = new TensorFrame(inputs, answers);
@@ -51,24 +55,21 @@ public class XORGraphRunner : EngineRunner<RunInputsModel>
 
         return engine.Fit()
             .Limit(Limits.Accuracy(0.01f), Limits.Iteration(iterationLimit))
-            .Peek(res => onEngineComplete(res))
+            .Peek(onEngineComplete)
             .TakeWhile(_ => !cts.IsCancellationRequested)
             .ToResult();
     }
-    
-    public override RunInput GetInputs(RunInputsModel model) => new()
-    {
-        Inputs = new List<RunInputValue>
-        {
-            new("IterationLimit", model.IterationLimit.ToString(), nameof(Int32))
-        }
-    };
 
-    protected override RunOutputsModel MapToOutput(EngineHandle output) => new()
+    protected override RunOutputsModel MapToOutput(EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> output) => new()
     {
         EngineState = output.GetState(output.EngineId),
         EngineId = output.EngineId,
         EngineStates = output.EngineStates,
         Metrics = output.Metrics,
+        GraphOutput = new GraphOutput
+        {
+            Type = typeof(Graph<float>).FullName,
+            Graph = output.GetModel().Graph
+        }
     };    
 }

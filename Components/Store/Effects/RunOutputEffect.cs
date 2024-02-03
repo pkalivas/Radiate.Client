@@ -1,6 +1,5 @@
 using System.Reactive.Linq;
 using Radiate.Client.Components.Store.Actions;
-using Radiate.Client.Components.Store.Interfaces;
 using Radiate.Client.Components.Store.States;
 using Reflow.Interfaces;
 
@@ -18,7 +17,7 @@ public class RunOutputEffect : IEffect<RootState>
     public Func<Reflow.Store<RootState>, IObservable<object>>? Run { get; set; }
     public bool Dispatch { get; set; } = true;
     
-    private IAction HandleAsync(RootState state, object action)
+    private object HandleAsync(RootState state, object action)
     {
         if (action is AddEngineOutputAction addEngineOutputAction)
         {

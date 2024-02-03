@@ -1,8 +1,6 @@
 @page "/runs/{runId:guid}"
 @rendermode InteractiveServer
 @inject IDialogService DialogService
-@using Radiate.Client.Services.Store.Models
-@using Radiate.Client.Services.Store.Selections
 @inherits StoreComponent<MetricsModel>
 
 <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
@@ -13,7 +11,7 @@
                 
                 <MudItem md="12">
                     <MudPaper Elevation="2" Class="pa-4" Style="height: 150px;">
-                        <ToolBar Title="Inputs">
+                        <ToolBar Title="Inputs" AsAppBar="true">
                             <Options></Options>
                             <ChildContent>
                                 <EngineInputs/>

@@ -1,26 +1,45 @@
 
-<div class="container">
-    <div class="row mb-2">
-        
-        <div class="col">
-            <div class="d-inline-flex w-100">
-                <div>
-                    <h5>@Title</h5>
-                </div>
-                <MudSpacer/>
-                <div class="pl-2">@Options</div>
+@if (AsAppBar)
+{
+    <MudPaper Elevation="0" Square="true" Margin="Margin.None" Padding="Padding.None">
+        <MudToolBar class="d-inline-flex w-100" Style="background:{Theme.Palette.Dark};">
+            <div>
+                <h5>@Title</h5>
             </div>
+            <MudSpacer/>
+            <div class="pl-2">@Options</div>
+        </MudToolBar>
+        <MudDivider/>
+        <div class="row mt-2">
+            @ChildContent
         </div>
+    </MudPaper>
+}
+else
+{
+    <div class="container">
+        <div class="row mb-2">
+            <div class="col">
+                <div class="d-inline-flex w-100">
+                    <div>
+                        <h5>@Title</h5>
+                    </div>
+                    <MudSpacer/>
+                    <div class="pl-2">@Options</div>
+                </div>
+            </div>
         
-    </div>
-    <MudDivider/>
-    <div class="row mt-2">
-        @ChildContent
-    </div>
-</div>
+        </div>
+        <MudDivider/>
+        <div class="row mt-2">
+            @ChildContent
+        </div>
+    </div>   
+}
 
 @code {
     [Parameter] public string Title { get; set; }
+    [Parameter] public bool AsAppBar { get; set; } = false;
     [Parameter] public RenderFragment Options { get; set; }
     [Parameter] public RenderFragment ChildContent { get; set; }
 }

@@ -10,7 +10,7 @@
 <MudSnackbarProvider/>
 
 <MudLayout>
-    <MudAppBar>
+    <MudAppBar Dense="true" >
         <MudButton OnClick="@(() => Store.Dispatch(new LayoutChangedAction { IsSidebarOpen = !_drawerOpen }))"><MudIcon Icon="@Icons.Material.Filled.Menu"></MudIcon></MudButton>
         Radiate Client
         <TestSub/>

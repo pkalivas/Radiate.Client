@@ -23,7 +23,6 @@ public class CircleEngineRunner : EngineRunner<GeneticEpoch<CircleGene>, CircleC
         CancellationTokenSource cts,
         Action<EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome>> onEngineComplete)
     {
-        
         var imageInput = inputs.ImageInputs;
         var populationInput = inputs.PopulationInputs;
         var iterationLimit = inputs.LimitInputs.IterationLimit;

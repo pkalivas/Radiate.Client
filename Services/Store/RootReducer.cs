@@ -10,7 +10,7 @@ public static class RootReducer
     {
         Reducer.On<NavigateToRunAction, RootState>((state, action) => state with { CurrentRunId = action.RunId }),
         Reducer.On<RunCreatedAction, RootState>(AddRun),
-        Reducer.On<AddEngineOutputAction, RootState>(AddOutput),
+        Reducer.On<AddRunOutputAction, RootState>(AddOutput),
         Reducer.On<EngineStoppedAction, RootState>(RunCompleted),
         Reducer.On<StartEngineAction, RootState>(StartEngine),
         Reducer.On<PauseEngineRunAction, RootState>(PauseEngine),
@@ -21,7 +21,7 @@ public static class RootReducer
         Reducer.On<CancelEngineRunAction, RootState>(CancelEngine),
     };
     
-    private static RootState AddOutput(RootState state, AddEngineOutputAction action)
+    private static RootState AddOutput(RootState state, AddRunOutputAction action)
     {
         var engineOutputsGeneratedAction = action.EngineOutputs;
         state.Runs[state.CurrentRunId] = state.Runs[state.CurrentRunId] with

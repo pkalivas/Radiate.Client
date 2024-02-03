@@ -12,5 +12,3 @@ public record ResumeEngineRunAction(Guid RunId) : IAction;
 public record CancelEngineRunAction(Guid RunId) : IAction;
 
 public record EngineStoppedAction : IAction;
-
-public record AddEngineOutputAction(RunOutputsModel EngineOutputs) : IAction;

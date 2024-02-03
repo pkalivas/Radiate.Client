@@ -14,10 +14,12 @@ public class RunsActor : ReceiveActor
     public RunsActor(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-        
-        ReceiveAsync<RunsActorMessage<StartRunCommand>>(Handle);
+
         ReceiveAsync<RunsActorMessage<StopRunCommand>>(Handle);
+        ReceiveAsync<RunsActorMessage<StartRunCommand>>(Handle);
     }
+    
+    private async Task Handle(RunsActorMessage<StopRunCommand> message) => await _cancellationTokenSource.CancelAsync();
     
     private async Task Handle(RunsActorMessage<StartRunCommand> message)
     {
@@ -42,7 +44,4 @@ public class RunsActor : ReceiveActor
             }, token);
         });
     }
-    
-    private async Task Handle(RunsActorMessage<StopRunCommand> message) =>
-        await _cancellationTokenSource.CancelAsync();
 }

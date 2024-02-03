@@ -1,4 +1,5 @@
 using Radiate.Client.Components.Store.States;
+using Radiate.Client.Components.Store.States.Features;
 
 namespace Radiate.Client.Services.Runners;
 
@@ -8,5 +9,5 @@ public interface IEngineRunner
 {
     Func<CancellationToken, Task> Run(RunInput inputs, CancellationTokenSource cts);
 
-    RunInput GetInputs(RunInputState feature);
+    RunInput GetInputs(RunInputsFeature feature);
 }

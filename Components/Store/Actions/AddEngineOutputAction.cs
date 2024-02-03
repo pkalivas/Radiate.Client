@@ -4,4 +4,4 @@ using Radiate.Client.Components.Store.States.Features;
 
 namespace Radiate.Client.Components.Store.Actions;
 
-public record AddEngineOutputAction(RunOutputsState EngineOutputs) : IAction<RootFeature>;
+public record AddEngineOutputAction(RunOutputsFeature EngineOutputs) : IAction<RootState>;

@@ -1,13 +1,13 @@
 using System.Reactive.Linq;
 using Radiate.Client.Components.Store.Actions;
-using Radiate.Client.Components.Store.States.Features;
+using Radiate.Client.Components.Store.States;
 using Radiate.Client.Services.Actors;
 using Radiate.Client.Services.Actors.Commands;
 using Reflow.Interfaces;
 
 namespace Radiate.Client.Components.Store.Effects;
 
-public class CancelEngineEffect : IEffect<RootFeature>
+public class CancelEngineEffect : IEffect<RootState>
 {
     private readonly IServiceProvider _serviceProvider;
     
@@ -18,7 +18,7 @@ public class CancelEngineEffect : IEffect<RootFeature>
             .ObserveAction<CancelEngineRunAction>()
             .Select(async action => await HandleAsync(action));
     }
-    public Func<Reflow.Store<RootFeature>, IObservable<object>>? Run { get; set; }
+    public Func<Reflow.Store<RootState>, IObservable<object>>? Run { get; set; }
     public bool Dispatch { get; set; }
 
     private async Task HandleAsync(object action)

@@ -1,4 +1,4 @@
-using Radiate.Client.Components.Store.States.Features;
+using Radiate.Client.Components.Store.States;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Schema;
 using Radiate.Optimizers.Evolution.Genome.Interfaces;
@@ -51,8 +51,8 @@ public static class MetricsSelectors
     //             };
     //         });
 
-    public static readonly ISelectorWithoutProps<RootFeature, MetricsState> SelectCurrentMetrics =
-        Reflow.Selectors.Selectors.CreateSelector<RootFeature, MetricsState>(state =>
+    public static readonly ISelectorWithoutProps<RootState, MetricsState> SelectCurrentMetrics =
+        Reflow.Selectors.Selectors.CreateSelector<RootState, MetricsState>(state =>
         {
             if (!state.Runs.ContainsKey(state.CurrentRunId))
             {

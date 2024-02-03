@@ -1,12 +1,12 @@
 using System.Reactive.Linq;
 using Radiate.Client.Components.Store.Actions;
 using Radiate.Client.Components.Store.Interfaces;
-using Radiate.Client.Components.Store.States.Features;
+using Radiate.Client.Components.Store.States;
 using Reflow.Interfaces;
 
 namespace Radiate.Client.Components.Store.Effects;
 
-public class RunOutputEffect : IEffect<RootFeature>
+public class RunOutputEffect : IEffect<RootState>
 {
     public RunOutputEffect()
     {
@@ -15,17 +15,17 @@ public class RunOutputEffect : IEffect<RootFeature>
             .Select(action => HandleAsync(store.State, action));
     }
     
-    public Func<Reflow.Store<RootFeature>, IObservable<object>>? Run { get; set; }
+    public Func<Reflow.Store<RootState>, IObservable<object>>? Run { get; set; }
     public bool Dispatch { get; set; } = true;
     
-    private IAction HandleAsync(RootFeature feature, object action)
+    private IAction HandleAsync(RootState state, object action)
     {
         if (action is AddEngineOutputAction addEngineOutputAction)
         {
-            if (!feature.UiState.EngineStateExpanded.ContainsKey(feature.CurrentRunId))
+            if (!state.UiFeature.EngineStateExpanded.ContainsKey(state.CurrentRunId))
             {
                 var treeExpansions = addEngineOutputAction.EngineOutputs.EngineStates.ToDictionary(val => val.Key, _ => true);
-                return new SetEngineTreeExpandedAction(feature.CurrentRunId, treeExpansions);
+                return new SetEngineTreeExpandedAction(state.CurrentRunId, treeExpansions);
             }
         }
 

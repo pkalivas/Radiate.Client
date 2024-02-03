@@ -1,4 +1,4 @@
-using Radiate.Client.Components.Store.States.Features;
+using Radiate.Client.Components.Store.States;
 using Radiate.Optimizers.Evolution.Genome.Interfaces;
 using Reflow.Interfaces;
 
@@ -16,9 +16,9 @@ public class LayoutState : ICopy<LayoutState>
 
 public static class LayoutStateSelector
 {
-    public static ISelectorWithoutProps<RootFeature, LayoutState> SelectLayoutState = 
-        Reflow.Selectors.Selectors.CreateSelector<RootFeature, LayoutState>(state => new LayoutState
+    public static ISelectorWithoutProps<RootState, LayoutState> SelectLayoutState = 
+        Reflow.Selectors.Selectors.CreateSelector<RootState, LayoutState>(state => new LayoutState
         {
-            IsSidebarOpen = state.UiState.IsSidebarOpen
+            IsSidebarOpen = state.UiFeature.IsSidebarOpen
         });
 }

@@ -2,8 +2,9 @@
 @using Image = SixLabors.ImageSharp.Image
 @using Size = MudBlazor.Size
 @using Radiate.Schema
+@using Radiate.Client.Components.Store.States.Features
 @* @inherits StateComponent<EngineControl, RunState> *@
-@inherits StoreComponent<RunState>
+@inherits StoreComponent<RunFeature>
 
 @if (Model.IsRunning)
 {
@@ -35,5 +36,5 @@ else
 
     private void Stop() => Store.Dispatch(new CancelEngineRunAction(Model.RunId));
     
-    protected override IObservable<RunState> Select() => Store.Select(RunSelectors.SelectCurrentRun);
+    protected override IObservable<RunFeature> Select() => Store.Select(RunSelectors.SelectCurrentRun);
 }

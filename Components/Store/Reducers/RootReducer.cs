@@ -1,5 +1,5 @@
 using Radiate.Client.Components.Store.Actions;
-using Radiate.Client.Components.Store.States.Features;
+using Radiate.Client.Components.Store.States;
 using Radiate.Engines.Schema;
 using Reflow.Reducers;
 
@@ -7,19 +7,19 @@ namespace Radiate.Client.Components.Store.Reducers;
 
 public static class RootReducer
 {
-    public static IEnumerable<On<RootFeature>> CreateReducers() => new List<On<RootFeature>>
+    public static IEnumerable<On<RootState>> CreateReducers() => new List<On<RootState>>
     {
-        Reducer.On<NavigateToRunAction, RootFeature>((state, action) => state with { CurrentRunId = action.RunId }),
-        Reducer.On<RunCreatedAction, RootFeature>(AddRun),
-        Reducer.On<AddEngineOutputAction, RootFeature>(AddOutput),
-        Reducer.On<RunCompletedAction, RootFeature>(RunCompleted),
-        Reducer.On<StartEngineAction, RootFeature>(StartEngine),
-        Reducer.On<SetEngineTreeExpandedAction, RootFeature>(SetTreeExpansions),
-        Reducer.On<LayoutChangedAction, RootFeature>(LayoutChanged),
-        Reducer.On<UpdateCurrentImageAction, RootFeature>(UpdateCurrentImage),
+        Reducer.On<NavigateToRunAction, RootState>((state, action) => state with { CurrentRunId = action.RunId }),
+        Reducer.On<RunCreatedAction, RootState>(AddRun),
+        Reducer.On<AddEngineOutputAction, RootState>(AddOutput),
+        Reducer.On<RunCompletedAction, RootState>(RunCompleted),
+        Reducer.On<StartEngineAction, RootState>(StartEngine),
+        Reducer.On<SetEngineTreeExpandedAction, RootState>(SetTreeExpansions),
+        Reducer.On<LayoutChangedAction, RootState>(LayoutChanged),
+        Reducer.On<UpdateCurrentImageAction, RootState>(UpdateCurrentImage),
     };
     
-    private static RootFeature AddOutput(RootFeature state, AddEngineOutputAction action)
+    private static RootState AddOutput(RootState state, AddEngineOutputAction action)
     {
         var engineOutputsGeneratedAction = action.EngineOutputs;
         state.Runs[state.CurrentRunId] = state.Runs[state.CurrentRunId] with
@@ -36,36 +36,36 @@ public static class RootReducer
         return state with { Runs = state.Runs };
     }
     
-    private static RootFeature AddRun(RootFeature state, RunCreatedAction action)
+    private static RootState AddRun(RootState state, RunCreatedAction action)
     {
         state.Runs[action.Run.RunId] = action.Run with { Index = state.Runs.Count };
         return state with { Runs = state.Runs };
     }
     
-    private static RootFeature RunCompleted(RootFeature state, RunCompletedAction action)
+    private static RootState RunCompleted(RootState state, RunCompletedAction action)
     {
         state.Runs[state.CurrentRunId] = state.Runs[state.CurrentRunId] with { IsRunning = false };
         return state with { Runs = state.Runs };
     }
     
-    private static RootFeature StartEngine(RootFeature state, StartEngineAction action)
+    private static RootState StartEngine(RootState state, StartEngineAction action)
     {
         state.Runs[state.CurrentRunId] = state.Runs[state.CurrentRunId] with { IsRunning = true };
         return state with { Runs = state.Runs };
     }
     
-    private static RootFeature SetTreeExpansions(RootFeature state, SetEngineTreeExpandedAction action)
+    private static RootState SetTreeExpansions(RootState state, SetEngineTreeExpandedAction action)
     {
-        state.UiState.EngineStateExpanded[action.RunId] = action.Expanded;
-        return state with { UiState = state.UiState };
+        state.UiFeature.EngineStateExpanded[action.RunId] = action.Expanded;
+        return state with { UiFeature = state.UiFeature };
     }
     
-    private static RootFeature LayoutChanged(RootFeature state, LayoutChangedAction action) => state with
+    private static RootState LayoutChanged(RootState state, LayoutChangedAction action) => state with
     {
-        UiState = state.UiState with { IsSidebarOpen = action.IsSidebarOpen }
+        UiFeature = state.UiFeature with { IsSidebarOpen = action.IsSidebarOpen }
     };
 
-    private static RootFeature UpdateCurrentImage(RootFeature state, UpdateCurrentImageAction action)
+    private static RootState UpdateCurrentImage(RootState state, UpdateCurrentImageAction action)
     {
 	    state.Images[action.RunId] = state.Images[action.RunId] with { Current = action.Image };
 	    return state with { Images = state.Images };

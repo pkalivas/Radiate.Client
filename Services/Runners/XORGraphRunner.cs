@@ -1,4 +1,3 @@
-using Radiate.Client.Components.Store;
 using Radiate.Client.Components.Store.Actions;
 using Radiate.Client.Components.Store.States;
 using Radiate.Client.Components.Store.States.Features;
@@ -20,9 +19,9 @@ namespace Radiate.Client.Services.Runners;
 
 public class XORGraphRunner : IEngineRunner
 {
-    private readonly Store<RootFeature> _dispatcher;
+    private readonly Store<RootState> _dispatcher;
     
-    public XORGraphRunner(Store<RootFeature> dispatcher) => _dispatcher = dispatcher;
+    public XORGraphRunner(Store<RootState> dispatcher) => _dispatcher = dispatcher;
     
     public Func<CancellationToken, Task> Run(RunInput command, CancellationTokenSource cts) => async token =>
     {
@@ -64,7 +63,7 @@ public class XORGraphRunner : IEngineRunner
         _dispatcher.Dispatch(new RunCompletedAction());
     };
 
-    public RunInput GetInputs(RunInputState feature) => new()
+    public RunInput GetInputs(RunInputsFeature feature) => new()
     {
         Inputs = new List<RunInputValue>
         {
@@ -72,9 +71,9 @@ public class XORGraphRunner : IEngineRunner
         }
     };
     
-    private static RunOutputsState Map(EngineHandle output)
+    private static RunOutputsFeature Map(EngineHandle output)
     {
-        return new RunOutputsState
+        return new RunOutputsFeature
         {
             EngineState = output.GetState(output.EngineId),
             EngineId = output.EngineId,

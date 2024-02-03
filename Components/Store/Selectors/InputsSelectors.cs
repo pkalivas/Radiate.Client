@@ -6,14 +6,14 @@ namespace Radiate.Client.Components.Store.Selectors;
 
 public static class InputsSelectors
 {
-    public static ISelectorWithoutProps<RootFeature, RunInputState> SelectCurrentRunInputs = 
-        Reflow.Selectors.Selectors.CreateSelector<RootFeature, RunInputState>(state =>
+    public static ISelectorWithoutProps<RootState, RunInputsFeature> SelectCurrentRunInputs = 
+        Reflow.Selectors.Selectors.CreateSelector<RootState, RunInputsFeature>(state =>
         {
             if (state.Runs.TryGetValue(state.CurrentRunId, out var run))
             {
                 return run.Inputs;
             }
 
-            return new RunInputState();
+            return new RunInputsFeature();
         });
 }

@@ -1,9 +1,9 @@
 using Radiate.Client.Services.Runners;
 using Radiate.Engines.Entities;
 
-namespace Radiate.Client.Components.Store.States;
+namespace Radiate.Client.Components.Store.States.Features;
 
-public class RunOutputsState
+public class RunOutputsFeature
 {
     public string EngineState { get; set; } = "";
     public string EngineId { get; set; } = "";
@@ -28,7 +28,7 @@ public class RunOutputsState
 
     public override bool Equals(object? obj)
     {
-        return obj is RunOutputsState state &&
+        return obj is RunOutputsFeature state &&
                EngineState == state.EngineState &&
                EngineId == state.EngineId &&
                EqualityComparer<MetricSet>.Default.Equals(Metrics, state.Metrics) &&

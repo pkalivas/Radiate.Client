@@ -1,6 +1,6 @@
 using Radiate.Client.Components.Store.Effects;
 using Radiate.Client.Components.Store.Reducers;
-using Radiate.Client.Components.Store.States.Features;
+using Radiate.Client.Components.Store.States;
 using Radiate.Client.Services.Actors;
 using Radiate.Client.Services.Runners;
 using Radiate.Client.Services.Worker;
@@ -41,14 +41,14 @@ public static class ApplicationServiceRegistration
     
     private static IServiceCollection AddReflow(this IServiceCollection services) => 
         services
-            .AddTransient<IEffect<RootFeature>, StartEngineEffect>()
-            .AddTransient<IEffect<RootFeature>, RunOutputEffect>()
-            .AddTransient<IEffect<RootFeature>, CancelEngineEffect>()
-            .AddSingleton<Store<RootFeature>>(sp =>
+            .AddTransient<IEffect<RootState>, StartEngineEffect>()
+            .AddTransient<IEffect<RootState>, RunOutputEffect>()
+            .AddTransient<IEffect<RootState>, CancelEngineEffect>()
+            .AddSingleton<Store<RootState>>(sp =>
             {
-                var store = new Store<RootFeature>(RootReducer.CreateReducers(), new RootFeature());
+                var store = new Store<RootState>(RootReducer.CreateReducers(), new RootState());
                 
-                var serviceProvidedEffects = sp.GetServices<IEffect<RootFeature>>();
+                var serviceProvidedEffects = sp.GetServices<IEffect<RootState>>();
                 
                 store.RegisterEffects(serviceProvidedEffects.ToArray());
                 

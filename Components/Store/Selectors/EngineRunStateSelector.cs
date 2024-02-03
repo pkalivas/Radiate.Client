@@ -4,42 +4,26 @@ using Radiate.Client.Components.Store.States;
 using Radiate.Client.Components.Store.States.Features;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Schema;
-using Radiate.Optimizers.Evolution.Genome.Interfaces;
 using Reflow.Interfaces;
 
 namespace Radiate.Client.Components.Store.Selectors;
 
-public record EngineRunState : ICopy<EngineRunState>
+public record EngineRunState
 {
     public Guid RunId { get; init; }
     public HashSet<TreeItemData<EngineState>> TreeItems { get; init; } = new();
     public Dictionary<string, bool> Expanded { get; init; } = new();
-    public RunInputState Inputs { get; set; } = new();
+    public RunInputsFeature Inputs { get; set; } = new();
     public EngineState? CurrentEngineState { get; set; }
-    
-    public EngineRunState Copy() => new()
-    {
-        RunId = RunId,
-        Expanded = Expanded.ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
-        TreeItems = TreeItems.ToHashSet(),
-        Inputs = Inputs.Copy(),
-        CurrentEngineState = new EngineState
-        {
-            EngineId = CurrentEngineState?.EngineId,
-            State = CurrentEngineState?.State,
-            SubEngines = CurrentEngineState?.SubEngines.ToList(),
-            Metrics = CurrentEngineState?.Metrics
-        }
-    };
 }
 
 public static class EngineRunStateSelector
 {
     
-    public static ISelectorWithoutProps<RootFeature, EngineRunState> SelectEngineRunState = 
-        Reflow.Selectors.Selectors.CreateSelector<RootFeature, EngineRunState>(state =>
+    public static ISelectorWithoutProps<RootState, EngineRunState> SelectEngineRunState = 
+        Reflow.Selectors.Selectors.CreateSelector<RootState, EngineRunState>(state =>
         {
-            if (state.UiState.EngineStateExpanded.TryGetValue(state.CurrentRunId, out var engineTree))
+            if (state.UiFeature.EngineStateExpanded.TryGetValue(state.CurrentRunId, out var engineTree))
             {
                 return new EngineRunState
                 {

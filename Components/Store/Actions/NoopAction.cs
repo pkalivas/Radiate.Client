@@ -1,6 +1,6 @@
 using Radiate.Client.Components.Store.Interfaces;
-using Radiate.Client.Components.Store.States.Features;
+using Radiate.Client.Components.Store.States;
 
 namespace Radiate.Client.Components.Store.Actions;
 
-public record NoopAction : IAction<RootFeature>;
+public record NoopAction : IAction<RootState>;

@@ -4,7 +4,6 @@ using Radiate.Client.Services.Runners.Interfaces;
 using Radiate.Client.Services.Store;
 using Radiate.Client.Services.Store.Actions;
 using Radiate.Client.Services.Store.Models;
-using Radiate.Client.Services.Worker;
 using Radiate.Engines.Entities;
 
 namespace Radiate.Client.Services.Runners;
@@ -21,6 +20,8 @@ public abstract class EngineRunner<T> : IEngineRunner where T : IRunInput<T>
     
     protected abstract RunOutputsModel MapToOutput(EngineHandle handle);
     protected abstract Task<EngineHandle> Fit(RunInput inputs, CancellationTokenSource cts, Action<EngineHandle> onEngineComplete);
+    
+    public abstract RunInput GetInputs(RunInputsModel model);
     
     public async Task StartRun(Guid runId, RunInput inputs, CancellationTokenSource cts)
     {
@@ -53,21 +54,4 @@ public abstract class EngineRunner<T> : IEngineRunner where T : IRunInput<T>
         resume.Dispose();
         cancel.Dispose();
     }
-    
-    public Func<CancellationToken, Task> Run(Guid runId, RunInput inputs, CancellationTokenSource cts)
-    {
-        return async token =>
-        {
-            await StartRun(runId, inputs, cts);
-        };
-    }
-
-    public RunInput GetInputs(RunInputsModel model) => new()
-    {
-        Inputs = new List<RunInputValue>
-        {
-            new("IterationLimit", model.IterationLimit.ToString(), nameof(Int32)),
-            new("RunId", model.ToString(), nameof(Guid))
-        }
-    };
 }

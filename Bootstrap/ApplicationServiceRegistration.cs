@@ -25,11 +25,9 @@ public static class ApplicationServiceRegistration
             .AddScoped<XORGraphRunner>()
             .AddScoped<CircleEngineRunner>()
             .AddScoped<PolygonEngineRunner>()
-            .AddScoped<TestRunner>()
             .AddScoped<EngineRunnerFactory>(sp => name => name switch
             {
-                // $"Graph_XOR" => sp.GetRequiredService<XORGraphRunner>(),
-                $"Graph_XOR" => sp.GetRequiredService<TestRunner>(),
+                "Graph_XOR" => sp.GetRequiredService<XORGraphRunner>(),
                 "Image_Circle" => sp.GetRequiredService<CircleEngineRunner>(),
                 "Image_Polygon" => sp.GetRequiredService<PolygonEngineRunner>(),
                 _ => throw new ArgumentException($"Runner with name {name} not found.")

@@ -4,6 +4,7 @@ using Radiate.Client.Services.Runners.Interfaces;
 using Radiate.Client.Services.Store;
 using Radiate.Client.Services.Store.Actions;
 using Radiate.Client.Services.Store.Models;
+using Radiate.Client.Services.Store.Selections;
 using Radiate.Engines.Entities;
 using Reflow.Interfaces;
 
@@ -26,21 +27,8 @@ public abstract class EngineRunner<T> : IEngineRunner where T : IRunInput<T>
     
     public async Task StartRun(Guid runId, RunInput inputs, CancellationTokenSource cts)
     {
-        var pause = _store.OnAction<PauseEngineRunAction>()
-            .Select(pair => pair.Action)
-            .Where(action => action.RunId == runId)
-            .Subscribe(_ => _pause.OnNext(true));
-        
-        var resume = _store.OnAction<ResumeEngineRunAction>()
-            .Select(pair => pair.Action)
-            .Where(action => action.RunId == runId)
-            .Subscribe(_ => _pause.OnNext(false));
-        
-        var cancel = _store.OnAction<CancelEngineRunAction>()
-            .Select(pair => pair.Action)
-            .Where(action => action.RunId == runId)
-            .Subscribe(_ => _pause.OnNext(false));
-        
+        var control = _store.Select(EngineSelectors.SelectEngineControl).Subscribe(OnControl);
+
         var result = await Fit(inputs, cts, handle =>
         {
             _store.Dispatch(new AddEngineOutputAction(MapToOutput(handle)));
@@ -53,9 +41,17 @@ public abstract class EngineRunner<T> : IEngineRunner where T : IRunInput<T>
         
         _store.Dispatch(new AddEngineOutputAction(MapToOutput(result)));
         _store.Dispatch(new EngineStoppedAction());
+        _pause.OnCompleted();
+        control.Dispose();
+    }
+    
+    private void OnControl(EngineControlModel control)
+    {
+        _pause.OnNext(control.IsPaused);
         
-        pause.Dispose();
-        resume.Dispose();
-        cancel.Dispose();
+        if (control.IsCompleted)
+        {
+            
+        }
     }
 }

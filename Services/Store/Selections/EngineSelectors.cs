@@ -9,6 +9,15 @@ namespace Radiate.Client.Services.Store.Selections;
 
 public static class EngineSelectors
 {
+    public static readonly ISelector<RootState, EngineControlModel> SelectEngineControl = Selectors
+        .Create<RootState, RunModel, EngineControlModel>(RunSelectors.SelectRun, run => new EngineControlModel
+        {
+            RunId = run.RunId,
+            IsRunning = run.IsRunning,
+            IsPaused = run.IsPaused,
+            IsCompleted = run.IsCompleted
+        });
+    
     public static readonly ISelector<RootState, EngineModel> SelectEngineModel = Selectors
         .Create<RootState, UiModel, RunModel, EngineModel>(UiSelectors.SelectUiState, RunSelectors.SelectRun,
             (ui, run) =>

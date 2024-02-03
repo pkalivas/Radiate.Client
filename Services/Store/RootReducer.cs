@@ -18,6 +18,7 @@ public static class RootReducer
         Reducer.On<SetEngineTreeExpandedAction, RootState>(SetTreeExpansions),
         Reducer.On<LayoutChangedAction, RootState>(LayoutChanged),
         Reducer.On<UpdateCurrentImageAction, RootState>(UpdateCurrentImage),
+        Reducer.On<CancelEngineRunAction, RootState>(CancelEngine),
     };
     
     private static RootState AddOutput(RootState state, AddEngineOutputAction action)
@@ -83,6 +84,17 @@ public static class RootReducer
             IsPaused = true,
             IsRunning = true,
             IsCompleted = false
+        };
+        return state with { Runs = state.Runs };
+    }
+    
+    private static RootState CancelEngine(RootState state, CancelEngineRunAction action)
+    {
+        state.Runs[action.RunId] = state.Runs[action.RunId] with
+        {
+            IsPaused = false,
+            IsRunning = false,
+            IsCompleted = true
         };
         return state with { Runs = state.Runs };
     }

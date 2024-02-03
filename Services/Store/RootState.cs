@@ -1,7 +1,7 @@
 using Radiate.Client.Services.Store.Models;
 using Radiate.Client.Services.Store.States.Features;
 
-namespace Radiate.Client.Services.Store.States;
+namespace Radiate.Client.Services.Store;
 
 public record RootState
 {

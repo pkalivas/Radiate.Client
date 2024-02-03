@@ -1,4 +1,5 @@
 using Radiate.Client.Services.Genome;
+using Radiate.Client.Services.Runners.Interfaces;
 using Radiate.Client.Services.Store.Models;
 using Radiate.Engines;
 using Radiate.Engines.Entities;
@@ -14,7 +15,12 @@ namespace Radiate.Client.Services.Runners;
 
 public class CircleEngineRunner : IEngineRunner
 {
-    public Func<CancellationToken, Task> Run(RunInput command, CancellationTokenSource cts) => async token =>
+    public Task StartRun(Guid runId, RunInput inputs, CancellationTokenSource cts)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Func<CancellationToken, Task> Run(Guid runId, RunInput command, CancellationTokenSource cts) => async token =>
     {
         var targetImage = command.GetInputValue<string>("TargetImage");
         var numCircles = command.GetInputValue<int>("NumCircles");

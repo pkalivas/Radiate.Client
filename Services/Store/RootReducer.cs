@@ -1,5 +1,4 @@
 using Radiate.Client.Services.Store.Actions;
-using Radiate.Client.Services.Store.States;
 using Radiate.Engines.Schema;
 using Reflow.Reducers;
 
@@ -12,8 +11,10 @@ public static class RootReducer
         Reducer.On<NavigateToRunAction, RootState>((state, action) => state with { CurrentRunId = action.RunId }),
         Reducer.On<RunCreatedAction, RootState>(AddRun),
         Reducer.On<AddEngineOutputAction, RootState>(AddOutput),
-        Reducer.On<RunCompletedAction, RootState>(RunCompleted),
+        Reducer.On<EngineStoppedAction, RootState>(RunCompleted),
         Reducer.On<StartEngineAction, RootState>(StartEngine),
+        Reducer.On<PauseEngineRunAction, RootState>(PauseEngine),
+        Reducer.On<ResumeEngineRunAction, RootState>(ResumeEngine),
         Reducer.On<SetEngineTreeExpandedAction, RootState>(SetTreeExpansions),
         Reducer.On<LayoutChangedAction, RootState>(LayoutChanged),
         Reducer.On<UpdateCurrentImageAction, RootState>(UpdateCurrentImage),
@@ -42,15 +43,47 @@ public static class RootReducer
         return state with { Runs = state.Runs };
     }
     
-    private static RootState RunCompleted(RootState state, RunCompletedAction action)
+    private static RootState RunCompleted(RootState state, EngineStoppedAction action)
     {
-        state.Runs[state.CurrentRunId] = state.Runs[state.CurrentRunId] with { IsRunning = false };
+        state.Runs[state.CurrentRunId] = state.Runs[state.CurrentRunId] with
+        {
+            IsRunning = false,
+            IsPaused = false,
+            IsCompleted = true
+        };
         return state with { Runs = state.Runs };
     }
     
     private static RootState StartEngine(RootState state, StartEngineAction action)
     {
-        state.Runs[state.CurrentRunId] = state.Runs[state.CurrentRunId] with { IsRunning = true };
+        state.Runs[state.CurrentRunId] = state.Runs[state.CurrentRunId] with
+        {
+            IsRunning = true,
+            IsPaused = false,
+            IsCompleted = false
+        };
+        return state with { Runs = state.Runs };
+    }
+    
+    private static RootState ResumeEngine(RootState state, ResumeEngineRunAction action)
+    {
+        state.Runs[action.RunId] = state.Runs[action.RunId] with
+        {
+            IsPaused = false,
+            IsRunning = true,
+            IsCompleted = false
+        };
+        return state with { Runs = state.Runs };
+    }
+    
+    private static RootState PauseEngine(RootState state, PauseEngineRunAction action)
+    {
+        state.Runs[action.RunId] = state.Runs[action.RunId] with
+        {
+            IsPaused = true,
+            IsRunning = true,
+            IsCompleted = false
+        };
         return state with { Runs = state.Runs };
     }
     

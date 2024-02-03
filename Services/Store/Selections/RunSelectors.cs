@@ -1,5 +1,4 @@
 using Radiate.Client.Services.Store.Models;
-using Radiate.Client.Services.Store.States;
 using Radiate.Engines.Schema;
 using Reflow.Interfaces;
 using Reflow.Selectors;
@@ -22,6 +21,9 @@ public static class RunSelectors
             Fitness = run.Outputs.Metrics.Get(MetricNames.FitnessDistribution),
             GenomeSize = run.Outputs.Metrics.Get(MetricNames.GenomeSizeDistribution),
             PopulationAge = run.Outputs.Metrics.Get(MetricNames.AgeDistribution),
-            Scores = run.Outputs.Metrics.Get(MetricNames.Score)
+            Scores = run.Outputs.Metrics.Get(MetricNames.Score),
+            IsRunning = run.IsRunning,
+            IsPaused = run.IsPaused,
+            IsCompleted = run.IsPaused
         });
 }

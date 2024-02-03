@@ -18,10 +18,20 @@
                             <ChildContent>
                                 <EngineInputs/>
                                 <div class="mt-4 row">
-                                    <div class="col-11"></div>
-                                    <div class="col-1">
-                                        <EngineControl/>
-                                    </div>
+                                    @if (Model.IsRunning)
+                                    {
+                                        <div class="col-10"></div>
+                                        <div class="col-2">
+                                            <EngineControl/>
+                                        </div>   
+                                    }
+                                    else
+                                    {
+                                        <div class="col-11"></div>
+                                        <div class="col-1">
+                                            <EngineControl/>
+                                        </div>  
+                                    }
                                 </div>
                             </ChildContent>
                         </ToolBar>

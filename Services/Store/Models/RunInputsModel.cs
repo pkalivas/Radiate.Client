@@ -1,6 +1,8 @@
+using Radiate.Client.Services.Runners;
+
 namespace Radiate.Client.Services.Store.Models;
 
-public record RunInputsModel
+public record RunInputsModel : IRunInput<RunInputsModel>
 {
     public string ModelType { get; set; } = "Graph";
     public string DataSetType { get; set; } = "XOR";

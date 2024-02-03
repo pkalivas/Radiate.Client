@@ -1,16 +1,15 @@
 @using Radiate.Client.Services.Store.States
+@using Reflow.Interfaces
 @inject ILogger<TestSub> Logger
-@inject Store<RootState> Store
+@inherits StoreComponent<Radiate.Client.Services.Store.RootState>
 
 @code {
     
-    // protected override void OnStateInitialized()
-    // {
-    //     // Subscribe<IAction>(act =>
-    //     // {
-    //     //     Store.Dispatch(act);
-    //     //     Logger.LogInformation("Received action {Action}", act);
-    //     // });
-    // }
-
+    protected override void OnSubscribed()
+    {
+        Subscribe<object>(act =>
+        {
+            Logger.LogInformation($"Received action {act.GetType().FullName}", act);
+        });
+    }
 }

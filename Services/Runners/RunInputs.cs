@@ -1,7 +1,10 @@
 namespace Radiate.Client.Services.Runners;
 
+public interface IRunInput<out T> where T : IRunInput<T>
+{
+}
 
-public class RunInput
+public class RunInput : IRunInput<RunInput>
 {
     public List<RunInputValue> Inputs { get; set; } = new();
     

@@ -1,7 +1,7 @@
 using Radiate.Client.Services.Actors;
 using Radiate.Client.Services.Runners;
+using Radiate.Client.Services.Runners.Interfaces;
 using Radiate.Client.Services.Store;
-using Radiate.Client.Services.Store.States;
 using Radiate.Client.Services.Worker;
 using Reflow;
 using Reflow.Interfaces;
@@ -25,9 +25,11 @@ public static class ApplicationServiceRegistration
             .AddScoped<XORGraphRunner>()
             .AddScoped<CircleEngineRunner>()
             .AddScoped<PolygonEngineRunner>()
+            .AddScoped<TestRunner>()
             .AddScoped<EngineRunnerFactory>(sp => name => name switch
             {
-                $"Graph_XOR" => sp.GetRequiredService<XORGraphRunner>(),
+                // $"Graph_XOR" => sp.GetRequiredService<XORGraphRunner>(),
+                $"Graph_XOR" => sp.GetRequiredService<TestRunner>(),
                 "Image_Circle" => sp.GetRequiredService<CircleEngineRunner>(),
                 "Image_Polygon" => sp.GetRequiredService<PolygonEngineRunner>(),
                 _ => throw new ArgumentException($"Runner with name {name} not found.")

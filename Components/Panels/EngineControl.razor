@@ -5,18 +5,52 @@
 @using Radiate.Client.Services.Store.Actions
 @using Radiate.Client.Services.Store.Models
 @using Radiate.Client.Services.Store.Selections
-@* @inherits StateComponent<EngineControl, RunState> *@
 @inherits StoreComponent<RunModel>
 
 @if (Model.IsRunning)
 {
-    <MudButton Class="w-100"
-               Size="Size.Small"
-               Variant="Variant.Filled"
-               Color="Color.Secondary"
-               OnClick="@Stop">
-        Stop
-    </MudButton>
+	@if (!Model.IsPaused)
+	{
+		<div class="d-flex justify-content-between">
+			<MudButton Class="w-50 float-left mr-2"
+                       Size="Size.Small"
+                       Variant="Variant.Filled"
+                       Color="Color.Secondary"
+                       OnClick="@Pause">
+            	Pause
+            </MudButton>
+            <MudButton Class="w-50 float-right"
+                       Size="Size.Small"
+                       Variant="Variant.Filled"
+                       Color="Color.Secondary"
+                       OnClick="@Stop">
+            		<MudIcon Icon="@Icons.Material.Filled.Stop" 
+                             Size="Size.Small"/>
+            	Stop
+            </MudButton>
+		</div>
+	}
+	else
+	{
+		<div class="d-flex justify-content-between">
+			<MudButton Class="w-50 float-left mr-2"
+					   Size="Size.Small"
+					   Variant="Variant.Filled"
+					   Color="Color.Secondary"
+					   OnClick="@Stop">
+					<MudIcon Icon="@Icons.Material.Filled.Stop" 
+							 Size="Size.Small"/>
+				Stop
+			</MudButton>
+			<MudButton Class="w-50 float-right"
+			           Size="Size.Small"
+			           Variant="Variant.Filled"
+			           Color="Color.Tertiary"
+			           OnClick="@Resume">
+				Resume
+			</MudButton>
+		</div>
+	}
 }
 else
 {
@@ -37,6 +71,10 @@ else
     private void Start() => Store.Dispatch(new StartEngineAction(Model.RunId, Model.Inputs));
 
     private void Stop() => Store.Dispatch(new CancelEngineRunAction(Model.RunId));
+    
+    private void Resume() => Store.Dispatch(new ResumeEngineRunAction(Model.RunId));
+    
+    private void Pause() => Store.Dispatch(new PauseEngineRunAction(Model.RunId));
     
     protected override IObservable<RunModel> Select() => Store.Select(RunSelectors.SelectCurrentRun);
 }

@@ -11,4 +11,7 @@ public record MetricsModel
     public MetricValue Fitness { get; init; } = new();
     public MetricValue GenomeSize { get; init; } = new();
     public MetricValue PopulationAge { get; init; } = new();
+    public bool IsPaused { get; init; }
+    public bool IsRunning { get; init; }
+    public bool IsCompleted { get; init; }
 }

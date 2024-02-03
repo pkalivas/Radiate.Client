@@ -1,6 +1,8 @@
 @page "/runs/{runId:guid}"
 @rendermode InteractiveServer
 @inject IDialogService DialogService
+@using Radiate.Client.Services.Store.Models
+@using Radiate.Client.Services.Store.Selections
 @inherits StoreComponent<MetricsModel>
 
 <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">

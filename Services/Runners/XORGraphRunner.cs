@@ -1,6 +1,6 @@
-using Radiate.Client.Components.Store.Actions;
-using Radiate.Client.Components.Store.Models;
-using Radiate.Client.Components.Store.States;
+using Radiate.Client.Services.Store.Actions;
+using Radiate.Client.Services.Store.Models;
+using Radiate.Client.Services.Store.States;
 using Radiate.Data;
 using Radiate.Engines;
 using Radiate.Engines.Entities;

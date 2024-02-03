@@ -1,7 +1,7 @@
-using Radiate.Client.Components.Store;
-using Radiate.Client.Components.Store.States;
 using Radiate.Client.Services.Actors;
 using Radiate.Client.Services.Runners;
+using Radiate.Client.Services.Store;
+using Radiate.Client.Services.Store.States;
 using Radiate.Client.Services.Worker;
 using Reflow;
 using Reflow.Interfaces;
@@ -39,10 +39,12 @@ public static class ApplicationServiceRegistration
             .AddSingleton<Store<RootState>>(sp =>
             {
                 var store = new Store<RootState>(RootReducer.CreateReducers(), new RootState());
-                
                 var serviceProvidedEffects = sp.GetService<IEffectRegistry<RootState>>();
-                
-                store.RegisterEffects(serviceProvidedEffects.CreateEffects().ToArray());
+
+                if (serviceProvidedEffects != null)
+                {
+                    store.RegisterEffects(serviceProvidedEffects.CreateEffects().ToArray());
+                }
                 
                 return store;
             });

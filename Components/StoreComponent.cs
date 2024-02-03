@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Components;
-using Radiate.Client.Components.Store.States;
+using Radiate.Client.Services.Store.States;
+using Reflow;
 
 namespace Radiate.Client.Components;
 
 public abstract class StoreComponent<TModel> : ComponentBase
 {
-    [Inject] protected Reflow.Store<RootState> Store { get; set; } = default!;
+    [Inject] protected Store<RootState> Store { get; set; } = default!;
     
     protected TModel? Model { get; private set; } = default!;
     

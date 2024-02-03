@@ -1,4 +1,8 @@
-﻿@inherits LayoutComponentBase
+﻿@using Radiate.Client.Services.Store.States
+@using Radiate.Client.Services.Store.Models
+@using Radiate.Client.Services.Store.Selections
+@using Radiate.Client.Services.Store.Actions
+@inherits LayoutComponentBase
 
 <MudThemeProvider IsDarkMode="true"/>
 <MudDialogProvider/>
@@ -23,7 +27,7 @@
 @code {
     bool _drawerOpen = true;
     
-    [Inject] private Reflow.Store<RootState> Store { get; set; }
+    [Inject] private Store<RootState> Store { get; set; }
     
     protected override Task OnInitializedAsync()
     {

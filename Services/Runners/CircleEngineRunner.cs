@@ -1,5 +1,5 @@
-using Radiate.Client.Components.Store.Models;
 using Radiate.Client.Services.Genome;
+using Radiate.Client.Services.Store.Models;
 using Radiate.Engines;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Limits;

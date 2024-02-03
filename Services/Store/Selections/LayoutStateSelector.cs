@@ -1,13 +1,14 @@
 using Radiate.Client.Services.Store.Models;
 using Reflow.Interfaces;
+using Reflow.Selectors;
 
 namespace Radiate.Client.Services.Store.Selections;
 
 public static class LayoutStateSelector
 {
-    public static ISelector<RootState, LayoutModel> SelectLayoutState = 
-        Reflow.Selectors.Selectors.CreateSelector<RootState, LayoutModel>(state => new LayoutModel
+    public static ISelector<RootState, LayoutModel> SelectLayoutState = Selectors
+        .Create<RootState, LayoutModel>(state => new LayoutModel
         {
-            IsSidebarOpen = state.UiFeature.IsSidebarOpen
+            IsSidebarOpen = state.UiModel.IsSidebarOpen
         });
 }

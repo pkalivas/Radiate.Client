@@ -12,13 +12,13 @@ using Radiate.Extensions.Evolution.Architects.Nodes;
 using Radiate.Optimizers.Evolution.Interceptors;
 using Radiate.Optimizers.Evolution.Selectors;
 using Radiate.Tensors;
-using Reflow;
+using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Runners;
 
 public class XORGraphRunner : EngineRunner<RunInputsModel>
 {
-    public XORGraphRunner(Store<RootState> store) : base(store) { }
+    public XORGraphRunner(IStore<RootState> store) : base(store) { }
 
     protected override async Task<EngineHandle> Fit(RunInput input, CancellationTokenSource cts, Action<EngineHandle> onEngineComplete)
     {

@@ -34,5 +34,5 @@
     }
     
     protected override IObservable<EngineModel> Select() =>
-        Store.Select(EngineRunStateSelector.SelectEngineRunState);
+        Store.Select(EngineSelectors.SelectEngineModel);
 }

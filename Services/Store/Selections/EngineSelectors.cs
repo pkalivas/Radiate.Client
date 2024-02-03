@@ -7,38 +7,34 @@ using Reflow.Selectors;
 
 namespace Radiate.Client.Services.Store.Selections;
 
-public static class EngineRunStateSelector
+public static class EngineSelectors
 {
-    public static readonly ISelector<RootState, EngineModel> SelectEngineRunState = Selectors
-        .CreateSelector<RootState, EngineModel>(state =>
-        {
-            if (state.UiFeature.EngineStateExpanded.TryGetValue(state.CurrentRunId, out var engineTree))
+    public static readonly ISelector<RootState, EngineModel> SelectEngineModel = Selectors
+        .Create<RootState, UiModel, RunModel, EngineModel>(UiSelectors.SelectUiState, RunSelectors.SelectRun,
+            (ui, run) =>
             {
+                if (ui.EngineStateExpanded.TryGetValue(run.RunId, out var engineTree))
+                {
+                    return new EngineModel
+                    {
+                        RunId = run.RunId,
+                        TreeItems = GetItems(run.Outputs.EngineStates, engineTree),
+                        Expanded = engineTree,
+                        Inputs = run.Inputs,
+                        CurrentEngineState = run?.Outputs?.EngineStates.FirstOrDefault().Value
+                    };
+                }
+                
                 return new EngineModel
                 {
-                    RunId = state.CurrentRunId,
-                    TreeItems = GetItems(state.Runs[state.CurrentRunId].Outputs.EngineStates, engineTree),
-                    Expanded = engineTree,
-                    Inputs = state.Runs[state.CurrentRunId].Inputs,
-                    CurrentEngineState = state.Runs[state.CurrentRunId]?.Outputs?.EngineStates.FirstOrDefault().Value
-                };
-            }
-            
-            if (state.Runs.TryGetValue(state.CurrentRunId, out var run))
-            {
-                return new EngineModel
-                {
-                    RunId = state.CurrentRunId,
+                    RunId = run.RunId,
                     TreeItems = GetItems(run.Outputs.EngineStates, new Dictionary<string, bool>()),
                     Expanded = new Dictionary<string, bool>(),
                     Inputs = run.Inputs,
                     CurrentEngineState = run?.Outputs?.EngineStates.FirstOrDefault().Value
                 };
-            }
+            });
 
-            return new EngineModel();
-        });
-    
     private static HashSet<TreeItemData<EngineState>> GetItems(Dictionary<string, EngineState> states, Dictionary<string, bool> expanded)
     {
         var seen = new HashSet<string>();

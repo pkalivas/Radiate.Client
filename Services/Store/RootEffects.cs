@@ -59,7 +59,7 @@ public class RootEffects : IEffectRegistry<RootState>
             .Select<(RootState, AddEngineOutputAction), IAction>(pair =>
             {
                 var (state, action) = pair;
-                if (!state.UiFeature.EngineStateExpanded.ContainsKey(state.CurrentRunId))
+                if (!state.UiModel.EngineStateExpanded.ContainsKey(state.CurrentRunId))
                 {
                     var treeExpansions = action.EngineOutputs.EngineStates.ToDictionary(val => val.Key, _ => true);
                     return new SetEngineTreeExpandedAction(state.CurrentRunId, treeExpansions);

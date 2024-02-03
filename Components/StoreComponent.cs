@@ -8,7 +8,7 @@ namespace Radiate.Client.Components;
 
 public abstract class StoreComponent<TModel> : ComponentBase, IDisposable
 {
-    [Inject] protected Store<RootState> Store { get; set; } = default!;
+    [Inject] protected IStore<RootState> Store { get; set; } = default!;
     
     protected TModel? Model { get; private set; }
     

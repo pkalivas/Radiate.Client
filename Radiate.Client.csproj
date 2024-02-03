@@ -15,9 +15,13 @@
       <PackageReference Include="Radiate" Version="1.5.0" />
       <PackageReference Include="Radiate.Data" Version="1.0.4" />
       <PackageReference Include="Radiate.Extensions" Version="1.0.7" />
-      <PackageReference Include="Reflow" Version="1.2.4" />
+      <PackageReference Include="Reflow" Version="1.2.7" />
       <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="2.1.1" />
       <PackageReference Include="System.Reactive" Version="6.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services\Store\States\" />
     </ItemGroup>
 
 </Project>

@@ -36,7 +36,7 @@ public static class ApplicationServiceRegistration
     private static IServiceCollection AddReflow(this IServiceCollection services) => 
         services
             .AddTransient<IEffectRegistry<RootState>, RootEffects>()
-            .AddSingleton<Store<RootState>>(sp =>
+            .AddSingleton<IStore<RootState>, Store<RootState>>(sp =>
             {
                 var store = new Store<RootState>(RootReducer.CreateReducers(), new RootState());
                 var serviceProvidedEffects = sp.GetService<IEffectRegistry<RootState>>();

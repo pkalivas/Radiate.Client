@@ -76,5 +76,5 @@ else
     
     private void Pause() => Store.Dispatch(new PauseEngineRunAction(Model.RunId));
     
-    protected override IObservable<RunModel> Select() => Store.Select(RunSelectors.SelectCurrentRun);
+    protected override IObservable<RunModel> Select() => Store.Select(RunSelectors.SelectRun);
 }

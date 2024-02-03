@@ -5,15 +5,16 @@ using Radiate.Client.Services.Store;
 using Radiate.Client.Services.Store.Actions;
 using Radiate.Client.Services.Store.Models;
 using Radiate.Engines.Entities;
+using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Runners;
 
 public abstract class EngineRunner<T> : IEngineRunner where T : IRunInput<T>
 {
-    private readonly Reflow.Store<RootState> _store;
+    private readonly IStore<RootState> _store;
     private readonly BehaviorSubject<bool> _pause = new(false);
 
-    protected EngineRunner(Reflow.Store<RootState> store)
+    protected EngineRunner(IStore<RootState> store)
     {
         _store = store;
     }

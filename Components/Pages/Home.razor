@@ -55,5 +55,5 @@
         }
     }
 
-    protected override IObservable<RootState> Select() => Store.Select();
+    protected override IObservable<RootState> Select() => Store.Select(state => state);
 }

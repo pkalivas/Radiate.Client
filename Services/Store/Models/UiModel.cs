@@ -1,6 +1,6 @@
-namespace Radiate.Client.Services.Store.States.Features;
+namespace Radiate.Client.Services.Store.Models;
 
-public record UiFeature
+public record UiModel
 {
     public bool IsSidebarOpen { get; init; } = true;
     public Dictionary<Guid, Dictionary<string, bool>> EngineStateExpanded { get; init; } = new();

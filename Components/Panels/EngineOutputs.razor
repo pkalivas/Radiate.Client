@@ -43,7 +43,7 @@
 
 @code {
 
-    protected override IObservable<RunModel> Select() => Store.Select(RunSelectors.SelectCurrentRun);
+    protected override IObservable<RunModel> Select() => Store.Select(RunSelectors.SelectRun);
 
     private string paramType = "total";
     

@@ -89,13 +89,13 @@ public static class RootReducer
     
     private static RootState SetTreeExpansions(RootState state, SetEngineTreeExpandedAction action)
     {
-        state.UiFeature.EngineStateExpanded[action.RunId] = action.Expanded;
-        return state with { UiFeature = state.UiFeature };
+        state.UiModel.EngineStateExpanded[action.RunId] = action.Expanded;
+        return state with { UiModel = state.UiModel };
     }
     
     private static RootState LayoutChanged(RootState state, LayoutChangedAction action) => state with
     {
-        UiFeature = state.UiFeature with { IsSidebarOpen = action.IsSidebarOpen }
+        UiModel = state.UiModel with { IsSidebarOpen = action.IsSidebarOpen }
     };
 
     private static RootState UpdateCurrentImage(RootState state, UpdateCurrentImageAction action)

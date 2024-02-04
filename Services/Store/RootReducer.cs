@@ -34,7 +34,7 @@ public static class RootReducer
                 .Select(model => (model, state.Runs[state.CurrentRunId].Metrics.GetValueOrDefault(model.Name, new MetricValueModel())))
                 .Select(pair =>
                 {
-                    if (pair.model.MetricType is not MetricTypes.Description)
+                    if (pair.model.MetricType is not (MetricTypes.Description or MetricTypes.Distribution))
                     {
                         return pair.model with
                         {

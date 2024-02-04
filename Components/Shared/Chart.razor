@@ -22,7 +22,7 @@ else
 @code {
     [Parameter] public int Height { get; set; } = 500;
     [Parameter] public string Type { get; set; } = "";
-    [Parameter] public List<float> Values { get; set; } = new();
+    [Parameter] public double[] Values { get; set; } = Array.Empty<double>();
 
     private PlotlyChart chart;
     private Config config = new() { Responsive = true};

@@ -38,4 +38,12 @@ public static class RunSelectors
             SelectedMetrics = run.SelectedMetrics.Select(val => run.Metrics.GetValueOrDefault(val, new MetricValueModel())).ToHashSet(),
             Values = run.Metrics.Values.ToList()
         });
+    
+    public static ISelector<RootState, MetricSummaryModel> SelectMetricSummary(string metricName) => Selectors
+        .Create<RootState, RunModel, MetricSummaryModel>(SelectRun, run => new MetricSummaryModel
+        {
+            RunId = run.RunId,
+            MetricName = metricName,
+            Value = run.Metrics.GetValueOrDefault(metricName, new MetricValueModel())
+        });
 }

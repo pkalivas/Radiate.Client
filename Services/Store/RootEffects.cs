@@ -1,3 +1,4 @@
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using Radiate.Client.Services.Actors;
 using Radiate.Client.Services.Actors.Commands;

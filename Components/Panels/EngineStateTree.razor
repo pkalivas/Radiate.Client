@@ -4,27 +4,31 @@
 @using Radiate.Client.Services.Store.Actions
 @inherits StoreComponent<EngineModel>
 
-<MudDialog>
-    <DialogContent>
-        
-        <MudTreeView Items="@Model.TreeItems">
-            <ItemTemplate>
-                <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.TreeItems" OnClick="@(() => OnSelectedValueChanged(context))">
-                    <Content>
-                        <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChild"/>
-                        <EngineStateDisplay EngineState="@context.Data"/>
-                    </Content>
-                </MudTreeViewItem>
-            </ItemTemplate>
-        </MudTreeView>
-
-    </DialogContent>
-</MudDialog>
-
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <MudTreeView Items="@Model?.TreeItems" Dense="true">
+                <ItemTemplate>
+                    <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.TreeItems" OnClick="@(() => OnSelectedValueChanged(context))">
+                        <Content>
+                            <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChild"/>
+                            <EngineStateDisplay EngineState="@context.Data"/>
+                        </Content>
+                    </MudTreeViewItem>
+                </ItemTemplate>
+            </MudTreeView>
+        </div>
+        <div class="col">
+            <div class="d-flex flex-row-reverse w-100">
+                <div class="mt-2">
+                    <EngineControl/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
-    
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
     
     private void OnSelectedValueChanged(TreeItemData<EngineState> context)
     {

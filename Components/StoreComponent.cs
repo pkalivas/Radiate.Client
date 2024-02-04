@@ -13,15 +13,13 @@ public abstract class StoreComponent<TModel> : ComponentBase, IDisposable
     protected TModel? Model { get; private set; }
     
     private readonly List<IDisposable> _subscriptions = new();
-
-    protected bool IsLoading { get; set; } = false;
     
     protected override Task OnInitializedAsync()
     {
         _subscriptions.Add(Select()
             .Where(val => val != null)
             .DistinctUntilChanged()
-            .Subscribe(SetModel));
+            .Subscribe(async val => await SetModel(val)));
         OnSubscribed();
         return base.OnInitializedAsync();
     }
@@ -41,18 +39,14 @@ public abstract class StoreComponent<TModel> : ComponentBase, IDisposable
             .Subscribe(callback));
     }
 
-    protected virtual void SetModel(TModel model)
+    private async Task SetModel(TModel model)
     {
-        // Model = model;
-        if (!IsLoading)
+        await InvokeAsync(() =>
         {
-            InvokeAsync(() =>
-            {
-                Model = model;
-                StateHasChanged();
+            Model = model;
+            StateHasChanged();
                 
-            });
-        }
+        });
     }
 
     public void Dispose()

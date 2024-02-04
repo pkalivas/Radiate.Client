@@ -3,8 +3,15 @@
 
 @if (EngineState == null)
 {
-    <div>
-        No engine state available
+  <div class="container">
+      <div class="row">
+          <div class="col">
+              <div class="d-inline-flex">
+                  <MudIcon Icon="@Icons.Material.Filled.Pending" Class="ml-0 mr-2" Color="@Color.Default"/>
+                  <strong>Pending</strong>
+              </div>
+          </div>
+      </div>
     </div>
 }
 else
@@ -17,25 +24,11 @@ else
                     <strong>@(EngineState.Name[..3])</strong>       
                 </div>
             </div>
-                        
+            
             <div class="col">
                 <div class="d-inline-flex">
-                    <strong>State:</strong>
-                    <div class="pl-2">@EngineState.State</div>
-                </div>
-            </div>
-                        
-            <div class="col">
-                <div class="d-inline-flex">
-                    <strong>Runs:</strong>
-                    <div class="pl-2">@EngineState.Metrics.Get(MetricNames.Run)?.Statistics?.Sum</div>
-                </div>
-            </div>
-                        
-            <div class="col">
-                <div class="d-inline-flex">
-                    <strong>Time:</strong>
-                    <div class="pl-2">@TimeSpan.FromMilliseconds(EngineState.Metrics.Get(MetricNames.Time)?.Time?.Sum ?? 0)</div>
+                    <strong>Idx:</strong>
+                    <div class="pl-1">@EngineState.Metrics.Get(MetricNames.Run)?.Statistics?.Sum</div>
                 </div>
             </div>
             
@@ -45,13 +38,19 @@ else
                     <div class="pl-2">@(Math.Round(EngineState.Metrics.Get(MetricNames.Score)?.Statistics?.LastValue ?? 0, 4))</div>
                 </div>
             </div>
-                        
+            
             <div class="col">
                 <div class="d-inline-flex">
-                    <strong>Switches:</strong>
-                    <div class="pl-2">@EngineState.Metrics.Get(MetricNames.EngineChange)?.Statistics?.Sum</div>
+                    <TimeSpanDisplay TimeSpan="@TimeSpan.FromMilliseconds(EngineState.Metrics.Get(MetricNames.Time)?.Time?.Sum ?? 0)"/>
                 </div>
             </div>
+                        
+            @* <div class="col"> *@
+            @*     <div class="d-inline-flex"> *@
+            @*         <strong>Switches:</strong> *@
+            @*         <div class="pl-2">@EngineState.Metrics.Get(MetricNames.EngineChange)?.Statistics?.Sum</div> *@
+            @*     </div> *@
+            @* </div> *@
         </div>
         
     </div>

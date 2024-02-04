@@ -1,0 +1,103 @@
+@using System.Reactive.Linq
+@using Radiate.Engines.Schema
+@using System.Collections.ObjectModel
+@using System.Collections.Specialized
+@using Radiate.Client.Services.Store.Actions
+@using System.Collections
+@inherits StoreComponent<MetricListModel>
+
+@* <MudDataGrid Dense="true" *@
+@*              Items="@Model.Values" *@
+@*              FixedHeader="true" *@
+@*              $1$ SelectedItemChanged="@((MetricValueModel model) => OnSelectedChanged(model))" #1# *@
+@*              SelectedItems="@Model.SelectedMetrics" *@
+@*              RowClick="@((DataGridRowClickEventArgs<MetricValueModel> model) => OnRowClick(model))" *@
+@*              ShowMenuIcon="true"> *@
+@*     <Columns> *@
+@*         <HierarchyColumn/> *@
+@*         <PropertyColumn Property="x => FormatName(x.Name)" Title="Name" Hideable="false" Filterable="true"/> *@
+@*         <PropertyColumn Property="x => x.Value" Title="Value" Hideable="true" /> *@
+@*         <PropertyColumn Property="x => x.Min" Title="Min" Hideable="true" Groupable="true" Filterable="true"/> *@
+@*         <PropertyColumn Property="x => x.Max" Title="Max" Hideable="true" Groupable="true" Filterable="true"/> *@
+@*         <PropertyColumn Property="x => x.Mean" Title="Avg." Hideable="true" Groupable="true" Filterable="true"/> *@
+@*         <PropertyColumn Property="x => x.Variance" Title="Var." Hidden="true" Hideable="true" Groupable="true" Filterable="true"/> *@
+@*         <PropertyColumn Property="x => x.Kurtosis" Title="Kurt." Hidden="true" Hideable="true" Groupable="true" Filterable="true"/> *@
+@*         <PropertyColumn Property="x => x.Skewness" Title="Skew." Hidden="true" Hideable="true" Groupable="true" Filterable="true"/> *@
+@*         <PropertyColumn Property="x => FormatDuration(x.MeanTime)" Title="Avg. Duration" Hideable="true" Groupable="true" Filterable="true"/> *@
+@*         <PropertyColumn Property="x => FormatDuration(x.Total)" Title="Duration" Hideable="true" Groupable="true" Filterable="true"/> *@
+@*     </Columns> *@
+@*     <ChildRowContent> *@
+@*         <MetricData Metric="@context.Item"/> *@
+@*     </ChildRowContent> *@
+@*     <PagerContent> *@
+@*         <MudDataGridPager/> *@
+@*     </PagerContent> *@
+@* </MudDataGrid> *@
+
+<MudTable @ref="_table" T="MetricValueModel" Items="@Model?.Values" MultiSelection="true"  Dense="true" SelectOnRowClick="true" Virtualize="true"
+          SelectedItems="@Model?.SelectedMetrics"
+          Hover="true"
+          OnRowClick="@OnRowClick" OnRowMouseEnter="@OnMouseEnger">
+    <HeaderContent>
+        <MudTh>Nr</MudTh>
+        @* <MudTh>Sign</MudTh> *@
+        @* <MudTh>Name</MudTh> *@
+        @* <MudTh>Position</MudTh> *@
+        @* <MudTh>Molar mass</MudTh> *@
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Nr">@context.Name</MudTd>
+        @* <MudTd DataLabel="Sign">@context.Sign</MudTd> *@
+        @* <MudTd DataLabel="Name">@context.Name</MudTd> *@
+        @* <MudTd DataLabel="Position">@context.Position</MudTd> *@
+        @* <MudTd DataLabel="Molar mass">@context.Molar</MudTd> *@
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100 }" />
+    </PagerContent>
+    <FooterContent>
+        <MudTd colspan="5">Select All</MudTd>
+    </FooterContent>
+</MudTable>
+
+@code {
+    private MudTable<MetricValueModel> _table;
+    private bool _pause = false;
+    
+    private void OnMouseEnger(TableRowHoverEventArgs<MetricValueModel> model)
+    {
+        
+        IsLoading = true;
+        // Model.SelectedMetrics.Clear();
+        // Model.SelectedMetrics.Add(model);
+    }
+
+    private void OnRowClick(TableRowClickEventArgs<MetricValueModel> model)
+    {
+        IsLoading = true;
+        Dispatch(new SetSelectedMetricsAction(Model.RunId, new[] { model.Item.Name }.ToList()));
+        IsLoading = false;
+        InvokeAsync(StateHasChanged);
+        // Model.SelectedMetrics.Clear();
+        // Model.SelectedMetrics.Add(model);
+    }
+    
+    // [Inject] private IStore<RootState> Store { get; set; }
+    
+    // private MudDataGrid<MetricValueModel>? dataGrid;
+    // private TestCollection Model { get; } = new TestCollection();
+    // private MetricValueModel? SelectedItem { get; set; }
+    
+    private void OnSelectedChanged(MetricValueModel model)
+    {
+        // SelectedItem = model;
+    }
+
+
+    protected override IObservable<MetricListModel> Select() =>
+        Store.Select(RunSelectors.SelectCurrentMetricsList);
+
+    private string FormatDuration(TimeSpan duration) => duration.ToString("mm\\:ss\\:ffff");
+    
+    private string FormatName(string name) => name.Split("`")[0];
+}

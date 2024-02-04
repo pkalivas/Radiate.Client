@@ -1,19 +1,13 @@
 
 @if (AsAppBar)
 {
-    <MudPaper Elevation="0" Square="true" Margin="Margin.None" Padding="Padding.None">
-        <MudToolBar class="d-inline-flex w-100" Style="background:{Theme.Palette.Dark};">
-            <div>
-                <h5>@Title</h5>
-            </div>
-            <MudSpacer/>
-            <div class="pl-2">@Options</div>
-        </MudToolBar>
-        <MudDivider/>
-        <div class="row mt-2">
-            @ChildContent
-        </div>
-    </MudPaper>
+    <MudToolBar Dense="true" class="flex justify-content-between w-100" Style="background:rgba(39,39,47,1);">
+        <h5>@Title</h5>
+        @Options
+    </MudToolBar>
+    <div>
+        @ChildContent
+    </div>
 }
 else
 {

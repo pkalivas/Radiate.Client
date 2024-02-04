@@ -1,0 +1,15 @@
+
+<div class="d-flex justify-content-center">
+    <div class="d-flex align-items-center">
+        <span class="mr-1">@TimeSpan.Hours</span>
+        <span class="mr-1">:</span>
+        <span class="mr-1">@TimeSpan.Minutes</span>
+        <span class="mr-1">:</span>
+        <span class="mr-1">@TimeSpan.Seconds</span>
+        <span class="mr-1">:</span>
+        <span class="mr-1">@TimeSpan.TotalMilliseconds.ToString()[..3]</span>
+    </div>
+</div>
+@code {
+    [Parameter] public TimeSpan TimeSpan { get; set; } = TimeSpan.Zero;
+}

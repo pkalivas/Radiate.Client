@@ -34,36 +34,47 @@
 	{
 		<div class="d-flex justify-content-between">
 			<MudButton Class="w-50 float-left mr-2"
-					   Size="Size.Small"
-					   Variant="Variant.Filled"
-					   Color="Color.Secondary"
-					   OnClick="@Stop">
-					<MudIcon Icon="@Icons.Material.Filled.Stop" 
-							 Size="Size.Small"/>
-				Stop
-			</MudButton>
-			<MudButton Class="w-50 float-right"
+                       Size="Size.Small"
+                       Variant="Variant.Filled"
+                       Color="Color.Tertiary"
+                       OnClick="@Resume">
+            	Resume
+            </MudButton>
+			<MudButton Class="w-50 float-right mr-2"
 			           Size="Size.Small"
 			           Variant="Variant.Filled"
-			           Color="Color.Tertiary"
-			           OnClick="@Resume">
-				Resume
+			           Color="Color.Secondary"
+			           OnClick="@Stop">
+				<MudIcon Icon="@Icons.Material.Filled.Stop"
+				         Size="Size.Small"/>
+				Stop
 			</MudButton>
 		</div>
 	}
 }
-else
+else if (!Model.IsCompleted)
 {
 	<MudButton Size="Size.Small"
 	           Color="Color.Tertiary" 
 	           Variant="Variant.Filled"
-	           Class="float-right" 
+	           Class="float-right w-100" 
 	           OnClick="@Start">
 		<MudIcon Icon="@Icons.Material.Filled.PlayArrow" 
-		         Class="ml-0 mr-2" 
+		         Class="" 
 		         Size="Size.Small"/>
         Run
     </MudButton>
+}
+else
+{
+	<MudButton Size="Size.Small"
+	           Color="Color.Info"
+	           Variant="Variant.Filled"
+	           Class="float-right w-100"
+	           OnClick="@Start">
+		<MudIcon Icon="@Icons.Material.Filled.Replay" Size="Size.Small"/>
+		Re-run
+	</MudButton>
 }
 
 @code {

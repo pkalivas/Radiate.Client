@@ -20,7 +20,7 @@ public class RootEffects : IEffectRegistry<RootState>
     {
         StartEngineEffect,
         CancelEngineEffect,
-        RunOutputEffect
+        EngineTreeEffect
     };
 
     private Effect<RootState> StartEngineEffect => new()
@@ -51,7 +51,7 @@ public class RootEffects : IEffectRegistry<RootState>
             })
     };
     
-    private Effect<RootState> RunOutputEffect => new()
+    private Effect<RootState> EngineTreeEffect => new()
     {
         Run = store => store
             .OnAction<AddRunOutputAction>()

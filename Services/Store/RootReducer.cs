@@ -1,4 +1,6 @@
 using Radiate.Client.Services.Store.Actions;
+using Radiate.Client.Services.Store.Models;
+using Radiate.Client.Services.Store.Shared;
 using Radiate.Engines.Schema;
 using Reflow.Reducers;
 
@@ -19,18 +21,36 @@ public static class RootReducer
         Reducer.On<LayoutChangedAction, RootState>(LayoutChanged),
         Reducer.On<UpdateCurrentImageAction, RootState>(UpdateCurrentImage),
         Reducer.On<CancelEngineRunAction, RootState>(CancelEngine),
+        Reducer.On<SetSelectedMetricsAction, RootState>(SetSelectedMetrics)
     };
     
     private static RootState AddOutput(RootState state, AddRunOutputAction action)
     {
-        var engineOutputsGeneratedAction = action.EngineOutputs;
+        var outputs = action.EngineOutputs;
         state.Runs[state.CurrentRunId] = state.Runs[state.CurrentRunId] with
         {
-            Outputs = engineOutputsGeneratedAction,
+            Outputs = outputs,
+            Metrics = MetricMappers.GetMetricValues(outputs.Metrics)
+                .Select(model => (model, state.Runs[state.CurrentRunId].Metrics.GetValueOrDefault(model.Name, new MetricValueModel())))
+                .Select(pair =>
+                {
+                    if (pair.model.MetricType is not MetricTypes.Description)
+                    {
+                        return pair.model with
+                        {
+                            Distribution = pair.Item2.Distribution
+                                .Concat(new []{ pair.model.Value })
+                                .ToArray(),
+                        };
+                    }
+                    
+                    return pair.model with { };
+                })
+                .ToDictionary(key => key.Name, value => value),
             Scores = state.Runs[state.CurrentRunId].Scores
                 .Concat(new[]
                 {
-                    engineOutputsGeneratedAction.Metrics.Get(MetricNames.Score).Statistics.LastValue
+                    outputs.Metrics.Get(MetricNames.Score).Statistics.LastValue
                 })
                 .ToList(),
         };
@@ -126,4 +146,15 @@ public static class RootReducer
 
         return state with { Runs = state.Runs };
     }
+    
+    private static RootState SetSelectedMetrics(RootState state, SetSelectedMetricsAction action)
+    {
+        var run = state.Runs[state.CurrentRunId];
+        state.Runs[state.CurrentRunId] = run with
+        {
+            SelectedMetrics = action.Metrics.ToHashSet()
+        };
+        return state with { Runs = state.Runs };
+    }
+
 }

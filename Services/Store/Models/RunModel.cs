@@ -12,6 +12,8 @@ public record RunModel
     public string Status { get; init; } = "";
     public RunInputsModel Inputs { get; init; } = new();
     public RunOutputsModel Outputs { get; init; } = new();
+    public Dictionary<string, MetricValueModel> Metrics { get; init; } = new();
+    public HashSet<string> SelectedMetrics { get; init; } = new();
     public List<float> Scores { get; init; } = new();
     
     public override int GetHashCode()

@@ -1,4 +1,5 @@
 using Radiate.Client.Services.Store.Models;
+using Radiate.Engines.Entities;
 using Radiate.Engines.Schema;
 using Reflow.Interfaces;
 using Reflow.Selectors;
@@ -28,5 +29,13 @@ public static class RunSelectors
             IsRunning = run.IsRunning,
             IsPaused = run.IsPaused,
             IsCompleted = run.IsPaused
+        });
+    
+    public static readonly ISelector<RootState, MetricListModel> SelectCurrentMetricsList = Selectors
+        .Create<RootState, RunModel, MetricListModel>(SelectRun, run => new MetricListModel
+        {
+            RunId = run.RunId,
+            SelectedMetrics = run.SelectedMetrics.Select(val => run.Metrics.GetValueOrDefault(val, new MetricValueModel())).ToHashSet(),
+            Values = run.Metrics.Values.ToList()
         });
 }

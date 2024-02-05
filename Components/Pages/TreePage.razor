@@ -7,7 +7,7 @@
         
         <MudItem md="8">
             
-            <MudExpansionPanels Dense="true" Elevation="0" MultiExpansion="true">
+            <MudExpansionPanels Dense="true" Elevation="2" MultiExpansion="true">
                 
                 <ToolBar Title="Tree">
                     <Options>
@@ -25,16 +25,6 @@
                         </MudPaper>
                     </ChildContent>
                 </ToolBar>
-
-                <MudExpansionPanel Dense="true" IsInitiallyExpanded="true" MaxHeight="200">
-                    <TitleContent>
-                        <PanelHeaderPanel Title="Score"/>
-                    </TitleContent>
-                    <ChildContent>
-                        <MudDivider/>
-                        <ScorePanel/>
-                    </ChildContent>
-                </MudExpansionPanel>
 
                 <MudExpansionPanel Dense="true" IsInitiallyExpanded="true">
                     <TitleContent>
@@ -58,44 +48,48 @@
                     </MudPaper>
                 </MudItem>
                 <MudItem md="12">
-                    <MudExpansionPanels Dense="true" Elevation="0" MultiExpansion="true">
-                
-                        <MudExpansionPanel Dense="true" IsInitiallyExpanded="true" MaxHeight="150">
+                    <MudExpansionPanels Dense="true" Elevation="2" MultiExpansion="true">
+                        
+                        <MudExpansionPanel Dense="true" IsInitiallyExpanded="true" MaxHeight="200">
                             <TitleContent>
-                                <div class="d-flex">
-                                    <MudText Typo="Typo.body1">Fitness Distribution</MudText>
-                                </div>
+                                <PanelHeaderPanel Title="Score"/>
                             </TitleContent>
                             <ChildContent>
                                 <MudDivider/>
-                                <MetricSummaryChartPanel MetricName="@MetricNames.FitnessDistribution" ChartHeight="125" ChartType="line" />
+                                <ScorePanel/>
                             </ChildContent>
                         </MudExpansionPanel>
-                
+
                         <MudExpansionPanel Dense="true" IsInitiallyExpanded="true" MaxHeight="150">
                             <TitleContent>
-                                <div class="d-flex">
-                                    <MudText Typo="Typo.body1">Age Distribution</MudText>
-                                </div>
+                                <PanelHeaderPanel Title="Fitness Distribution"/>
+                            </TitleContent>
+                            <ChildContent>
+                                <MudDivider/>
+                                <MetricSummaryChartPanel MetricName="@MetricNames.FitnessDistribution" ChartHeight="125" ChartType="line"/>
+                            </ChildContent>
+                        </MudExpansionPanel>
+
+                        <MudExpansionPanel Dense="true" IsInitiallyExpanded="true" MaxHeight="150">
+                            <TitleContent>
+                                <PanelHeaderPanel Title="Age Distribution"/>
                             </TitleContent>
                             <ChildContent>
                                 <MudDivider/>
                                 <MetricSummaryChartPanel MetricName="@MetricNames.AgeDistribution" ChartHeight="125" ChartType="bar"/>
                             </ChildContent>
                         </MudExpansionPanel>
-                
+
                         <MudExpansionPanel Dense="true" IsInitiallyExpanded="true" MaxHeight="150">
                             <TitleContent>
-                                <div class="d-flex">
-                                    <MudText Typo="Typo.body1">Genome Size Distribution</MudText>
-                                </div>
+                                <PanelHeaderPanel Title="Genome Size"/>
                             </TitleContent>
                             <ChildContent>
                                 <MudDivider/>
                                 <MetricSummaryChartPanel MetricName="@MetricNames.GenomeSizeDistribution" ChartHeight="125" ChartType="pie"/>
                             </ChildContent>
                         </MudExpansionPanel>
-                
+
                     </MudExpansionPanels>
                 </MudItem>
             </MudGrid>

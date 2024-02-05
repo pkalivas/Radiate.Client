@@ -1,9 +1,7 @@
 @inherits StoreComponent<double[]>
 
 
-@* <div class=> *@
-    <Chart Values="@Model" Type="line" Height="@(Height ?? 200)"/>
-@* </div> *@
+<Chart Values="@Model" Type="line" Height="@(Height ?? 200)" ShowGrid="true"/>
 
 @code {
     

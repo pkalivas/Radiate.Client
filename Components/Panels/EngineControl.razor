@@ -7,31 +7,23 @@
 @using Radiate.Client.Services.Store.Selections
 @inherits StoreComponent<RunModel>
 
-<div class="d-flex align-items-center">
-	<div class="w-100 d-flex justify-content-between">
-		<MudText Typo="Typo.h6">Engine</MudText>
-		<span class="text-muted">@Model.RunId</span>
-	</div>
-</div>
-<MudDivider/>
 <div class="d-flex justify-content-between mt-3">
 	<div class="align-items-center w-75 pr-4">
 
-		<div class="d-flex align-items-center border-bottom justify-content-between">
+		<div class="d-flex align-items-center border-bottom justify-content-between mb-3">
 			<MudText Typo="Typo.body2">
 				<MudIcon Icon="@Icons.Material.Filled.DateRange"/>
 				Start:
 			</MudText>
 			<MudText Typo="Typo.caption">@Model.StartTime</MudText>
 		</div>
-		<div class="d-flex align-items-center border-bottom justify-content-between">
+		<div class="d-flex align-items-center border-bottom justify-content-between mb-3">
 			<MudText Typo="Typo.body2">
 				<MudIcon Icon="@Icons.Material.Filled.DateRange"/>
 				End:
 			</MudText>
 			<MudText Typo="Typo.caption">@Model.EndTime</MudText>
 		</div>
-		
 	</div>
 	<div class="align-items-center w-25">
 		<div>
@@ -84,149 +76,6 @@
 		</div>
 	</div>
 </div>
-
-@* @if (Model.IsCompleted) *@
-@* { *@
-@* 		<div class="d-flex justify-content-between"> *@
-@* 			<div class="d-flex align-items-center"> *@
-@* 				<MudIcon Icon="@Icons.Material.Filled.CheckCircle"  *@
-@* 				         Size="Size.Small"  *@
-@* 				         Class="mr-2"/> *@
-@* 				<span class="text-success">Completed</span> *@
-@* 			</div> *@
-@* 			<div class="d-flex align-items-center"> *@
-@* 				<MudIcon Icon="@Icons.Material.Filled.DateRange"  *@
-@* 				         Size="Size.Small"  *@
-@* 				         Class="mr-2"/> *@
-@* 				<span>@Model.EndTime</span> *@
-@* 			</div> *@
-@* 		</div> *@
-@* } *@
-@* else if (Model.IsRunning) *@
-@* { *@
-@* 	@if (Model.IsPaused) *@
-@* 	{ *@
-@* 		<div class="d-flex justify-content-between"> *@
-@* 			<div class="d-flex align-items-center"> *@
-@* 				<MudIcon Icon="@Icons.Material.Filled.PauseCircle" *@
-@* 				         Size="Size.Small" *@
-@* 				         Class="mr-2"/> *@
-@* 				<span class="text-warning">Paused</span> *@
-@* 			</div> *@
-@* 			<div class="d-flex align-items-center"> *@
-@* 				<MudIcon Icon="@Icons.Material.Filled.DateRange" *@
-@* 				         Size="Size.Small" *@
-@* 				         Class="mr-2"/> *@
-@* 				<span>@Model.StartTime</span> *@
-@* 			</div> *@
-@* 		</div> *@
-@* 	} *@
-@* 	else *@
-@* 	{ *@
-@* 		<div class="d-flex justify-content-between"> *@
-@* 			<div class="d-flex align-items-center"> *@
-@* 				<MudIcon Icon="@Icons.Material.Filled.PlayCircle" *@
-@* 				         Size="Size.Small" *@
-@* 				         Class="mr-2"/> *@
-@* 				<span class="text-primary">Running</span> *@
-@* 			</div> *@
-@* 			<div class="d-flex align-items-center"> *@
-@* 				<MudIcon Icon="@Icons.Material.Filled.DateRange" *@
-@* 				         Size="Size.Small" *@
-@* 				         Class="mr-2"/> *@
-@* 				<span>@Model.StartTime</span> *@
-@* 			</div> *@
-@* 		</div> *@
-@* 	} *@
-@* } *@
-@* else *@
-@* { *@
-@* 	<div class="d-flex justify-content-between"> *@
-@* 		<div class="d-flex align-items-center"> *@
-@* 			<MudIcon Icon="@Icons.Material.Filled.Error" *@
-@* 			         Size="Size.Small" *@
-@* 			         Class="mr-2"/> *@
-@* 			<span class="text-danger">Failed</span> *@
-@* 		</div> *@
-@* 		<div class="d-flex align-items-center"> *@
-@* 			<MudIcon Icon="@Icons.Material.Filled.DateRange" *@
-@* 			         Size="Size.Small" *@
-@* 			         Class="mr-2"/> *@
-@* 			<span>@Model.StartTime</span> *@
-@* 		</div> *@
-@* 	</div> *@
-@* } *@
-@* *@
-@* *@
-@* @if (Model.IsRunning) *@
-@* { *@
-@* 	@if (!Model.IsPaused) *@
-@* 	{ *@
-@* 		<div class="d-flex justify-content-between"> *@
-@* 			<MudButton Class="w-50 float-left mr-2" *@
-@*                        Size="Size.Small" *@
-@*                        Variant="Variant.Filled" *@
-@*                        Color="Color.Secondary" *@
-@*                        OnClick="@Pause"> *@
-@*             	Pause *@
-@*             </MudButton> *@
-@*             <MudButton Class="w-50 float-right" *@
-@*                        Size="Size.Small" *@
-@*                        Variant="Variant.Filled" *@
-@*                        Color="Color.Secondary" *@
-@*                        OnClick="@Stop"> *@
-@*             		<MudIcon Icon="@Icons.Material.Filled.Stop"  *@
-@*                              Size="Size.Small"/> *@
-@*             	Stop *@
-@*             </MudButton> *@
-@* 		</div> *@
-@* 	} *@
-@* 	else *@
-@* 	{ *@
-@* 		<div class="d-flex justify-content-between"> *@
-@* 			<MudButton Class="w-50 float-left mr-2" *@
-@*                        Size="Size.Small" *@
-@*                        Variant="Variant.Filled" *@
-@*                        Color="Color.Tertiary" *@
-@*                        OnClick="@Resume"> *@
-@*             	Resume *@
-@*             </MudButton> *@
-@* 			<MudButton Class="w-50 float-right mr-2" *@
-@* 			           Size="Size.Small" *@
-@* 			           Variant="Variant.Filled" *@
-@* 			           Color="Color.Secondary" *@
-@* 			           OnClick="@Stop"> *@
-@* 				<MudIcon Icon="@Icons.Material.Filled.Stop" *@
-@* 				         Size="Size.Small"/> *@
-@* 				Stop *@
-@* 			</MudButton> *@
-@* 		</div> *@
-@* 	} *@
-@* } *@
-@* else if (!Model.IsCompleted) *@
-@* { *@
-@* 	<MudButton Size="Size.Small" *@
-@* 	           Color="Color.Tertiary"  *@
-@* 	           Variant="Variant.Filled" *@
-@* 	           Class="float-right w-100"  *@
-@* 	           OnClick="@Start"> *@
-@* 		<MudIcon Icon="@Icons.Material.Filled.PlayArrow"  *@
-@* 		         Class=""  *@
-@* 		         Size="Size.Small"/> *@
-@*         Run *@
-@*     </MudButton> *@
-@* } *@
-@* else *@
-@* { *@
-@* 	<MudButton Size="Size.Small" *@
-@* 	           Color="Color.Info" *@
-@* 	           Variant="Variant.Filled" *@
-@* 	           Class="float-right w-100" *@
-@* 	           OnClick="@Start"> *@
-@* 		<MudIcon Icon="@Icons.Material.Filled.Replay" Size="Size.Small"/> *@
-@* 		Re-run *@
-@* 	</MudButton> *@
-@* } *@
 
 @code {
     

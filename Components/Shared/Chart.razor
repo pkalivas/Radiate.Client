@@ -6,22 +6,13 @@
 
 @if (Values.Any() && Type != "" && layout != null)
 {
-    @* <div class="chart-container"> *@
-        <PlotlyChart @bind-Config="config" @bind-Layout="layout" @bind-Data="data" @ref="chart"/>
-    // </div>
+    <PlotlyChart @bind-Config="config" @bind-Layout="layout" @bind-Data="data" @ref="chart"/>
 }
-@* else *@
-@* { *@
-@*     <div class="chart-container"> *@
-@*         <div class="chart-placeholder"> *@
-@*             <div class="chart-placeholder-text">No data</div> *@
-@*         </div> *@
-@*     </div> *@
-@* } *@
 
 @code {
     [Parameter] public int Height { get; set; } = 200;
     [Parameter] public string Type { get; set; } = "";
+    [Parameter] public bool ShowGrid { get; set; } = false;
     [Parameter] public double[] Values { get; set; } = Array.Empty<double>();
 
     private PlotlyChart chart;
@@ -38,20 +29,24 @@
             Height = Height,
             Font = new Font
             {
-                Color = "whitesmoke"
+                Color = "#a9a9a9"
             },
-            XAxis = new List<XAxis>()
+            XAxis = new List<XAxis>
             {
                 new()
                 {
-                    ShowGrid = false
+                    ShowGrid = ShowGrid,
+                    ShowLine = ShowGrid,
+                    GridColor = ShowGrid ? "#a9a9a9" : "#000000"
                 }
             },
-            YAxis = new List<YAxis>()
+            YAxis = new List<YAxis>
             {
                 new()
                 {
-                    ShowGrid = false
+                    ShowGrid = ShowGrid,
+                    ShowLine = ShowGrid,
+                    GridColor = ShowGrid ? "#a9a9a9" : "#000000"
                 }
             },
             PaperBgColor = "rgba(0,0,0,0)",

@@ -6,35 +6,49 @@
     <MudGrid>
         
         <MudItem md="8">
-            <MudItem>
-                <MudPaper Elevation="2" Class="pa-4">
-                    <GraphInputsPanel/>
-                </MudPaper>
-            </MudItem>
+            <ToolBar Title="Inputs">
+                <Options></Options>
+                <ChildContent>
+                    <MudPaper Elevation="2" Class="pa-4">
+                        <GraphInputsPanel/>
+                    </MudPaper>
+                </ChildContent>
+            </ToolBar>
         </MudItem>
         
         <MudItem md="4">
-            <MudItem>
-                <MudPaper Elevation="2" Class="pa-4">
-                    <EngineControl/>
-                </MudPaper>
-            </MudItem>
+            <MudPaper Elevation="2" Class="pa-4">
+                <EngineControl/>
+            </MudPaper>
         </MudItem>
 
         <MudItem md="8">
 
             <MudExpansionPanels Dense="true" Elevation="0" MultiExpansion="true">
-
-                <MudExpansionPanel Dense="true" IsInitiallyExpanded="true" MaxHeight="200">
-                    <TitleContent>
-                        <PanelHeaderPanel Title="Score"/>
-                    </TitleContent>
+                
+                <ToolBar Title="Graph">
+                    <Options>
+                        <MudButton OnClick="@OpenEngineTree" Class="float-right"
+                                   Size="Size.Small"
+                                   Color="Color.Inherit"
+                                   Variant="Variant.Filled">
+                            <MudIcon Icon="@Icons.Material.Filled.AccountTree" Class="ml-0 mr-2" Size="Size.Small"/>
+                            Engines
+                        </MudButton>
+                    </Options>
                     <ChildContent>
-                        <MudDivider/>
-                        <ScorePanel/>
+                        <MudExpansionPanel Dense="true" IsInitiallyExpanded="true" MaxHeight="200">
+                            <TitleContent>
+                                <PanelHeaderPanel Title="Score"/>
+                            </TitleContent>
+                            <ChildContent>
+                                <MudDivider/>
+                                <ScorePanel/>
+                            </ChildContent>
+                        </MudExpansionPanel>
                     </ChildContent>
-                </MudExpansionPanel>
-
+                </ToolBar>
+                
                 <MudExpansionPanel Dense="true" IsInitiallyExpanded="true">
                     <TitleContent>
                         <PanelHeaderPanel Title="Metrics"/>

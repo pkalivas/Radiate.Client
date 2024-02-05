@@ -36,17 +36,20 @@
     {
         var options = new DialogOptions
         {
-            MaxWidth = MaxWidth.Medium,
+            MaxWidth = MaxWidth.ExtraSmall,
             FullWidth = true,
             CloseOnEscapeKey = true
         };
 
-        var dialogRef = await DialogService.ShowAsync<NewRunInputsDialog>("Run Dialog", options);
+        var dialogRef = await DialogService.ShowAsync<NewRunInputsDialog>("New Run", options);
         var result = await dialogRef.Result;
 
         if (!result.Canceled)
         {
-            Dispatch(new RunCreatedAction((RunState)result.Data));
+            var run = (RunState) result.Data;
+            Dispatch(new RunCreatedAction(run));
+            Dispatch(new NavigateToRunAction(run.RunId));
+            NavigationManager.NavigateTo($"/runs/{run.RunId}/{run.Inputs.ModelType.ToLower()}");
         }
     }
 

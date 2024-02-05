@@ -42,71 +42,8 @@
                         }
                     </MudSelect>
                 </div>
-                <div class="mt-3">
-                    <h5>Genetic Inputs</h5>
-                    <MudDivider/>
-                    <div class="row">
-                        <div class="col">
-                            <MudNumericField Label="Population Size"
-                                             Variant="Variant.Filled"
-                                             Value="@RunState.Inputs.PopulationInputs.PopulationSize"
-                                             ValueChanged="@((int size) => RunState.Inputs.PopulationInputs.PopulationSize = size)">
-                            </MudNumericField>
-                            <MudNumericField Label="Mutation Rate"
-                                             Variant="Variant.Filled"
-                                             Value="@RunState.Inputs.PopulationInputs.MutationRate"
-                                             ValueChanged="@((float rate) => RunState.Inputs.PopulationInputs.MutationRate = rate)">
-                            </MudNumericField>
-                            <MudNumericField Label="Max Epochs"
-                                             Variant="Variant.Filled"
-                                             Value="@RunState.Inputs.LimitInputs.IterationLimit"
-                                             ValueChanged="@((int limit) => RunState.Inputs.LimitInputs.IterationLimit = limit)">
-                            </MudNumericField>
-                        </div>
-                        @if (RunState.Inputs.ModelType == "Image")
-                        {
-                            <div class="col">
-                                <MudNumericField Label="Num Shapes"
-                                                 Variant="Variant.Filled"
-                                                 Value="@RunState.Inputs.ImageInputs.NumShapes"
-                                                 ValueChanged="@((int limit) => RunState.Inputs.ImageInputs.NumShapes = limit)">
-                                </MudNumericField>
-                                @if (RunState.Inputs.DataSetType == "Polygon")
-                                {
-                                    <MudNumericField Label="Num Vertices"
-                                                     Variant="Variant.Filled"
-                                                     Value="@RunState.Inputs.ImageInputs.NumVertices"
-                                                     ValueChanged="@((int limit) => RunState.Inputs.ImageInputs.NumVertices = limit)">
-                                    </MudNumericField>
-                                }
-                            </div>
-                        }
-                    </div>
-                </div>
             </div>
-            @if (RunState.Inputs.ModelType == "Image")
-            {
-                <div class="col">
-                    <div class="mt-3">
-                        <h5>Image Inputs</h5>
-                        <MudDivider/>
-                    </div>
-                    <div class="row mb-2 mt-3">
-                        <div class="col-9">
-                             <ImageDisplay ImageTitle="Upload"
-                                            ImageUrl="@RunState.Inputs.ImageInputs.TargetImage.ImageDisplay"/>
-                        </div>
-                        <div class="col-3">
-                            <ImageUpload Height="@RunState.Inputs.ImageInputs.Height"
-                                         Width="@RunState.Inputs.ImageInputs.Width"
-                                         ImageChanged="@TargetImageChanged"/>
-                        </div>
-                    </div>
-                </div>
-            }
         </div>
-
-        <MudDivider/>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -134,7 +71,7 @@
         var selectedModel = model.First();
         if (RunState.Inputs.ModelType == "Image" && selectedModel != "Image")
         {
-	        RunState.Inputs.DataSetType = "Graph";
+	        RunState.Inputs.DataSetType = "XOR";
         }
 
         RunState.Inputs.ModelType = model.First();

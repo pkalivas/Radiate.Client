@@ -88,7 +88,7 @@
 			           Color="Color.Tertiary"
 			           Variant="Variant.Filled"
 			           Class="w-100"
-			           Disabled="@(Model.IsRunning || Model.IsCompleted)"
+			           Disabled="@(Model.IsRunning || Model.IsCompleted || Model.Inputs is {ModelType: "Image", ImageInputs.TargetImage.IsEmpty: true})"
 			           OnClick="@Start">
 				<MudIcon Icon="@Icons.Material.Filled.PlayArrow"
 				         Class=""

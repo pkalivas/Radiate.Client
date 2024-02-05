@@ -21,7 +21,8 @@ public static class RunSelectors
         .Create<RootState, RunModel, InputsPanelModel>(SelectRun, run => new InputsPanelModel
         {
             RunId = run.RunId,
-            Inputs = run.Inputs
+            Inputs = run.Inputs,
+            IsReadonly = run.IsRunning || run.IsPaused || run.IsCompleted
         });
     
     public static readonly ISelector<RootState, MetricsModel> SelectCurrentMetrics = Selectors

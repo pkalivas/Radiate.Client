@@ -63,9 +63,9 @@ public static class MetricMappers
             Description = metric.Description,
         };
     }
-    
+
     private static double RoundMetric(MetricValue metric, Func<FloatStatistics, double> selector) =>
-        Math.Round(selector(metric.Statistics), 4);
+        Math.Round(metric.MetricType is MetricTypes.Time ? selector(metric.Time) : selector(metric.Statistics), 4);
 
     private static TimeSpan RoundTime(MetricValue metric, Func<FloatStatistics, float> selector)
     {

@@ -7,7 +7,7 @@
              FixedHeader="true"
              Virtualize="true">
     <Columns>
-        <PropertyColumn StickyLeft="true" Property="x => FormatName(x.Name)" Title="Name" Hideable="false" Filterable="true"/>
+        <PropertyColumn StickyLeft="true" Sortable="true" Property="x => FormatName(x.Name)" Title="Name" Hideable="false" Filterable="true"/>
         <PropertyColumn Property="x => x.Value" Title="Value" Hideable="true"/>
         <PropertyColumn Property="x => x.Min" Title="Min" Hideable="true" Groupable="true" Filterable="true"/>
         <PropertyColumn Property="x => x.Max" Title="Max" Hideable="true" Groupable="true" Filterable="true"/>

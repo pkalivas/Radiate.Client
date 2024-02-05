@@ -1,8 +1,16 @@
 ﻿<MudNavMenu>
-    <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink>
+    <MudNavLink Icon="@Icons.Material.Outlined.ModelTraining" Href="/" Match="NavLinkMatch.All">Runs</MudNavLink>
     <MudDivider/>
-    
-    <div class="mt-5">
-        <StoreAudit/>
-    </div>
+    @if (IsOpen)
+    {
+        <div>
+            <RunListPanel/>
+        </div>   
+    }
 </MudNavMenu>
+
+@code {
+    
+    [Parameter] public bool IsOpen { get; set; }
+    
+}

@@ -8,6 +8,7 @@ public record RunControlPanelProjection
     public bool IsRunning { get; init; }
     public bool IsPaused { get; init; }
     public bool IsCompleted { get; init; }
+    public bool NeedsImageUpload { get; init; }
     public DateTime StartTime { get; init; }
     public DateTime EndTime { get; init; }
     public double Score { get; init; }

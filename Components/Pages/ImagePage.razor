@@ -10,13 +10,19 @@
 
                 <ToolBar Title="Image Engine">
                     <Options>
-                        <MudButton OnClick="@OpenEngineTree" Class="float-right"
-                                   Size="Size.Small"
-                                   Color="Color.Inherit"
-                                   Variant="Variant.Filled">
-                            <MudIcon Icon="@Icons.Material.Filled.AccountTree" Class="ml-0 mr-2" Size="Size.Small"/>
-                            Engines
-                        </MudButton>
+                        <div class="d-flex align-items-center">
+                            <MudIconButton OnClick="@OpenEngineTree" 
+                                           Size="Size.Small"
+                                           Color="Color.Inherit"
+                                           Variant="Variant.Text"
+                                           Icon="@Icons.Material.Outlined.AccountTree"
+                                           Class="mr-5"/>
+                            
+                            <MudIconButton Size="Size.Small"
+                                           Color="Color.Inherit"
+                                           Variant="Variant.Text" 
+                                           Icon="@Icons.Material.Outlined.ContentCopy"/>
+                        </div>
                     </Options>
                     <ChildContent>
                         <MudExpansionPanel Dense="true" IsInitiallyExpanded="true">

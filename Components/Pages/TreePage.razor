@@ -11,18 +11,31 @@
                 
                 <ToolBar Title="Tree">
                     <Options>
-                        <MudButton OnClick="@OpenEngineTree" Class="float-right"
-                                   Size="Size.Small"
-                                   Color="Color.Inherit"
-                                   Variant="Variant.Filled">
-                            <MudIcon Icon="@Icons.Material.Filled.AccountTree" Class="ml-0 mr-2" Size="Size.Small"/>
-                            Engines
-                        </MudButton>
+                        <div class="d-flex align-items-center">
+                            <MudIconButton OnClick="@OpenEngineTree" 
+                                           Size="Size.Small"
+                                           Color="Color.Inherit"
+                                           Variant="Variant.Text"
+                                           Icon="@Icons.Material.Outlined.AccountTree"
+                                           Class="mr-5"/>
+                            
+                            <MudIconButton Size="Size.Small"
+                                           Color="Color.Inherit"
+                                           Variant="Variant.Text" 
+                                           Icon="@Icons.Material.Outlined.ContentCopy"/>
+                        </div>
                     </Options>
                     <ChildContent>
-                        <MudPaper Elevation="2" Class="pa-4">
-                            <GraphInputsPanel/>
-                        </MudPaper>
+                        <MudExpansionPanel Dense="true" IsInitiallyExpanded="true">
+                            <TitleContent>
+                                <PanelHeaderPanel Title="Inputs"/>
+                            </TitleContent>
+                            <ChildContent>
+                                <div class="mb-3">
+                                    <GraphInputsPanel/>
+                                </div>
+                            </ChildContent>
+                        </MudExpansionPanel>
                     </ChildContent>
                 </ToolBar>
 

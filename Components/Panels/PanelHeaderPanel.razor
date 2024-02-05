@@ -5,26 +5,7 @@
         <MudText Typo="Typo.body1" Style="ml-5">@Title</MudText>
     </div>
     <div class="d-flex align-items-center mr-1">
-        @if (Model.IsRunning && !Model.IsPaused)
-        {
-            <MudProgressCircular
-                Size="Size.Small"
-                Color="Color.Success"
-                Indeterminate="true"
-                Style="height:20px;width:20px;"/>
-        }
-        else if (Model.IsComplete)
-        {
-            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success" Size="Size.Small"/>
-        }
-        else if (Model.IsPaused)
-        {
-            <MudIcon Icon="@Icons.Material.Filled.Pause" Color="Color.Warning" Size="Size.Small"/>
-        }
-        else
-        {
-            <MudIcon Icon="@Icons.Material.Outlined.Pending" Color="Color.Default" Size="Size.Small"/>
-        }
+        <RunIcon IsRunning="@Model.IsRunning" IsPaused="@Model.IsPaused" IsComplete="@Model.IsComplete"/>
     </div>
 </div>
 
@@ -34,23 +15,4 @@
     protected override IObservable<PanelToolbarProjection> Select() => Store.Select(EngineSelectors.SelectPanelToolbarModel);
     
     private string FormatDuration(TimeSpan duration) => duration.ToString("mm\\:ss\\:ffff");
-    
-    private static string GetIcon(string state) => state switch
-    {
-        EngineStateTypes.Pending => Icons.Material.Filled.Pending,
-        EngineStateTypes.Started => Icons.Material.Filled.PlayArrow,
-        EngineStateTypes.Running => Icons.Material.Filled.PlayArrow,
-        EngineStateTypes.Stopped => Icons.Material.Filled.Stop,
-        _ => Icons.Custom.FileFormats.FileCode
-    };
-
-    private static Color GetColor(string state) => state switch
-    {
-        EngineStateTypes.Pending => Color.Default,
-        EngineStateTypes.Started => Color.Tertiary,
-        EngineStateTypes.Running => Color.Tertiary,
-        EngineStateTypes.Stopped => Color.Secondary,
-        _ => Color.Default
-    };
-
 }

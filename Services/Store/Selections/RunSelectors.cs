@@ -32,6 +32,15 @@ public static class RunSelectors
             MetricName = metricName,
             Value = run.Metrics.GetValueOrDefault(metricName, new MetricValueModel())
         });
-    
-    
+
+    public static ISelector<RootState, RunListPanelProjection> SelectRunListPanelProjection => Selectors
+        .Create<RootState, RunListPanelProjection>(state => new RunListPanelProjection
+        {
+            RunId = state.CurrentRunId,
+            Runs = state.Runs.Values
+                .OrderByDescending(val => val.Index)
+                .ToList()
+        });
+
+
 }

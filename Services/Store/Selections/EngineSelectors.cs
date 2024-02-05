@@ -16,6 +16,7 @@ public static class EngineSelectors
             IsRunning = run.IsRunning,
             IsPaused = run.IsPaused,
             IsCompleted = run.IsCompleted,
+            NeedsImageUpload = run.Inputs is {ModelType: "Image", ImageInputs.TargetImage.IsEmpty: true},
             StartTime = run.StartTime,
             EndTime = run.EndTime,
             Inputs = run.Inputs,

@@ -1,4 +1,6 @@
-﻿@inherits LayoutComponentBase
+﻿@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
+@inherits LayoutComponentBase
 
 <MudThemeProvider IsDarkMode="true"/>
 <MudDialogProvider/>
@@ -6,12 +8,21 @@
 
 <MudLayout>
     <MudAppBar Dense="true" >
-        <MudButton OnClick="@(() => Store.Dispatch(new LayoutChangedAction { IsSidebarOpen = !_drawerOpen }))"><MudIcon Icon="@Icons.Material.Filled.Menu"></MudIcon></MudButton>
+        <MudButton OnClick="@(() => Store.Dispatch(new LayoutChangedAction {IsSidebarOpen = !_drawerOpen}))">
+            <MudIcon Icon="@Icons.Material.Filled.Menu"/>
+        </MudButton>
         Radiate Client
+        <div class="ml-4 align-items-center d-flex">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OpenDialog" Size="Size.Small">
+                New Run
+                <MudIcon Icon="@Icons.Material.Outlined.Add" Size="Size.Small"/>
+            </MudButton>
+        </div>
+        <MudSpacer/>
         <TestSub/>
     </MudAppBar>
-    <MudDrawer @bind-Open="@_drawerOpen">
-        <NavMenu/>
+    <MudDrawer Width="300px" @bind-Open="@_drawerOpen" Variant="DrawerVariant.Mini" Elevation="2" OpenMiniOnHover="true">
+        <NavMenu IsOpen="@_drawerOpen"/>
     </MudDrawer>
     <MudMainContent>
         @Body
@@ -34,4 +45,25 @@
         _drawerOpen = model.IsSidebarOpen;
         StateHasChanged();
     });
+    
+    private async Task OpenDialog()
+    {
+        var options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.ExtraSmall,
+            FullWidth = true,
+            CloseOnEscapeKey = true
+        };
+
+        var dialogRef = await DialogService.ShowAsync<NewRunInputsDialog>("New Run", options);
+        var result = await dialogRef.Result;
+
+        if (!result.Canceled)
+        {
+            var run = (RunState) result.Data;
+            Store.Dispatch(new RunCreatedAction(run));
+            Store.Dispatch(new NavigateToRunAction(run.RunId));
+            NavigationManager.NavigateTo($"/runs/{run.RunId}/{run.Inputs.ModelType.ToLower()}");
+        }
+    }
 }

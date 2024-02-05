@@ -43,54 +43,63 @@
 		</div>
 	</div>
 	<div class="align-items-center w-25">
-		<div>
-			<MudButton Class="w-100"
-			           Size="Size.Small"
-			           Variant="Variant.Filled"
-			           Color="Color.Secondary"
-			           Disabled="@((!Model.IsRunning && !Model.IsCompleted) || Model.IsCompleted)"
-			           OnClick="@Stop">
-				<MudIcon Icon="@Icons.Material.Filled.Stop"
-				         Size="Size.Small"/>
-				Stop
-			</MudButton>
-		</div>
-		<div class="mt-2">
-			<MudButton Class="w-100"
-			           Size="Size.Small"
-			           Variant="Variant.Filled"
-			           Color="Color.Primary"
-			           Disabled="@(!Model.IsRunning || (Model.IsCompleted || Model.IsPaused))"
-			           OnClick="@Pause">
-				<MudIcon Icon="@Icons.Material.Filled.Pause" Size="Size.Small"/>
-				Pause
-			</MudButton>
-		</div>
-		<div class="mt-2">
-			<MudButton Class="w-100"
-			           Size="Size.Small"
-			           Variant="Variant.Filled"
-			           Color="Color.Info"
-			           Disabled="@(!Model.IsPaused)"
-			           OnClick="@Resume">
-				<MudIcon Icon="@Icons.Material.Filled.Restore"
-				         Size="Size.Small"/>
-				Resume
-			</MudButton>
-		</div>
-		<div class="mt-2">
-			<MudButton Size="Size.Small"
-			           Color="Color.Tertiary"
-			           Variant="Variant.Filled"
-			           Class="w-100"
-			           Disabled="@(Model.IsRunning || Model.IsCompleted || Model.Inputs is {ModelType: "Image", ImageInputs.TargetImage.IsEmpty: true})"
-			           OnClick="@Start">
-				<MudIcon Icon="@Icons.Material.Filled.PlayArrow"
-				         Class=""
-				         Size="Size.Small"/>
-				Start
-			</MudButton>
-		</div>
+		@if (Model.NeedsImageUpload)
+		{
+			<ImageUpload Height="@Model.Inputs.ImageInputs.Height"
+			             Width="@Model.Inputs.ImageInputs.Width"
+			             ImageChanged="@((ImageEntity image) => Dispatch(new SetTargetImageAction(Model.RunId, image)))"/>
+		}
+		else
+		{
+			<div>
+				<MudButton Class="w-100"
+				           Size="Size.Small"
+				           Variant="Variant.Filled"
+				           Color="Color.Secondary"
+				           Disabled="@((!Model.IsRunning && !Model.IsCompleted) || Model.IsCompleted)"
+				           OnClick="@Stop">
+					<MudIcon Icon="@Icons.Material.Filled.Stop"
+					         Size="Size.Small"/>
+					Stop
+				</MudButton>
+			</div>
+			<div class="mt-2">
+				<MudButton Class="w-100"
+				           Size="Size.Small"
+				           Variant="Variant.Filled"
+				           Color="Color.Primary"
+				           Disabled="@(!Model.IsRunning || (Model.IsCompleted || Model.IsPaused))"
+				           OnClick="@Pause">
+					<MudIcon Icon="@Icons.Material.Filled.Pause" Size="Size.Small"/>
+					Pause
+				</MudButton>
+			</div>
+			<div class="mt-2">
+				<MudButton Class="w-100"
+				           Size="Size.Small"
+				           Variant="Variant.Filled"
+				           Color="Color.Info"
+				           Disabled="@(!Model.IsPaused)"
+				           OnClick="@Resume">
+					<MudIcon Icon="@Icons.Material.Filled.Restore"
+					         Size="Size.Small"/>
+					Resume
+				</MudButton>
+			</div>
+			<div class="mt-2">
+				<MudButton Size="Size.Small"
+				           Color="Color.Tertiary"
+				           Variant="Variant.Filled"
+				           Class="w-100"
+				           Disabled="@(Model.IsRunning || Model.IsCompleted || Model.Inputs is {ModelType: "Image", ImageInputs.TargetImage.IsEmpty: true})"
+				           OnClick="@Start">
+					<MudIcon Icon="@Icons.Material.Filled.PlayArrow"
+					         Class=""
+					         Size="Size.Small"/>
+					Start
+				</MudButton>
+			</div>
+		}
 	</div>
 </div>
 

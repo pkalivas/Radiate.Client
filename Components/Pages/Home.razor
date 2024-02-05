@@ -1,16 +1,8 @@
 ﻿@page "/"
 @rendermode InteractiveServer
-@inject IDialogService DialogService
 @inject NavigationManager NavigationManager
 @inherits StoreComponent<RootState>
 
-<MudPaper Elevation="25" Class="mt-4 ml-4 mr-4 px-8">
-    <MudToolBar>
-        Engine Runs
-        <MudSpacer />
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OpenDialog">New Run</MudButton>
-    </MudToolBar>
-</MudPaper>
 <MudTable OnRowClick="@((TableRowClickEventArgs<RunState> args) => OnSelect(args))" Items="@Model?.Runs.Values.ToList()" Class="ml-4 mr-4 px-8">
     <HeaderContent>
         <MudTh></MudTh>
@@ -30,27 +22,6 @@
     {
         Dispatch(new NavigateToRunAction(run.Item.RunId));
         NavigationManager.NavigateTo($"/runs/{run.Item.RunId}/{run.Item.Inputs.ModelType.ToLower()}");
-    }
-
-    private async Task OpenDialog()
-    {
-        var options = new DialogOptions
-        {
-            MaxWidth = MaxWidth.ExtraSmall,
-            FullWidth = true,
-            CloseOnEscapeKey = true
-        };
-
-        var dialogRef = await DialogService.ShowAsync<NewRunInputsDialog>("New Run", options);
-        var result = await dialogRef.Result;
-
-        if (!result.Canceled)
-        {
-            var run = (RunState) result.Data;
-            Dispatch(new RunCreatedAction(run));
-            Dispatch(new NavigateToRunAction(run.RunId));
-            NavigationManager.NavigateTo($"/runs/{run.RunId}/{run.Inputs.ModelType.ToLower()}");
-        }
     }
 
     protected override IObservable<RootState> Select() => Store.Select(state => state);

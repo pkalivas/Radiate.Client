@@ -1,0 +1,35 @@
+@inherits StoreComponent<RunListPanelProjection>
+@inject NavigationManager NavigationManager
+
+<MudList Clickable="true" Dense="true">
+    @foreach (var run in Model.Runs)
+    {
+        <MudListItem Dense="true" OnClick="@((MouseEventArgs _) => OnSelect(run))">
+            <MudGrid>
+                <MudItem>
+                    <MudText Typo="Typo.body2">@run.Index</MudText>
+                </MudItem>
+                <MudItem>
+                    <MudText Typo="Typo.body2">@run.Inputs.ModelType</MudText>
+                </MudItem>
+                <MudItem>
+                    <MudText Typo="Typo.body2">@run.Inputs.DataSetType</MudText>
+                </MudItem>
+                <MudItem>
+                    <RunIcon IsRunning="@run.IsRunning" IsPaused="@run.IsPaused" IsComplete="@run.IsCompleted"/>
+                </MudItem>
+            </MudGrid>
+        </MudListItem>
+    }
+</MudList>
+
+@code {
+
+    protected override IObservable<RunListPanelProjection> Select() => Store.Select(RunSelectors.SelectRunListPanelProjection);
+    
+    private void OnSelect(RunState run)
+    {
+        Dispatch(new NavigateToRunAction(run.RunId));
+        NavigationManager.NavigateTo($"/runs/{run.RunId}/{run.Inputs.ModelType.ToLower()}");
+    }
+}

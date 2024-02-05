@@ -118,41 +118,32 @@
                 }
             </MudItem>
             <MudItem md="6">
-                @if (Model.IsReadonly)
+                @if (Model.Inputs.DataSetType == "Polygon")
                 {
-                    <div class="d-flex align-items-center border-bottom justify-content-between">
-                        <MudText Typo="Typo.body2"># Verticy:</MudText>
-                        <MudTooltip Text="The number of verticies in a polygon.">
-                            <MudIcon Icon="Icons.Info" Size="Size.Small"/>
-                        </MudTooltip>
-                        <MudText Typo="Typo.body2">@Model.Inputs.ImageInputs.NumVertices</MudText>
-                    </div>
-                }
-                else
-                {
-                    <MudNumericField Label="# Verticies"
-                                     Variant="Variant.Filled"
-                                     ReadOnly="@Model.IsReadonly"
-                                     DisableUnderLine="@Model.IsReadonly"
-                                     HideSpinButtons="@Model.IsReadonly"
-                                     Value="@Model.Inputs.ImageInputs.NumVertices"
-                                     ValueChanged="@((int numShapes) => OnInputChange(Model, inputs => inputs.ImageInputs.NumVertices = numShapes))">
-                    </MudNumericField>
+                     @if (Model.IsReadonly)
+                    {
+                        <div class="d-flex align-items-center border-bottom justify-content-between">
+                            <MudText Typo="Typo.body2"># Edges:</MudText>
+                            <MudTooltip Text="The number of verticies in a polygon.">
+                                <MudIcon Icon="Icons.Info" Size="Size.Small"/>
+                            </MudTooltip>
+                            <MudText Typo="Typo.body2">@Model.Inputs.ImageInputs.NumVertices</MudText>
+                        </div>
+                    }
+                    else
+                    {
+                        <MudNumericField Label="# Verticies"
+                                         Variant="Variant.Filled"
+                                         ReadOnly="@Model.IsReadonly"
+                                         DisableUnderLine="@Model.IsReadonly"
+                                         HideSpinButtons="@Model.IsReadonly"
+                                         Value="@Model.Inputs.ImageInputs.NumVertices"
+                                         ValueChanged="@((int numShapes) => OnInputChange(Model, inputs => inputs.ImageInputs.NumVertices = numShapes))">
+                        </MudNumericField>
+                    }   
                 }
             </MudItem>
         </MudGrid>
-        @if (Model.Inputs.ImageInputs.TargetImage.IsEmpty)
-        {
-            <MudItem md="6">
-                
-            </MudItem>
-            <MudItem md="6">
-                <div class="d-flex flex-row-reverse w-100 mb-3">
-                    <ImageUpload Height="@Model.Inputs.ImageInputs.Height" Width="@Model.Inputs.ImageInputs.Width"
-                                 ImageChanged="@((ImageEntity image) => Dispatch(new SetTargetImageAction(Model.RunId, image)))"/>           
-                </div>
-            </MudItem>    
-        }
     </MudItem>
 </MudGrid>
 

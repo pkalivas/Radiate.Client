@@ -19,14 +19,15 @@ public static class ApplicationServiceRegistration
             .AddHostedService<BackgroundWorkerService>()
             .AddHostedService(sp => (ActorService)sp.GetRequiredService<IActorService>());
 
-
     private static IServiceCollection AddEngineRunners(this IServiceCollection services) =>
         services
             .AddScoped<XORGraphRunner>()
             .AddScoped<CircleEngineRunner>()
             .AddScoped<PolygonEngineRunner>()
+            .AddScoped<GraphRegressionRunner>()
             .AddScoped<EngineRunnerFactory>(sp => (model, data) => (model, data) switch
             {
+                ("Graph", "Regression") => sp.GetRequiredService<GraphRegressionRunner>(),
                 ("Graph", "XOR") => sp.GetRequiredService<XORGraphRunner>(),
                 ("Image", "Circle") => sp.GetRequiredService<CircleEngineRunner>(),
                 ("Image", "Polygon") => sp.GetRequiredService<PolygonEngineRunner>(),

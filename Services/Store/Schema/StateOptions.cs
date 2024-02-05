@@ -11,6 +11,7 @@ public static class StateOptions
     public static List<string> DataSetNames => new()
     {
         "XOR",
+        "Regression"
     };
     
     public static List<string> ImageDataSetNames => new()

@@ -40,7 +40,7 @@ public class GraphRegressionRunner : EngineRunner<GeneticEpoch<GraphGene<float>>
             .Build();
         
         var two = Engine.Genetic(one)
-            .Setup(EngineSetup.Neat<float>(0.01f, inputs.PopulationInputs.MutationRate, .1f, .1f, .1f))
+            .Setup(EngineSetup.Neat<float>(0.01f, .2f, .1f, .1f, .1f))
             .Build();
         
         var engine = Engine.Cyclic(

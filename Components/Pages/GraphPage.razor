@@ -18,7 +18,7 @@
         
         <MudItem md="4">
             <MudPaper Elevation="2" Class="pa-4">
-                <EngineControl/>
+                <RunControlPanel/>
             </MudPaper>
         </MudItem>
 
@@ -73,7 +73,7 @@
                     </TitleContent>
                     <ChildContent>
                         <MudDivider/>
-                        <MetricSummary MetricName="@MetricNames.FitnessDistribution" ChartHeight="125" ChartType="line"/>
+                        <MetricSummaryChartPanel MetricName="@MetricNames.FitnessDistribution" ChartHeight="125" ChartType="line" />
                     </ChildContent>
                 </MudExpansionPanel>
 
@@ -85,7 +85,7 @@
                     </TitleContent>
                     <ChildContent>
                         <MudDivider/>
-                        <MetricSummary MetricName="@MetricNames.AgeDistribution" ChartHeight="125" ChartType="bar"/>
+                        <MetricSummaryChartPanel MetricName="@MetricNames.AgeDistribution" ChartHeight="125" ChartType="bar"/>
                     </ChildContent>
                 </MudExpansionPanel>
 
@@ -97,7 +97,7 @@
                     </TitleContent>
                     <ChildContent>
                         <MudDivider/>
-                        <MetricSummary MetricName="@MetricNames.GenomeSizeDistribution" ChartHeight="125" ChartType="pie"/>
+                        <MetricSummaryChartPanel MetricName="@MetricNames.GenomeSizeDistribution" ChartHeight="125" ChartType="pie"/>
                     </ChildContent>
                 </MudExpansionPanel>
 
@@ -120,7 +120,7 @@
             CloseOnEscapeKey = true,
         };
 
-        var dialogRef = await DialogService.ShowAsync<EngineStateTree>("Engine Tree", options);
+        var dialogRef = await DialogService.ShowAsync<EngineTreePanel>("Engine Tree", options);
         await dialogRef.Result;
     }
 }

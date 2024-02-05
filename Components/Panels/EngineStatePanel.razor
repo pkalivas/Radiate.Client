@@ -1,8 +1,8 @@
-@inherits StoreComponent<EngineStateTreePanelModel>
+@inherits StoreComponent<EngineTreePanelModel>
 
 <EngineStateDisplay EngineState="@Model.CurrentEngineState"/>
 
 @code {
-    protected override IObservable<EngineStateTreePanelModel> Select() =>
+    protected override IObservable<EngineTreePanelModel> Select() =>
         Store.Select(EngineSelectors.SelectEngineTreePanelModel);
 }

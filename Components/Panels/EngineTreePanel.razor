@@ -1,4 +1,4 @@
-@inherits StoreComponent<EngineStateTreePanelModel>
+@inherits StoreComponent<EngineTreePanelModel>
 
 <MudTreeView Items="@Model?.TreeItems" Dense="true">
     <ItemTemplate>
@@ -20,6 +20,6 @@
         Dispatch(new SetEngineTreeExpandedAction(Model.RunId, data));
     }
     
-    protected override IObservable<EngineStateTreePanelModel> Select() =>
+    protected override IObservable<EngineTreePanelModel> Select() =>
         Store.Select(EngineSelectors.SelectEngineTreePanelModel);
 }

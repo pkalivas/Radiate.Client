@@ -24,13 +24,13 @@ public static class EngineSelectors
             Index = run.Metrics.TryGetValue(MetricNames.Index, out var indexMetric) ? (int)indexMetric.Value : 0
         });
     
-    public static readonly ISelector<RootState, EngineStateTreePanelModel> SelectEngineTreePanelModel = Selectors
-        .Create<RootState, UiModel, RunModel, EngineStateTreePanelModel>(UiSelectors.SelectUiState, RunSelectors.SelectRun,
+    public static readonly ISelector<RootState, EngineTreePanelModel> SelectEngineTreePanelModel = Selectors
+        .Create<RootState, UiModel, RunModel, EngineTreePanelModel>(UiSelectors.SelectUiState, RunSelectors.SelectRun,
             (ui, run) =>
             {
                 if (ui.EngineStateExpanded.TryGetValue(run.RunId, out var engineTree))
                 {
-                    return new EngineStateTreePanelModel
+                    return new EngineTreePanelModel
                     {
                         RunId = run.RunId,
                         TreeItems = GetItems(run.Outputs.EngineStates, engineTree),
@@ -42,7 +42,7 @@ public static class EngineSelectors
                 
                 var expanded = run.Outputs.EngineStates.Keys.ToDictionary(key => key, _ => true);
                 
-                return new EngineStateTreePanelModel
+                return new EngineTreePanelModel
                 {
                     RunId = run.RunId,
                     TreeItems = GetItems(run.Outputs.EngineStates, expanded),
@@ -53,7 +53,7 @@ public static class EngineSelectors
             });
     
     public static readonly ISelector<RootState, PanelToolbarModel> SelectPanelToolbarModel = Selectors
-        .Create<RootState, RunControlPanelModel, EngineStateTreePanelModel, PanelToolbarModel>(SelectRunControlPanelModel, SelectEngineTreePanelModel,
+        .Create<RootState, RunControlPanelModel, EngineTreePanelModel, PanelToolbarModel>(SelectRunControlPanelModel, SelectEngineTreePanelModel,
             (control, model) => new PanelToolbarModel
             {
                 IsRunning = control.IsRunning,

@@ -1,0 +1,39 @@
+@using Radiate.Client.Services.Store.Actions
+@inherits StoreComponent<ImageCardPanelModel>
+
+
+<MudGrid>
+    <MudItem md="6">
+        <MudCard>
+            @if (!Model.TargetImage.IsEmpty)
+            {
+                <MudCardContent Class="d-flex justify-content-center">
+                    <ImageDisplay ImageUrl="@Model.TargetImage.ImageDisplay" ImageTitle="Target"/>
+                </MudCardContent>
+            }
+            else
+            {
+                <MudCardContent Class="d-flex justify-content-center">
+                    <ImageUpload Height="@Model.Height" Width="@Model.Width" ImageChanged="@TargetImageChanged"/>
+                </MudCardContent>
+            }
+        </MudCard>
+    </MudItem>
+    <MudItem md="6">
+        <MudCard>
+            <MudCardContent Class="d-flex justify-content-center">
+                <ImageDisplay ImageUrl="@Model.CurrentImage.ImageDisplay" ImageTitle="Current"/>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+</MudGrid>
+
+@code {
+
+    protected override IObservable<ImageCardPanelModel> Select() => Store.Select(ImageSelectors.GetImageCardPanelModel);
+    
+    private void TargetImageChanged(ImageEntity image)
+    {
+        Dispatch(new SetTargetImageAction(Model.RunId, image));
+    }
+}

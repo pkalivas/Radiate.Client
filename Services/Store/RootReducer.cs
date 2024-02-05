@@ -19,10 +19,11 @@ public static class RootReducer
         Reducer.On<ResumeEngineRunAction, RootState>(ResumeEngine),
         Reducer.On<SetEngineTreeExpandedAction, RootState>(SetTreeExpansions),
         Reducer.On<LayoutChangedAction, RootState>(LayoutChanged),
-        Reducer.On<UpdateCurrentImageAction, RootState>(UpdateCurrentImage),
+        Reducer.On<SetCurrentImageAction, RootState>(UpdateCurrentImage),
         Reducer.On<CancelEngineRunAction, RootState>(CancelEngine),
         Reducer.On<SetSelectedMetricsAction, RootState>(SetSelectedMetrics),
-        Reducer.On<SetRunInputsAction, RootState>(SetRunInputs)
+        Reducer.On<SetRunInputsAction, RootState>(SetRunInputs),
+        Reducer.On<SetTargetImageAction, RootState>(SetTargetImage)
     };
     
     private static RootState AddOutput(RootState state, AddRunOutputAction action)
@@ -133,7 +134,7 @@ public static class RootReducer
         UiModel = state.UiModel with { IsSidebarOpen = action.IsSidebarOpen }
     };
 
-    private static RootState UpdateCurrentImage(RootState state, UpdateCurrentImageAction action)
+    private static RootState UpdateCurrentImage(RootState state, SetCurrentImageAction action)
     {
         var run = state.Runs[action.RunId];
         state.Runs[action.RunId] = run with 
@@ -166,6 +167,22 @@ public static class RootReducer
         state.Runs[action.RunId] = run with
         {
             Inputs = action.Inputs
+        };
+        return state with { Runs = state.Runs };
+    }
+    
+    private static RootState SetTargetImage(RootState state, SetTargetImageAction action)
+    {
+        var run = state.Runs[state.CurrentRunId];
+        state.Runs[state.CurrentRunId] = run with
+        {
+            Inputs = run.Inputs with
+            {
+                ImageInputs = run.Inputs.ImageInputs with
+                {
+                    TargetImage = action.Image
+                }
+            }
         };
         return state with { Runs = state.Runs };
     }

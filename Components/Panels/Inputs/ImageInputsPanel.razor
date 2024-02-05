@@ -1,0 +1,157 @@
+@using Radiate.Client.Services.Store.Actions
+@inherits StoreComponent<InputsPanelModel>
+
+@if (Model == null)
+{
+    <p>Loading...</p>
+    return;
+}
+
+<MudGrid>
+    <MudItem md="4">
+        <MudText Typo="Typo.h6">Population</MudText>
+        <MudDivider/>
+        <MudGrid Class="mt-3">
+            <MudItem md="6">
+                @if (Model.IsReadonly)
+                {
+                    <div class="d-flex align-items-center border-bottom justify-content-between">
+                        <MudText Typo="Typo.body2">Size:</MudText>
+                        <MudTooltip Text="The number of individuals in the population.">
+                            <MudIcon Icon="Icons.Info" Size="Size.Small"/>
+                        </MudTooltip>
+                        <MudText Typo="Typo.body2">@Model.Inputs.PopulationInputs.PopulationSize</MudText>
+                    </div>
+                }
+                else
+                {
+                    <MudNumericField Label="Population Size"
+                                     Variant="Variant.Filled"
+                                     Value="@Model.Inputs.PopulationInputs.PopulationSize"
+                                     ReadOnly="@Model.IsReadonly"
+                                     DisableUnderLine="@Model.IsReadonly"
+                                     HideSpinButtons="@Model.IsReadonly"
+                                     ValueChanged="@((int size) => OnInputChange(Model, inputs => inputs.PopulationInputs.PopulationSize = size))">
+                    </MudNumericField>
+                }
+            </MudItem>
+            <MudItem md="6">
+                @if (Model.IsReadonly)
+                {
+                    <div class="d-flex align-items-center border-bottom justify-content-between">
+                        <MudText Typo="Typo.body2">Mut. Rate:</MudText>
+                        <MudTooltip Text="The probability of a mutation occurring.">
+                            <MudIcon Icon="Icons.Info" Size="Size.Small"/>
+                        </MudTooltip>
+                        <MudText Typo="Typo.body2">@Model.Inputs.PopulationInputs.MutationRate</MudText>
+                    </div>
+                }
+                else
+                {
+                    <MudNumericField Label="Mutation Rate"
+                                     Variant="Variant.Filled"
+                                     ReadOnly="@Model.IsReadonly"
+                                     DisableUnderLine="@Model.IsReadonly"
+                                     HideSpinButtons="@Model.IsReadonly"
+                                     Value="@Model.Inputs.PopulationInputs.MutationRate"
+                                     ValueChanged="@((float rate) => OnInputChange(Model, inputs => inputs.PopulationInputs.MutationRate = rate))">
+                    </MudNumericField>
+                }
+            </MudItem>
+        </MudGrid>
+    </MudItem>
+    <MudItem md="4">
+        <MudText Typo="Typo.h6">Limits</MudText>
+        <MudDivider/>
+        <MudGrid Class="mt-3">
+            <MudItem>
+                @if (Model.IsReadonly)
+                {
+                    <div class="d-flex align-items-center border-bottom justify-content-between">
+                        <MudText Typo="Typo.body2">Iteration:</MudText>
+                        <MudTooltip Text="The maximum number of iterations to run.">
+                            <MudIcon Icon="Icons.Info" Size="Size.Small"/>
+                        </MudTooltip>
+                        <MudText Typo="Typo.body2">@Model.Inputs.LimitInputs.IterationLimit</MudText>
+                    </div>
+                }
+                else
+                {
+                    <MudNumericField Label="Iteration"
+                                     Variant="Variant.Filled"
+                                     ReadOnly="@Model.IsReadonly"
+                                     DisableUnderLine="@Model.IsReadonly"
+                                     HideSpinButtons="@Model.IsReadonly"
+                                     Value="@Model.Inputs.LimitInputs.IterationLimit"
+                                     ValueChanged="@((int limit) => OnInputChange(Model, inputs => inputs.LimitInputs.IterationLimit = limit))">
+                    </MudNumericField>
+                }
+            </MudItem>
+        </MudGrid>
+    </MudItem>
+     <MudItem md="4">
+            <MudText Typo="Typo.h6">Shapes</MudText>
+            <MudDivider/>
+            <MudGrid Class="mt-3">
+                <MudItem md="6">
+                    @if (Model.IsReadonly)
+                    {
+                        <div class="d-flex align-items-center border-bottom justify-content-between">
+                            <MudText Typo="Typo.body2">Shape Count:</MudText>
+                            <MudTooltip Text="The number of shapes to draw per image.">
+                                <MudIcon Icon="Icons.Info" Size="Size.Small"/>
+                            </MudTooltip>
+                            <MudText Typo="Typo.body2">@Model.Inputs.ImageInputs.NumShapes</MudText>
+                        </div>
+                    }
+                    else
+                    {
+                        <MudNumericField Label="# Shapes"
+                                         Variant="Variant.Filled"
+                                         ReadOnly="@Model.IsReadonly"
+                                         DisableUnderLine="@Model.IsReadonly"
+                                         HideSpinButtons="@Model.IsReadonly"
+                                         Value="@Model.Inputs.ImageInputs.NumShapes"
+                                         ValueChanged="@((int numShapes) => OnInputChange(Model, inputs => inputs.ImageInputs.NumShapes= numShapes))">
+                        </MudNumericField>
+                    }
+                </MudItem>
+                <MudItem md="6">
+                    @if (Model.IsReadonly)
+                    {
+                        <div class="d-flex align-items-center border-bottom justify-content-between">
+                            <MudText Typo="Typo.body2">Verticy Count:</MudText>
+                            <MudTooltip Text="The number of verticies in a polygon.">
+                                <MudIcon Icon="Icons.Info" Size="Size.Small"/>
+                            </MudTooltip>
+                            <MudText Typo="Typo.body2">@Model.Inputs.ImageInputs.NumVertices</MudText>
+                        </div>
+                    }
+                    else
+                    {
+                        <MudNumericField Label="# Verticies"
+                                         Variant="Variant.Filled"
+                                         ReadOnly="@Model.IsReadonly"
+                                         DisableUnderLine="@Model.IsReadonly"
+                                         HideSpinButtons="@Model.IsReadonly"
+                                         Value="@Model.Inputs.ImageInputs.NumVertices"
+                                         ValueChanged="@((int numShapes) => OnInputChange(Model, inputs => inputs.ImageInputs.NumVertices = numShapes))">
+                        </MudNumericField>
+                    }
+                </MudItem>
+            </MudGrid>
+        </MudItem>
+</MudGrid>
+
+@code {
+
+    protected override IObservable<InputsPanelModel> Select() => Store.Select(RunSelectors.SelectInputsModel);
+    
+    private async Task OnInputChange(InputsPanelModel inputs, Action<RunInputsModel> setter)
+    {
+        var newInputs = inputs.Inputs with { };
+        setter(newInputs);
+        Store.Dispatch(new SetRunInputsAction(inputs.RunId, newInputs));
+    }
+
+}

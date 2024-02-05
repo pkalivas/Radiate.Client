@@ -1,6 +1,6 @@
-namespace Radiate.Client.Services.Store.Models;
+namespace Radiate.Client.Services.Store.Models.Projections;
 
-public record RunControlPanelModel
+public record RunControlPanelProjection
 {
     public Guid RunId { get; init; }
     public bool IsStarted { get; init; }

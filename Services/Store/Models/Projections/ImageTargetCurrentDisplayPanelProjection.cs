@@ -1,6 +1,6 @@
-namespace Radiate.Client.Services.Store.Models;
+namespace Radiate.Client.Services.Store.Models.Projections;
 
-public record ImageTargetCurrentDisplayModel
+public record ImageTargetCurrentDisplayPanelProjection
 {
     public Guid RunId { get; init; } = Guid.NewGuid();
     public int Height { get; set; } = 50;

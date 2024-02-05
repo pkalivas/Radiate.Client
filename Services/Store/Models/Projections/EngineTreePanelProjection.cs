@@ -1,8 +1,8 @@
 using Radiate.Engines.Entities;
 
-namespace Radiate.Client.Services.Store.Models;
+namespace Radiate.Client.Services.Store.Models.Projections;
 
-public record EngineTreePanelModel
+public record EngineTreePanelProjection
 {
     public Guid RunId { get; init; }
     public HashSet<TreeItemData<EngineState>> TreeItems { get; init; } = new();

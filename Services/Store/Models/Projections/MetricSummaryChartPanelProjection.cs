@@ -1,6 +1,6 @@
-namespace Radiate.Client.Services.Store.Models;
+namespace Radiate.Client.Services.Store.Models.Projections;
 
-public record MetricSummaryChartPanelModel
+public record MetricSummaryChartPanelProjection
 {
     public Guid RunId { get; init; }
     public string MetricName { get; init; } = string.Empty;

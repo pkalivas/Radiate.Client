@@ -1,8 +1,8 @@
 using Radiate.Engines.Schema;
 
-namespace Radiate.Client.Services.Store.Models;
+namespace Radiate.Client.Services.Store.Models.Projections;
 
-public record MetricDataGridPanelModel
+public record MetricDataGridPanelProjection
 {
     public Guid RunId { get; init; }
     public HashSet<MetricValueModel> SelectedMetrics { get; init; } = new();

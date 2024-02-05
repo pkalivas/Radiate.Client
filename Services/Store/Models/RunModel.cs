@@ -1,3 +1,4 @@
+using Radiate.Client.Services.Store.Models.Projections;
 using Radiate.Schema;
 
 namespace Radiate.Client.Services.Store.Models;

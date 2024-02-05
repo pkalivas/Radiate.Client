@@ -1,5 +1,6 @@
 using Radiate.Client.Services.Store.Actions;
 using Radiate.Client.Services.Store.Models;
+using Radiate.Client.Services.Store.Models.Projections;
 using Radiate.Client.Services.Store.Shared;
 using Radiate.Engines.Schema;
 using Reflow.Reducers;

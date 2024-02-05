@@ -1,5 +1,6 @@
 @using Radiate.Client.Services.Store.Actions
-@inherits StoreComponent<InputsPanelModel>
+@using Radiate.Client.Services.Store.Models.Projections
+@inherits StoreComponent<InputsPanelModelProjection>
 
 @if (Model == null)
 {
@@ -93,9 +94,9 @@
 
 @code {
 
-    protected override IObservable<InputsPanelModel> Select() => Store.Select(RunSelectors.SelectInputsModel);
+    protected override IObservable<InputsPanelModelProjection> Select() => Store.Select(RunSelectors.SelectInputsModel);
     
-    private async Task OnInputChange(InputsPanelModel inputs, Action<RunInputsModel> setter)
+    private async Task OnInputChange(InputsPanelModelProjection inputs, Action<RunInputsModel> setter)
     {
         var newInputs = inputs.Inputs with { };
         setter(newInputs);

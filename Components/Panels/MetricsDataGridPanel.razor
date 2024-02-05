@@ -1,4 +1,5 @@
-@inherits StoreComponent<MetricDataGridPanelModel>
+@using Radiate.Client.Services.Store.Models.Projections
+@inherits StoreComponent<MetricDataGridPanelProjection>
 
 <MudDataGrid Dense="true"
              Elevation="0"
@@ -21,7 +22,7 @@
 
 @code {
 
-    protected override IObservable<MetricDataGridPanelModel> Select() =>
+    protected override IObservable<MetricDataGridPanelProjection> Select() =>
         Store.Select(RunSelectors.SelectMetricDataGridPanelModel);
 
     private string FormatDuration(TimeSpan duration) => duration.ToString("mm\\:ss\\:ffff");

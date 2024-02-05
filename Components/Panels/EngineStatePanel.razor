@@ -1,8 +1,9 @@
-@inherits StoreComponent<EngineTreePanelModel>
+@using Radiate.Client.Services.Store.Models.Projections
+@inherits StoreComponent<EngineTreePanelProjection>
 
 <EngineStateDisplay EngineState="@Model.CurrentEngineState"/>
 
 @code {
-    protected override IObservable<EngineTreePanelModel> Select() =>
+    protected override IObservable<EngineTreePanelProjection> Select() =>
         Store.Select(EngineSelectors.SelectEngineTreePanelModel);
 }

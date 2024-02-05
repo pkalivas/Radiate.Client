@@ -1,4 +1,5 @@
 using Radiate.Client.Services.Store.Models;
+using Radiate.Client.Services.Store.Models.Projections;
 using Radiate.Engines.Schema;
 using Reflow.Interfaces;
 using Reflow.Selectors;
@@ -16,8 +17,8 @@ public static class RunSelectors
     public static readonly ISelector<RootState, RunInputsModel> SelectCurrentRunInputs = Selectors
         .Create<RootState, RunModel, RunInputsModel>(SelectRun, run => run.Inputs);
     
-    public static ISelector<RootState, InputsPanelModel> SelectInputsModel => Selectors
-        .Create<RootState, RunModel, InputsPanelModel>(SelectRun, run => new InputsPanelModel
+    public static ISelector<RootState, InputsPanelModelProjection> SelectInputsModel => Selectors
+        .Create<RootState, RunModel, InputsPanelModelProjection>(SelectRun, run => new InputsPanelModelProjection
         {
             RunId = run.RunId,
             Inputs = run.Inputs,
@@ -38,16 +39,16 @@ public static class RunSelectors
             IsCompleted = run.IsPaused
         });
     
-    public static readonly ISelector<RootState, MetricDataGridPanelModel> SelectMetricDataGridPanelModel = Selectors
-        .Create<RootState, RunModel, MetricDataGridPanelModel>(SelectRun, run => new MetricDataGridPanelModel
+    public static readonly ISelector<RootState, MetricDataGridPanelProjection> SelectMetricDataGridPanelModel = Selectors
+        .Create<RootState, RunModel, MetricDataGridPanelProjection>(SelectRun, run => new MetricDataGridPanelProjection
         {
             RunId = run.RunId,
             SelectedMetrics = run.SelectedMetrics.Select(val => run.Metrics.GetValueOrDefault(val, new MetricValueModel())).ToHashSet(),
             Values = run.Metrics.Values.ToList()
         });
     
-    public static ISelector<RootState, MetricSummaryChartPanelModel> SelectMetricSummaryChartPanelModel(string metricName) => Selectors
-        .Create<RootState, RunModel, MetricSummaryChartPanelModel>(SelectRun, run => new MetricSummaryChartPanelModel
+    public static ISelector<RootState, MetricSummaryChartPanelProjection> SelectMetricSummaryChartPanelModel(string metricName) => Selectors
+        .Create<RootState, RunModel, MetricSummaryChartPanelProjection>(SelectRun, run => new MetricSummaryChartPanelProjection
         {
             RunId = run.RunId,
             MetricName = metricName,

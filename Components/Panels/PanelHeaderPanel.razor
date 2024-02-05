@@ -1,6 +1,7 @@
 @using Radiate.Engines.Schema
 @using Radiate.Engines.Entities
-@inherits StoreComponent<PanelToolbarModel>
+@using Radiate.Client.Services.Store.Models.Projections
+@inherits StoreComponent<PanelToolbarProjection>
 
 <div class="d-flex align-items-center justify-content-between">
     <div class="d-flex align-items-center">
@@ -33,7 +34,7 @@
 @code {
     [Parameter] public string Title { get; set; }
 
-    protected override IObservable<PanelToolbarModel> Select() => Store.Select(EngineSelectors.SelectPanelToolbarModel);
+    protected override IObservable<PanelToolbarProjection> Select() => Store.Select(EngineSelectors.SelectPanelToolbarModel);
     
     private string FormatDuration(TimeSpan duration) => duration.ToString("mm\\:ss\\:ffff");
     

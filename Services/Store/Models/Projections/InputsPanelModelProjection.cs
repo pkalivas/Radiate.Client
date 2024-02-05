@@ -1,6 +1,6 @@
-namespace Radiate.Client.Services.Store.Models;
+namespace Radiate.Client.Services.Store.Models.Projections;
 
-public record InputsPanelModel
+public record InputsPanelModelProjection
 {
     public Guid RunId { get; set; } = Guid.Empty;
     public bool IsReadonly { get; set; } = false;

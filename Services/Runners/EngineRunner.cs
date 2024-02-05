@@ -4,6 +4,7 @@ using Radiate.Client.Services.Runners.Interfaces;
 using Radiate.Client.Services.Store;
 using Radiate.Client.Services.Store.Actions;
 using Radiate.Client.Services.Store.Models;
+using Radiate.Client.Services.Store.Models.Projections;
 using Radiate.Client.Services.Store.Selections;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Interfaces;
@@ -45,5 +46,5 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner
         control.Dispose();
     }
     
-    private void OnControl(RunControlPanelModel controlPanel) => _pause.OnNext(controlPanel.IsPaused);
+    private void OnControl(RunControlPanelProjection controlPanel) => _pause.OnNext(controlPanel.IsPaused);
 }

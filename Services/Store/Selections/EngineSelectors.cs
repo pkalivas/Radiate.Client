@@ -1,5 +1,6 @@
 using MudBlazor;
 using Radiate.Client.Services.Store.Models;
+using Radiate.Client.Services.Store.Models.Projections;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Schema;
 using Reflow.Interfaces;
@@ -9,8 +10,8 @@ namespace Radiate.Client.Services.Store.Selections;
 
 public static class EngineSelectors
 {
-    public static readonly ISelector<RootState, RunControlPanelModel> SelectRunControlPanelModel = Selectors
-        .Create<RootState, RunModel, RunControlPanelModel>(RunSelectors.SelectRun, run => new RunControlPanelModel
+    public static readonly ISelector<RootState, RunControlPanelProjection> SelectRunControlPanelModel = Selectors
+        .Create<RootState, RunModel, RunControlPanelProjection>(RunSelectors.SelectRun, run => new RunControlPanelProjection
         {
             RunId = run.RunId,
             IsRunning = run.IsRunning,
@@ -24,13 +25,13 @@ public static class EngineSelectors
             Index = run.Metrics.TryGetValue(MetricNames.Index, out var indexMetric) ? (int)indexMetric.Value : 0
         });
     
-    public static readonly ISelector<RootState, EngineTreePanelModel> SelectEngineTreePanelModel = Selectors
-        .Create<RootState, UiModel, RunModel, EngineTreePanelModel>(UiSelectors.SelectUiState, RunSelectors.SelectRun,
+    public static readonly ISelector<RootState, EngineTreePanelProjection> SelectEngineTreePanelModel = Selectors
+        .Create<RootState, UiModel, RunModel, EngineTreePanelProjection>(UiSelectors.SelectUiState, RunSelectors.SelectRun,
             (ui, run) =>
             {
                 if (ui.EngineStateExpanded.TryGetValue(run.RunId, out var engineTree))
                 {
-                    return new EngineTreePanelModel
+                    return new EngineTreePanelProjection
                     {
                         RunId = run.RunId,
                         TreeItems = GetItems(run.Outputs.EngineStates, engineTree),
@@ -42,7 +43,7 @@ public static class EngineSelectors
                 
                 var expanded = run.Outputs.EngineStates.Keys.ToDictionary(key => key, _ => true);
                 
-                return new EngineTreePanelModel
+                return new EngineTreePanelProjection
                 {
                     RunId = run.RunId,
                     TreeItems = GetItems(run.Outputs.EngineStates, expanded),
@@ -52,9 +53,9 @@ public static class EngineSelectors
                 };
             });
     
-    public static readonly ISelector<RootState, PanelToolbarModel> SelectPanelToolbarModel = Selectors
-        .Create<RootState, RunControlPanelModel, EngineTreePanelModel, PanelToolbarModel>(SelectRunControlPanelModel, SelectEngineTreePanelModel,
-            (control, model) => new PanelToolbarModel
+    public static readonly ISelector<RootState, PanelToolbarProjection> SelectPanelToolbarModel = Selectors
+        .Create<RootState, RunControlPanelProjection, EngineTreePanelProjection, PanelToolbarProjection>(SelectRunControlPanelModel, SelectEngineTreePanelModel,
+            (control, model) => new PanelToolbarProjection
             {
                 IsRunning = control.IsRunning,
                 IsPaused = control.IsPaused,

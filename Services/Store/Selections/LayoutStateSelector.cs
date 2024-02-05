@@ -1,4 +1,5 @@
 using Radiate.Client.Services.Store.Models;
+using Radiate.Client.Services.Store.Models.Projections;
 using Reflow.Interfaces;
 using Reflow.Selectors;
 

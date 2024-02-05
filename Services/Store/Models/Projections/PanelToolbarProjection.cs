@@ -1,6 +1,6 @@
-namespace Radiate.Client.Services.Store.Models;
+namespace Radiate.Client.Services.Store.Models.Projections;
 
-public record PanelToolbarModel
+public record PanelToolbarProjection
 {
     public bool IsRunning { get; init; }
     public bool IsPaused { get; init; }

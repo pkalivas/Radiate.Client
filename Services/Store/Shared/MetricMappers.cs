@@ -1,4 +1,5 @@
 using Radiate.Client.Services.Store.Models;
+using Radiate.Client.Services.Store.Models.Projections;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Schema;
 using Radiate.Engines.Statistics.Stats;

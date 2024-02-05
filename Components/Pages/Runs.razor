@@ -4,249 +4,249 @@
 @using Radiate.Engines.Schema
 @inherits StoreComponent<MetricsModel>
 
-<MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
-    <MudGrid>
-        
-        <MudItem md="8">
-            
-            <MudExpansionPanels Dense="true" Elevation="0" MultiExpansion="true">
-
-                <MudExpansionPanel Dense="true" IsInitiallyExpanded="true">
-                    <TitleContent>
-                        <PanelHeaderPanel Title="Inputs"/>
-                    </TitleContent>
-                    <ChildContent>
-                        <MudDivider/>
-                        <EngineInputs/>
-                        <div class="d-flex flex-row-reverse w-100">
-                            <div class="mt-2 mb-2">
-                                <EngineControl/>
-                            </div>
-                        </div>
-                    </ChildContent>
-                </MudExpansionPanel>
-                
-                <MudExpansionPanel Dense="true" IsInitiallyExpanded="true" MaxHeight="200">
-                    <TitleContent>
-                         <PanelHeaderPanel Title="Score"/>
-                    </TitleContent>
-                    <ChildContent>
-                        <MudDivider/>
-                        <ScorePanel/>
-                    </ChildContent>
-                </MudExpansionPanel>
-
-                <MudExpansionPanel Dense="true" IsInitiallyExpanded="true">
-                    <TitleContent>
-                        <PanelHeaderPanel Title="Metrics"/>
-                    </TitleContent>
-                    <ChildContent>
-                        <MudDivider/>
-                        <MetricsDataGridPanel/>
-                    </ChildContent>
-                </MudExpansionPanel>
-
-            </MudExpansionPanels>
-        </MudItem>
-
-        <MudItem md="4">
-            <MudExpansionPanels Dense="true" Elevation="0" MultiExpansion="true">
-
-                @* <MudExpansionPanel Dense="true" IsInitiallyExpanded="true"> *@
-                @*     <TitleContent> *@
-                @*         <div class="d-flex"> *@
-                @*             <MudText Typo="Typo.body1">Engine</MudText> *@
-                @*         </div> *@
-                @*     </TitleContent> *@
-                @*     <ChildContent> *@
-                @*         <MudDivider/> *@
-                @*         <EngineStateTree/> *@
-                @*     </ChildContent> *@
-                @* </MudExpansionPanel> *@
-
-                <MudExpansionPanel Dense="true" IsInitiallyExpanded="true" MaxHeight="150">
-                    <TitleContent>
-                        <div class="d-flex">
-                            <MudText Typo="Typo.body1">Fitness Distribution</MudText>
-                        </div>
-                    </TitleContent>
-                    <ChildContent>
-                        <MudDivider/>
-                        <MetricSummary MetricName="@MetricNames.FitnessDistribution" ChartHeight="125" ChartType="line"/>
-                    </ChildContent>
-                </MudExpansionPanel>
-
-                <MudExpansionPanel Dense="true" IsInitiallyExpanded="true" MaxHeight="150">
-                    <TitleContent>
-                        <div class="d-flex">
-                            <MudText Typo="Typo.body1">Age Distribution</MudText>
-                        </div>
-                    </TitleContent>
-                    <ChildContent>
-                        <MudDivider/>
-                        <MetricSummary MetricName="@MetricNames.AgeDistribution" ChartHeight="125" ChartType="bar"/>
-                    </ChildContent>
-                </MudExpansionPanel>
-
-                <MudExpansionPanel Dense="true" IsInitiallyExpanded="true" MaxHeight="150">
-                    <TitleContent>
-                        <div class="d-flex">
-                            <MudText Typo="Typo.body1">Genome Size Distribution</MudText>
-                        </div>
-                    </TitleContent>
-                    <ChildContent>
-                        <MudDivider/>
-                        <MetricSummary MetricName="@MetricNames.GenomeSizeDistribution" ChartHeight="125" ChartType="pie"/>
-                    </ChildContent>
-                </MudExpansionPanel>
-
-            </MudExpansionPanels>
-        </MudItem>
-
-    </MudGrid>
-</MudContainer>
-
 @* <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False"> *@
 @*     <MudGrid> *@
 @*          *@
-@*         <MudItem xs="12" sm="6" md="8"> *@
-@*             <MudGrid> *@
-@*                  *@
-@*                 <MudItem md="12"> *@
-@*                     <MudCard> *@
-@*                         <MudCardHeader> *@
-@*                             <CardHeaderContent> *@
-@*                                 <MudText Typo="Typo.h6">Inputs</MudText> *@
-@*                             </CardHeaderContent> *@
-@*                             <CardHeaderActions> *@
-@*                             </CardHeaderActions> *@
-@*                         </MudCardHeader> *@
-@*                         <MudDivider/> *@
-@*                         <MudCardContent> *@
-@*                             <EngineInputs/> *@
-@*                         </MudCardContent> *@
-@*                         <MudCardActions> *@
-@*                             <div class="d-flex flex-row-reverse w-100"> *@
-@*                                 <div class="mt-2"> *@
-@*                                     <EngineControl/> *@
-@*                                 </div> *@
-@*                             </div> *@
-@*                         </MudCardActions> *@
-@*                     </MudCard> *@
-@*                 </MudItem> *@
-@*                  *@
-@*                 $1$ <MudItem md="12"> #1# *@
-@*                 $1$     <MudPaper Elevation="2" Class="pa-4" Style="height: 150px;"> #1# *@
-@*                 $1$         <ToolBar Title="Engine"> #1# *@
-@*                 $1$             <Options> #1# *@
-@*                 $1$             </Options> #1# *@
-@*                 $1$             <ChildContent> #1# *@
-@*                 $1$                 <EngineRunStatePanel/> #1# *@
-@*                 $1$                 <div class="mt-4 row"> #1# *@
-@*                 $1$                     <div class="col-11"></div> #1# *@
-@*                 $1$                     <div class="col-1"> #1# *@
-@*                 $1$                         <MudButton OnClick="@OpenEngineTree" Class="float-right" #1# *@
-@*                 $1$                                    Size="Size.Small" #1# *@
-@*                 $1$                                    Color="Color.Inherit" #1# *@
-@*                 $1$                                    Variant="Variant.Filled"> #1# *@
-@*                 $1$                             <MudIcon Icon="@Icons.Material.Filled.AccountTree" Class="ml-0 mr-2" Size="Size.Small"/> #1# *@
-@*                 $1$                             Subs #1# *@
-@*                 $1$                         </MudButton> #1# *@
-@*                 $1$                     </div> #1# *@
-@*                 $1$                 </div> #1# *@
-@*                 $1$             </ChildContent> #1# *@
-@*                 $1$         </ToolBar> #1# *@
-@*                 $1$     </MudPaper> #1# *@
-@*                 $1$ </MudItem> #1# *@
-@* *@
-@*                 <MudItem md="6"> *@
-@*                     <MudPaper Elevation="2" Class="pa-4" Style="height: 150px;"> *@
-@*                         <MetricDisplay Metric="@(Model.GenomeSize)"> *@
-@*                             <Chart Values="@(Model.GenomeSize?.Statistics.LastSequence.ToList())" Type="pie" Height="125"></Chart> *@
-@*                         </MetricDisplay> *@
-@*                     </MudPaper> *@
-@*                 </MudItem> *@
-@* *@
-@*                 <MudItem md="6"> *@
-@*                     <MudPaper Elevation="2" Class="pa-4" Style="height: 150px;"> *@
-@*                         <MetricDisplay Metric="@(Model.PopulationAge)"> *@
-@*                             <Chart Values="@(Model.PopulationAge?.Statistics?.LastSequence.ToList())" Type="bar" Height="125"></Chart> *@
-@*                         </MetricDisplay> *@
-@*                     </MudPaper> *@
-@*                 </MudItem> *@
-@*                  *@
-@*                 <MudItem md="12"> *@
-@*                     <MudPaper Elevation="2" Class="pa-4" Style="height: 150px;"> *@
-@*                         <MetricDisplay Metric="@(Model.Fitness)"> *@
-@*                             <Chart Values="@(Model.Fitness?.Statistics?.LastSequence.ToList())" Type="line" Height="125"/> *@
-@*                         </MetricDisplay> *@
-@*                     </MudPaper> *@
-@*                 </MudItem> *@
-@* *@
-@*                 $1$ <MudItem md="12"> #1# *@
-@*                 $1$     <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"> #1# *@
-@*                 $1$         <MetricValueDisplay Value="@Model.Score"> #1# *@
-@*                 $1$             <Chart Values="@Model.ScoresList" Type="line" Height="175"/> #1# *@
-@*                 $1$         </MetricValueDisplay> #1# *@
-@*                 $1$     </MudPaper> #1# *@
-@*                 $1$ </MudItem> #1# *@
-@*             </MudGrid> *@
+@*         <MudItem md="8"> *@
 @*              *@
-@*         </MudItem> *@
-@*          *@
-@*         <MudItem md="4" xs="12" sm="6"> *@
-@*             <MudGrid> *@
-@*                  *@
-@*                 <MudItem md="12"> *@
-@*                     <MudPaper Elevation="2" Class="pa-4" Style="height: 150px;"> *@
-@*                         <EngineRunStatePanel/> *@
-@*                     </MudPaper> *@
-@*                 </MudItem> *@
-@*                 $1$ <MudItem md="12"> #1# *@
-@*                 $1$     <MudPaper Elevation="2" Class="pa-4" Style="height: 150px;"> #1# *@
-@*                 $1$         <MetricDisplay Metric="@(Model.Fitness)"> #1# *@
-@*                 $1$             <Chart Values="@(Model.Fitness?.Statistics?.LastSequence.ToList())" Type="line" Height="125"/> #1# *@
-@*                 $1$         </MetricDisplay> #1# *@
-@*                 $1$     </MudPaper> #1# *@
-@*                 $1$ </MudItem> #1# *@
+@*             <MudExpansionPanels Dense="true" Elevation="0" MultiExpansion="true"> *@
 @* *@
-@*                 <MudItem md="12"> *@
-@*                     <MudPaper Elevation="2" Class="pa-4"> *@
-@*                         <h6>Outputs</h6> *@
+@*                 <MudExpansionPanel Dense="true" IsInitiallyExpanded="true"> *@
+@*                     <TitleContent> *@
+@*                         <PanelHeaderPanel Title="Inputs"/> *@
+@*                     </TitleContent> *@
+@*                     <ChildContent> *@
 @*                         <MudDivider/> *@
-@*                         <div class="mt-4"> *@
-@*                             <EngineOutputs/> *@
+@*                         <EngineInputs/> *@
+@*                         <div class="d-flex flex-row-reverse w-100"> *@
+@*                             <div class="mt-2 mb-2"> *@
+@*                                 <EngineControl/> *@
+@*                             </div> *@
 @*                         </div> *@
-@*                     </MudPaper> *@
-@*                 </MudItem> *@
-@*             </MudGrid> *@
+@*                     </ChildContent> *@
+@*                 </MudExpansionPanel> *@
+@*                  *@
+@*                 <MudExpansionPanel Dense="true" IsInitiallyExpanded="true" MaxHeight="200"> *@
+@*                     <TitleContent> *@
+@*                          <PanelHeaderPanel Title="Score"/> *@
+@*                     </TitleContent> *@
+@*                     <ChildContent> *@
+@*                         <MudDivider/> *@
+@*                         <ScorePanel/> *@
+@*                     </ChildContent> *@
+@*                 </MudExpansionPanel> *@
+@* *@
+@*                 <MudExpansionPanel Dense="true" IsInitiallyExpanded="true"> *@
+@*                     <TitleContent> *@
+@*                         <PanelHeaderPanel Title="Metrics"/> *@
+@*                     </TitleContent> *@
+@*                     <ChildContent> *@
+@*                         <MudDivider/> *@
+@*                         <MetricsDataGridPanel/> *@
+@*                     </ChildContent> *@
+@*                 </MudExpansionPanel> *@
+@* *@
+@*             </MudExpansionPanels> *@
 @*         </MudItem> *@
-@*          *@
-@*         $1$ <MudItem md="8"> #1# *@
-@*         $1$     <MetricsDataGridPanel /> #1# *@
-@*         $1$ </MudItem> #1# *@
-@*         $1$          #1# *@
+@* *@
+@*         <MudItem md="4"> *@
+@*             <MudExpansionPanels Dense="true" Elevation="0" MultiExpansion="true"> *@
+@* *@
+@*                 $1$ <MudExpansionPanel Dense="true" IsInitiallyExpanded="true"> #1# *@
+@*                 $1$     <TitleContent> #1# *@
+@*                 $1$         <div class="d-flex"> #1# *@
+@*                 $1$             <MudText Typo="Typo.body1">Engine</MudText> #1# *@
+@*                 $1$         </div> #1# *@
+@*                 $1$     </TitleContent> #1# *@
+@*                 $1$     <ChildContent> #1# *@
+@*                 $1$         <MudDivider/> #1# *@
+@*                 $1$         <EngineStateTree/> #1# *@
+@*                 $1$     </ChildContent> #1# *@
+@*                 $1$ </MudExpansionPanel> #1# *@
+@* *@
+@*                 <MudExpansionPanel Dense="true" IsInitiallyExpanded="true" MaxHeight="150"> *@
+@*                     <TitleContent> *@
+@*                         <div class="d-flex"> *@
+@*                             <MudText Typo="Typo.body1">Fitness Distribution</MudText> *@
+@*                         </div> *@
+@*                     </TitleContent> *@
+@*                     <ChildContent> *@
+@*                         <MudDivider/> *@
+@*                         <MetricSummary MetricName="@MetricNames.FitnessDistribution" ChartHeight="125" ChartType="line"/> *@
+@*                     </ChildContent> *@
+@*                 </MudExpansionPanel> *@
+@* *@
+@*                 <MudExpansionPanel Dense="true" IsInitiallyExpanded="true" MaxHeight="150"> *@
+@*                     <TitleContent> *@
+@*                         <div class="d-flex"> *@
+@*                             <MudText Typo="Typo.body1">Age Distribution</MudText> *@
+@*                         </div> *@
+@*                     </TitleContent> *@
+@*                     <ChildContent> *@
+@*                         <MudDivider/> *@
+@*                         <MetricSummary MetricName="@MetricNames.AgeDistribution" ChartHeight="125" ChartType="bar"/> *@
+@*                     </ChildContent> *@
+@*                 </MudExpansionPanel> *@
+@* *@
+@*                 <MudExpansionPanel Dense="true" IsInitiallyExpanded="true" MaxHeight="150"> *@
+@*                     <TitleContent> *@
+@*                         <div class="d-flex"> *@
+@*                             <MudText Typo="Typo.body1">Genome Size Distribution</MudText> *@
+@*                         </div> *@
+@*                     </TitleContent> *@
+@*                     <ChildContent> *@
+@*                         <MudDivider/> *@
+@*                         <MetricSummary MetricName="@MetricNames.GenomeSizeDistribution" ChartHeight="125" ChartType="pie"/> *@
+@*                     </ChildContent> *@
+@*                 </MudExpansionPanel> *@
+@* *@
+@*             </MudExpansionPanels> *@
+@*         </MudItem> *@
 @* *@
 @*     </MudGrid> *@
 @* </MudContainer> *@
-
-<TestFe/>
-
-@code {
-    [Parameter] public Guid RunId { get; set; }
-    
-    private async Task OpenEngineTree()
-    {
-        var options = new DialogOptions
-        {
-            MaxWidth = MaxWidth.Medium,
-            FullWidth = true,
-            CloseOnEscapeKey = true,
-        };
-
-        var dialogRef = await DialogService.ShowAsync<EngineStateTree>("Engine Tree", options);
-        await dialogRef.Result;
-    }
-
-    protected override IObservable<MetricsModel> Select() => Store.Select(RunSelectors.SelectCurrentMetrics);
-}
+@* *@
+@* $1$ <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False"> #1# *@
+@* $1$     <MudGrid> #1# *@
+@* $1$          #1# *@
+@* $1$         <MudItem xs="12" sm="6" md="8"> #1# *@
+@* $1$             <MudGrid> #1# *@
+@* $1$                  #1# *@
+@* $1$                 <MudItem md="12"> #1# *@
+@* $1$                     <MudCard> #1# *@
+@* $1$                         <MudCardHeader> #1# *@
+@* $1$                             <CardHeaderContent> #1# *@
+@* $1$                                 <MudText Typo="Typo.h6">Inputs</MudText> #1# *@
+@* $1$                             </CardHeaderContent> #1# *@
+@* $1$                             <CardHeaderActions> #1# *@
+@* $1$                             </CardHeaderActions> #1# *@
+@* $1$                         </MudCardHeader> #1# *@
+@* $1$                         <MudDivider/> #1# *@
+@* $1$                         <MudCardContent> #1# *@
+@* $1$                             <EngineInputs/> #1# *@
+@* $1$                         </MudCardContent> #1# *@
+@* $1$                         <MudCardActions> #1# *@
+@* $1$                             <div class="d-flex flex-row-reverse w-100"> #1# *@
+@* $1$                                 <div class="mt-2"> #1# *@
+@* $1$                                     <EngineControl/> #1# *@
+@* $1$                                 </div> #1# *@
+@* $1$                             </div> #1# *@
+@* $1$                         </MudCardActions> #1# *@
+@* $1$                     </MudCard> #1# *@
+@* $1$                 </MudItem> #1# *@
+@* $1$                  #1# *@
+@* $1$                 $2$ <MudItem md="12"> #2# #1# *@
+@* $1$                 $2$     <MudPaper Elevation="2" Class="pa-4" Style="height: 150px;"> #2# #1# *@
+@* $1$                 $2$         <ToolBar Title="Engine"> #2# #1# *@
+@* $1$                 $2$             <Options> #2# #1# *@
+@* $1$                 $2$             </Options> #2# #1# *@
+@* $1$                 $2$             <ChildContent> #2# #1# *@
+@* $1$                 $2$                 <EngineRunStatePanel/> #2# #1# *@
+@* $1$                 $2$                 <div class="mt-4 row"> #2# #1# *@
+@* $1$                 $2$                     <div class="col-11"></div> #2# #1# *@
+@* $1$                 $2$                     <div class="col-1"> #2# #1# *@
+@* $1$                 $2$                         <MudButton OnClick="@OpenEngineTree" Class="float-right" #2# #1# *@
+@* $1$                 $2$                                    Size="Size.Small" #2# #1# *@
+@* $1$                 $2$                                    Color="Color.Inherit" #2# #1# *@
+@* $1$                 $2$                                    Variant="Variant.Filled"> #2# #1# *@
+@* $1$                 $2$                             <MudIcon Icon="@Icons.Material.Filled.AccountTree" Class="ml-0 mr-2" Size="Size.Small"/> #2# #1# *@
+@* $1$                 $2$                             Subs #2# #1# *@
+@* $1$                 $2$                         </MudButton> #2# #1# *@
+@* $1$                 $2$                     </div> #2# #1# *@
+@* $1$                 $2$                 </div> #2# #1# *@
+@* $1$                 $2$             </ChildContent> #2# #1# *@
+@* $1$                 $2$         </ToolBar> #2# #1# *@
+@* $1$                 $2$     </MudPaper> #2# #1# *@
+@* $1$                 $2$ </MudItem> #2# #1# *@
+@* $1$ #1# *@
+@* $1$                 <MudItem md="6"> #1# *@
+@* $1$                     <MudPaper Elevation="2" Class="pa-4" Style="height: 150px;"> #1# *@
+@* $1$                         <MetricDisplay Metric="@(Model.GenomeSize)"> #1# *@
+@* $1$                             <Chart Values="@(Model.GenomeSize?.Statistics.LastSequence.ToList())" Type="pie" Height="125"></Chart> #1# *@
+@* $1$                         </MetricDisplay> #1# *@
+@* $1$                     </MudPaper> #1# *@
+@* $1$                 </MudItem> #1# *@
+@* $1$ #1# *@
+@* $1$                 <MudItem md="6"> #1# *@
+@* $1$                     <MudPaper Elevation="2" Class="pa-4" Style="height: 150px;"> #1# *@
+@* $1$                         <MetricDisplay Metric="@(Model.PopulationAge)"> #1# *@
+@* $1$                             <Chart Values="@(Model.PopulationAge?.Statistics?.LastSequence.ToList())" Type="bar" Height="125"></Chart> #1# *@
+@* $1$                         </MetricDisplay> #1# *@
+@* $1$                     </MudPaper> #1# *@
+@* $1$                 </MudItem> #1# *@
+@* $1$                  #1# *@
+@* $1$                 <MudItem md="12"> #1# *@
+@* $1$                     <MudPaper Elevation="2" Class="pa-4" Style="height: 150px;"> #1# *@
+@* $1$                         <MetricDisplay Metric="@(Model.Fitness)"> #1# *@
+@* $1$                             <Chart Values="@(Model.Fitness?.Statistics?.LastSequence.ToList())" Type="line" Height="125"/> #1# *@
+@* $1$                         </MetricDisplay> #1# *@
+@* $1$                     </MudPaper> #1# *@
+@* $1$                 </MudItem> #1# *@
+@* $1$ #1# *@
+@* $1$                 $2$ <MudItem md="12"> #2# #1# *@
+@* $1$                 $2$     <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"> #2# #1# *@
+@* $1$                 $2$         <MetricValueDisplay Value="@Model.Score"> #2# #1# *@
+@* $1$                 $2$             <Chart Values="@Model.ScoresList" Type="line" Height="175"/> #2# #1# *@
+@* $1$                 $2$         </MetricValueDisplay> #2# #1# *@
+@* $1$                 $2$     </MudPaper> #2# #1# *@
+@* $1$                 $2$ </MudItem> #2# #1# *@
+@* $1$             </MudGrid> #1# *@
+@* $1$              #1# *@
+@* $1$         </MudItem> #1# *@
+@* $1$          #1# *@
+@* $1$         <MudItem md="4" xs="12" sm="6"> #1# *@
+@* $1$             <MudGrid> #1# *@
+@* $1$                  #1# *@
+@* $1$                 <MudItem md="12"> #1# *@
+@* $1$                     <MudPaper Elevation="2" Class="pa-4" Style="height: 150px;"> #1# *@
+@* $1$                         <EngineRunStatePanel/> #1# *@
+@* $1$                     </MudPaper> #1# *@
+@* $1$                 </MudItem> #1# *@
+@* $1$                 $2$ <MudItem md="12"> #2# #1# *@
+@* $1$                 $2$     <MudPaper Elevation="2" Class="pa-4" Style="height: 150px;"> #2# #1# *@
+@* $1$                 $2$         <MetricDisplay Metric="@(Model.Fitness)"> #2# #1# *@
+@* $1$                 $2$             <Chart Values="@(Model.Fitness?.Statistics?.LastSequence.ToList())" Type="line" Height="125"/> #2# #1# *@
+@* $1$                 $2$         </MetricDisplay> #2# #1# *@
+@* $1$                 $2$     </MudPaper> #2# #1# *@
+@* $1$                 $2$ </MudItem> #2# #1# *@
+@* $1$ #1# *@
+@* $1$                 <MudItem md="12"> #1# *@
+@* $1$                     <MudPaper Elevation="2" Class="pa-4"> #1# *@
+@* $1$                         <h6>Outputs</h6> #1# *@
+@* $1$                         <MudDivider/> #1# *@
+@* $1$                         <div class="mt-4"> #1# *@
+@* $1$                             <EngineOutputs/> #1# *@
+@* $1$                         </div> #1# *@
+@* $1$                     </MudPaper> #1# *@
+@* $1$                 </MudItem> #1# *@
+@* $1$             </MudGrid> #1# *@
+@* $1$         </MudItem> #1# *@
+@* $1$          #1# *@
+@* $1$         $2$ <MudItem md="8"> #2# #1# *@
+@* $1$         $2$     <MetricsDataGridPanel /> #2# #1# *@
+@* $1$         $2$ </MudItem> #2# #1# *@
+@* $1$         $2$          #2# #1# *@
+@* $1$ #1# *@
+@* $1$     </MudGrid> #1# *@
+@* $1$ </MudContainer> #1# *@
+@* *@
+@* <TestFe/> *@
+@* *@
+@* @code { *@
+@*     [Parameter] public Guid RunId { get; set; } *@
+@*      *@
+@*     private async Task OpenEngineTree() *@
+@*     { *@
+@*         var options = new DialogOptions *@
+@*         { *@
+@*             MaxWidth = MaxWidth.Medium, *@
+@*             FullWidth = true, *@
+@*             CloseOnEscapeKey = true, *@
+@*         }; *@
+@* *@
+@*         var dialogRef = await DialogService.ShowAsync<EngineStateTree>("Engine Tree", options); *@
+@*         await dialogRef.Result; *@
+@*     } *@
+@* *@
+@*     protected override IObservable<MetricsModel> Select() => Store.Select(RunSelectors.SelectCurrentMetrics); *@
+@* } *@

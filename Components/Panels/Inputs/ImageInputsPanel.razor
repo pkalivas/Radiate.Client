@@ -97,7 +97,7 @@
                 @if (Model.IsReadonly)
                 {
                     <div class="d-flex align-items-center border-bottom justify-content-between">
-                        <MudText Typo="Typo.body2">Shape Count:</MudText>
+                        <MudText Typo="Typo.body2"># Shapes:</MudText>
                         <MudTooltip Text="The number of shapes to draw per image.">
                             <MudIcon Icon="Icons.Info" Size="Size.Small"/>
                         </MudTooltip>
@@ -120,7 +120,7 @@
                 @if (Model.IsReadonly)
                 {
                     <div class="d-flex align-items-center border-bottom justify-content-between">
-                        <MudText Typo="Typo.body2">Verticy Count:</MudText>
+                        <MudText Typo="Typo.body2"># Verticy:</MudText>
                         <MudTooltip Text="The number of verticies in a polygon.">
                             <MudIcon Icon="Icons.Info" Size="Size.Small"/>
                         </MudTooltip>
@@ -143,7 +143,10 @@
         @if (Model.Inputs.ImageInputs.TargetImage.IsEmpty)
         {
             <MudItem md="6">
-                <div class="d-flex flex-row-reverse w-100">
+                
+            </MudItem>
+            <MudItem md="6">
+                <div class="d-flex flex-row-reverse w-100 mb-3">
                     <ImageUpload Height="@Model.Inputs.ImageInputs.Height" Width="@Model.Inputs.ImageInputs.Width"
                                  ImageChanged="@((ImageEntity image) => Dispatch(new SetTargetImageAction(Model.RunId, image)))"/>           
                 </div>

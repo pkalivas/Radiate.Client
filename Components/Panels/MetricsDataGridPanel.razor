@@ -7,14 +7,14 @@
 @inherits StoreComponent<MetricListModel>
 
 
-<MudDataGrid Dense="true" Elevation="0"
+<MudDataGrid Dense="true"
+             Elevation="0"
              Items="@Model.Values"
              FixedHeader="true"
-             Virtualize="true"
-             SelectedItems="@Model.SelectedMetrics">
+             Virtualize="true">
     <Columns>
         <PropertyColumn StickyLeft="true" Property="x => FormatName(x.Name)" Title="Name" Hideable="false" Filterable="true"/>
-        <PropertyColumn Property="x => x.Value" Title="Value" Hideable="true" />
+        <PropertyColumn Property="x => x.Value" Title="Value" Hideable="true"/>
         <PropertyColumn Property="x => x.Min" Title="Min" Hideable="true" Groupable="true" Filterable="true"/>
         <PropertyColumn Property="x => x.Max" Title="Max" Hideable="true" Groupable="true" Filterable="true"/>
         <PropertyColumn Property="x => x.Mean" Title="Avg." Hideable="true" Groupable="true" Filterable="true"/>

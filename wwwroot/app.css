@@ -73,3 +73,21 @@ h1:focus {
 .border-bottom {
   border-bottom: 1px solid #F5F5F5 !important;
 }
+
+.spacer {
+  color: #ffffffa8;
+  font-size: 16px;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.toolbar-container {
+  justify-content: space-between;
+  padding-left: 6px !important;
+  padding-right: 4px !important;
+}
+.name-spacer {
+  font-size: 16px;
+  margin-left: 4px;
+  margin-right: 4px;
+}

@@ -1,0 +1,31 @@
+@using Radiate.Client.Services.Store.Actions
+@inherits StoreComponent<InputsPanelModel>
+
+<MudNumericField Label="Population Size"
+                 Variant="Variant.Filled"
+                 Value="@Model.Inputs.PopulationInputs.PopulationSize"
+                 ValueChanged="@((int size) =>  OnInputChange(Model, inputs => inputs.PopulationInputs.PopulationSize = size))">
+</MudNumericField>
+<MudNumericField Label="Mutation Rate"
+                 Variant="Variant.Filled"
+                 Value="@Model.Inputs.PopulationInputs.MutationRate"
+                 ValueChanged="@((float rate) =>  OnInputChange(Model, inputs => inputs.PopulationInputs.MutationRate = rate))">
+</MudNumericField>
+<MudNumericField Label="Max Epochs"
+                 Variant="Variant.Filled"
+                 Value="@Model.Inputs.LimitInputs.IterationLimit"
+                 ValueChanged="@((int limit) =>  OnInputChange(Model, inputs => inputs.LimitInputs.IterationLimit = limit))">
+</MudNumericField>
+
+@code {
+
+    protected override IObservable<InputsPanelModel> Select() => Store.Select(RunSelectors.SelectInputsModel);
+    
+    private async Task OnInputChange(InputsPanelModel inputs, Action<RunInputsModel> setter)
+    {
+        var newInputs = inputs.Inputs with { };
+        setter(newInputs);
+        Store.Dispatch(new SetRunInputsAction(inputs.RunId, newInputs));
+    }
+
+}

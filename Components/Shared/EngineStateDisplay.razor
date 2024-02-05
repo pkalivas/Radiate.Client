@@ -18,7 +18,7 @@ else
 {
     <div class="d-flex justify-content-between">
         <div class="d-inline-flex ml-1 mr-1" style="width: 75px;">
-            <MudIcon Icon="@GetIcon(EngineState)" Class="ml-0 mr-2" Color="@GetColor(EngineState)"/>
+            <MudIcon Icon="@GetIcon(EngineState)" Class="ml-0 mr-2" Color="@GetColor(EngineState)" Size="Size.Small"/>
             <strong>@(EngineState.Name[..3])</strong>       
         </div>
         <div class="d-inline-flex ml-1 mr-1" style="width: 75px;">
@@ -26,11 +26,12 @@ else
             <div class="pl-1">@EngineState.Metrics.Get(MetricNames.Run)?.Statistics?.Sum</div>
         </div>
         <div class="d-inline-flex ml-1 mr-1" style="width: 75px;">
-            <strong>Score:</strong>
+            <MudIcon Icon="@Icons.Material.Filled.Star" Class="" Color="@Color.Default" Size="Size.Small"/>
             <div class="pl-2">@(Math.Round(EngineState.Metrics.Get(MetricNames.Score)?.Statistics?.LastValue ?? 0, 4))</div>
         </div>
         <div class="d-inline-flex ml-1 mr-1" style="width: 75px;">
-            <TimeSpanDisplay TimeSpan="@TimeSpan.FromMilliseconds(EngineState.Metrics.Get(MetricNames.Time)?.Time?.Sum ?? 0)"/>
+            <MudIcon Icon="@Icons.Material.Filled.Schedule" Class="" Color="@Color.Default" Size="Size.Small"/>
+            <div class="pl-2">@FormatDuration(TimeSpan.FromMilliseconds(EngineState.Metrics.Get(MetricNames.Time)?.Time?.Sum ?? 0))</div>
         </div>
     </div>
 }
@@ -55,4 +56,7 @@ else
         EngineStateTypes.Stopped => Color.Secondary,
         _ => Color.Default
     };
+    
+    private string FormatDuration(TimeSpan duration) => duration.ToString("mm\\:ss\\:ffff");
+
 }

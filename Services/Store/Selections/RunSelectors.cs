@@ -17,6 +17,13 @@ public static class RunSelectors
     public static readonly ISelector<RootState, RunInputsModel> SelectCurrentRunInputs = Selectors
         .Create<RootState, RunModel, RunInputsModel>(SelectRun, run => run.Inputs);
     
+    public static ISelector<RootState, InputsPanelModel> SelectInputsModel => Selectors
+        .Create<RootState, RunModel, InputsPanelModel>(SelectRun, run => new InputsPanelModel
+        {
+            RunId = run.RunId,
+            Inputs = run.Inputs
+        });
+    
     public static readonly ISelector<RootState, MetricsModel> SelectCurrentMetrics = Selectors
         .Create<RootState, RunModel, MetricsModel>(SelectRun, run => new MetricsModel
         {
@@ -46,4 +53,6 @@ public static class RunSelectors
             MetricName = metricName,
             Value = run.Metrics.GetValueOrDefault(metricName, new MetricValueModel())
         });
+    
+    
 }

@@ -1,0 +1,17 @@
+@inherits StoreComponent<double[]>
+
+
+@* <div class=> *@
+    <Chart Values="@Model" Type="line" Height="@(Height ?? 200)"/>
+@* </div> *@
+
+@code {
+    
+    [Parameter] public int? Height { get; set; }
+
+    protected override IObservable<double[]> Select() =>
+        Store.Select(state => state.Runs.TryGetValue(state.CurrentRunId, out var run) 
+            ? run.Scores.Select(val => (double)val).ToArray() 
+            : Array.Empty<double>());
+
+}

@@ -7,9 +7,63 @@
 <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
     <MudGrid>
         
+        <MudItem md="8">
+            
+            <MudExpansionPanels Dense="true" Elevation="0" MultiExpansion="true">
+
+                <MudExpansionPanel Dense="true" IsInitiallyExpanded="true">
+                    <TitleContent>
+                        <PanelHeaderPanel Title="Inputs"/>
+                    </TitleContent>
+                    <ChildContent>
+                        <MudDivider/>
+                        <EngineInputs/>
+                        <div class="d-flex flex-row-reverse w-100">
+                            <div class="mt-2 mb-2">
+                                <EngineControl/>
+                            </div>
+                        </div>
+                    </ChildContent>
+                </MudExpansionPanel>
+                
+                <MudExpansionPanel Dense="true" IsInitiallyExpanded="true" MaxHeight="200">
+                    <TitleContent>
+                         <PanelHeaderPanel Title="Score"/>
+                    </TitleContent>
+                    <ChildContent>
+                        <MudDivider/>
+                        <ScorePanel/>
+                    </ChildContent>
+                </MudExpansionPanel>
+
+                <MudExpansionPanel Dense="true" IsInitiallyExpanded="true">
+                    <TitleContent>
+                        <PanelHeaderPanel Title="Metrics"/>
+                    </TitleContent>
+                    <ChildContent>
+                        <MudDivider/>
+                        <MetricsDataGridPanel/>
+                    </ChildContent>
+                </MudExpansionPanel>
+
+            </MudExpansionPanels>
+        </MudItem>
+
         <MudItem md="4">
             <MudExpansionPanels Dense="true" Elevation="0" MultiExpansion="true">
-                
+
+                @* <MudExpansionPanel Dense="true" IsInitiallyExpanded="true"> *@
+                @*     <TitleContent> *@
+                @*         <div class="d-flex"> *@
+                @*             <MudText Typo="Typo.body1">Engine</MudText> *@
+                @*         </div> *@
+                @*     </TitleContent> *@
+                @*     <ChildContent> *@
+                @*         <MudDivider/> *@
+                @*         <EngineStateTree/> *@
+                @*     </ChildContent> *@
+                @* </MudExpansionPanel> *@
+
                 <MudExpansionPanel Dense="true" IsInitiallyExpanded="true" MaxHeight="150">
                     <TitleContent>
                         <div class="d-flex">
@@ -21,7 +75,7 @@
                         <MetricSummary MetricName="@MetricNames.FitnessDistribution" ChartHeight="125" ChartType="line"/>
                     </ChildContent>
                 </MudExpansionPanel>
-                
+
                 <MudExpansionPanel Dense="true" IsInitiallyExpanded="true" MaxHeight="150">
                     <TitleContent>
                         <div class="d-flex">
@@ -33,7 +87,7 @@
                         <MetricSummary MetricName="@MetricNames.AgeDistribution" ChartHeight="125" ChartType="bar"/>
                     </ChildContent>
                 </MudExpansionPanel>
-                
+
                 <MudExpansionPanel Dense="true" IsInitiallyExpanded="true" MaxHeight="150">
                     <TitleContent>
                         <div class="d-flex">
@@ -43,54 +97,6 @@
                     <ChildContent>
                         <MudDivider/>
                         <MetricSummary MetricName="@MetricNames.GenomeSizeDistribution" ChartHeight="125" ChartType="pie"/>
-                    </ChildContent>
-                </MudExpansionPanel>
-
-            </MudExpansionPanels>
-        </MudItem>
-
-        <MudItem md="8">
-            
-            <MudExpansionPanels Dense="true" Elevation="0" MultiExpansion="true">
-                
-                <MudExpansionPanel Dense="true" IsInitiallyExpanded="true">
-                    <TitleContent>
-                        <div class="d-flex">
-                            <MudText Typo="Typo.body1">Engine</MudText>
-                        </div>
-                    </TitleContent>
-                    <ChildContent>
-                        <MudDivider/>
-                        <EngineStateTree/>
-                    </ChildContent>
-                </MudExpansionPanel>
-
-                <MudExpansionPanel Dense="true" IsInitiallyExpanded="true">
-                    <TitleContent>
-                        <div class="d-flex">
-                            <MudText Typo="Typo.body1">Inputs</MudText>
-                        </div>
-                    </TitleContent>
-                    <ChildContent>
-                        <MudDivider/>
-                        <EngineInputs/>
-                        @* <div class="d-flex flex-row-reverse w-100"> *@
-                        @*     <div class="mt-2"> *@
-                        @*         <EngineControl/> *@
-                        @*     </div> *@
-                        @* </div> *@
-                    </ChildContent>
-                </MudExpansionPanel>
-
-                <MudExpansionPanel Dense="true" IsInitiallyExpanded="true">
-                    <TitleContent>
-                        <div class="d-flex">
-                            <MudText Typo="Typo.body1">Metrics</MudText>
-                        </div>
-                    </TitleContent>
-                    <ChildContent>
-                        <MudDivider/>
-                        <MetricsDataGridPanel/>
                     </ChildContent>
                 </MudExpansionPanel>
 

@@ -1,0 +1,56 @@
+@using Radiate.Engines.Schema
+@using Radiate.Engines.Entities
+@inherits StoreComponent<PanelToolbarModel>
+
+<div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+        
+        <MudIcon Icon="@GetIcon(Model.EngineState)" Class="" Color="@GetColor(Model.EngineState)" Size="Size.Small"/>
+        
+        <MudText Typo="Typo.body1">@Title</MudText>
+        <span class="spacer ml-1 mr-1">|</span>
+
+        <div class="d-inline-flex mr-1" style="width: 75px;">
+            <div class="pl-1">@Model.Index</div>
+        </div>
+    </div>
+    
+    <div class="d-flex align-items-center mr-10">
+        <div class="d-inline-flex ml-1 mr-1 align-items-center" style="width: 75px;">
+            <MudIcon Icon="@Icons.Material.Filled.Star" Class="" Color="@Color.Default" Size="Size.Small"/>
+            <div class="pl-2">@(Math.Round(Model.Score, 4))</div>
+        </div>
+        <div class="d-inline-flex ml-1 mr-1 align-items-center" style="width: 75px;">
+            <MudIcon Icon="@Icons.Material.Filled.Schedule" Class="" Color="@Color.Default" Size="Size.Small"/>
+            <div class="pl-2">@(FormatDuration(Model.Duration))</div>
+        </div>
+    </div>
+    
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; }
+
+    protected override IObservable<PanelToolbarModel> Select() => Store.Select(EngineSelectors.SelectPanelToolbarModel);
+    
+    private string FormatDuration(TimeSpan duration) => duration.ToString("mm\\:ss\\:ffff");
+    
+    private static string GetIcon(string state) => state switch
+    {
+        EngineStateTypes.Pending => Icons.Material.Filled.Pending,
+        EngineStateTypes.Started => Icons.Material.Filled.Start,
+        EngineStateTypes.Running => Icons.Material.Filled.RunCircle,
+        EngineStateTypes.Stopped => Icons.Material.Filled.Stop,
+        _ => Icons.Custom.FileFormats.FileCode
+    };
+
+    private static Color GetColor(string state) => state switch
+    {
+        EngineStateTypes.Pending => Color.Default,
+        EngineStateTypes.Started => Color.Primary,
+        EngineStateTypes.Running => Color.Success,
+        EngineStateTypes.Stopped => Color.Secondary,
+        _ => Color.Default
+    };
+
+}

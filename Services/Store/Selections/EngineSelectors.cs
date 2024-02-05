@@ -34,14 +34,29 @@ public static class EngineSelectors
                     };
                 }
                 
+                var expanded = run.Outputs.EngineStates.Keys.ToDictionary(key => key, _ => true);
+                
                 return new EngineModel
                 {
                     RunId = run.RunId,
-                    TreeItems = GetItems(run.Outputs.EngineStates, new Dictionary<string, bool>()),
-                    Expanded = new Dictionary<string, bool>(),
+                    TreeItems = GetItems(run.Outputs.EngineStates, expanded),
+                    Expanded = expanded,
                     Inputs = run.Inputs,
                     CurrentEngineState = run?.Outputs?.EngineStates.FirstOrDefault().Value
                 };
+            });
+    
+    public static readonly ISelector<RootState, PanelToolbarModel> SelectPanelToolbarModel = Selectors
+        .Create<RootState, EngineControlModel, EngineModel, PanelToolbarModel>(SelectEngineControl, SelectEngineModel,
+            (control, model) => new PanelToolbarModel
+            {
+                IsRunning = control.IsRunning,
+                IsPaused = control.IsPaused,
+                IsComplete = control.IsCompleted,
+                Index = (int)(model.CurrentEngineState?.Metrics.Get(MetricNames.Run)?.Statistics?.Sum ?? 0),
+                Score = model.CurrentEngineState?.Metrics.Get(MetricNames.Score)?.Statistics?.LastValue ?? 0,
+                EngineState = model.CurrentEngineState?.State ?? EngineStateTypes.Pending,
+                Duration = TimeSpan.FromMilliseconds(model?.CurrentEngineState?.Metrics.Get(MetricNames.Time)?.Time?.Sum ?? 0)
             });
 
     private static HashSet<TreeItemData<EngineState>> GetItems(Dictionary<string, EngineState> states, Dictionary<string, bool> expanded)

@@ -2,9 +2,7 @@
 @rendermode InteractiveServer
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
-@using Radiate.Client.Services.Store.Models
 @using Radiate.Client.Services.Store.Actions
-@using Radiate.Client.Services.Store
 @inherits StoreComponent<RootState>
 
 <MudPaper Elevation="25" Class="mt-4 ml-4 mr-4 px-8">
@@ -34,7 +32,7 @@
     private void OnSelect(TableRowClickEventArgs<RunModel> run)
     {
         Dispatch(new NavigateToRunAction(run.Item.RunId));
-        NavigationManager.NavigateTo($"/runs/{run.Item.RunId}");
+        NavigationManager.NavigateTo($"/runs/{run.Item.RunId}/{run.Item.Inputs.ModelType.ToLower()}");
     }
 
     private async Task OpenDialog()

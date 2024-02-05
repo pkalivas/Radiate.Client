@@ -21,7 +21,8 @@ public static class RootReducer
         Reducer.On<LayoutChangedAction, RootState>(LayoutChanged),
         Reducer.On<UpdateCurrentImageAction, RootState>(UpdateCurrentImage),
         Reducer.On<CancelEngineRunAction, RootState>(CancelEngine),
-        Reducer.On<SetSelectedMetricsAction, RootState>(SetSelectedMetrics)
+        Reducer.On<SetSelectedMetricsAction, RootState>(SetSelectedMetrics),
+        Reducer.On<SetRunInputsAction, RootState>(SetRunInputs)
     };
     
     private static RootState AddOutput(RootState state, AddRunOutputAction action)
@@ -153,6 +154,16 @@ public static class RootReducer
         state.Runs[state.CurrentRunId] = run with
         {
             SelectedMetrics = action.Metrics.ToHashSet()
+        };
+        return state with { Runs = state.Runs };
+    }
+    
+    private static RootState SetRunInputs(RootState state, SetRunInputsAction action)
+    {
+        var run = state.Runs[action.RunId];
+        state.Runs[action.RunId] = run with
+        {
+            Inputs = action.Inputs
         };
         return state with { Runs = state.Runs };
     }

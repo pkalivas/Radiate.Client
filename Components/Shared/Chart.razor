@@ -6,21 +6,21 @@
 
 @if (Values.Any() && Type != "" && layout != null)
 {
-    <div class="chart-container">
+    @* <div class="chart-container"> *@
         <PlotlyChart @bind-Config="config" @bind-Layout="layout" @bind-Data="data" @ref="chart"/>
-    </div>
+    // </div>
 }
-else
-{
-    <div class="chart-container">
-        <div class="chart-placeholder">
-            <div class="chart-placeholder-text">No data</div>
-        </div>
-    </div>
-}
+@* else *@
+@* { *@
+@*     <div class="chart-container"> *@
+@*         <div class="chart-placeholder"> *@
+@*             <div class="chart-placeholder-text">No data</div> *@
+@*         </div> *@
+@*     </div> *@
+@* } *@
 
 @code {
-    [Parameter] public int Height { get; set; } = 500;
+    [Parameter] public int Height { get; set; } = 200;
     [Parameter] public string Type { get; set; } = "";
     [Parameter] public double[] Values { get; set; } = Array.Empty<double>();
 

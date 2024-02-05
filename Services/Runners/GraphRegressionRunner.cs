@@ -21,7 +21,9 @@ public class GraphRegressionRunner : EngineRunner<GeneticEpoch<GraphGene<float>>
 {
     public GraphRegressionRunner(IStore<RootState> store) : base(store) { }
 
-    protected override async Task<EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>> Fit(RunInputsState inputs, CancellationTokenSource cts, Action<EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>> onEngineComplete)
+    protected override async Task<EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>> Fit(RunInputsState inputs, 
+        CancellationTokenSource cts,
+        Action<EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>> onEngineComplete)
     {
         var dataSet = await new RegressionFunction().LoadDataSet();
         var (features, targets) = dataSet;

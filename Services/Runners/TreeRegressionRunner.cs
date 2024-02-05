@@ -20,7 +20,9 @@ public class TreeRegressionRunner : EngineRunner<GeneticEpoch<TreeGene<float>>, 
 {
     public TreeRegressionRunner(IStore<RootState> store) : base(store) { }
 
-    protected override async Task<EngineOutput<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>>> Fit(RunInputsState inputs, CancellationTokenSource cts, Action<EngineOutput<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>>> onEngineComplete)
+    protected override async Task<EngineOutput<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>>> Fit(RunInputsState inputs,
+        CancellationTokenSource cts,
+        Action<EngineOutput<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>>> onEngineComplete)
     {
         var dataSet = await new RegressionFunction().LoadDataSet();
         var (features, targets) = dataSet;

@@ -5,4 +5,6 @@ namespace Radiate.Client.Services.Store.Actions;
 
 public record RunCreatedAction(RunModel Run) : IAction;
 
-public record AddRunOutputAction(RunOutputsModel EngineOutputs) : IAction;
+public record SetRunOutputsAction(RunOutputsModel EngineOutputs) : IAction;
+
+public record SetRunInputsAction(Guid RunId, RunInputsModel Inputs) : IAction;

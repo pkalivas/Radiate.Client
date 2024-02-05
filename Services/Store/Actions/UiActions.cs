@@ -7,4 +7,6 @@ public record LayoutChangedAction : IAction
     public bool IsSidebarOpen { get; init; }
 }
 
-public record SetSelectedMetricsAction(Guid RunId, List<string> Metrics) : IAction;
+public record NavigateToRunAction(Guid RunId) : IAction;
+
+public record SetEngineTreeExpandedAction(Guid RunId, Dictionary<string, bool> Expanded) : IAction;

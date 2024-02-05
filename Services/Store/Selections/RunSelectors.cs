@@ -43,7 +43,6 @@ public static class RunSelectors
         .Create<RootState, RunModel, MetricDataGridPanelProjection>(SelectRun, run => new MetricDataGridPanelProjection
         {
             RunId = run.RunId,
-            SelectedMetrics = run.SelectedMetrics.Select(val => run.Metrics.GetValueOrDefault(val, new MetricValueModel())).ToHashSet(),
             Values = run.Metrics.Values.ToList()
         });
     

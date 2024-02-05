@@ -55,9 +55,9 @@ public class RootEffects : IEffectRegistry<RootState>
     private Effect<RootState> EngineTreeEffect => new()
     {
         Run = store => store
-            .OnAction<AddRunOutputAction>()
+            .OnAction<SetRunOutputsAction>()
             .Throttle(TimeSpan.FromMilliseconds(100))
-            .Select<(RootState, AddRunOutputAction), IAction>(pair =>
+            .Select<(RootState, SetRunOutputsAction), IAction>(pair =>
             {
                 var (state, action) = pair;
                 if (!state.UiModel.EngineStateExpanded.ContainsKey(state.CurrentRunId))

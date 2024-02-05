@@ -32,7 +32,7 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner
 
         var result = await Fit(inputs, cts, handle =>
         {
-            _store.Dispatch(new AddRunOutputAction(MapToOutput(handle)));
+            _store.Dispatch(new SetRunOutputsAction(MapToOutput(handle)));
             
             if (_pause.Value)
             {
@@ -40,7 +40,7 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner
             }
         });
         
-        _store.Dispatch(new AddRunOutputAction(MapToOutput(result)));
+        _store.Dispatch(new SetRunOutputsAction(MapToOutput(result)));
         _store.Dispatch(new EngineStoppedAction());
         _pause.OnCompleted();
         control.Dispose();

@@ -26,8 +26,8 @@ public static class EngineSelectors
         });
     
     public static readonly ISelector<RootState, EngineTreePanelProjection> SelectEngineTreePanelModel = Selectors
-        .Create<RootState, UiModel, RunModel, EngineTreePanelProjection>(UiSelectors.SelectUiState, RunSelectors.SelectRun,
-            (ui, run) =>
+        .Create<RootState, UiModel, RunModel, EngineTreePanelProjection>(UiSelectors.SelectUiState, 
+            RunSelectors.SelectRun, (ui, run) =>
             {
                 if (ui.EngineStateExpanded.TryGetValue(run.RunId, out var engineTree))
                 {
@@ -66,7 +66,8 @@ public static class EngineSelectors
                 Duration = TimeSpan.FromMilliseconds(model?.CurrentEngineState?.Metrics.Get(MetricNames.Time)?.Time?.Sum ?? 0)
             });
 
-    private static HashSet<TreeItemData<EngineState>> GetItems(Dictionary<string, EngineState> states, Dictionary<string, bool> expanded)
+    private static HashSet<TreeItemData<EngineState>> GetItems(Dictionary<string, EngineState> states, 
+        IReadOnlyDictionary<string, bool> expanded)
     {
         var seen = new HashSet<string>();
         var result = new HashSet<TreeItemData<EngineState>>();
@@ -88,9 +89,9 @@ public static class EngineSelectors
     }
     
     private static HashSet<TreeItemData<EngineState>> GetTreeItems(string current, 
-        HashSet<string> seen, 
-        Dictionary<string, EngineState> states,
-        Dictionary<string, bool> expanded)
+        ISet<string> seen, 
+        IReadOnlyDictionary<string, EngineState> states,
+        IReadOnlyDictionary<string, bool> expanded)
     {
         seen.Add(current);
         

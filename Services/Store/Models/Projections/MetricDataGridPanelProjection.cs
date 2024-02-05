@@ -5,7 +5,6 @@ namespace Radiate.Client.Services.Store.Models.Projections;
 public record MetricDataGridPanelProjection
 {
     public Guid RunId { get; init; }
-    public HashSet<MetricValueModel> SelectedMetrics { get; init; } = new();
     public List<MetricValueModel> Values { get; init; } = new();
 }
 

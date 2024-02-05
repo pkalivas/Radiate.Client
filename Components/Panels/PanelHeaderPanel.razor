@@ -4,7 +4,10 @@
 
 <div class="d-flex align-items-center justify-content-between">
     <div class="d-flex align-items-center">
-        @if (Model.EngineState == EngineStateTypes.Running && !Model.IsPaused)
+        <MudText Typo="Typo.body1" Style="ml-5">@Title</MudText>
+    </div>
+    <div class="d-flex align-items-center mr-1">
+        @if (Model.IsRunning && !Model.IsPaused)
         {
             <MudProgressCircular
                 Size="Size.Small"
@@ -12,7 +15,7 @@
                 Indeterminate="true"
                 Style="height:20px;width:20px;"/>
         }
-        else if (Model.EngineState == EngineStateTypes.Stopped)
+        else if (Model.IsComplete)
         {
             <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success" Size="Size.Small"/>
         }
@@ -24,22 +27,6 @@
         {
             <MudIcon Icon="@Icons.Material.Outlined.Pending" Color="Color.Default" Size="Size.Small"/>
         }
-
-        <MudText Typo="Typo.body1" Style="ml-5">@Title</MudText>
-    </div>
-    <div class="d-flex align-items-center mr-1">
-        <div class="d-inline-flex ml-1 mr-1 align-items-center" style="width: 75px;">
-            <MudIcon Icon="@Icons.Material.Filled.Star" Class="" Color="@Color.Default" Size="Size.Small"/>
-            <div class="pl-2">@(Math.Round(Model.Score, 4))</div>
-        </div>
-        <div class="d-inline-flex ml-1 mr-2 align-items-center" >
-            <MudIcon Icon="@Icons.Material.Filled.Schedule" Color="@Color.Default" Size="Size.Small"/>
-            <div class="pl-2">@(FormatDuration(Model.Duration))</div>
-        </div>
-        <div class="d-inline-flex ml-1 mr-2 align-items-center">
-            <MudIcon Icon="@Icons.Material.Outlined.Numbers" Size="Size.Small"/>
-            <div class="pl-2">@Model.Index</div>
-        </div>
     </div>
 </div>
 

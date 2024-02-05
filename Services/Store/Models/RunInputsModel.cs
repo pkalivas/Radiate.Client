@@ -1,11 +1,9 @@
-using Radiate.Client.Services.Runners;
-
 namespace Radiate.Client.Services.Store.Models;
 
 public record RunInputsModel 
 {
-    public string ModelType { get; set; } = "Graph";
-    public string DataSetType { get; set; } = "XOR";
+    public string ModelType { get; set; } = "Image";
+    public string DataSetType { get; set; } = "Polygon";
     public PopulationInputs PopulationInputs { get; set; } = new();
     public LimitInputs LimitInputs { get; set; } = new();
     public ImageInputs ImageInputs { get; set; } = new();

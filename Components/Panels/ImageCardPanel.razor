@@ -2,31 +2,29 @@
 @inherits StoreComponent<ImageCardPanelModel>
 
 
-<MudGrid>
-    <MudItem md="6">
-        <MudCard>
+<div class="mt-3 mb-3">
+    <MudGrid>
+        <MudItem md="6">
             @if (!Model.TargetImage.IsEmpty)
             {
-                <MudCardContent Class="d-flex justify-content-center">
+                <div Class="d-flex justify-content-center">
                     <ImageDisplay ImageUrl="@Model.TargetImage.ImageDisplay" ImageTitle="Target"/>
-                </MudCardContent>
+                </div>
             }
             else
             {
-                <MudCardContent Class="d-flex justify-content-center">
-                    <ImageUpload Height="@Model.Height" Width="@Model.Width" ImageChanged="@TargetImageChanged"/>
-                </MudCardContent>
+                <div Class="d-flex justify-content-center">
+                </div>
             }
-        </MudCard>
-    </MudItem>
-    <MudItem md="6">
-        <MudCard>
-            <MudCardContent Class="d-flex justify-content-center">
+        </MudItem>
+        <MudItem md="6">
+            <div Class="d-flex justify-content-center">
                 <ImageDisplay ImageUrl="@Model.CurrentImage.ImageDisplay" ImageTitle="Current"/>
-            </MudCardContent>
-        </MudCard>
-    </MudItem>
-</MudGrid>
+            </div>
+        </MudItem>
+    </MudGrid>
+</div>
+
 
 @code {
 

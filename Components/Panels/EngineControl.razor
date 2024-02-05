@@ -5,24 +5,45 @@
 @using Radiate.Client.Services.Store.Actions
 @using Radiate.Client.Services.Store.Models
 @using Radiate.Client.Services.Store.Selections
-@inherits StoreComponent<RunModel>
+@inherits StoreComponent<EngineControlModel>
 
 <div class="d-flex justify-content-between mt-3">
 	<div class="align-items-center w-75 pr-4">
 
 		<div class="d-flex align-items-center border-bottom justify-content-between mb-3">
 			<MudText Typo="Typo.body2">
-				<MudIcon Icon="@Icons.Material.Filled.DateRange"/>
+				<MudIcon Icon="@Icons.Material.Outlined.DateRange"/>
 				Start:
 			</MudText>
 			<MudText Typo="Typo.caption">@Model.StartTime</MudText>
 		</div>
 		<div class="d-flex align-items-center border-bottom justify-content-between mb-3">
 			<MudText Typo="Typo.body2">
-				<MudIcon Icon="@Icons.Material.Filled.DateRange"/>
+				<MudIcon Icon="@Icons.Material.Outlined.DateRange"/>
 				End:
 			</MudText>
 			<MudText Typo="Typo.caption">@Model.EndTime</MudText>
+		</div>
+		<div class="d-flex align-items-center border-bottom justify-content-between mb-3">
+			<MudText Typo="Typo.body2">
+				<MudIcon Icon="@Icons.Material.Outlined.Schedule"/>
+				Duration:
+			</MudText>
+			<MudText Typo="Typo.caption">@Model.ElapsedTime</MudText>
+		</div>
+		<div class="d-flex align-items-center border-bottom justify-content-between mb-3">
+			<MudText Typo="Typo.body2">
+				<MudIcon Icon="@Icons.Material.Outlined.Star"/>
+				Score:
+			</MudText>
+			<MudText Typo="Typo.caption">@Model.Score</MudText>
+		</div>
+		<div class="d-flex align-items-center border-bottom justify-content-between mb-3">
+			<MudText Typo="Typo.body2">
+				<MudIcon Icon="@Icons.Material.Outlined.Numbers"/>
+				Index:
+			</MudText>
+			<MudText Typo="Typo.caption">@Model.Index</MudText>
 		</div>
 	</div>
 	<div class="align-items-center w-25">
@@ -87,5 +108,5 @@
     
     private void Pause() => Store.Dispatch(new PauseEngineRunAction(Model.RunId));
     
-    protected override IObservable<RunModel> Select() => Store.Select(RunSelectors.SelectRun);
+    protected override IObservable<EngineControlModel> Select() => Store.Select(EngineSelectors.SelectEngineControl);
 }

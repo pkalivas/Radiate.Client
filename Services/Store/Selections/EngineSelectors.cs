@@ -15,7 +15,13 @@ public static class EngineSelectors
             RunId = run.RunId,
             IsRunning = run.IsRunning,
             IsPaused = run.IsPaused,
-            IsCompleted = run.IsCompleted
+            IsCompleted = run.IsCompleted,
+            StartTime = run.StartTime,
+            EndTime = run.EndTime,
+            Inputs = run.Inputs,
+            Score = run.Metrics.TryGetValue(MetricNames.Score, out var metric) ? metric.Value : 0f,
+            ElapsedTime = run.Metrics.TryGetValue(MetricNames.Time, out var timeMetric) ? timeMetric.Total : TimeSpan.Zero,
+            Index = run.Metrics.TryGetValue(MetricNames.Index, out var indexMetric) ? (int)indexMetric.Value : 0
         });
     
     public static readonly ISelector<RootState, EngineModel> SelectEngineModel = Selectors

@@ -89,58 +89,67 @@
             </MudItem>
         </MudGrid>
     </MudItem>
-     <MudItem md="4">
-            <MudText Typo="Typo.h6">Shapes</MudText>
-            <MudDivider/>
-            <MudGrid Class="mt-3">
-                <MudItem md="6">
-                    @if (Model.IsReadonly)
-                    {
-                        <div class="d-flex align-items-center border-bottom justify-content-between">
-                            <MudText Typo="Typo.body2">Shape Count:</MudText>
-                            <MudTooltip Text="The number of shapes to draw per image.">
-                                <MudIcon Icon="Icons.Info" Size="Size.Small"/>
-                            </MudTooltip>
-                            <MudText Typo="Typo.body2">@Model.Inputs.ImageInputs.NumShapes</MudText>
-                        </div>
-                    }
-                    else
-                    {
-                        <MudNumericField Label="# Shapes"
-                                         Variant="Variant.Filled"
-                                         ReadOnly="@Model.IsReadonly"
-                                         DisableUnderLine="@Model.IsReadonly"
-                                         HideSpinButtons="@Model.IsReadonly"
-                                         Value="@Model.Inputs.ImageInputs.NumShapes"
-                                         ValueChanged="@((int numShapes) => OnInputChange(Model, inputs => inputs.ImageInputs.NumShapes= numShapes))">
-                        </MudNumericField>
-                    }
-                </MudItem>
-                <MudItem md="6">
-                    @if (Model.IsReadonly)
-                    {
-                        <div class="d-flex align-items-center border-bottom justify-content-between">
-                            <MudText Typo="Typo.body2">Verticy Count:</MudText>
-                            <MudTooltip Text="The number of verticies in a polygon.">
-                                <MudIcon Icon="Icons.Info" Size="Size.Small"/>
-                            </MudTooltip>
-                            <MudText Typo="Typo.body2">@Model.Inputs.ImageInputs.NumVertices</MudText>
-                        </div>
-                    }
-                    else
-                    {
-                        <MudNumericField Label="# Verticies"
-                                         Variant="Variant.Filled"
-                                         ReadOnly="@Model.IsReadonly"
-                                         DisableUnderLine="@Model.IsReadonly"
-                                         HideSpinButtons="@Model.IsReadonly"
-                                         Value="@Model.Inputs.ImageInputs.NumVertices"
-                                         ValueChanged="@((int numShapes) => OnInputChange(Model, inputs => inputs.ImageInputs.NumVertices = numShapes))">
-                        </MudNumericField>
-                    }
-                </MudItem>
-            </MudGrid>
-        </MudItem>
+    <MudItem md="4">
+        <MudText Typo="Typo.h6">Shapes</MudText>
+        <MudDivider/>
+        <MudGrid Class="mt-3">
+            <MudItem md="6">
+                @if (Model.IsReadonly)
+                {
+                    <div class="d-flex align-items-center border-bottom justify-content-between">
+                        <MudText Typo="Typo.body2">Shape Count:</MudText>
+                        <MudTooltip Text="The number of shapes to draw per image.">
+                            <MudIcon Icon="Icons.Info" Size="Size.Small"/>
+                        </MudTooltip>
+                        <MudText Typo="Typo.body2">@Model.Inputs.ImageInputs.NumShapes</MudText>
+                    </div>
+                }
+                else
+                {
+                    <MudNumericField Label="# Shapes"
+                                     Variant="Variant.Filled"
+                                     ReadOnly="@Model.IsReadonly"
+                                     DisableUnderLine="@Model.IsReadonly"
+                                     HideSpinButtons="@Model.IsReadonly"
+                                     Value="@Model.Inputs.ImageInputs.NumShapes"
+                                     ValueChanged="@((int numShapes) => OnInputChange(Model, inputs => inputs.ImageInputs.NumShapes= numShapes))">
+                    </MudNumericField>
+                }
+            </MudItem>
+            <MudItem md="6">
+                @if (Model.IsReadonly)
+                {
+                    <div class="d-flex align-items-center border-bottom justify-content-between">
+                        <MudText Typo="Typo.body2">Verticy Count:</MudText>
+                        <MudTooltip Text="The number of verticies in a polygon.">
+                            <MudIcon Icon="Icons.Info" Size="Size.Small"/>
+                        </MudTooltip>
+                        <MudText Typo="Typo.body2">@Model.Inputs.ImageInputs.NumVertices</MudText>
+                    </div>
+                }
+                else
+                {
+                    <MudNumericField Label="# Verticies"
+                                     Variant="Variant.Filled"
+                                     ReadOnly="@Model.IsReadonly"
+                                     DisableUnderLine="@Model.IsReadonly"
+                                     HideSpinButtons="@Model.IsReadonly"
+                                     Value="@Model.Inputs.ImageInputs.NumVertices"
+                                     ValueChanged="@((int numShapes) => OnInputChange(Model, inputs => inputs.ImageInputs.NumVertices = numShapes))">
+                    </MudNumericField>
+                }
+            </MudItem>
+        </MudGrid>
+        @if (Model.Inputs.ImageInputs.TargetImage.IsEmpty)
+        {
+            <MudItem md="6">
+                <div class="d-flex flex-row-reverse w-100">
+                    <ImageUpload Height="@Model.Inputs.ImageInputs.Height" Width="@Model.Inputs.ImageInputs.Width"
+                                 ImageChanged="@((ImageEntity image) => Dispatch(new SetTargetImageAction(Model.RunId, image)))"/>           
+                </div>
+            </MudItem>    
+        }
+    </MudItem>
 </MudGrid>
 
 @code {

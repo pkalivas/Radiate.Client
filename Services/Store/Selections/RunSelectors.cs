@@ -7,9 +7,6 @@ namespace Radiate.Client.Services.Store.Selections;
 
 public static class RunSelectors
 {
-    public static ISelector<RootState, Guid> SelectCurrentRunId => Selectors
-        .Create<RootState, Guid>(state => state.CurrentRunId);
-    
     public static ISelector<RootState, RunState> SelectRun => Selectors
         .Create<RootState, RunState>(state => state.Runs.TryGetValue(state.CurrentRunId, out var run) ? run : new RunState());
     

@@ -39,7 +39,7 @@ public static class RootReducer
                         return pair.model with
                         {
                             Distribution = pair.Item2.Distribution
-                                .Concat(new []{ pair.model.Value })
+                                .Concat(new[] { pair.model.Value })
                                 .ToArray(),
                         };
                     }
@@ -48,10 +48,7 @@ public static class RootReducer
                 })
                 .ToDictionary(key => key.Name, value => value),
             Scores = state.Runs[state.CurrentRunId].Scores
-                .Concat(new[]
-                {
-                    outputs.Metrics.Get(MetricNames.Score).Statistics.LastValue
-                })
+                .Concat(new[] { outputs.Metrics.Get(MetricNames.Score).Statistics.LastValue })
                 .ToList(),
         };
 

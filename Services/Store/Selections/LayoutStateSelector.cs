@@ -6,7 +6,7 @@ namespace Radiate.Client.Services.Store.Selections;
 
 public static class LayoutStateSelector
 {
-    public static ISelector<RootState, LayoutModel> SelectLayoutState = Selectors
+    public static readonly ISelector<RootState, LayoutModel> SelectLayoutState = Selectors
         .Create<RootState, LayoutModel>(state => new LayoutModel
         {
             IsSidebarOpen = state.UiState.IsSidebarOpen

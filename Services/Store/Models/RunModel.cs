@@ -10,6 +10,8 @@ public record RunModel
     public bool IsPaused { get; init; }
     public bool IsCompleted { get; init; }
     public string Status { get; init; } = "";
+    public DateTime StartTime { get; init; }
+    public DateTime EndTime { get; init; }
     public RunInputsModel Inputs { get; init; } = new();
     public RunOutputsModel Outputs { get; init; } = new();
     public Dictionary<string, MetricValueModel> Metrics { get; init; } = new();

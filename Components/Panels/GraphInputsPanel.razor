@@ -61,6 +61,35 @@
             </MudItem>
         </MudGrid>
     </MudItem>
+    <MudItem md="6">
+        <MudText Typo="Typo.h6">Limits</MudText>
+        <MudDivider/>
+        <MudGrid Class="mt-3">
+            <MudItem>
+                @if (Model.IsReadonly)
+                {
+                    <div class="d-flex align-items-center border-bottom justify-content-between">
+                        <MudText Typo="Typo.body2">Iteration:</MudText>
+                        <MudTooltip Text="The maximum number of iterations to run.">
+                            <MudIcon Icon="Icons.Info" Size="Size.Small"/>
+                        </MudTooltip>
+                        <MudText Typo="Typo.body2">@Model.Inputs.LimitInputs.IterationLimit</MudText>
+                    </div>
+                }
+                else
+                {
+                    <MudNumericField Label="Iteration"
+                                     Variant="Variant.Filled"
+                                     ReadOnly="@Model.IsReadonly"
+                                     DisableUnderLine="@Model.IsReadonly"
+                                     HideSpinButtons="@Model.IsReadonly"
+                                     Value="@Model.Inputs.LimitInputs.IterationLimit"
+                                     ValueChanged="@((int limit) => OnInputChange(Model, inputs => inputs.LimitInputs.IterationLimit = limit))">
+                    </MudNumericField>
+                }
+            </MudItem>
+        </MudGrid>
+    </MudItem>
 </MudGrid>
 
 

@@ -71,7 +71,8 @@ public static class RootReducer
         {
             IsRunning = false,
             IsPaused = false,
-            IsCompleted = true
+            IsCompleted = true,
+            EndTime = DateTime.Now
         };
         return state with { Runs = state.Runs };
     }
@@ -82,7 +83,8 @@ public static class RootReducer
         {
             IsRunning = true,
             IsPaused = false,
-            IsCompleted = false
+            IsCompleted = false,
+            StartTime = DateTime.Now
         };
         return state with { Runs = state.Runs };
     }

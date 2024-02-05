@@ -10,8 +10,7 @@ using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Runners;
 
-public abstract class EngineRunner<TEpoch, T> : IEngineRunner
-    where TEpoch : IEpoch
+public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEpoch
 {
     private readonly IStore<RootState> _store;
     private readonly BehaviorSubject<bool> _pause = new(false);

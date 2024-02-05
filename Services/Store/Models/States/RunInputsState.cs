@@ -2,11 +2,11 @@ namespace Radiate.Client.Services.Store.Models.States;
 
 public record RunInputsState 
 {
-    public string ModelType { get; set; } = "Image";
-    public string DataSetType { get; set; } = "Polygon";
+    public string ModelType { get; set; } = "Graph";
+    public string DataSetType { get; set; } = "XOR";
     public PopulationInputs PopulationInputs { get; set; } = new();
     public LimitInputs LimitInputs { get; set; } = new();
-    public ImageInputs ImageInputs { get; set; } = new();
+    public ImageInputs ImageInputs { get; init; } = new();
 }
 
 public record PopulationInputs

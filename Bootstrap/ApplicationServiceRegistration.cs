@@ -25,8 +25,10 @@ public static class ApplicationServiceRegistration
             .AddScoped<CircleEngineRunner>()
             .AddScoped<PolygonEngineRunner>()
             .AddScoped<GraphRegressionRunner>()
+            .AddScoped<TreeRegressionRunner>()
             .AddScoped<EngineRunnerFactory>(sp => (model, data) => (model, data) switch
             {
+                ("Tree", "Regression") => sp.GetRequiredService<TreeRegressionRunner>(),
                 ("Graph", "Regression") => sp.GetRequiredService<GraphRegressionRunner>(),
                 ("Graph", "XOR") => sp.GetRequiredService<XORGraphRunner>(),
                 ("Image", "Circle") => sp.GetRequiredService<CircleEngineRunner>(),

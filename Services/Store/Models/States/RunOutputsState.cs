@@ -11,6 +11,7 @@ public record RunOutputsState
     public Dictionary<string, EngineState> EngineStates { get; init; } = new();
     public ImageOutput ImageOutput { get; set; } = new();
     public GraphOutput GraphOutput { get; set; } = new();
+    public TreeOutput TreeOutput { get; set; } = new();
 }
 
 public record GraphOutput
@@ -27,6 +28,24 @@ public record GraphOutput
         
         throw new Exception("Graph is not of the expected type");
     }
+}
+
+public record TreeOutput
+{
+    public string Type { get; set; } = "";
+    public List<object> Trees { get; set; } = new();
+
+    public List<Tree<T>> GetTrees<T>() => Trees
+        .Select(tree =>
+        {
+            if (tree is Tree<T> t)
+            {
+                return t;
+            }
+            
+            throw new Exception("Tree is not of the expected type");
+        })
+        .ToList();
 }
 
 public record ImageOutput

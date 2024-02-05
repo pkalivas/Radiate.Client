@@ -9,11 +9,6 @@
                     <ImageDisplay ImageUrl="@Model.TargetImage.ImageDisplay" ImageTitle="Target"/>
                 </div>
             }
-            else
-            {
-                <div Class="d-flex justify-content-center">
-                </div>
-            }
         </MudItem>
         <MudItem md="6">
             <div Class="d-flex justify-content-center">
@@ -26,6 +21,7 @@
 
 @code {
 
-    protected override IObservable<ImageTargetCurrentDisplayPanelProjection> Select() => Store.Select(ImageSelectors.SelectTargetCurrentDisplayPanelModel);
+    protected override IObservable<ImageTargetCurrentDisplayPanelProjection> Select() => 
+        Store.Select(ImageSelectors.SelectTargetCurrentDisplayPanelModel);
 
 }

@@ -5,6 +5,7 @@ public static class StateOptions
     public static List<string> ModelNames => new()
     {
         "Graph",
+        "Tree",
         "Image"
     };
     

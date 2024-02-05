@@ -1,6 +1,7 @@
 using Radiate.Client.Services.Genome;
 using Radiate.Client.Services.Store;
 using Radiate.Client.Services.Store.Models;
+using Radiate.Client.Services.Store.Models.States;
 using Radiate.Engines;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Limits;
@@ -18,7 +19,7 @@ public class PolygonEngineRunner : EngineRunner<GeneticEpoch<PolygonGene>, Polyg
 {
     public PolygonEngineRunner(Reflow.Interfaces.IStore<RootState> store) : base(store) { }
 
-    protected override async Task<EngineOutput<GeneticEpoch<PolygonGene>, PolygonChromosome>> Fit(RunInputsModel inputs, 
+    protected override async Task<EngineOutput<GeneticEpoch<PolygonGene>, PolygonChromosome>> Fit(RunInputsState inputs, 
         CancellationTokenSource cts,
         Action<EngineOutput<GeneticEpoch<PolygonGene>, PolygonChromosome>> onEngineComplete)
     {
@@ -52,12 +53,12 @@ public class PolygonEngineRunner : EngineRunner<GeneticEpoch<PolygonGene>, Polyg
             .ToResult();
     }
     
-    protected override RunOutputsModel MapToOutput(EngineOutput<GeneticEpoch<PolygonGene>, PolygonChromosome> output)
+    protected override RunOutputsState MapToOutput(EngineOutput<GeneticEpoch<PolygonGene>, PolygonChromosome> output)
     {
         var state = output.GetState(output.EngineId);
         var model = output.GetModel().Draw(500, 500);
         
-        return  new RunOutputsModel
+        return  new RunOutputsState
         {
             EngineState = state,
             EngineId = output.EngineId,

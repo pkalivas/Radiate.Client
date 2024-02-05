@@ -96,7 +96,7 @@
 
     protected override IObservable<InputsPanelModelProjection> Select() => Store.Select(RunSelectors.SelectInputsModel);
     
-    private async Task OnInputChange(InputsPanelModelProjection inputs, Action<RunInputsModel> setter)
+    private async Task OnInputChange(InputsPanelModelProjection inputs, Action<RunInputsState> setter)
     {
         var newInputs = inputs.Inputs with { };
         setter(newInputs);

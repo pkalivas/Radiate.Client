@@ -1,9 +1,9 @@
 using Radiate.Engines.Entities;
 using Radiate.Extensions.Evolution.Architects.Groups;
 
-namespace Radiate.Client.Services.Store.Models;
+namespace Radiate.Client.Services.Store.Models.States;
 
-public record RunOutputsModel
+public record RunOutputsState
 {
     public string EngineState { get; set; } = "";
     public string EngineId { get; set; } = "";

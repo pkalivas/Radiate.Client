@@ -6,7 +6,7 @@
             <div class="col">
                 <div>
                     <MudSelect SelectedValuesChanged="@OnModelChange"
-                               Value="@RunModel.Inputs.ModelType"
+                               Value="@RunState.Inputs.ModelType"
                                MultiSelection="false"
                                HelperText="Model To Run"
                                T="string"
@@ -20,13 +20,13 @@
                 </div>
                 <div>
                     <MudSelect SelectedValuesChanged="@OnDataSetChange"
-                               Value="@RunModel.Inputs.DataSetType"
+                               Value="@RunState.Inputs.DataSetType"
                                MultiSelection="false"
                                HelperText="DataSet To Run"
                                T="string"
                                Label="DataSet"
                                Variant="Variant.Text">
-                        @if (RunModel.Inputs.ModelType == "Image")
+                        @if (RunState.Inputs.ModelType == "Image")
                         {
                             @foreach (var data in StateOptions.ImageDataSetNames)
                             {
@@ -49,34 +49,34 @@
                         <div class="col">
                             <MudNumericField Label="Population Size"
                                              Variant="Variant.Filled"
-                                             Value="@RunModel.Inputs.PopulationInputs.PopulationSize"
-                                             ValueChanged="@((int size) => RunModel.Inputs.PopulationInputs.PopulationSize = size)">
+                                             Value="@RunState.Inputs.PopulationInputs.PopulationSize"
+                                             ValueChanged="@((int size) => RunState.Inputs.PopulationInputs.PopulationSize = size)">
                             </MudNumericField>
                             <MudNumericField Label="Mutation Rate"
                                              Variant="Variant.Filled"
-                                             Value="@RunModel.Inputs.PopulationInputs.MutationRate"
-                                             ValueChanged="@((float rate) => RunModel.Inputs.PopulationInputs.MutationRate = rate)">
+                                             Value="@RunState.Inputs.PopulationInputs.MutationRate"
+                                             ValueChanged="@((float rate) => RunState.Inputs.PopulationInputs.MutationRate = rate)">
                             </MudNumericField>
                             <MudNumericField Label="Max Epochs"
                                              Variant="Variant.Filled"
-                                             Value="@RunModel.Inputs.LimitInputs.IterationLimit"
-                                             ValueChanged="@((int limit) => RunModel.Inputs.LimitInputs.IterationLimit = limit)">
+                                             Value="@RunState.Inputs.LimitInputs.IterationLimit"
+                                             ValueChanged="@((int limit) => RunState.Inputs.LimitInputs.IterationLimit = limit)">
                             </MudNumericField>
                         </div>
-                        @if (RunModel.Inputs.ModelType == "Image")
+                        @if (RunState.Inputs.ModelType == "Image")
                         {
                             <div class="col">
                                 <MudNumericField Label="Num Shapes"
                                                  Variant="Variant.Filled"
-                                                 Value="@RunModel.Inputs.ImageInputs.NumShapes"
-                                                 ValueChanged="@((int limit) => RunModel.Inputs.ImageInputs.NumShapes = limit)">
+                                                 Value="@RunState.Inputs.ImageInputs.NumShapes"
+                                                 ValueChanged="@((int limit) => RunState.Inputs.ImageInputs.NumShapes = limit)">
                                 </MudNumericField>
-                                @if (RunModel.Inputs.DataSetType == "Polygon")
+                                @if (RunState.Inputs.DataSetType == "Polygon")
                                 {
                                     <MudNumericField Label="Num Vertices"
                                                      Variant="Variant.Filled"
-                                                     Value="@RunModel.Inputs.ImageInputs.NumVertices"
-                                                     ValueChanged="@((int limit) => RunModel.Inputs.ImageInputs.NumVertices = limit)">
+                                                     Value="@RunState.Inputs.ImageInputs.NumVertices"
+                                                     ValueChanged="@((int limit) => RunState.Inputs.ImageInputs.NumVertices = limit)">
                                     </MudNumericField>
                                 }
                             </div>
@@ -84,7 +84,7 @@
                     </div>
                 </div>
             </div>
-            @if (RunModel.Inputs.ModelType == "Image")
+            @if (RunState.Inputs.ModelType == "Image")
             {
                 <div class="col">
                     <div class="mt-3">
@@ -94,11 +94,11 @@
                     <div class="row mb-2 mt-3">
                         <div class="col-9">
                              <ImageDisplay ImageTitle="Upload"
-                                            ImageUrl="@RunModel.Inputs.ImageInputs.TargetImage.ImageDisplay"/>
+                                            ImageUrl="@RunState.Inputs.ImageInputs.TargetImage.ImageDisplay"/>
                         </div>
                         <div class="col-3">
-                            <ImageUpload Height="@RunModel.Inputs.ImageInputs.Height"
-                                         Width="@RunModel.Inputs.ImageInputs.Width"
+                            <ImageUpload Height="@RunState.Inputs.ImageInputs.Height"
+                                         Width="@RunState.Inputs.ImageInputs.Width"
                                          ImageChanged="@TargetImageChanged"/>
                         </div>
                     </div>
@@ -117,40 +117,40 @@
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
     
-    private RunModel RunModel { get; set; }
+    private RunState RunState { get; set; }
 
     protected override void OnInitialized()
     {
-        RunModel = new RunModel();
+        RunState = new RunState();
         base.OnInitialized();
     }
 
     void Cancel() => MudDialog.Cancel();
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(RunModel)); 
+    void Submit() => MudDialog.Close(DialogResult.Ok(RunState)); 
 
     private void OnModelChange(IEnumerable<string> model)
     {
         var selectedModel = model.First();
-        if (RunModel.Inputs.ModelType == "Image" && selectedModel != "Image")
+        if (RunState.Inputs.ModelType == "Image" && selectedModel != "Image")
         {
-	        RunModel.Inputs.DataSetType = "Graph";
+	        RunState.Inputs.DataSetType = "Graph";
         }
 
-        RunModel.Inputs.ModelType = model.First();
-        if (RunModel.Inputs.ModelType == "Image")
+        RunState.Inputs.ModelType = model.First();
+        if (RunState.Inputs.ModelType == "Image")
         {
-	        RunModel.Inputs.DataSetType = "Polygon";
+	        RunState.Inputs.DataSetType = "Polygon";
         }
     }
     
     private void OnDataSetChange(IEnumerable<string> value)
     {
-        RunModel.Inputs.DataSetType = value.First();
+        RunState.Inputs.DataSetType = value.First();
     }
 
     private void TargetImageChanged(ImageEntity image)
     {
-        RunModel.Inputs.ImageInputs.TargetImage = image;
+        RunState.Inputs.ImageInputs.TargetImage = image;
     }
 }

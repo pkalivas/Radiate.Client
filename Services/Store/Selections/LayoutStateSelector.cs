@@ -10,6 +10,6 @@ public static class LayoutStateSelector
     public static ISelector<RootState, LayoutModel> SelectLayoutState = Selectors
         .Create<RootState, LayoutModel>(state => new LayoutModel
         {
-            IsSidebarOpen = state.UiModel.IsSidebarOpen
+            IsSidebarOpen = state.UiState.IsSidebarOpen
         });
 }

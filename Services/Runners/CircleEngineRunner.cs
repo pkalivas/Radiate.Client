@@ -1,6 +1,7 @@
 using Radiate.Client.Services.Genome;
 using Radiate.Client.Services.Store;
 using Radiate.Client.Services.Store.Models;
+using Radiate.Client.Services.Store.Models.States;
 using Radiate.Engines;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Limits;
@@ -18,7 +19,7 @@ public class CircleEngineRunner : EngineRunner<GeneticEpoch<CircleGene>, CircleC
 {
     public CircleEngineRunner(IStore<RootState> store) : base(store) { }
 
-    protected override async Task<EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome>> Fit(RunInputsModel inputs,
+    protected override async Task<EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome>> Fit(RunInputsState inputs,
         CancellationTokenSource cts,
         Action<EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome>> onEngineComplete)
     {
@@ -51,12 +52,12 @@ public class CircleEngineRunner : EngineRunner<GeneticEpoch<CircleGene>, CircleC
             .ToResult();
     }
     
-    protected override RunOutputsModel MapToOutput(EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome> output)
+    protected override RunOutputsState MapToOutput(EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome> output)
     {
         var state = output.GetState(output.EngineId);
         var model = output.GetModel().Draw(500, 500);
         
-        return  new RunOutputsModel
+        return  new RunOutputsState
         {
             EngineState = state,
             EngineId = output.EngineId,

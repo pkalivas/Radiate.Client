@@ -1,3 +1,5 @@
+using Radiate.Client.Services.Store.Models.States;
+
 namespace Radiate.Client.Services.Store.Models.Projections;
 
 public record RunControlPanelProjection
@@ -12,5 +14,5 @@ public record RunControlPanelProjection
     public double Score { get; init; }
     public TimeSpan ElapsedTime { get; init; }
     public int Index { get; init; }
-    public RunInputsModel Inputs { get; init; } = new();
+    public RunInputsState Inputs { get; init; } = new();
 }

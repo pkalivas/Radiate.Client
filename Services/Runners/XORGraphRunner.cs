@@ -1,5 +1,6 @@
 using Radiate.Client.Services.Store;
 using Radiate.Client.Services.Store.Models;
+using Radiate.Client.Services.Store.Models.States;
 using Radiate.Data;
 using Radiate.Engines;
 using Radiate.Engines.Entities;
@@ -22,7 +23,7 @@ public class XORGraphRunner : EngineRunner<GeneticEpoch<GraphGene<float>>, Perce
 {
     public XORGraphRunner(IStore<RootState> store) : base(store) { }
 
-    protected override async Task<EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>> Fit(RunInputsModel input,
+    protected override async Task<EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>> Fit(RunInputsState input,
         CancellationTokenSource cts,
         Action<EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>> onEngineComplete)
     {
@@ -60,7 +61,7 @@ public class XORGraphRunner : EngineRunner<GeneticEpoch<GraphGene<float>>, Perce
             .ToResult();
     }
 
-    protected override RunOutputsModel MapToOutput(EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> output) => new()
+    protected override RunOutputsState MapToOutput(EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> output) => new()
     {
         EngineState = output.GetState(output.EngineId),
         EngineId = output.EngineId,

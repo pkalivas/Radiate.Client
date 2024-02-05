@@ -1,5 +1,4 @@
 using Radiate.Client.Services.Store.Actions;
-using Radiate.Client.Services.Store.Models;
 using Radiate.Client.Services.Store.Models.Projections;
 using Radiate.Client.Services.Store.Shared;
 using Radiate.Engines.Schema;
@@ -124,13 +123,13 @@ public static class RootReducer
     
     private static RootState SetTreeExpansions(RootState state, SetEngineTreeExpandedAction action)
     {
-        state.UiModel.EngineStateExpanded[action.RunId] = action.Expanded;
-        return state with { UiModel = state.UiModel };
+        state.UiState.EngineStateExpanded[action.RunId] = action.Expanded;
+        return state with { UiState = state.UiState };
     }
     
     private static RootState LayoutChanged(RootState state, LayoutChangedAction action) => state with
     {
-        UiModel = state.UiModel with { IsSidebarOpen = action.IsSidebarOpen }
+        UiState = state.UiState with { IsSidebarOpen = action.IsSidebarOpen }
     };
 
     private static RootState SetRunInputs(RootState state, SetRunInputsAction action)

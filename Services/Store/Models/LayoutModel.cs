@@ -1,4 +1,4 @@
-namespace Radiate.Client.Services.Store.Models.Projections;
+namespace Radiate.Client.Services.Store.Models;
 
 public record LayoutModel
 {

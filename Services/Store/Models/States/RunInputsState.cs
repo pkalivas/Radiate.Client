@@ -1,6 +1,6 @@
-namespace Radiate.Client.Services.Store.Models;
+namespace Radiate.Client.Services.Store.Models.States;
 
-public record RunInputsModel 
+public record RunInputsState 
 {
     public string ModelType { get; set; } = "Image";
     public string DataSetType { get; set; } = "Polygon";

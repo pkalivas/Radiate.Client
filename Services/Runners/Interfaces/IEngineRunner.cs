@@ -1,4 +1,5 @@
 using Radiate.Client.Services.Store.Models;
+using Radiate.Client.Services.Store.Models.States;
 
 namespace Radiate.Client.Services.Runners.Interfaces;
 
@@ -6,5 +7,5 @@ public delegate IEngineRunner EngineRunnerFactory(string model, string data);
 
 public interface IEngineRunner
 {
-    Task StartRun(Guid runId, RunInputsModel inputs, CancellationTokenSource cts);
+    Task StartRun(Guid runId, RunInputsState inputs, CancellationTokenSource cts);
 }

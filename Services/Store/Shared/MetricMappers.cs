@@ -1,4 +1,3 @@
-using Radiate.Client.Services.Store.Models;
 using Radiate.Client.Services.Store.Models.Projections;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Schema;
@@ -8,25 +7,19 @@ namespace Radiate.Client.Services.Store.Shared;
 
 public static class MetricMappers
 {
-    public static List<MetricValueModel> GetMetricValues(MetricSet metricSet) =>
-        metricSet.Metrics.Values.SelectMany(FlattenMetric).Select(GetMetricValue).ToList();
+    public static List<MetricValueModel> GetMetricValues(MetricSet metricSet) => metricSet.Metrics.Values
+            .SelectMany(GetMetricValues)
+            .ToList();
     
-    public static List<MetricValueModel> GetMetricValues(MetricValue metric)
-    {
-        var list = new List<MetricValueModel>();
-        foreach (var value in FlattenMetric(metric))
-        {
-            list.Add(GetMetricValue(value));
-        }
-        
-        return list;
-    }
-    
-    public static IEnumerable<MetricValue> FlattenMetric(MetricValue value)
+    public static List<MetricValueModel> GetMetricValues(MetricValue metric) => FlattenMetric(metric)
+            .Select(GetMetricValue)
+            .ToList();
+
+    private static List<MetricValue> FlattenMetric(MetricValue value)
     {
         if (value.Children.Count == 0)
         {
-            return new List<MetricValue> { value };
+            return [value];
         }
         
         var list = new List<MetricValue>();
@@ -36,9 +29,9 @@ public static class MetricMappers
         }
         
         return list;
-    }    
-    
-    public static MetricValueModel GetMetricValue(MetricValue metric)
+    }
+
+    private static MetricValueModel GetMetricValue(MetricValue metric)
     {
         if (metric.MetricType is not MetricTypes.Description)
         {

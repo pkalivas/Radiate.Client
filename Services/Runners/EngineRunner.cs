@@ -4,8 +4,7 @@ using Radiate.Client.Services.Runners.Interfaces;
 using Radiate.Client.Services.Store;
 using Radiate.Client.Services.Store.Actions;
 using Radiate.Client.Services.Store.Models;
-using Radiate.Client.Services.Store.Models.Projections;
-using Radiate.Client.Services.Store.Selections;
+using Radiate.Client.Services.Store.Models.States;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Interfaces;
 using Reflow.Interfaces;
@@ -23,12 +22,13 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner
         _store = store;
     }
     
-    protected abstract Task<EngineOutput<TEpoch, T>> Fit(RunInputsModel inputs, CancellationTokenSource cts, Action<EngineOutput<TEpoch, T>> onEngineComplete);
-    protected abstract RunOutputsModel MapToOutput(EngineOutput<TEpoch, T> handle);
+    protected abstract Task<EngineOutput<TEpoch, T>> Fit(RunInputsState inputs, CancellationTokenSource cts, Action<EngineOutput<TEpoch, T>> onEngineComplete);
+    protected abstract RunOutputsState MapToOutput(EngineOutput<TEpoch, T> handle);
     
-    public async Task StartRun(Guid runId, RunInputsModel inputs, CancellationTokenSource cts)
+    public async Task StartRun(Guid runId, RunInputsState inputs, CancellationTokenSource cts)
     {
-        var control = _store.Select(EngineSelectors.SelectRunControlPanelModel).Subscribe(OnControl);
+        var control = _store.Select(state => state.Runs[runId].IsPaused)
+            .Subscribe(isPaused => _pause.OnNext(isPaused));
 
         var result = await Fit(inputs, cts, handle =>
         {
@@ -45,6 +45,4 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner
         _pause.OnCompleted();
         control.Dispose();
     }
-    
-    private void OnControl(RunControlPanelProjection controlPanel) => _pause.OnNext(controlPanel.IsPaused);
 }

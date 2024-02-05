@@ -6,8 +6,8 @@ namespace Radiate.Client.Services.Store.Selections;
 
 public static class ImageSelectors
 {
-    public static ISelector<RootState, ImageCardPanelModel> GetImageCardPanelModel = Selectors
-        .Create<RootState, RunModel, ImageCardPanelModel>(RunSelectors.SelectRun, run => new ImageCardPanelModel
+    public static ISelector<RootState, ImageTargetCurrentDisplayModel> SelectTargetCurrentDisplayPanelModel = Selectors
+        .Create<RootState, RunModel, ImageTargetCurrentDisplayModel>(RunSelectors.SelectRun, run => new ImageTargetCurrentDisplayModel
         {
             RunId = run.RunId,
             Height = run.Inputs.ImageInputs.Height,

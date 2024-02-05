@@ -1,6 +1,4 @@
-@using Radiate.Engines.Entities
-@using Radiate.Client.Services.Store.Actions
-@inherits StoreComponent<EngineModel>
+@inherits StoreComponent<EngineStateTreePanelModel>
 
 <MudTreeView Items="@Model?.TreeItems" Dense="true">
     <ItemTemplate>
@@ -22,6 +20,6 @@
         Dispatch(new SetEngineTreeExpandedAction(Model.RunId, data));
     }
     
-    protected override IObservable<EngineModel> Select() =>
-        Store.Select(EngineSelectors.SelectEngineModel);
+    protected override IObservable<EngineStateTreePanelModel> Select() =>
+        Store.Select(EngineSelectors.SelectEngineTreePanelModel);
 }

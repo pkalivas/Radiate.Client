@@ -5,7 +5,7 @@
 @using Radiate.Client.Services.Store.Actions
 @using Radiate.Client.Services.Store.Models
 @using Radiate.Client.Services.Store.Selections
-@inherits StoreComponent<EngineControlModel>
+@inherits StoreComponent<RunControlPanelModel>
 
 <div class="d-flex justify-content-between mt-3">
 	<div class="align-items-center w-75 pr-4">
@@ -108,5 +108,5 @@
     
     private void Pause() => Store.Dispatch(new PauseEngineRunAction(Model.RunId));
     
-    protected override IObservable<EngineControlModel> Select() => Store.Select(EngineSelectors.SelectEngineControl);
+    protected override IObservable<RunControlPanelModel> Select() => Store.Select(EngineSelectors.SelectRunControlPanelModel);
 }

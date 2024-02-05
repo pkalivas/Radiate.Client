@@ -9,8 +9,8 @@ namespace Radiate.Client.Services.Store.Selections;
 
 public static class EngineSelectors
 {
-    public static readonly ISelector<RootState, EngineControlModel> SelectEngineControl = Selectors
-        .Create<RootState, RunModel, EngineControlModel>(RunSelectors.SelectRun, run => new EngineControlModel
+    public static readonly ISelector<RootState, RunControlPanelModel> SelectRunControlPanelModel = Selectors
+        .Create<RootState, RunModel, RunControlPanelModel>(RunSelectors.SelectRun, run => new RunControlPanelModel
         {
             RunId = run.RunId,
             IsRunning = run.IsRunning,
@@ -24,13 +24,13 @@ public static class EngineSelectors
             Index = run.Metrics.TryGetValue(MetricNames.Index, out var indexMetric) ? (int)indexMetric.Value : 0
         });
     
-    public static readonly ISelector<RootState, EngineModel> SelectEngineModel = Selectors
-        .Create<RootState, UiModel, RunModel, EngineModel>(UiSelectors.SelectUiState, RunSelectors.SelectRun,
+    public static readonly ISelector<RootState, EngineStateTreePanelModel> SelectEngineTreePanelModel = Selectors
+        .Create<RootState, UiModel, RunModel, EngineStateTreePanelModel>(UiSelectors.SelectUiState, RunSelectors.SelectRun,
             (ui, run) =>
             {
                 if (ui.EngineStateExpanded.TryGetValue(run.RunId, out var engineTree))
                 {
-                    return new EngineModel
+                    return new EngineStateTreePanelModel
                     {
                         RunId = run.RunId,
                         TreeItems = GetItems(run.Outputs.EngineStates, engineTree),
@@ -42,7 +42,7 @@ public static class EngineSelectors
                 
                 var expanded = run.Outputs.EngineStates.Keys.ToDictionary(key => key, _ => true);
                 
-                return new EngineModel
+                return new EngineStateTreePanelModel
                 {
                     RunId = run.RunId,
                     TreeItems = GetItems(run.Outputs.EngineStates, expanded),
@@ -53,7 +53,7 @@ public static class EngineSelectors
             });
     
     public static readonly ISelector<RootState, PanelToolbarModel> SelectPanelToolbarModel = Selectors
-        .Create<RootState, EngineControlModel, EngineModel, PanelToolbarModel>(SelectEngineControl, SelectEngineModel,
+        .Create<RootState, RunControlPanelModel, EngineStateTreePanelModel, PanelToolbarModel>(SelectRunControlPanelModel, SelectEngineTreePanelModel,
             (control, model) => new PanelToolbarModel
             {
                 IsRunning = control.IsRunning,

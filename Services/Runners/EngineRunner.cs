@@ -27,7 +27,7 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner
     
     public async Task StartRun(Guid runId, RunInputsModel inputs, CancellationTokenSource cts)
     {
-        var control = _store.Select(EngineSelectors.SelectEngineControl).Subscribe(OnControl);
+        var control = _store.Select(EngineSelectors.SelectRunControlPanelModel).Subscribe(OnControl);
 
         var result = await Fit(inputs, cts, handle =>
         {
@@ -45,5 +45,5 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner
         control.Dispose();
     }
     
-    private void OnControl(EngineControlModel control) => _pause.OnNext(control.IsPaused);
+    private void OnControl(RunControlPanelModel controlPanel) => _pause.OnNext(controlPanel.IsPaused);
 }

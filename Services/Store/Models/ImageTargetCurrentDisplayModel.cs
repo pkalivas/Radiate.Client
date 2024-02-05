@@ -1,6 +1,6 @@
 namespace Radiate.Client.Services.Store.Models;
 
-public record ImageCardPanelModel
+public record ImageTargetCurrentDisplayModel
 {
     public Guid RunId { get; init; } = Guid.NewGuid();
     public int Height { get; set; } = 50;

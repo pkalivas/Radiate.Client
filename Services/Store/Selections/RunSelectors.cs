@@ -38,16 +38,16 @@ public static class RunSelectors
             IsCompleted = run.IsPaused
         });
     
-    public static readonly ISelector<RootState, MetricListModel> SelectCurrentMetricsList = Selectors
-        .Create<RootState, RunModel, MetricListModel>(SelectRun, run => new MetricListModel
+    public static readonly ISelector<RootState, MetricDataGridPanelModel> SelectMetricDataGridPanelModel = Selectors
+        .Create<RootState, RunModel, MetricDataGridPanelModel>(SelectRun, run => new MetricDataGridPanelModel
         {
             RunId = run.RunId,
             SelectedMetrics = run.SelectedMetrics.Select(val => run.Metrics.GetValueOrDefault(val, new MetricValueModel())).ToHashSet(),
             Values = run.Metrics.Values.ToList()
         });
     
-    public static ISelector<RootState, MetricSummaryModel> SelectMetricSummary(string metricName) => Selectors
-        .Create<RootState, RunModel, MetricSummaryModel>(SelectRun, run => new MetricSummaryModel
+    public static ISelector<RootState, MetricSummaryChartPanelModel> SelectMetricSummaryChartPanelModel(string metricName) => Selectors
+        .Create<RootState, RunModel, MetricSummaryChartPanelModel>(SelectRun, run => new MetricSummaryChartPanelModel
         {
             RunId = run.RunId,
             MetricName = metricName,

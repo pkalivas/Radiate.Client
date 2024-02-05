@@ -2,7 +2,7 @@ using Radiate.Engines.Schema;
 
 namespace Radiate.Client.Services.Store.Models;
 
-public record MetricListModel
+public record MetricDataGridPanelModel
 {
     public Guid RunId { get; init; }
     public HashSet<MetricValueModel> SelectedMetrics { get; init; } = new();

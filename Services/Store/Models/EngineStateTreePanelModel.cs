@@ -2,7 +2,7 @@ using Radiate.Engines.Entities;
 
 namespace Radiate.Client.Services.Store.Models;
 
-public record EngineModel
+public record EngineStateTreePanelModel
 {
     public Guid RunId { get; init; }
     public HashSet<TreeItemData<EngineState>> TreeItems { get; init; } = new();

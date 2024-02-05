@@ -1,6 +1,4 @@
-@using Radiate.Client.Services.Store.Actions
-@inherits StoreComponent<ImageCardPanelModel>
-
+@inherits StoreComponent<ImageTargetCurrentDisplayModel>
 
 <div class="mt-3 mb-3">
     <MudGrid>
@@ -28,10 +26,6 @@
 
 @code {
 
-    protected override IObservable<ImageCardPanelModel> Select() => Store.Select(ImageSelectors.GetImageCardPanelModel);
-    
-    private void TargetImageChanged(ImageEntity image)
-    {
-        Dispatch(new SetTargetImageAction(Model.RunId, image));
-    }
+    protected override IObservable<ImageTargetCurrentDisplayModel> Select() => Store.Select(ImageSelectors.SelectTargetCurrentDisplayPanelModel);
+
 }

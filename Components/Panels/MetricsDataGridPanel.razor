@@ -1,11 +1,4 @@
-@using System.Reactive.Linq
-@using Radiate.Engines.Schema
-@using System.Collections.ObjectModel
-@using System.Collections.Specialized
-@using Radiate.Client.Services.Store.Actions
-@using System.Collections
-@inherits StoreComponent<MetricListModel>
-
+@inherits StoreComponent<MetricDataGridPanelModel>
 
 <MudDataGrid Dense="true"
              Elevation="0"
@@ -28,8 +21,8 @@
 
 @code {
 
-    protected override IObservable<MetricListModel> Select() =>
-        Store.Select(RunSelectors.SelectCurrentMetricsList);
+    protected override IObservable<MetricDataGridPanelModel> Select() =>
+        Store.Select(RunSelectors.SelectMetricDataGridPanelModel);
 
     private string FormatDuration(TimeSpan duration) => duration.ToString("mm\\:ss\\:ffff");
 

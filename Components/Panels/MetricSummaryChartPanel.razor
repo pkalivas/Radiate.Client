@@ -1,4 +1,4 @@
-@inherits StoreComponent<MetricSummaryModel>
+@inherits StoreComponent<MetricSummaryChartPanelModel>
 
 @if (Model != null)
 {
@@ -66,7 +66,6 @@
             </div>
         </div>
     </div>
-    
 }
 
 
@@ -75,7 +74,7 @@
     [Parameter] public string? ChartType { get; set; }
     [Parameter] public int? ChartHeight { get; set; }
     
-    protected override IObservable<MetricSummaryModel> Select() =>
-        Store.Select(RunSelectors.SelectMetricSummary(MetricName));
+    protected override IObservable<MetricSummaryChartPanelModel> Select() =>
+        Store.Select(RunSelectors.SelectMetricSummaryChartPanelModel(MetricName));
     
 }

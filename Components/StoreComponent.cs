@@ -18,7 +18,11 @@ public abstract class StoreComponent<TModel> : ComponentBase, IDisposable
         _subscriptions.Add(Select()
             .Where(val => val != null)
             .DistinctUntilChanged()
-            .Subscribe(async val => await SetModel(val)));
+            .Subscribe(async val => await InvokeAsync(() =>
+            {
+	            Model = val;
+	            StateHasChanged();
+            })));
         OnSubscribed();
         return base.OnInitializedAsync();
     }
@@ -27,8 +31,8 @@ public abstract class StoreComponent<TModel> : ComponentBase, IDisposable
     
     protected virtual void OnSubscribed() { }
     
-    protected void Dispatch<TAction>(TAction action) where TAction : IAction =>
-        Store.Dispatch(action);
+    protected void Dispatch<TAction>(TAction action)
+	    where TAction : IAction => Store.Dispatch(action);
 
     protected void Subscribe<TAction>(Action<TAction> callback)
     {
@@ -36,16 +40,6 @@ public abstract class StoreComponent<TModel> : ComponentBase, IDisposable
             .OnAction<TAction>()
             .Select(pair => pair.Action)
             .Subscribe(callback));
-    }
-
-    private async Task SetModel(TModel model)
-    {
-        await InvokeAsync(() =>
-        {
-            Model = model;
-            StateHasChanged();
-                
-        });
     }
 
     public void Dispose()

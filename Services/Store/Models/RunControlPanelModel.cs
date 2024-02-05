@@ -1,6 +1,6 @@
 namespace Radiate.Client.Services.Store.Models;
 
-public record EngineControlModel
+public record RunControlPanelModel
 {
     public Guid RunId { get; init; }
     public bool IsStarted { get; init; }

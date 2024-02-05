@@ -5,7 +5,6 @@ namespace Radiate.Client.Services.Store.Models.Projections;
 public record RunControlPanelProjection
 {
     public Guid RunId { get; init; }
-    public bool IsStarted { get; init; }
     public bool IsRunning { get; init; }
     public bool IsPaused { get; init; }
     public bool IsCompleted { get; init; }

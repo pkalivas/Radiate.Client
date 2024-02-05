@@ -1,4 +1,3 @@
-using Radiate.Client.Services.Store.Models;
 using Radiate.Client.Services.Store.Models.Projections;
 using Radiate.Client.Services.Store.Models.States;
 using Reflow.Interfaces;

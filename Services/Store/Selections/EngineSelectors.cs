@@ -29,19 +29,9 @@ public static class EngineSelectors
         .Create<RootState, UiState, RunState, EngineTreePanelProjection>(UiSelectors.SelectUiState, 
             RunSelectors.SelectRun, (ui, run) =>
             {
-                if (ui.EngineStateExpanded.TryGetValue(run.RunId, out var engineTree))
-                {
-                    return new EngineTreePanelProjection
-                    {
-                        RunId = run.RunId,
-                        TreeItems = TreeItemMapper.GetItems(run.Outputs.EngineStates, engineTree),
-                        Expanded = engineTree,
-                        Inputs = run.Inputs,
-                        CurrentEngineState = run?.Outputs?.EngineStates.FirstOrDefault().Value
-                    };
-                }
-                
-                var expanded = run.Outputs.EngineStates.Keys.ToDictionary(key => key, _ => true);
+                var expanded = ui.EngineStateExpanded.TryGetValue(run.RunId, out var engineTree)
+                    ? engineTree
+                    : run.Outputs.EngineStates.Keys.ToDictionary(key => key, _ => true);
                 
                 return new EngineTreePanelProjection
                 {

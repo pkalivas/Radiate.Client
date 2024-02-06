@@ -35,6 +35,15 @@ public static class RootReducer
     
     private static RootState AddOutput(RootState state, SetRunOutputsAction action)
     {
+        // var t = state with
+        // {
+        //     Runs = state.Runs.Values
+        //         .Where(run => run.RunId != state.CurrentRunId)
+        //         .Concat(new[] { action.EngineOutputs })
+        //         .ToDictionary(key => key.Key, value => value.Value)
+        // };
+        //
+        
         var outputs = action.EngineOutputs;
         state.Runs[state.CurrentRunId] = state.Runs[state.CurrentRunId] with
         {

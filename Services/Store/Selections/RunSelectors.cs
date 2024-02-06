@@ -41,6 +41,4 @@ public static class RunSelectors
                 .OrderByDescending(val => val.Index)
                 .ToList()
         });
-
-
 }

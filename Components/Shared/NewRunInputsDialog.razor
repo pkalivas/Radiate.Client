@@ -51,9 +51,10 @@
     </DialogActions>
 </MudDialog>
 
-@code {
+@code 
+{
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-    
+
     private RunState RunState { get; set; }
 
     protected override void OnInitialized()
@@ -64,30 +65,25 @@
 
     void Cancel() => MudDialog.Cancel();
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(RunState)); 
+    void Submit() => MudDialog.Close(DialogResult.Ok(RunState));
 
     private void OnModelChange(IEnumerable<string> model)
     {
         var selectedModel = model.First();
         if (RunState.Inputs.ModelType == "Image" && selectedModel != "Image")
         {
-	        RunState.Inputs.DataSetType = "XOR";
+            RunState.Inputs.DataSetType = "XOR";
         }
 
         RunState.Inputs.ModelType = model.First();
         if (RunState.Inputs.ModelType == "Image")
         {
-	        RunState.Inputs.DataSetType = "Polygon";
+            RunState.Inputs.DataSetType = "Polygon";
         }
     }
-    
+
     private void OnDataSetChange(IEnumerable<string> value)
     {
         RunState.Inputs.DataSetType = value.First();
-    }
-
-    private void TargetImageChanged(ImageEntity image)
-    {
-        RunState.Inputs.ImageInputs.TargetImage = image;
     }
 }

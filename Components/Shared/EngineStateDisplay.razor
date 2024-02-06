@@ -36,7 +36,8 @@ else
     </div>
 }
 
-@code {
+@code 
+{
     [Parameter] public EngineState? EngineState { get; set; }
     
     private static string GetIcon(EngineState state) => state.State switch

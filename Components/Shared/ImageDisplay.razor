@@ -9,7 +9,8 @@ else
     <MudImage Fluid="true" Class="rounded" Title="@ImageTitle" Src="@ImageUrl" Height="@ImageHeight" Width="@ImageWidth"/>
 }
 
-@code {
+@code 
+{
     [Parameter] public string? ImageTitle { get; set; }
     [Parameter] public string? ImageUrl { get; set; }
     [Parameter] public int? ImageHeight { get; set; } = 250;

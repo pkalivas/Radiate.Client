@@ -10,7 +10,7 @@ public static class RootReducer
 {
     public static IEnumerable<On<RootState>> CreateReducers() => new List<On<RootState>>
     {
-        Reducer.On<NavigateToRunAction, RootState>((state, action) => state with { CurrentRunId = action.RunId }),
+        Reducer.On<NavigateToRunAction, RootState>(NavigateToRun),
         Reducer.On<RunCreatedAction, RootState>(AddRun),
         Reducer.On<SetRunOutputsAction, RootState>(AddOutput),
         Reducer.On<EngineStoppedAction, RootState>(RunCompleted),
@@ -22,6 +22,15 @@ public static class RootReducer
         Reducer.On<CancelEngineRunAction, RootState>(CancelEngine),
         Reducer.On<SetRunInputsAction, RootState>(SetRunInputs),
         Reducer.On<SetTargetImageAction, RootState>(SetTargetImage)
+    };
+
+    private static RootState NavigateToRun(RootState state, NavigateToRunAction action) => state with
+    {
+        CurrentRunId = action.RunId,
+        UiState = state.UiState with
+        {
+            IsSidebarOpen = false
+        }
     };
     
     private static RootState AddOutput(RootState state, SetRunOutputsAction action)

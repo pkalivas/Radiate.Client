@@ -11,8 +11,8 @@
     </ItemTemplate>
 </MudTreeView>
 
-@code {
-    
+@code 
+{
     private void OnSelectedValueChanged(TreeItemData<EngineState> context)
     {
         var data = Model.TreeItems.ToDictionary(key => key.Data.EngineId, value => value.IsExpanded);

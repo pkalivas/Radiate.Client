@@ -68,9 +68,10 @@
 				           Size="Size.Small"
 				           Variant="Variant.Filled"
 				           Color="Color.Primary"
-				           Disabled="@(!Model.IsRunning || (Model.IsCompleted || Model.IsPaused))"
+				           Disabled="@(!Model.IsRunning || Model.IsCompleted || Model.IsPaused)"
 				           OnClick="@Pause">
-					<MudIcon Icon="@Icons.Material.Filled.Pause" Size="Size.Small"/>
+					<MudIcon Icon="@Icons.Material.Filled.Pause"
+					         Size="Size.Small"/>
 					Pause
 				</MudButton>
 			</div>

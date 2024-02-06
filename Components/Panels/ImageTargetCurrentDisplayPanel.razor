@@ -23,9 +23,8 @@
     </MudGrid>
 </div>
 
-@code {
-
+@code 
+{
     protected override IObservable<ImageTargetCurrentDisplayPanelProjection> Select() => 
         Store.Select(ImageSelectors.SelectTargetCurrentDisplayPanelModel);
-
 }

@@ -1,12 +1,9 @@
 @inherits StoreComponent<double[]>
 
-@* <div class="mx-2"> *@
-    <Chart Values="@Model" Type="line" Height="@(Height ?? 200)" ShowGrid="true"/>
-@* </div> *@
+<Chart Values="@Model" Type="line" Height="@(Height ?? 200)" ShowGrid="true"/>
 
-
-@code {
-    
+@code 
+{
     [Parameter] public int? Height { get; set; }
 
     protected override IObservable<double[]> Select() =>

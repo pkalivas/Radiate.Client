@@ -23,8 +23,8 @@
     }
 </MudList>
 
-@code {
-
+@code 
+{
     protected override IObservable<RunListPanelProjection> Select() => Store.Select(RunSelectors.SelectRunListPanelProjection);
     
     private void OnSelect(RunState run)

@@ -1,5 +1,7 @@
 ﻿<MudNavMenu>
-    <MudNavLink Icon="@Icons.Material.Outlined.ModelTraining" Href="/" Match="NavLinkMatch.All">Runs</MudNavLink>
+    <MudNavLink Icon="@Icons.Material.Filled.ModelTraining" Href="/" Match="NavLinkMatch.All">
+        Runs
+    </MudNavLink>
     <MudDivider/>
     @if (IsOpen)
     {
@@ -9,8 +11,7 @@
     }
 </MudNavMenu>
 
-@code {
-    
+@code 
+{
     [Parameter] public bool IsOpen { get; set; }
-    
 }

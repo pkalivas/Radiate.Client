@@ -9,7 +9,8 @@
     </div>
 </div>
 
-@code {
+@code
+{
     [Parameter] public string Title { get; set; }
 
     protected override IObservable<PanelToolbarProjection> Select() => Store.Select(EngineSelectors.SelectPanelToolbarModel);

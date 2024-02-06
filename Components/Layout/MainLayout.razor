@@ -8,7 +8,7 @@
 
 <MudLayout>
     <MudAppBar Dense="true" >
-        <MudButton OnClick="@(() => Store.Dispatch(new LayoutChangedAction {IsSidebarOpen = !_drawerOpen}))">
+        <MudButton OnClick="@(() => Store.Dispatch(new LayoutChangedAction { IsSidebarOpen = !_drawerOpen }))">
             <MudIcon Icon="@Icons.Material.Filled.Menu"/>
         </MudButton>
         Radiate Client
@@ -29,7 +29,8 @@
     </MudMainContent>
 </MudLayout>
 
-@code {
+@code 
+{
     bool _drawerOpen = true;
     
     [Inject] private IStore<RootState> Store { get; set; }

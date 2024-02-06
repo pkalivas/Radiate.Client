@@ -3,7 +3,7 @@
 @inject NavigationManager NavigationManager
 @inherits StoreComponent<RootState>
 
-<MudTable OnRowClick="@((TableRowClickEventArgs<RunState> args) => OnSelect(args))" Items="@Model?.Runs.Values.ToList()" Class="ml-4 mr-4 px-8">
+<MudTable OnRowClick="@((TableRowClickEventArgs<RunState> args) => OnSelect(args))" Items="@Model?.Runs.Values.ToList()" Class="mx-4 px-8">
     <HeaderContent>
         <MudTh></MudTh>
         <MudTh>Model</MudTh>
@@ -16,13 +16,13 @@
     </RowTemplate>
 </MudTable>
 
-@code {
-    
+@code
+{
+    protected override IObservable<RootState> Select() => Store.Select(state => state);
+
     private void OnSelect(TableRowClickEventArgs<RunState> run)
     {
         Dispatch(new NavigateToRunAction(run.Item.RunId));
         NavigationManager.NavigateTo($"/runs/{run.Item.RunId}/{run.Item.Inputs.ModelType.ToLower()}");
     }
-
-    protected override IObservable<RootState> Select() => Store.Select(state => state);
 }

@@ -17,22 +17,25 @@ using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Runners;
 
-public class TreeRegressionRunner : EngineRunner<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>>
+public class TreeRegressionRunner : MLEngineRunner<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>>
 {
     public TreeRegressionRunner(IStore<RootState> store) : base(store) { }
+    
+    protected override async Task<TensorFrame> LoadDataSet()
+    {
+        var dataSet = await new RegressionFunction().LoadDataSet();
+        var (features, targets) = dataSet;
+
+        return new TensorFrame(features, targets);
+    }
 
     protected override async Task<EngineOutput<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>>> Fit(RunInputsState inputs,
         CancellationTokenSource cts,
         Action<EngineOutput<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>>> onEngineComplete)
     {
-        var dataSet = await new RegressionFunction().LoadDataSet();
-        var (features, targets) = dataSet;
-
-        var data = new TensorFrame(features, targets);
-
         var problem = Architect.Tree<float>()
             .ToCodex()
-            .ToRegressionProblem(data);
+            .ToRegressionProblem(Frame);
         
         var steepener = Engine.Genetic(problem).Async()
             .Setup(TreeSetup.Expression<float>())
@@ -68,5 +71,5 @@ public class TreeRegressionRunner : EngineRunner<GeneticEpoch<TreeGene<float>>, 
             Type = typeof(Tree<float>).FullName,
             Trees = output.Model.Trees.Select(tree => (object)tree).ToList()
         }
-    };   
+    };
 }

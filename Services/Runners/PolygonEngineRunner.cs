@@ -19,6 +19,8 @@ public class PolygonEngineRunner : EngineRunner<GeneticEpoch<PolygonGene>, Polyg
 {
     public PolygonEngineRunner(Reflow.Interfaces.IStore<RootState> store) : base(store) { }
 
+    protected override Task OnStartRun(RunInputsState inputs) { return Task.CompletedTask; }
+
     protected override async Task<EngineOutput<GeneticEpoch<PolygonGene>, PolygonChromosome>> Fit(RunInputsState inputs, 
         CancellationTokenSource cts,
         Action<EngineOutput<GeneticEpoch<PolygonGene>, PolygonChromosome>> onEngineComplete)

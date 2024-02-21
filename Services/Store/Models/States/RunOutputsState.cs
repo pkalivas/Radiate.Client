@@ -1,5 +1,6 @@
 using Radiate.Client.Services.Store.Models.Projections;
 using Radiate.Engines.Entities;
+using Radiate.Engines.Harness;
 using Radiate.Extensions.Evolution.Architects.Groups;
 
 namespace Radiate.Client.Services.Store.Models.States;
@@ -8,12 +9,12 @@ public record RunOutputsState
 {
     public string EngineState { get; set; } = "";
     public string EngineId { get; set; } = "";
-    // public MetricSet Metrics { get; init; } = new();
     public Dictionary<string, MetricValueModel> Metrics { get; init; } = new();
     public Dictionary<string, EngineState> EngineStates { get; init; } = new();
     public ImageOutput ImageOutput { get; set; } = new();
     public GraphOutput GraphOutput { get; set; } = new();
     public TreeOutput TreeOutput { get; set; } = new();
+    public ValidationOutput ValidationOutput { get; set; } = new();
 }
 
 public record GraphOutput
@@ -53,4 +54,11 @@ public record TreeOutput
 public record ImageOutput
 {
     public ImageEntity Image { get; set; } = new();
+}
+
+public record ValidationOutput
+{
+    public string LossFunction { get; set; } = "";
+    public BatchSetValidation TrainValidation { get; set; } = new();
+    public BatchSetValidation TestValidation { get; set; } = new();
 }

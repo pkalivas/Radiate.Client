@@ -29,11 +29,14 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
             .Subscribe(HandleOutputs);
     }
     
+    protected abstract Task OnStartRun(RunInputsState inputs);
     protected abstract Task<EngineOutput<TEpoch, T>> Fit(RunInputsState inputs, CancellationTokenSource cts, Action<EngineOutput<TEpoch, T>> onEngineComplete);
     protected abstract RunOutputsState MapToOutput(EngineOutput<TEpoch, T> handle, RunInputsState inputs, bool isLast = false);
     
     public async Task StartRun(Guid runId, RunInputsState inputs, CancellationTokenSource cts)
     {
+        await OnStartRun(inputs);
+        
         var control = _store.Select(state => state.Runs[runId].IsPaused)
             .Subscribe(isPaused => _pause.OnNext(isPaused));
 

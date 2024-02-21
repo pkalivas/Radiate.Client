@@ -20,4 +20,20 @@ public static class StateOptions
         "Circle",
         "Polygon"
     };
+    
+    public static List<string> GetModelDataSets(string modelName) => modelName switch
+    {
+        ModelTypes.Graph =>
+        [
+            DataSetTypes.Xor,
+            DataSetTypes.Regression
+        ],
+        ModelTypes.Tree => [DataSetTypes.Regression],
+        ModelTypes.Image =>
+        [
+            DataSetTypes.Polygon,
+            DataSetTypes.Circle
+        ],
+        _ => new()
+    };
 }

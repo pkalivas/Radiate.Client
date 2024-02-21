@@ -26,19 +26,11 @@
                                T="string"
                                Label="DataSet"
                                Variant="Variant.Text">
-                        @if (RunState.Inputs.ModelType == "Image")
+                        
+                        @foreach (var data in StateOptions.GetModelDataSets(RunState.Inputs.ModelType))
                         {
-                            @foreach (var data in StateOptions.ImageDataSetNames)
-                            {
-                                <MudSelectItem Value="@data"/>
-                            }
-                        }
-                        else
-                        {
-                            @foreach (var data in StateOptions.DataSetNames)
-                            {
-                                <MudSelectItem Value="@data"/>
-                            }
+                            <MudSelectItem Value="@data"/>
+
                         }
                     </MudSelect>
                 </div>
@@ -70,16 +62,10 @@
     private void OnModelChange(IEnumerable<string> model)
     {
         var selectedModel = model.First();
-        if (RunState.Inputs.ModelType == "Image" && selectedModel != "Image")
-        {
-            RunState.Inputs.DataSetType = "XOR";
-        }
-
+        var dataSets = StateOptions.GetModelDataSets(selectedModel);
+        
+        RunState.Inputs.DataSetType = dataSets.First();
         RunState.Inputs.ModelType = model.First();
-        if (RunState.Inputs.ModelType == "Image")
-        {
-            RunState.Inputs.DataSetType = "Polygon";
-        }
     }
 
     private void OnDataSetChange(IEnumerable<string> value)

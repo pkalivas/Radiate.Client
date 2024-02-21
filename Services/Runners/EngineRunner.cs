@@ -13,6 +13,8 @@ namespace Radiate.Client.Services.Runners;
 
 public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEpoch
 {
+    private static TimeSpan BufferTime => TimeSpan.FromMilliseconds(500);
+    
     private readonly IStore<RootState> _store;
     private readonly IDisposable _outputSubscription;
     private readonly BehaviorSubject<bool> _pause = new(false);
@@ -22,7 +24,7 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
     {
         _store = store;
         _outputSubscription = _outputs
-            .Buffer(TimeSpan.FromMilliseconds(500))
+            .Buffer(BufferTime)
             .Where(set => set.Any())
             .Subscribe(HandleOutputs);
     }
@@ -48,7 +50,7 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
         _outputs.OnNext(MapToOutput(result, inputs, true));
         _store.Dispatch(new EngineStoppedAction());
         
-        Thread.Sleep(TimeSpan.FromMilliseconds(500));
+        Thread.Sleep(BufferTime);
         
         _pause.OnCompleted();
         _outputs.OnCompleted();

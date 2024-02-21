@@ -1,4 +1,4 @@
-using Radiate.Client.Services.Store.Models.States;
+using Radiate.Client.Domain.Store.Models.States;
 
 namespace Radiate.Client.Services.Actors.Commands;
 

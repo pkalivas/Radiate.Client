@@ -1,6 +1,9 @@
 ﻿@page "/"
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
+@using Radiate.Client.Domain.Store
+@using Radiate.Client.Domain.Store.Actions
+@using Radiate.Client.Domain.Store.Models.States
 @inherits StoreComponent<RootState>
 
 <MudTable OnRowClick="@((TableRowClickEventArgs<RunState> args) => OnSelect(args))" Items="@Model?.Runs.Values.ToList()" Class="mx-4 px-8">

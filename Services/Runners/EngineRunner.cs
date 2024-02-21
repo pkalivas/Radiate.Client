@@ -1,9 +1,9 @@
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using Radiate.Client.Domain.Store;
+using Radiate.Client.Domain.Store.Actions;
+using Radiate.Client.Domain.Store.Models.States;
 using Radiate.Client.Services.Runners.Interfaces;
-using Radiate.Client.Services.Store;
-using Radiate.Client.Services.Store.Actions;
-using Radiate.Client.Services.Store.Models.States;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Interfaces;
 using Radiate.Engines.Schema;

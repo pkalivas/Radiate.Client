@@ -1,5 +1,5 @@
 using System.Collections;
-using Radiate.Client.Services.Store.Models;
+using Radiate.Client.Domain.Store.Models;
 using Radiate.Optimizers.Evolution.Genome.Interfaces;
 using Radiate.States;
 using SixLabors.ImageSharp;

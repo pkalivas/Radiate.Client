@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Radiate.Client.Components.Panels;
-using Radiate.Client.Services.Store;
-using Radiate.Client.Services.Store.Actions;
+using Radiate.Client.Domain.Store;
+using Radiate.Client.Domain.Store.Actions;
 using Reflow.Interfaces;
 
 namespace Radiate.Client.Components;

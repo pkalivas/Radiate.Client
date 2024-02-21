@@ -1,0 +1,10 @@
+@page "/runs/{runId:guid}/test/{modelType}"
+@rendermode InteractiveServer
+@* @inherits StoreComponent<> *@
+
+@code {
+    [Parameter] public Guid RunId { get; set; }
+    [Parameter] public string ModelType { get; set; }
+    
+    
+}

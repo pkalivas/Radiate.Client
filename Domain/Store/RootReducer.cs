@@ -1,5 +1,6 @@
 using Radiate.Client.Domain.Store.Actions;
 using Radiate.Client.Domain.Store.Models.States;
+using Radiate.Client.Domain.Templates;
 using Radiate.Engines.Schema;
 using Reflow.Reducers;
 
@@ -50,7 +51,8 @@ public static class RootReducer
     private static RootState AddRun(RootState state, RunCreatedAction action)
     {
         state.Runs[action.Run.RunId] = action.Run with { Index = state.Runs.Count };
-        return state with { Runs = state.Runs };
+        state.UiState.RunTemplates[action.Run.RunId] = new GraphTemplate();
+        return state with { Runs = state.Runs, UiState = state.UiState };
     }
     
     private static RootState RunCompleted(RootState state, EngineStoppedAction action)

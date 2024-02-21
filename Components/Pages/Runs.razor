@@ -1,10 +1,36 @@
 @page "/runs/{runId:guid}/test/{modelType}"
 @rendermode InteractiveServer
-@* @inherits StoreComponent<> *@
+@using Radiate.Client.Domain.Templates
+@using Radiate.Client.Domain.Store.Selections
+@using Radiate.Client.Domain.Store.Schema
+@inherits StoreComponent<IRunTemplate>
+
+<MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
+    @foreach (var item in Model.UI.Components)
+    {
+        <PanelDisplay @key="item.Id" Panel="item"/>
+        @* @if (item is GridTemplate grid) *@
+        @* { *@
+        @*     <MudGrid @key="item.Id"> *@
+        @*         @foreach (var panel in grid.Panels) *@
+        @*         { *@
+        @*             if (panel is GridItemPanelTemplate gridItem) *@
+        @*             { *@
+        @*                 <MudItem md="@gridItem.Cols" @key="gridItem.Id"> *@
+        @*                     <MudPaper Elevation="2" Class="pa-2"> *@
+        @*                         <PanelDisplay PanelName="@gridItem.PanelName"/> *@
+        @*                     </MudPaper> *@
+        @*                 </MudItem> *@
+        @*             } *@
+        @*         } *@
+        @*     </MudGrid> *@
+        @* } *@
+    }
+</MudContainer>
 
 @code {
     [Parameter] public Guid RunId { get; set; }
     [Parameter] public string ModelType { get; set; }
-    
-    
+
+    protected override IObservable<IRunTemplate> Select() => Store.Select(UiSelectors.SelectRunTemplate);
 }

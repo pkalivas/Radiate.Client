@@ -69,7 +69,9 @@
             var run = (RunState) result.Data;
             Store.Dispatch(new RunCreatedAction(run));
             Store.Dispatch(new NavigateToRunAction(run.RunId));
-            NavigationManager.NavigateTo($"/runs/{run.RunId}/{run.Inputs.ModelType.ToLower()}");
+            NavigationManager.NavigateTo($"/runs/{run.RunId}/test/{run.Inputs.ModelType.ToLower()}");
+
+            // NavigationManager.NavigateTo($"/runs/{run.RunId}/{run.Inputs.ModelType.ToLower()}");
         }
     }
 }

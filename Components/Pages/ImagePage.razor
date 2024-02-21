@@ -1,7 +1,6 @@
 @page "/runs/{runId:guid}/image"
 @rendermode InteractiveServer
-@* @inject IDialogService DialogService *@
-@* @inject NavigationManager NavigationManager *@
+@using Radiate.Client.Services.Store.Schema
 @inherits PageComponent
 
 <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
@@ -116,26 +115,6 @@
 @code {
     
     [Parameter] public Guid RunId { get; set; }
-    
-    // private async Task OpenEngineTree()
-    // {
-    //     var options = new DialogOptions
-    //     {
-    //         MaxWidth = MaxWidth.Medium,
-    //         FullWidth = true,
-    //         CloseOnEscapeKey = true,
-    //     };
-    //
-    //     var dialogRef = await DialogService.ShowAsync<EngineTreePanel>("Engine Tree", options);
-    //     await dialogRef.Result;
-    // }
-    //
-    // private async Task CopyRun()
-    // {
-    //     var newRunId = Guid.NewGuid();
-    //     // Dispatch(new NavigateToRunAction(run.Item.RunId));
-    //     NavigationManager.NavigateTo($"/runs/{RunId}/image");
-    // }
 
-    protected override string ModelType => "image";
+    protected override string ModelType => ModelTypes.Image.ToLower();
 }

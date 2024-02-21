@@ -1,6 +1,7 @@
 @page "/runs/{runId:guid}/tree"
 @rendermode InteractiveServer
-@inject IDialogService DialogService
+@using Radiate.Client.Services.Store.Schema
+@inherits PageComponent
 
 <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
     <MudGrid>
@@ -114,17 +115,6 @@
 @code 
 {
     [Parameter] public Guid RunId { get; set; }
-    
-    private async Task OpenEngineTree()
-    {
-        var options = new DialogOptions
-        {
-            MaxWidth = MaxWidth.Medium,
-            FullWidth = true,
-            CloseOnEscapeKey = true,
-        };
 
-        var dialogRef = await DialogService.ShowAsync<EngineTreePanel>("Engine Tree", options);
-        await dialogRef.Result;
-    }
+    protected override string ModelType => ModelTypes.Tree.ToLower();
 }

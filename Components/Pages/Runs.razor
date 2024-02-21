@@ -6,26 +6,38 @@
 @inherits StoreComponent<IRunTemplate>
 
 <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
-    @foreach (var item in Model.UI.Components)
-    {
-        <PanelDisplay @key="item.Id" Panel="item"/>
-        @* @if (item is GridTemplate grid) *@
-        @* { *@
-        @*     <MudGrid @key="item.Id"> *@
-        @*         @foreach (var panel in grid.Panels) *@
-        @*         { *@
-        @*             if (panel is GridItemPanelTemplate gridItem) *@
-        @*             { *@
-        @*                 <MudItem md="@gridItem.Cols" @key="gridItem.Id"> *@
-        @*                     <MudPaper Elevation="2" Class="pa-2"> *@
-        @*                         <PanelDisplay PanelName="@gridItem.PanelName"/> *@
-        @*                     </MudPaper> *@
-        @*                 </MudItem> *@
-        @*             } *@
-        @*         } *@
-        @*     </MudGrid> *@
-        @* } *@
-    }
+    <MudGrid>
+        <MudItem md="8">
+            <MudExpansionPanels Dense="true" Elevation="2" MultiExpansion="true">
+                @foreach (var panel in Model.UI.LeftSideAccordion.ExpansionPanels)
+                {
+                    <MudExpansionPanel IsExpanded="@panel.IsOpen" @key="panel.Id">
+                        <TitleContent>
+                            @panel.Title
+                        </TitleContent>
+                        <ChildContent>
+                            <PanelDisplay PanelName="@panel.ExpansionPanel.Name"/>
+                        </ChildContent>
+                    </MudExpansionPanel>
+                }
+            </MudExpansionPanels>
+        </MudItem>
+        <MudItem md="4">
+            <MudExpansionPanels Dense="true" Elevation="2" MultiExpansion="true">
+                @foreach (var panel in Model.UI.RightSideAccordion.ExpansionPanels)
+                {
+                    <MudExpansionPanel IsExpanded="@panel.IsOpen" @key="panel.Id">
+                        <TitleContent>
+                            @panel.Title
+                        </TitleContent>
+                        <ChildContent>
+                            <PanelDisplay PanelName="@panel.ExpansionPanel.Name"/>
+                        </ChildContent>
+                    </MudExpansionPanel>
+                }
+            </MudExpansionPanels>
+        </MudItem>
+    </MudGrid>
 </MudContainer>
 
 @code {

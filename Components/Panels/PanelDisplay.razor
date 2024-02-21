@@ -2,66 +2,16 @@
 @using Radiate.Client.Domain.Store.Schema
 
 
-@* @switch (PanelName) *@
-@* { *@
-@*     case nameof(GraphInputsPanel): *@
-@*         <GraphInputsPanel/> *@
-@*         break; *@
-@*     default: *@
-@*         <div>Panel not found</div> *@
-@*         break; *@
-@* } *@
-
-@* @if (Panel.ComponentType is ) *@
-
-@if (Panel.Components.Any())
+@switch (PanelName)
 {
-    foreach (var component in Panel.Components)
-    {
-        switch (component)
-        {
-            case GridTemplate _:
-                <MudGrid @key="component.Id">
-                    <PanelDisplay Panel="component"></PanelDisplay>
-                </MudGrid>
-                break;
-            case ExpansionPanelTemplate _:
-                <MudExpansionPanels Dense="true" Elevation="2" MultiExpansion="true" @key="component.Id">
-                    <PanelDisplay Panel="component"></PanelDisplay>
-                </MudExpansionPanels>
-                break;
-            case GridItemPanelTemplate item:
-                <MudItem md="@item.Cols" @key="component.Id">
-                    <PanelDisplay Panel="component"></PanelDisplay>
-                </MudItem>
-                break;
-            case ExpansionPanelItemTemplate expansionItem:
-                <MudExpansionPanel Dense="true" Elevation="2" IsExpanded="@expansionItem.IsExpanded" @key="component.Id">
-                    <PanelDisplay Panel="component"></PanelDisplay>
-                </MudExpansionPanel>
-                break;
-            default:
-                <div>Component not found</div>
-                break;
-        }
-    }
-}
-else
-{
-    foreach (var panel in Panel.Panels)
-    {
-        switch (panel.Name)
-        {
-            case nameof(GraphInputsPanel):
-                <GraphInputsPanel @key="panel.Id"/>
-                break;
-            default:
-                <div>Panel not found</div>
-                break;
-        }
-    }
+    case nameof(GraphInputsPanel):
+        <GraphInputsPanel/>
+        break;
+    default:
+        <div>Panel not found</div>
+        break;
 }
 
 @code {
-    [Parameter] public IPanelTemplate Panel { get; set; }
+    [Parameter] public string PanelName { get; set; }
 }

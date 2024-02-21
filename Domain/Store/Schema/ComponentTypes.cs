@@ -8,4 +8,5 @@ public static class ComponentTypes
     public const string GridItem = "GridItem";
     public const string ExpansionPanel = "ExpansionPanel";
     public const string ExpansionPanelItem = "ExpansionPanelItem";
+    public const string None = "None";
 }

@@ -2,21 +2,44 @@
 @rendermode InteractiveServer
 @using Radiate.Client.Domain.Templates
 @using Radiate.Client.Domain.Store.Selections
-@using Radiate.Client.Domain.Store.Schema
 @inherits StoreComponent<IRunTemplate>
 
 <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
+    <MudGrid>
+        @foreach (var panel in Model.UI.GridList.GridPanels)
+        {
+            <MudItem md="@panel.Cols" @key="@panel.Id">
+                @if (panel.GridPanel.UseToolbar)
+                {
+                    <ToolBar Title="@panel.GridPanel.Title">
+                        <Options></Options>
+                        <ChildContent>
+                            <MudPaper Elevation="2" MaxHeight="@($"{panel.MaxHeight}px")" Class="pa-4">
+                                <PanelDisplay Panel="@panel.GridPanel"/>
+                            </MudPaper>
+                        </ChildContent>
+                    </ToolBar>
+                }
+                else
+                {
+                    <MudPaper Elevation="2" MaxHeight="@($"{panel.MaxHeight}px")" Class="pa-4">
+                        <PanelDisplay Panel="@panel.GridPanel"/>
+                    </MudPaper>   
+                }
+            </MudItem>
+        }
+    </MudGrid>
     <MudGrid>
         <MudItem md="8">
             <MudExpansionPanels Dense="true" Elevation="2" MultiExpansion="true">
                 @foreach (var panel in Model.UI.LeftSideAccordion.ExpansionPanels)
                 {
-                    <MudExpansionPanel IsExpanded="@panel.IsOpen" @key="panel.Id">
+                    <MudExpansionPanel IsExpanded="@panel.IsOpen" Dense="true" MaxHeight="@panel.MaxHeight" @key="panel.Id">
                         <TitleContent>
-                            @panel.Title
+                            <PanelHeaderPanel Title="@panel.Title"/>
                         </TitleContent>
                         <ChildContent>
-                            <PanelDisplay PanelName="@panel.ExpansionPanel.Name"/>
+                            <PanelDisplay Panel="@panel.ExpansionPanel"/>
                         </ChildContent>
                     </MudExpansionPanel>
                 }
@@ -26,12 +49,12 @@
             <MudExpansionPanels Dense="true" Elevation="2" MultiExpansion="true">
                 @foreach (var panel in Model.UI.RightSideAccordion.ExpansionPanels)
                 {
-                    <MudExpansionPanel IsExpanded="@panel.IsOpen" @key="panel.Id">
+                    <MudExpansionPanel IsExpanded="@panel.IsOpen" Dense="true" MaxHeight="@panel.MaxHeight" @key="panel.Id">
                         <TitleContent>
-                            @panel.Title
+                            <PanelHeaderPanel Title="@panel.Title"/>
                         </TitleContent>
                         <ChildContent>
-                            <PanelDisplay PanelName="@panel.ExpansionPanel.Name"/>
+                            <PanelDisplay Panel="@panel.ExpansionPanel"/>
                         </ChildContent>
                     </MudExpansionPanel>
                 }

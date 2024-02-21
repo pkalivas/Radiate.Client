@@ -1,17 +1,35 @@
 @using Radiate.Client.Domain.Templates
 @using Radiate.Client.Domain.Store.Schema
 
-
-@switch (PanelName)
+@if (Panel is ChartPanelTemplate chartPanel)
 {
-    case nameof(GraphInputsPanel):
-        <GraphInputsPanel/>
-        break;
-    default:
-        <div>Panel not found</div>
-        break;
+    <MetricSummaryChartPanel MetricName="@chartPanel.Name" ChartHeight="@chartPanel.Height" ChartType="@chartPanel.ChartType"/>
+}
+else
+{
+    @switch (Panel.Name)
+    {
+        case nameof(GraphInputsPanel):
+            <GraphInputsPanel/>
+            break;
+        case nameof(RunControlPanel):
+            <RunControlPanel/>
+            break;
+        case nameof(ValidationPanel):
+            <ValidationPanel/>
+            break;
+        case nameof(MetricsDataGridPanel):
+            <MetricsDataGridPanel/>
+            break;
+        case nameof(ScorePanel):
+            <ScorePanel/>
+            break;
+        default:
+            <div>Panel not found</div>
+            break;
+    }
 }
 
 @code {
-    [Parameter] public string PanelName { get; set; }
+    [Parameter] public PanelTemplate Panel { get; set; }
 }

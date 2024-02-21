@@ -20,4 +20,15 @@
       <PackageReference Include="System.Reactive" Version="6.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <AdditionalFiles Include="Components\Panels\Shared\Chart.razor" />
+      <AdditionalFiles Include="Components\Panels\Shared\EngineStateDisplay.razor" />
+      <AdditionalFiles Include="Components\Panels\Shared\ImageDisplay.razor" />
+      <AdditionalFiles Include="Components\Panels\Shared\ImageDownload.razor" />
+      <AdditionalFiles Include="Components\Panels\Shared\ImageUpload.razor" />
+      <AdditionalFiles Include="Components\Panels\Shared\NewRunInputsDialog.razor" />
+      <AdditionalFiles Include="Components\Panels\Shared\RunIcon.razor" />
+      <AdditionalFiles Include="Components\Panels\Shared\ToolBar.razor" />
+    </ItemGroup>
+
 </Project>

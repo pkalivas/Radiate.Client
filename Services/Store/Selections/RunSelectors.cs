@@ -22,7 +22,7 @@ public static class RunSelectors
         .Create<RootState, RunState, MetricDataGridPanelProjection>(SelectRun, run => new MetricDataGridPanelProjection
         {
             RunId = run.RunId,
-            Values = run.Metrics.Values.ToList()
+            Values = run.Outputs.Metrics.Values.ToList()
         });
     
     public static ISelector<RootState, MetricSummaryChartPanelProjection> SelectMetricSummaryChartPanelModel(string metricName) => Selectors
@@ -30,7 +30,7 @@ public static class RunSelectors
         {
             RunId = run.RunId,
             MetricName = metricName,
-            Value = run.Metrics.GetValueOrDefault(metricName, new MetricValueModel())
+            Value = run.Outputs.Metrics.GetValueOrDefault(metricName, new MetricValueModel())
         });
 
     public static ISelector<RootState, RunListPanelProjection> SelectRunListPanelProjection => Selectors
@@ -40,5 +40,35 @@ public static class RunSelectors
             Runs = state.Runs.Values
                 .OrderByDescending(val => val.Index)
                 .ToList()
+        });
+    
+    public static ISelector<RootState, ValidationPanelProjection> SelectValidationPanelProjection => Selectors
+        .Create<RootState, RunState, ValidationPanelProjection>(SelectRun, state => new ValidationPanelProjection
+        {
+            RunId = state.RunId,
+            LossFunction = state.Outputs.ValidationOutput.LossFunction,
+            Validations = new()
+            {
+                new ValidationSet
+                {
+                    Name = "Train",
+                    ClassificationAccuracy = state.Outputs.ValidationOutput.TrainValidation.ClassificationAccuracy,
+                    RegressionAccuracy = state.Outputs.ValidationOutput.TrainValidation.RegressionAccuracy,
+                    CategoricalAccuracy = state.Outputs.ValidationOutput.TrainValidation.CategoricalAccuracy,
+                    TotalLoss = state.Outputs.ValidationOutput.TrainValidation.TotalLoss,
+                    Duration = state.Outputs.ValidationOutput.TrainValidation.Duration,
+                    DataPoints = state.Outputs.ValidationOutput.TrainValidation.DataPoints
+                },
+                new ValidationSet
+                {
+                    Name = "Test",
+                    ClassificationAccuracy = state.Outputs.ValidationOutput.TestValidation.ClassificationAccuracy,
+                    RegressionAccuracy = state.Outputs.ValidationOutput.TestValidation.RegressionAccuracy,
+                    CategoricalAccuracy = state.Outputs.ValidationOutput.TestValidation.CategoricalAccuracy,
+                    TotalLoss = state.Outputs.ValidationOutput.TestValidation.TotalLoss,
+                    Duration = state.Outputs.ValidationOutput.TestValidation.Duration,
+                    DataPoints = state.Outputs.ValidationOutput.TestValidation.DataPoints
+                }
+            }
         });
 }

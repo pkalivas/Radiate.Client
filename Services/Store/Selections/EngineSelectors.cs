@@ -20,9 +20,9 @@ public static class EngineSelectors
             StartTime = run.StartTime,
             EndTime = run.IsCompleted ? run.EndTime : DateTime.Now,
             Inputs = run.Inputs,
-            Score = run.Metrics.TryGetValue(MetricNames.Score, out var metric) ? metric.Value : 0f,
-            ElapsedTime = run.Metrics.TryGetValue(MetricNames.Time, out var timeMetric) ? timeMetric.Total : TimeSpan.Zero,
-            Index = run.Metrics.TryGetValue(MetricNames.Index, out var indexMetric) ? (int)indexMetric.Value : 0
+            Score = run.Outputs.Metrics.TryGetValue(MetricNames.Score, out var metric) ? metric.Value : 0f,
+            ElapsedTime = run.Outputs.Metrics.TryGetValue(MetricNames.Time, out var timeMetric) ? timeMetric.Total : TimeSpan.Zero,
+            Index = run.Outputs.Metrics.TryGetValue(MetricNames.Index, out var indexMetric) ? (int)indexMetric.Value : 0
         });
     
     public static readonly ISelector<RootState, EngineTreePanelProjection> SelectEngineTreePanelModel = Selectors

@@ -1,5 +1,30 @@
-<h3>ValidationPanel</h3>
+@using System.Text.Json
+@inherits StoreComponent<ValidationPanelProjection>
 
-@code {
-    
+@if (Model != null)
+{
+    <MudTable Items="@Model?.Validations" Dense="true" Elevation="0">
+        <HeaderContent>
+            <MudTh></MudTh>
+            <MudTh>Classification</MudTh>
+            <MudTh>Categorical</MudTh>
+            <MudTh>Regression</MudTh>
+            <MudTh>@Model.LossFunction</MudTh>
+            <MudTh>Points</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>@context.Name</MudTd>
+            <MudTd>@context.ClassificationAccuracy</MudTd>
+            <MudTd>@context.CategoricalAccuracy</MudTd>
+            <MudTd>@context.RegressionAccuracy</MudTd>
+            <MudTd>@context.TotalLoss</MudTd>
+            <MudTd>@context.DataPoints</MudTd>
+        </RowTemplate>
+    </MudTable>
+}
+
+@code 
+{
+    protected override IObservable<ValidationPanelProjection> Select() =>
+        Store.Select(RunSelectors.SelectValidationPanelProjection);
 }

@@ -1,4 +1,3 @@
-using Radiate.Client.Services.Store.Models.Projections;
 using Radiate.Schema;
 
 namespace Radiate.Client.Services.Store.Models.States;
@@ -14,7 +13,6 @@ public record RunState
     public DateTime EndTime { get; init; }
     public RunInputsState Inputs { get; init; } = new();
     public RunOutputsState Outputs { get; init; } = new();
-    public Dictionary<string, MetricValueModel> Metrics { get; init; } = new();
     public List<float> Scores { get; init; } = new();
     
     public override int GetHashCode()

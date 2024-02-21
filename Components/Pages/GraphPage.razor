@@ -20,7 +20,8 @@
                                            Icon="@Icons.Material.Outlined.AccountTree"
                                            Class="mr-5"/>
                             
-                            <MudIconButton Size="Size.Small"
+                            <MudIconButton OnClick="@(() => CopyRun(RunId))" 
+                                           Size="Size.Small"
                                            Color="Color.Inherit"
                                            Variant="Variant.Text" 
                                            Icon="@Icons.Material.Outlined.ContentCopy"/>
@@ -40,7 +41,7 @@
                     </ChildContent>
                 </ToolBar>
                 
-                <MudExpansionPanel Dense="true" IsInitiallyExpanded="true">
+                <MudExpansionPanel Dense="true" IsInitiallyExpanded="false" IsExpanded="">
                     <TitleContent>
                         <PanelHeaderPanel Title="Validation"/>
                     </TitleContent>

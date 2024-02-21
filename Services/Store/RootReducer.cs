@@ -39,7 +39,6 @@ public static class RootReducer
         state.Runs[state.CurrentRunId] = state.Runs[state.CurrentRunId] with
         {
             Outputs = outputs.Last(),
-            Metrics = outputs.Last().Metrics,
             Scores = state.Runs[state.CurrentRunId].Scores
                 .Concat(outputs.Select(val => (float)val.Metrics[MetricNames.Score].Value))
                 .ToList(),

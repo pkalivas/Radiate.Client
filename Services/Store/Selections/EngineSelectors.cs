@@ -18,7 +18,7 @@ public static class EngineSelectors
             IsCompleted = run.IsCompleted,
             NeedsImageUpload = run.Inputs is {ModelType: "Image", ImageInputs.TargetImage.IsEmpty: true},
             StartTime = run.StartTime,
-            EndTime = run.EndTime,
+            EndTime = run.IsCompleted ? run.EndTime : DateTime.Now,
             Inputs = run.Inputs,
             Score = run.Metrics.TryGetValue(MetricNames.Score, out var metric) ? metric.Value : 0f,
             ElapsedTime = run.Metrics.TryGetValue(MetricNames.Time, out var timeMetric) ? timeMetric.Total : TimeSpan.Zero,

@@ -2,7 +2,7 @@
 
 <div class="mt-3 mb-3">
     <MudGrid>
-        <MudItem md="5">
+        <MudItem md="6">
             @if (!Model.TargetImage.IsEmpty)
             {
                 <div Class="d-flex justify-content-center">
@@ -10,7 +10,7 @@
                 </div>
             }
         </MudItem>
-        <MudItem md="5">
+        <MudItem md="6">
             <div Class="d-flex justify-content-center">
                 <ImageDisplay ImageUrl="@Model?.CurrentImage.ImageDisplay" ImageTitle="Current"/>
             </div>

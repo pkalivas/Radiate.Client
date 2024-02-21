@@ -9,12 +9,12 @@
     private int count = 0;
     protected override void OnSubscribed()
     {
-        Subscribe<object>(act =>
-        {
-            count++;
-            Logger.LogInformation($"Received action {act.GetType().FullName}", act);
-
-            InvokeAsync(StateHasChanged);
-        });
+        // Subscribe<object>(act =>
+        // {
+        //     count++;
+        //     Logger.LogInformation($"Received action {act.GetType().FullName}", act);
+        //
+        //     InvokeAsync(StateHasChanged);
+        // });
     }
 }

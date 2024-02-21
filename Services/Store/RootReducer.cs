@@ -42,21 +42,7 @@ public static class RootReducer
         {
             Outputs = outputs,
             Metrics = MetricMappers.GetMetricValues(outputs.Metrics)
-                .Select(model => (model, state.Runs[state.CurrentRunId].Metrics.GetValueOrDefault(model.Name, new MetricValueModel())))
-                .Select(pair =>
-                {
-                    if (pair.model.MetricType is not (MetricTypes.Description or MetricTypes.Distribution))
-                    {
-                        return pair.model with
-                        {
-                            Distribution = pair.Item2.Distribution
-                                .Concat(new[] { pair.model.Value })
-                                .ToArray(),
-                        };
-                    }
-                    
-                    return pair.model with { };
-                })
+                .Select(model => model)
                 .ToDictionary(key => key.Name, value => value),
             Scores = state.Runs[state.CurrentRunId].Scores
                 .Concat(new[] { outputs.Metrics.Get(MetricNames.Score).Statistics.LastValue })

@@ -57,7 +57,7 @@ public class PolygonEngineRunner : EngineRunner<GeneticEpoch<PolygonGene>, Polyg
         var state = output.GetState(output.EngineId);
         var model = output.GetModel().Draw(500, 500);
         
-        return  new RunOutputsState
+        return new RunOutputsState
         {
             EngineState = state,
             EngineId = output.EngineId,

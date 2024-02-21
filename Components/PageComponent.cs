@@ -9,6 +9,7 @@ namespace Radiate.Client.Components;
 
 public abstract class PageComponent : ComponentBase
 {
+    [Parameter] public Guid RunId { get; set; } = default!;
     [Inject] protected IDialogService DialogService { get; set; } = default!;
     [Inject] protected NavigationManager Navigation { get; set; } = default!;
     [Inject] protected IStore<RootState> Store { get; set; } = default!;

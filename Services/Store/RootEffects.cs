@@ -56,7 +56,6 @@ public class RootEffects : IEffectRegistry<RootState>
     {
         Run = store => store
             .OnAction<SetRunOutputsAction>()
-            .Throttle(TimeSpan.FromMilliseconds(300))
             .Select<(RootState, SetRunOutputsAction), IAction>(pair =>
             {
                 var (state, action) = pair;

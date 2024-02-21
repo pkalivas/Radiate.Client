@@ -5,6 +5,7 @@
                Size="Size.Small"
                Variant="Variant.Filled"
                Color="Color.Tertiary"
+               Disabled="@IsDisabled.Value"
                StartIcon="@Icons.Material.Filled.Download"
                OnClick="@DownloadImage">
         Download
@@ -27,6 +28,7 @@
 
 @code
 {
+    [Parameter] public bool? IsDisabled { get; set; } = false;
     [Parameter] public ImageEntity Image { get; set; }
 
     private async Task DownloadImage()

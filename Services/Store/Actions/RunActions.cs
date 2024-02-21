@@ -9,4 +9,4 @@ public record SetRunOutputsAction( RunOutputsState EngineOutputs) : IAction;
 
 public record SetRunInputsAction(Guid RunId, RunInputsState Inputs) : IAction;
 
-public record CopyRunAction(RunState Run) : IAction;
+public record CopyRunAction(Guid CopyRunId, Guid NewRunId) : IAction;

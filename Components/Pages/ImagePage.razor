@@ -1,6 +1,8 @@
 @page "/runs/{runId:guid}/image"
 @rendermode InteractiveServer
-@inject IDialogService DialogService
+@* @inject IDialogService DialogService *@
+@* @inject NavigationManager NavigationManager *@
+@inherits PageComponent
 
 <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
     <MudGrid>
@@ -18,7 +20,8 @@
                                            Icon="@Icons.Material.Outlined.AccountTree"
                                            Class="mr-5"/>
                             
-                            <MudIconButton Size="Size.Small"
+                            <MudIconButton OnClick="@(() => CopyRun(RunId))" 
+                                           Size="Size.Small"
                                            Color="Color.Inherit"
                                            Variant="Variant.Text" 
                                            Icon="@Icons.Material.Outlined.ContentCopy"/>
@@ -114,16 +117,25 @@
     
     [Parameter] public Guid RunId { get; set; }
     
-    private async Task OpenEngineTree()
-    {
-        var options = new DialogOptions
-        {
-            MaxWidth = MaxWidth.Medium,
-            FullWidth = true,
-            CloseOnEscapeKey = true,
-        };
+    // private async Task OpenEngineTree()
+    // {
+    //     var options = new DialogOptions
+    //     {
+    //         MaxWidth = MaxWidth.Medium,
+    //         FullWidth = true,
+    //         CloseOnEscapeKey = true,
+    //     };
+    //
+    //     var dialogRef = await DialogService.ShowAsync<EngineTreePanel>("Engine Tree", options);
+    //     await dialogRef.Result;
+    // }
+    //
+    // private async Task CopyRun()
+    // {
+    //     var newRunId = Guid.NewGuid();
+    //     // Dispatch(new NavigateToRunAction(run.Item.RunId));
+    //     NavigationManager.NavigateTo($"/runs/{RunId}/image");
+    // }
 
-        var dialogRef = await DialogService.ShowAsync<EngineTreePanel>("Engine Tree", options);
-        await dialogRef.Result;
-    }
+    protected override string ModelType => "image";
 }

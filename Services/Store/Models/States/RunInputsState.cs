@@ -6,7 +6,7 @@ public record RunInputsState
     public string DataSetType { get; set; } = "XOR";
     public PopulationInputs PopulationInputs { get; set; } = new();
     public LimitInputs LimitInputs { get; set; } = new();
-    public ImageInputs ImageInputs { get; init; } = new();
+    public ImageInputs ImageInputs { get; set; } = new();
 }
 
 public record PopulationInputs

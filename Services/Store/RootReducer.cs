@@ -1,5 +1,6 @@
 using Radiate.Client.Services.Store.Actions;
 using Radiate.Client.Services.Store.Models.Projections;
+using Radiate.Client.Services.Store.Models.States;
 using Radiate.Client.Services.Store.Shared;
 using Radiate.Engines.Schema;
 using Reflow.Reducers;
@@ -21,7 +22,8 @@ public static class RootReducer
         Reducer.On<LayoutChangedAction, RootState>(LayoutChanged),
         Reducer.On<CancelEngineRunAction, RootState>(CancelEngine),
         Reducer.On<SetRunInputsAction, RootState>(SetRunInputs),
-        Reducer.On<SetTargetImageAction, RootState>(SetTargetImage)
+        Reducer.On<SetTargetImageAction, RootState>(SetTargetImage),
+        Reducer.On<CopyRunAction, RootState>(CopyRun),
     };
 
     private static RootState NavigateToRun(RootState state, NavigateToRunAction action) => state with
@@ -162,6 +164,22 @@ public static class RootReducer
             }
         };
         return state with { Runs = state.Runs };
+    }
+    
+    private static RootState CopyRun(RootState state, CopyRunAction action)
+    {
+        var (copyId, newId) = action;
+        
+        var copyRun = state.Runs[copyId];
+        var newRuns = state.Runs.ToDictionary(pair => pair.Key, pair => pair.Value);
+        newRuns[newId] = new RunState
+        {
+            RunId = newId,
+            Index = state.Runs.Count,
+            Inputs = copyRun.Inputs with { },
+        };
+        
+        return state with { Runs = newRuns };
     }
 
 }

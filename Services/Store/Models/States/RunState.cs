@@ -5,7 +5,7 @@ namespace Radiate.Client.Services.Store.Models.States;
 
 public record RunState
 {
-    public Guid RunId { get; } = Guid.NewGuid();
+    public Guid RunId { get; init; } = Guid.NewGuid();
     public int Index { get; init; }
     public bool IsRunning { get; init; }
     public bool IsPaused { get; init; }

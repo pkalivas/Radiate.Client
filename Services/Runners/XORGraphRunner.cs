@@ -1,5 +1,6 @@
 using Radiate.Client.Services.Store;
 using Radiate.Client.Services.Store.Models.States;
+using Radiate.Client.Services.Store.Shared;
 using Radiate.Data;
 using Radiate.Engines;
 using Radiate.Engines.Entities;
@@ -60,12 +61,14 @@ public class XORGraphRunner : EngineRunner<GeneticEpoch<GraphGene<float>>, Perce
             .ToResult();
     }
 
-    protected override RunOutputsState MapToOutput(EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> output) => new()
+    protected override RunOutputsState MapToOutput(EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> output,
+        RunInputsState inputs,
+        bool isLast = false) => new()
     {
         EngineState = output.GetState(output.EngineId),
         EngineId = output.EngineId,
         EngineStates = output.EngineStates,
-        Metrics = output.Metrics,
+        Metrics = MetricMappers.GetMetricValues(output.Metrics).ToDictionary(key => key.Name),
         GraphOutput = new GraphOutput
         {
             Type = typeof(Graph<float>).FullName,

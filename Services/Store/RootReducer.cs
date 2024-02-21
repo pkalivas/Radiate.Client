@@ -40,12 +40,10 @@ public static class RootReducer
         var outputs = action.EngineOutputs;
         state.Runs[state.CurrentRunId] = state.Runs[state.CurrentRunId] with
         {
-            Outputs = outputs,
-            Metrics = MetricMappers.GetMetricValues(outputs.Metrics)
-                .Select(model => model)
-                .ToDictionary(key => key.Name, value => value),
+            Outputs = outputs.Last(),
+            Metrics = outputs.Last().Metrics,
             Scores = state.Runs[state.CurrentRunId].Scores
-                .Concat(new[] { outputs.Metrics.Get(MetricNames.Score).Statistics.LastValue })
+                .Concat(outputs.Select(val => (float)val.Metrics[MetricNames.Score].Value))
                 .ToList(),
         };
 

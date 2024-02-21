@@ -1,6 +1,7 @@
 using Radiate.Client.Services.Genome;
 using Radiate.Client.Services.Store;
 using Radiate.Client.Services.Store.Models.States;
+using Radiate.Client.Services.Store.Shared;
 using Radiate.Engines;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Limits;
@@ -51,20 +52,23 @@ public class CircleEngineRunner : EngineRunner<GeneticEpoch<CircleGene>, CircleC
             .ToResult();
     }
     
-    protected override RunOutputsState MapToOutput(EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome> output)
+    protected override RunOutputsState MapToOutput(EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome> output, 
+        RunInputsState inputs,
+        bool isLast = false)
     {
         var state = output.GetState(output.EngineId);
-        var model = output.GetModel().Draw(500, 500);
         
         return  new RunOutputsState
         {
             EngineState = state,
             EngineId = output.EngineId,
             EngineStates = output.EngineStates,
-            Metrics = output.Metrics,
+            Metrics = MetricMappers.GetMetricValues(output.Metrics).ToDictionary(key => key.Name),
             ImageOutput = new ImageOutput
             {
-                Image = model
+                Image = isLast 
+                    ? output.GetModel().Draw(500, 500) 
+                    : output.GetModel().Draw(inputs.ImageInputs.Width, inputs.ImageInputs.Height)
             }
         };
     }

@@ -1,3 +1,4 @@
+using Radiate.Client.Services.Store.Models.Projections;
 using Radiate.Engines.Entities;
 using Radiate.Extensions.Evolution.Architects.Groups;
 
@@ -7,7 +8,8 @@ public record RunOutputsState
 {
     public string EngineState { get; set; } = "";
     public string EngineId { get; set; } = "";
-    public MetricSet Metrics { get; init; } = new();
+    // public MetricSet Metrics { get; init; } = new();
+    public Dictionary<string, MetricValueModel> Metrics { get; init; } = new();
     public Dictionary<string, EngineState> EngineStates { get; init; } = new();
     public ImageOutput ImageOutput { get; set; } = new();
     public GraphOutput GraphOutput { get; set; } = new();

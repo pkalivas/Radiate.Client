@@ -120,7 +120,7 @@
             <MudItem md="6">
                 @if (Model.Inputs.DataSetType == "Polygon")
                 {
-                     @if (Model.IsReadonly)
+                    @if (Model.IsReadonly)
                     {
                         <div class="d-flex align-items-center border-bottom justify-content-between">
                             <MudText Typo="Typo.body2"># Edges:</MudText>
@@ -141,6 +141,52 @@
                                          ValueChanged="@((int numShapes) => OnInputChange(Model, inputs => inputs.ImageInputs.NumVertices = numShapes))">
                         </MudNumericField>
                     }   
+                }
+            </MudItem>
+            <MudItem md="6">
+                @if (Model.IsReadonly)
+                {
+                    <div class="d-flex align-items-center border-bottom justify-content-between">
+                        <MudText Typo="Typo.body2">Image Height:</MudText>
+                        <MudTooltip Text="The height of the image.">
+                            <MudIcon Icon="Icons.Info" Size="Size.Small"/>
+                        </MudTooltip>
+                        <MudText Typo="Typo.body2">@Model.Inputs.ImageInputs.Height</MudText>
+                    </div>
+                }
+                else
+                {
+                    <MudNumericField Label="Image Height"
+                                     Variant="Variant.Filled"
+                                     ReadOnly="@Model.IsReadonly"
+                                     DisableUnderLine="@Model.IsReadonly"
+                                     HideSpinButtons="@Model.IsReadonly"
+                                     Value="@Model.Inputs.ImageInputs.Height"
+                                     ValueChanged="@((int height) => OnInputChange(Model, inputs => inputs.ImageInputs.Height = height))">
+                    </MudNumericField>
+                }
+            </MudItem>
+             <MudItem md="6">
+                @if (Model.IsReadonly)
+                {
+                    <div class="d-flex align-items-center border-bottom justify-content-between">
+                        <MudText Typo="Typo.body2">Image Width:</MudText>
+                        <MudTooltip Text="The width of the image.">
+                            <MudIcon Icon="Icons.Info" Size="Size.Small"/>
+                        </MudTooltip>
+                        <MudText Typo="Typo.body2">@Model.Inputs.ImageInputs.Width</MudText>
+                    </div>
+                }
+                else
+                {
+                    <MudNumericField Label="Image Width"
+                                     Variant="Variant.Filled"
+                                     ReadOnly="@Model.IsReadonly"
+                                     DisableUnderLine="@Model.IsReadonly"
+                                     HideSpinButtons="@Model.IsReadonly"
+                                     Value="@Model.Inputs.ImageInputs.Width"
+                                     ValueChanged="@((int width) => OnInputChange(Model, inputs => inputs.ImageInputs.Width = width))">
+                    </MudNumericField>
                 }
             </MudItem>
         </MudGrid>

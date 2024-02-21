@@ -11,8 +11,7 @@ public static class ImageSelectors
         .Create<RootState, RunState, ImageTargetCurrentDisplayPanelProjection>(RunSelectors.SelectRun, run => new ImageTargetCurrentDisplayPanelProjection
         {
             RunId = run.RunId,
-            Height = run.Inputs.ImageInputs.Height,
-            Width = run.Inputs.ImageInputs.Width,
+            IsReadonly = !run.IsCompleted,
             TargetImage = run.Inputs.ImageInputs.TargetImage,
             CurrentImage = run.Outputs.ImageOutput.Image
         });

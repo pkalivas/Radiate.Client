@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components.Forms;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -14,10 +15,5 @@ public record ImageEntity
         using var stream = new MemoryStream();
         ImageData.SaveAsPng(stream);
         return Convert.ToBase64String(stream.ToArray());
-    }
-
-    public void Resize(int width, int height)
-    {
-        ImageData.Mutate(ctx => ctx.Resize(new Size(width, height)));
     }
 }

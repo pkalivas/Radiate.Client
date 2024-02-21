@@ -2,6 +2,7 @@ using Radiate.Client.Services.Actors;
 using Radiate.Client.Services.Runners;
 using Radiate.Client.Services.Runners.Interfaces;
 using Radiate.Client.Services.Store;
+using Radiate.Client.Services.Store.Schema;
 using Radiate.Client.Services.Worker;
 using Reflow;
 using Reflow.Interfaces;
@@ -28,11 +29,11 @@ public static class ApplicationServiceRegistration
             .AddScoped<TreeRegressionRunner>()
             .AddScoped<EngineRunnerFactory>(sp => (model, data) => (model, data) switch
             {
-                ("Tree", "Regression") => sp.GetRequiredService<TreeRegressionRunner>(),
-                ("Graph", "Regression") => sp.GetRequiredService<GraphRegressionRunner>(),
-                ("Graph", "XOR") => sp.GetRequiredService<XORGraphRunner>(),
-                ("Image", "Circle") => sp.GetRequiredService<CircleEngineRunner>(),
-                ("Image", "Polygon") => sp.GetRequiredService<PolygonEngineRunner>(),
+                (ModelTypes.Tree, DataSetTypes.Regression) => sp.GetRequiredService<TreeRegressionRunner>(),
+                (ModelTypes.Graph, DataSetTypes.Regression) => sp.GetRequiredService<GraphRegressionRunner>(),
+                (ModelTypes.Graph, DataSetTypes.Xor) => sp.GetRequiredService<XORGraphRunner>(),
+                (ModelTypes.Image, DataSetTypes.Circle) => sp.GetRequiredService<CircleEngineRunner>(),
+                (ModelTypes.Image, DataSetTypes.Polygon) => sp.GetRequiredService<PolygonEngineRunner>(),
                 _ => throw new ArgumentException($"Runner {model} {data}.")
             });
     

@@ -1,7 +1,5 @@
 using Radiate.Client.Services.Store.Actions;
-using Radiate.Client.Services.Store.Models.Projections;
 using Radiate.Client.Services.Store.Models.States;
-using Radiate.Client.Services.Store.Shared;
 using Radiate.Engines.Schema;
 using Reflow.Reducers;
 
@@ -58,13 +56,14 @@ public static class RootReducer
     
     private static RootState RunCompleted(RootState state, EngineStoppedAction action)
     {
-        state.Runs[state.CurrentRunId] = state.Runs[state.CurrentRunId] with
+        state.Runs[action.RunId] = state.Runs[action.RunId] with
         {
             IsRunning = false,
             IsPaused = false,
             IsCompleted = true,
             EndTime = DateTime.Now
         };
+        
         return state with { Runs = state.Runs };
     }
     
@@ -165,5 +164,4 @@ public static class RootReducer
         
         return state with { Runs = newRuns };
     }
-
 }

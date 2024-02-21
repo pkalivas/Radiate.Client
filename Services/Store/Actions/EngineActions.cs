@@ -11,4 +11,4 @@ public record ResumeEngineRunAction(Guid RunId) : IAction;
 
 public record CancelEngineRunAction(Guid RunId) : IAction;
 
-public record EngineStoppedAction : IAction;
+public record EngineStoppedAction(Guid RunId) : IAction;

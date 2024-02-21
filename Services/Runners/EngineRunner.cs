@@ -48,7 +48,7 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
         });
         
         _outputs.OnNext(MapToOutput(result, inputs, true));
-        _store.Dispatch(new EngineStoppedAction());
+        _store.Dispatch(new EngineStoppedAction(runId));
         
         Thread.Sleep(BufferTime);
         

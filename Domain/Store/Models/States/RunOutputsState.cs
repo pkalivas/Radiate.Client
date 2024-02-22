@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Radiate.Client.Domain.Store.Models.Projections;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Harness;
@@ -9,7 +10,7 @@ public record RunOutputsState
 {
     public string EngineState { get; set; } = "";
     public string EngineId { get; set; } = "";
-    public Dictionary<string, MetricValueModel> Metrics { get; init; } = new();
+    public IImmutableDictionary<string, MetricValueModel> Metrics { get; init; } = ImmutableDictionary<string, MetricValueModel>.Empty;
     public Dictionary<string, EngineState> EngineStates { get; init; } = new();
     public ImageOutput ImageOutput { get; set; } = new();
     public GraphOutput GraphOutput { get; set; } = new();

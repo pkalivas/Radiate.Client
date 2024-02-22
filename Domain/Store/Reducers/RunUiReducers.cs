@@ -18,7 +18,7 @@ public static class RunUiReducers
         .UpdateRunUi(action.RunUi.RunId, _ => action.RunUi with
         {
             PanelExpanded = action.RunUi.RunTemplate.UI.LeftSideAccordion.ExpansionPanels
-                .Concat(action.RunUi.RunTemplate.UI.LeftSideAccordion.ExpansionPanels)
+                .Concat(action.RunUi.RunTemplate.UI.RightSideAccordion.ExpansionPanels)
                 .ToImmutableDictionary(key => key.Id, _ => false)
         });
     
@@ -40,7 +40,7 @@ public static class RunUiReducers
         .UpdateRunUi(action.RunId, ui => ui with
         {
             PanelExpanded = ui.RunTemplate.UI.LeftSideAccordion.ExpansionPanels
-                .Concat(ui.RunTemplate.UI.LeftSideAccordion.ExpansionPanels)
+                .Concat(ui.RunTemplate.UI.RightSideAccordion.ExpansionPanels)
                 .ToImmutableDictionary(key => key.Id, _ => action.Expanded)
         });
 }

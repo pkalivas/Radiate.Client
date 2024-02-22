@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Radiate.Client.Domain.Store;
 using Radiate.Client.Domain.Store.Models.States;
 using Radiate.Client.Services.Mappers;
@@ -65,7 +66,7 @@ public class TreeRegressionRunner : MLEngineRunner<GeneticEpoch<TreeGene<float>>
         EngineState = output.GetState(output.EngineId),
         EngineId = output.EngineId,
         EngineStates = output.EngineStates,
-        Metrics = MetricMappers.GetMetricValues(output.Metrics).ToDictionary(key => key.Name),
+        Metrics = MetricMappers.GetMetricValues(output.Metrics).ToImmutableDictionary(key => key.Name),
         TreeOutput = new TreeOutput
         {
             Type = typeof(Tree<float>).FullName,

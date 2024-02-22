@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Radiate.Client.Domain.Store;
 using Radiate.Client.Domain.Store.Models.States;
 using Radiate.Client.Services.Mappers;
@@ -79,7 +80,7 @@ public class XORGraphRunner : MLEngineRunner<GeneticEpoch<GraphGene<float>>, Per
             EngineState = output.GetState(output.EngineId),
             EngineId = output.EngineId,
             EngineStates = output.EngineStates,
-            Metrics = MetricMappers.GetMetricValues(output.Metrics).ToDictionary(key => key.Name),
+            Metrics = MetricMappers.GetMetricValues(output.Metrics).ToImmutableDictionary(key => key.Name),
             GraphOutput = new GraphOutput
             {
                 Type = typeof(Graph<float>).FullName,

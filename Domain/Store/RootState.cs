@@ -9,10 +9,10 @@ public record RootState : IState
     public Guid CurrentRunId { get; init; } = Guid.NewGuid();
     public UiState UiState { get; init; } = new();
     
-    public IImmutableDictionary<Guid, RunUiState> RunUis { get; private init; } =
+    public IImmutableDictionary<Guid, RunUiState> RunUis { get; init; } =
         new Dictionary<Guid, RunUiState>().ToImmutableDictionary();
 
-    public IImmutableDictionary<Guid, RunState> Runs { get; private init; } =
+    public IImmutableDictionary<Guid, RunState> Runs { get; init; } =
         new Dictionary<Guid, RunState>().ToImmutableDictionary();
 
     public RootState UpdateRun(Guid runId, Func<RunState, RunState> update)
@@ -30,6 +30,4 @@ public record RootState : IState
         newRunUis[runId] = update(currentRunUi);
         return this with { RunUis = newRunUis.ToImmutableDictionary() };
     }
-    
-    public RootState UpdateUi(Func<UiState, UiState> update) => this with { UiState = update(UiState) };
 }

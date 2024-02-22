@@ -5,8 +5,10 @@ namespace Radiate.Client.Domain.Store.Models.States;
 
 public record RunUiState
 {
-    public Guid RunId { get; set; } = Guid.NewGuid();
-    public IRunTemplate? RunTemplate { get; set; } = null;
-    public IImmutableDictionary<string, bool> EngineStateExpanded { get; set; } = new Dictionary<string, bool>().ToImmutableDictionary();
-    public IImmutableDictionary<Guid, bool> PanelExpanded { get; set; } = new Dictionary<Guid, bool>().ToImmutableDictionary();
+    public Guid RunId { get; init; } = Guid.NewGuid();
+    public IRunTemplate? RunTemplate { get; init; }
+    public IImmutableDictionary<string, bool> EngineStateExpanded { get; init; } = 
+        new Dictionary<string, bool>().ToImmutableDictionary();
+    public IImmutableDictionary<Guid, bool> PanelExpanded { get; init; } = 
+        new Dictionary<Guid, bool>().ToImmutableDictionary();
 }

@@ -44,19 +44,7 @@ public static class RunReducers
             Index = state.Runs.Count,
             Inputs = state.Runs[action.CopyRunId].Inputs with { }
         });
-        // .UpdateUi(ui => ui with
-        // {
-        //     RunTemplates = state.UiState.RunTemplates.Add(action.NewRunId, 
-        //         state.Runs[action.CopyRunId].Inputs.ModelType switch
-        //         {
-        //             ModelTypes.Graph => new GraphTemplate(),
-        //             ModelTypes.Image => new ImageTemplate(),
-        //             ModelTypes.Tree => new TreeTemplate(),
-        //             ModelTypes.MultiObjective => new MultiObjectiveTemplate(),
-        //             _ => throw new ArgumentOutOfRangeException()
-        //         })
-        // });
-    
+
     private static RootState RunCompleted(RootState state, EngineStoppedAction action) =>
         state.UpdateRun(action.RunId, run => run with
         {

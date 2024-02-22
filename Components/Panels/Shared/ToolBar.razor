@@ -5,16 +5,16 @@
 <MudToolBar Dense="true" class="flex justify-content-between w-100" Style="background: rgba(39,39,47,1);">
     <h5>@Title</h5>
     <div>
-        <MudMenu Icon="@Icons.Material.Filled.MoreVert">
+        <MudMenu Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small">
             @foreach (var action in Actions)
             {
                 if (action is MenuActions.Copy)
                 {
-                    <MudMenuItem Icon="@Icons.Material.Outlined.ContentCopy" OnClick="@CopyRun">@action</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Material.Outlined.ContentCopy" IconSize="Size.Small" OnClick="@CopyRun">@action</MudMenuItem>
                 }
                 else if (action is MenuActions.EngineTree)
                 {
-                    <MudMenuItem Icon="@Icons.Material.Outlined.AccountTree" OnClick="@OpenEngineTree">@action</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Material.Outlined.AccountTree" IconSize="Size.Small" OnClick="@OpenEngineTree">@action</MudMenuItem>
                 }
             }
         </MudMenu>

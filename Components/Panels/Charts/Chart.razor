@@ -5,7 +5,7 @@
 @using Plotly.Blazor.LayoutLib.XAxisLib
 @using Radiate.Client.Services.Schema
 
-@if ((Values.Any() || ValuesList.Any()) && Type != "" && layout != null)
+@if ((Values.Any() || ValuesList.Any() || Data.Any()) && layout != null)
 {
     <PlotlyChart @bind-Config="config" @bind-Layout="layout" @bind-Data="data" @ref="chart"/>
 }
@@ -16,6 +16,7 @@
     [Parameter] public bool ShowGrid { get; set; } = false;
     [Parameter] public double[] Values { get; set; } = Array.Empty<double>();
     [Parameter] public List<double[]> ValuesList { get; set; } = new();
+    [Parameter] public List<ITrace> Data { get; set; } = new();
 
     private PlotlyChart chart;
     private Config config = new() { Responsive = true};
@@ -73,6 +74,15 @@
             };
             
             chart?.Update();
+        }
+        else if (Data.Any())
+        {
+            data = Data;
+            chart?.Update();
+        }
+        else
+        {
+            data = new List<ITrace>();
         }
         
         if (Height != layout.Height)

@@ -1,3 +1,4 @@
+@using Plotly.Blazor.Traces.ScatterLib
 @inherits StoreComponent<MetricSummaryChartPanelProjection>
 
 @if (Model != null)
@@ -62,7 +63,7 @@
             </div>
         
             <div class="col">
-                <Chart Values="@Model.Value.Distribution" Height="@(ChartHeight ?? 0)" Type="@(ChartType ?? "line")"></Chart>
+                <Chart Data="@Model.Traces" Height="@(ChartHeight ?? 0)" Type="@(ChartType ?? "line")"></Chart>
             </div>
         </div>
     </div>
@@ -75,5 +76,5 @@
     
     protected override IObservable<MetricSummaryChartPanelProjection> Select() =>
         Store.Select(RunSelectors.SelectMetricSummaryChartPanelModel(MetricName));
-    
+
 }

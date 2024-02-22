@@ -1,5 +1,9 @@
+using Plotly.Blazor;
+using Plotly.Blazor.Traces;
 using Radiate.Client.Domain.Store.Models.Projections;
 using Radiate.Client.Domain.Store.Models.States;
+using Radiate.Client.Services.Mappers;
+using Radiate.Engines.Schema;
 using Reflow.Interfaces;
 using Reflow.Selectors;
 
@@ -26,11 +30,25 @@ public static class RunSelectors
         });
     
     public static ISelector<RootState, MetricSummaryChartPanelProjection> SelectMetricSummaryChartPanelModel(string metricName) => Selectors
-        .Create<RootState, RunState, MetricSummaryChartPanelProjection>(SelectRun, run => new MetricSummaryChartPanelProjection
+        .Create<RootState, RunState, MetricSummaryChartPanelProjection>(SelectRun, run =>
         {
-            RunId = run.RunId,
-            MetricName = metricName,
-            Value = run.Outputs.Metrics.GetValueOrDefault(metricName, new MetricValueModel())
+            var metric = run.Outputs.Metrics.GetValueOrDefault(metricName, new MetricValueModel());
+            return new MetricSummaryChartPanelProjection
+            {
+                RunId = run.RunId,
+                MetricName = metricName,
+                Value = metric,
+                Traces = new List<ITrace>
+                {
+                    metric.Name switch
+                    {
+                        MetricNames.FitnessDistribution => TraceMappers.GetBarTrace(metric.Distribution),
+                        MetricNames.GenomeSizeDistribution => TraceMappers.GetPieTrace(metric.Distribution),
+                        MetricNames.AgeDistribution => TraceMappers.GetBarTrace(metric.Distribution),
+                        _ => new Scatter()
+                    }
+                }
+            };
         });
 
     public static ISelector<RootState, RunListPanelProjection> SelectRunListPanelProjection => Selectors
@@ -47,9 +65,9 @@ public static class RunSelectors
         {
             RunId = state.RunId,
             LossFunction = state.Outputs.ValidationOutput.LossFunction,
-            Validations = new()
+            Validations = new List<ValidationSet>
             {
-                new ValidationSet
+                new()
                 {
                     Name = "Train",
                     ClassificationAccuracy = state.Outputs.ValidationOutput.TrainValidation.ClassificationAccuracy,
@@ -59,7 +77,7 @@ public static class RunSelectors
                     Duration = state.Outputs.ValidationOutput.TrainValidation.Duration,
                     DataPoints = state.Outputs.ValidationOutput.TrainValidation.DataPoints
                 },
-                new ValidationSet
+                new()
                 {
                     Name = "Test",
                     ClassificationAccuracy = state.Outputs.ValidationOutput.TestValidation.ClassificationAccuracy,
@@ -70,5 +88,7 @@ public static class RunSelectors
                     DataPoints = state.Outputs.ValidationOutput.TestValidation.DataPoints
                 }
             }
+            .Where(val => val.DataPoints > 0)
+            .ToList()
         });
 }

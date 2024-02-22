@@ -38,7 +38,7 @@ public static class MetricMappers
             return new MetricValueModel
             {
                 Name = metric.Name,
-                MetricType = MetricTypes.Distribution,
+                MetricType = metric.MetricType,
                 Distribution = metric.Statistics.LastSequence.Select(val => (double)val).ToArray(),
                 Value = RoundMetric(metric, stat => stat.LastValue),
                 Min = RoundMetric(metric, stat => stat.Min),

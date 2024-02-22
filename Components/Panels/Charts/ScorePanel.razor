@@ -1,14 +1,29 @@
-@inherits StoreComponent<double[]>
+@using Plotly.Blazor.Traces.ScatterLib
+@inherits StoreComponent<List<ITrace>>
 
-<Chart Values="@Model" Type="line" Height="@(Height ?? 200)" ShowGrid="true"/>
+<Chart Data="@Model" Height="@(Height ?? 200)" ShowGrid="true"/>
 
 @code 
 {
     [Parameter] public int? Height { get; set; }
 
-    protected override IObservable<double[]> Select() =>
-        Store.Select(state => state.Runs.TryGetValue(state.CurrentRunId, out var run) 
-            ? run.Scores.Select(val => (double)val).ToArray() 
-            : Array.Empty<double>());
+    protected override IObservable<List<ITrace>> Select() =>
+        Store.Select(state =>
+        {
+            var scores = state.Runs.TryGetValue(state.CurrentRunId, out var run)
+                ? run.Scores.Select(val => (double) val).ToArray()
+                : Array.Empty<double>();
+
+            return new List<ITrace>
+            {
+                new Scatter
+                {
+                    Name = "ScatterTrace",
+                    Mode = ModeFlag.Lines,
+                    Y = scores.Select(val => (object) val).ToList(),
+                    X = scores.Select((_, idx) => (object) idx).ToList(),
+                }
+            };
+        });
 
 }

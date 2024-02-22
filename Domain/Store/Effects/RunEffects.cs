@@ -33,8 +33,8 @@ public class RunEffects : IEffectRegistry<RootState>
             var (runId, inputs) = action;
             _actorService.Tell(new RunsActorMessage<StartRunCommand>(new StartRunCommand(runId, inputs)));
 
-            return new NoopAction();
-        }));
+            return new SetAllPanelsExpandedAction(runId, true);
+        }), true);
     
     private IEffect<RootState> CancelEngineEffect => CreateEffect<RootState>(state => state
         .OnAction<CancelEngineRunAction>()

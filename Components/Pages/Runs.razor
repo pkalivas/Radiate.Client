@@ -7,11 +7,11 @@
 @using System.Text.Json
 @inherits StoreComponent<StandardRunUiProjection>
 
-@if (!Model.IsLoading)
+@if (Model is not null && !Model.IsLoading)
 {
     <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
         <MudGrid>
-            @foreach (var panel in Model.UiTemplate.GridList.GridPanels)
+            @foreach (var panel in Model!.UiTemplate!.GridList.GridPanels)
             {
                 <MudItem md="@panel.Cols" @key="@panel.Id">
                     @if (panel.GridPanel is ToolbarPanel)
@@ -37,73 +37,39 @@
         <MudGrid>
             <MudItem md="8">
                 <MudExpansionPanels Dense="true" Elevation="2" MultiExpansion="true">
-                    @foreach (var panel in Model.UiTemplate.LeftSideAccordion.ExpansionPanels)
+                    @foreach (var panel in Model!.UiTemplate!.LeftSideAccordion.ExpansionPanels)
                     {
-                        if (panel.ExpansionPanel is ToolbarPanel)
-                        {
-                            <ToolBar Title="@panel.ExpansionPanel.Title">
-                                <Options></Options>
-                                <ChildContent>
-                                    <MudExpansionPanel IsExpanded="@panel.IsOpen" Dense="true" MaxHeight="@panel.MaxHeight" @key="panel.Id">
-                                        <TitleContent>
-                                            <PanelHeaderPanel Title="@panel.ExpansionPanel.Title"/>
-                                        </TitleContent>
-                                        <ChildContent>
-                                            <PanelDisplay Panel="@panel.ExpansionPanel"/>
-                                        </ChildContent>
-                                    </MudExpansionPanel>
-                                </ChildContent>
-                            </ToolBar>
-                        }
-                        else
-                        {
-                            <MudExpansionPanel IsExpanded="@panel.IsOpen"
-                                               Dense="true"
-                                               MaxHeight="@panel.MaxHeight"
-                                               IsExpandedChanged="@((bool changed) => OnExpandedChanged(changed, panel.Id))"
-                                               @key="panel.Id">
-                                <TitleContent>
-                                    <PanelHeaderPanel Title="@panel.ExpansionPanel.Title"/>
-                                </TitleContent>
-                                <ChildContent>
-                                    <PanelDisplay Panel="@panel.ExpansionPanel"/>
-                                </ChildContent>
-                            </MudExpansionPanel>
-                        }
+                        <MudExpansionPanel IsExpanded="@GetIsExpanded(panel.Id)"
+                                           Dense="true"
+                                           MaxHeight="@panel.MaxHeight"
+                                           IsExpandedChanged="@((bool changed) => OnExpandedChanged(changed, panel.Id))"
+                                           @key="@panel.Id">
+                            <TitleContent>
+                                <PanelHeaderPanel Title="@panel.ExpansionPanel.Title"/>
+                            </TitleContent>
+                            <ChildContent>
+                                <PanelDisplay Panel="@panel.ExpansionPanel"/>
+                            </ChildContent>
+                        </MudExpansionPanel>
                     }
                 </MudExpansionPanels>
             </MudItem>
             <MudItem md="4">
                 <MudExpansionPanels Dense="true" Elevation="2" MultiExpansion="true">
-                    @foreach (var panel in Model.UiTemplate.RightSideAccordion.ExpansionPanels)
+                    @foreach (var panel in Model!.UiTemplate!.RightSideAccordion.ExpansionPanels)
                     {
-                        if (panel.ExpansionPanel is ToolbarPanel)
-                        {
-                            <ToolBar Title="@panel.ExpansionPanel.Title">
-                                <Options></Options>
-                                <ChildContent>
-                                    <MudExpansionPanel IsExpanded="@panel.IsOpen" Dense="true" MaxHeight="@panel.MaxHeight" @key="panel.Id">
-                                        <TitleContent>
-                                            <PanelHeaderPanel Title="@panel.ExpansionPanel.Title"/>
-                                        </TitleContent>
-                                        <ChildContent>
-                                            <PanelDisplay Panel="@panel.ExpansionPanel"/>
-                                        </ChildContent>
-                                    </MudExpansionPanel>
-                                </ChildContent>
-                            </ToolBar>
-                        }
-                        else
-                        {
-                            <MudExpansionPanel IsExpanded="@panel.IsOpen" Dense="true" MaxHeight="@panel.MaxHeight" @key="panel.Id">
-                                <TitleContent>
-                                    <PanelHeaderPanel Title="@panel.ExpansionPanel.Title"/>
-                                </TitleContent>
-                                <ChildContent>
-                                    <PanelDisplay Panel="@panel.ExpansionPanel"/>
-                                </ChildContent>
-                            </MudExpansionPanel>
-                        }
+                        <MudExpansionPanel IsExpanded="@GetIsExpanded(panel.Id)"
+                                           Dense="true"
+                                           MaxHeight="@panel.MaxHeight"
+                                           IsExpandedChanged="@((bool changed) => OnExpandedChanged(changed, panel.Id))"
+                                           @key="@panel.Id">
+                            <TitleContent>
+                                <PanelHeaderPanel Title="@panel.ExpansionPanel.Title"/>
+                            </TitleContent>
+                            <ChildContent>
+                                <PanelDisplay Panel="@panel.ExpansionPanel"/>
+                            </ChildContent>
+                        </MudExpansionPanel>
                     }
                 </MudExpansionPanels>
             </MudItem>
@@ -121,11 +87,13 @@ else
 
     protected override IObservable<StandardRunUiProjection> Select() => Store.Select(UiSelectors.SelectStandardRunUiModel);
     
-    private async Task OnExpandedChanged(bool changed, Guid panelId)
-    {
-        Dispatch(new SetPanelsExpandedAction(Model.RunId, new Dictionary<Guid, bool>
+    private async Task OnExpandedChanged(bool changed, Guid panelId) =>
+        await InvokeAsync(() => Dispatch(new SetPanelsExpandedAction(Model.RunId, new Dictionary<Guid, bool>
         {
             [panelId] = changed
-        }));
-    }
+        })));
+    
+    private bool GetIsExpanded(Guid panelId) => Model.IsLoading 
+        ? false 
+        : Model.IsExpanded.TryGetValue(panelId, out var ex) ? ex : false;
 }

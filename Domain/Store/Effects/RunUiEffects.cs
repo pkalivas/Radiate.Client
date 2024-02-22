@@ -17,10 +17,7 @@ public class RunUiEffects : IEffectRegistry<RootState>
 
     private IEffect<RootState> RunCreatedEffect => CreateEffect<RootState>(state => state
         .OnAction<RunUiCreatedAction>()
-        .Select(pair => new List<IAction>
-        {
-            new SetRunLoadingAction(pair.Action.RunUi.RunId, false)
-        }), true);
+        .Select(pair => new SetRunLoadingAction(pair.Action.RunUi.RunId, false)), true);
     
     private IEffect<RootState> EngineTreeEffect => CreateEffect<RootState>(state => state
         .OnAction<SetRunOutputsAction>()

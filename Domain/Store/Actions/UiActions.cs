@@ -9,7 +9,5 @@ public record LayoutChangedAction : IAction
 
 public record NavigateToRunAction(Guid RunId) : IAction;
 
-public record SetEngineTreeExpandedAction(Guid RunId, Dictionary<string, bool> Expanded) : IAction;
-
 public record SetRunLoadingAction(Guid RunId, bool Loading) : IAction;
 

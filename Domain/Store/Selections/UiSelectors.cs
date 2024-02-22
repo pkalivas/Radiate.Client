@@ -11,19 +11,32 @@ public static class UiSelectors
         Selectors.Create<RootState, UiState>(state => state.UiState);
 
     public static readonly ISelector<RootState, StandardRunUiProjection> SelectStandardRunUiModel = Selectors
-        .Create<RootState, StandardRunUiProjection>(state =>
+        .Create<RootState, UiState, RunUiState, StandardRunUiProjection>(SelectUiState, RunUiSelectors.SelectRunUiState,
+            (uiState, runUi) =>
         {
-            var isLoading = state.UiState.LoadingStates.TryGetValue(state.CurrentRunId, out var loadingState) 
+            if (runUi.RunTemplate is null)
+            {
+                return null;
+            }
+            
+            var isLoading = uiState.LoadingStates.TryGetValue(runUi.RunId, out var loadingState) 
                 ? loadingState 
                 : true;
+            
+            if (runUi.RunTemplate != null)
+            {
+                // foreach (var panel in runUi.RunTemplate.UI.LeftSideAccordion.ExpansionPanels)
+                // {
+                //     panel.IsOpen = false;
+                // }
+            }
 
             return new StandardRunUiProjection
             {
-                RunId = state.CurrentRunId,
+                RunId = runUi.RunId,
                 IsLoading = isLoading,
-                UiTemplate = state.RunUis.TryGetValue(state.CurrentRunId, out var runUi)
-                    ? runUi.RunTemplate?.UI
-                    : null
+                UiTemplate = runUi.RunTemplate!.UI,
+                IsExpanded = runUi.PanelExpanded
             };
         });
 

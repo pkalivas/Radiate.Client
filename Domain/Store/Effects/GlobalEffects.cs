@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using System.Reactive.Linq;
 using Radiate.Client.Domain.Store.Actions;
 using Radiate.Client.Domain.Store.Models.States;

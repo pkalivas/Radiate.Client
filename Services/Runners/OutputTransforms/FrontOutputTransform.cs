@@ -4,13 +4,13 @@ using Radiate.Engines.Entities;
 using Radiate.Optimizers.Evolution.Genome.Genes;
 using Radiate.Optimizers.Evolution.MOEA;
 
-namespace Radiate.Client.Services.Runners.Transforms;
+namespace Radiate.Client.Services.Runners.OutputTransforms;
 
 public class FrontOutputTransform : IRunOutputTransform<GeneticEpoch<FloatGene>, float[]>
 {
     private Front<float[]>? _front;
     
-    public RunOutputsState Transform(EngineOutput<GeneticEpoch<FloatGene>, float[]> handle, RunOutputsState output, RunInputsState input, bool isLast)
+    public RunOutputsState Transform(Guid runId, EngineOutput<GeneticEpoch<FloatGene>, float[]> handle, RunOutputsState output, RunInputsState input, bool isLast)
     {
         if (_front == null)
         {

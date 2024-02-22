@@ -18,6 +18,7 @@ public static class RunReducers
         Reducer.On<PauseEngineRunAction, RootState>(PauseEngine),
         Reducer.On<ResumeEngineRunAction, RootState>(ResumeEngine),
         Reducer.On<CancelEngineRunAction, RootState>(CancelEngine),
+        Reducer.On<SetRunScoresAction, RootState>(AddRunScores)
     ];
 
     private static RootState AddRun(RootState state, RunCreatedAction action) =>
@@ -26,9 +27,17 @@ public static class RunReducers
     private static RootState AddOutput(RootState state, SetRunOutputsAction action) =>
         state.UpdateRun(action.RunId, run => run with
         {
-            Outputs = action.EngineOutputs.Last(),
+            Outputs = action.EngineOutput,
+            // Scores = run.Scores
+            //     .Concat(action.EngineOutputs.Select(val => (float) val.Metrics[MetricNames.Score].Value))
+            //     .ToImmutableList(),
+        });
+    
+    private static RootState AddRunScores(RootState state, SetRunScoresAction action) =>
+        state.UpdateRun(action.RunId, run => run with
+        {
             Scores = run.Scores
-                .Concat(action.EngineOutputs.Select(val => (float) val.Metrics[MetricNames.Score].Value))
+                .Concat(action.Scores)
                 .ToImmutableList(),
         });
     

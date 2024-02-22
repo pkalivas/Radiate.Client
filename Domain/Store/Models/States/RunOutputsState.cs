@@ -3,6 +3,7 @@ using Radiate.Client.Domain.Store.Models.Projections;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Harness;
 using Radiate.Extensions.Evolution.Architects.Groups;
+using Radiate.Extensions.Evolution.Programs;
 
 namespace Radiate.Client.Domain.Store.Models.States;
 
@@ -10,6 +11,7 @@ public record RunOutputsState
 {
     public string EngineState { get; init; } = "";
     public string EngineId { get; init; } = "";
+    public string ModelType { get; init; } = "";
     public IImmutableDictionary<string, MetricValueModel> Metrics { get; init; } = ImmutableDictionary<string, MetricValueModel>.Empty;
     public IImmutableDictionary<string, EngineState> EngineStates { get; init; } = ImmutableDictionary<string, EngineState>.Empty;
     public ImageOutput ImageOutput { get; init; } = new();
@@ -24,9 +26,9 @@ public record GraphOutput
     public string Type { get; set; } = "";
     public object Graph { get; set; } = new();
 
-    public Graph<T> GetGraph<T>()
+    public PerceptronGraph<T> GetGraph<T>()
     {
-        if (Graph is Graph<T> graph)
+        if (Graph is PerceptronGraph<T> graph)
         {
             return graph;
         }
@@ -38,19 +40,17 @@ public record GraphOutput
 public record TreeOutput
 {
     public string Type { get; init; } = "";
-    public IImmutableList<object> Trees { get; init; } = ImmutableList<object>.Empty;
+    public object Tree { get; init; } = new();
 
-    public List<Tree<T>> GetTrees<T>() => Trees
-        .Select(tree =>
+    public ExpressionTree<T> GetTrees<T>() 
+    {
+        if (Tree is ExpressionTree<T> tree)
         {
-            if (tree is Tree<T> t)
-            {
-                return t;
-            }
-            
-            throw new Exception("Tree is not of the expected type");
-        })
-        .ToList();
+            return tree;
+        }
+        
+        throw new Exception("Graph is not of the expected type");
+    }
 }
 
 public record ImageOutput

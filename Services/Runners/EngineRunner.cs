@@ -6,7 +6,7 @@ using Radiate.Client.Domain.Store.Actions;
 using Radiate.Client.Domain.Store.Models.States;
 using Radiate.Client.Services.Mappers;
 using Radiate.Client.Services.Runners.Interfaces;
-using Radiate.Client.Services.Runners.Transforms;
+using Radiate.Client.Services.Runners.OutputTransforms;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Interfaces;
 using Radiate.Engines.Schema;
@@ -44,7 +44,7 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
 
         var result = await Fit(runId, inputs, cts, handle =>
         {
-            _outputs.OnNext((runId, Map(transforms, handle, inputs)));
+            _outputs.OnNext((runId, Map(transforms, runId, handle, inputs)));
             
             if (_pause.Value)
             {
@@ -54,7 +54,7 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
         
         HandleOutputs(new List<(Guid, RunOutputsState)>
         {
-            (runId, Map(transforms, result, inputs, true))
+            (runId, Map(transforms, runId, result, inputs, true))
         });
         
         _store.Dispatch(new EngineStoppedAction(runId));
@@ -66,7 +66,7 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
     }
 
     private void HandleOutputs(IList<(Guid, RunOutputsState)> outputs) =>
-        _store.Dispatch(new SetRunOutputsAction(outputs
+        _store.Dispatch(new BatchRunOutputsAction(outputs
             .Select(val => val.Item1)
             .Distinct()
             .Single(), outputs
@@ -75,6 +75,7 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
             .ToList()));
     
     private static RunOutputsState Map(IEnumerable<IRunOutputTransform<TEpoch, T>> transforms,
+        Guid runId,
         EngineOutput<TEpoch, T> handle,
         RunInputsState inputs, 
         bool isLast = false)
@@ -83,10 +84,11 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
         {
             EngineState = handle.GetState(handle.EngineId),
             EngineId = handle.EngineId,
+            ModelType = inputs.ModelType,
             EngineStates = handle.EngineStates.ToImmutableDictionary(),
             Metrics = MetricMappers.GetMetricValues(handle.Metrics).ToImmutableDictionary(key => key.Name),
         };
         
-        return transforms.Aggregate(output, (state, transformer) => transformer.Transform(handle, state, inputs, isLast));
+        return transforms.Aggregate(output, (state, transformer) => transformer.Transform(runId, handle, state, inputs, isLast));
     }
 }

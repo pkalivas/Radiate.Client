@@ -28,7 +28,7 @@ public class RunUiEffects : IEffectRegistry<RootState>
             {
                 if (!runUi.EngineStateExpanded.Any())
                 {
-                    var treeExpansions = action.EngineOutputs.First().EngineStates.ToDictionary(val => val.Key, _ => true);
+                    var treeExpansions = action.EngineOutput.EngineStates.ToDictionary(val => val.Key, _ => true);
                     return new SetEngineTreeExpandedAction(action.RunId, treeExpansions);
                 }
             }

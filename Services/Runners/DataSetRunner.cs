@@ -1,15 +1,19 @@
 using Radiate.Client.Domain.Store;
 using Radiate.Client.Domain.Store.Models.States;
-using Radiate.Client.Services.Runners.Transforms;
+using Radiate.Client.Services.Runners.OutputTransforms;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Interfaces;
 using Radiate.Extensions;
+using Radiate.Factories.Losses;
+using Radiate.Optimizers.Interfaces;
 using Radiate.Tensors;
 using Reflow.Interfaces;
 
-namespace Radiate.Client.Services.Runners.DataSetRunners;
+namespace Radiate.Client.Services.Runners;
 
-public abstract class DataSetRunner<TEpoch, T> : EngineRunner<TEpoch, T> where TEpoch : IEpoch
+public abstract class DataSetRunner<TEpoch, T> : EngineRunner<TEpoch, T>
+    where TEpoch : IEpoch
+    where T : IPredictionModel<T>
 {
     private readonly ITensorFrameService _tensorFrameService;
 
@@ -18,8 +22,6 @@ public abstract class DataSetRunner<TEpoch, T> : EngineRunner<TEpoch, T> where T
         _tensorFrameService = tensorFrameService;
     }
     
-    protected IRunOutputTransform<TEpoch, T> ValidationTransform { get; private set; }
-
     protected abstract Task<IEngine<TEpoch, T>> BuildEngine(RunInputsState inputs, TensorFrame frame);
 
     protected abstract Task<TensorFrame> BuildFrame(RunInputsState inputs);
@@ -30,7 +32,7 @@ public abstract class DataSetRunner<TEpoch, T> : EngineRunner<TEpoch, T> where T
         Action<EngineOutput<TEpoch, T>> onEngineComplete)
     {
         var frame = await BuildFrame(inputs);
-        
+
         _tensorFrameService.SetTensorFrame(runId, frame);
         
         return (await BuildEngine(inputs, frame)).Fit()

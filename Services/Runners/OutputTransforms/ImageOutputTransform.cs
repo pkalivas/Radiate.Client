@@ -3,12 +3,12 @@ using Radiate.Client.Services.Genome;
 using Radiate.Engines.Entities;
 using Radiate.Extensions;
 
-namespace Radiate.Client.Services.Runners.Transforms;
+namespace Radiate.Client.Services.Runners.OutputTransforms;
 
 public class ImageOutputTransform : IRunOutputTransform<GeneticEpoch<CircleGene>, CircleChromosome>,
     IRunOutputTransform<GeneticEpoch<PolygonGene>, PolygonChromosome>
 {
-    public RunOutputsState Transform(EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome> handle,
+    public RunOutputsState Transform(Guid runId, EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome> handle,
         RunOutputsState output, RunInputsState input, bool isLast) => output with
     {
         ImageOutput = new ImageOutput
@@ -19,7 +19,7 @@ public class ImageOutputTransform : IRunOutputTransform<GeneticEpoch<CircleGene>
         }
     };
 
-    public RunOutputsState Transform(EngineOutput<GeneticEpoch<PolygonGene>, PolygonChromosome> handle, RunOutputsState output, RunInputsState input, bool isLast) => output with
+    public RunOutputsState Transform(Guid runId, EngineOutput<GeneticEpoch<PolygonGene>, PolygonChromosome> handle, RunOutputsState output, RunInputsState input, bool isLast) => output with
     {
         ImageOutput = new ImageOutput
         {

@@ -5,7 +5,7 @@ namespace Radiate.Client.Services;
 public interface ITensorFrameService
 {
     void SetTensorFrame(Guid runId, TensorFrame tensorFrame);
-    TensorFrame GetTensorFrame(Guid runId);
+    TensorFrame? GetTensorFrame(Guid runId);
 }
 
 public class TensorFrameService : ITensorFrameService
@@ -17,13 +17,13 @@ public class TensorFrameService : ITensorFrameService
         _tensorFrames[runId] = tensorFrame;
     }
 
-    public TensorFrame GetTensorFrame(Guid runId)
+    public TensorFrame? GetTensorFrame(Guid runId)
     {
         if (_tensorFrames.TryGetValue(runId, out var tensorFrame))
         {
             return tensorFrame;
         }
-        
-        throw new KeyNotFoundException($"No tensor frame found for run id {runId}");
+
+        return null;
     }
 }

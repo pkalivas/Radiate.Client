@@ -11,7 +11,7 @@
             <MudItem md="@panel.Cols" @key="@panel.Id">
                 @if (panel.GridPanel is ToolbarPanel)
                 {
-                    <ToolBar Title="@panel.GridPanel.Title">
+                    <ToolBar Title="@panel.GridPanel.Title" Actions="@panel.GridPanel.Actions">
                         <Options></Options>
                         <ChildContent>
                             <MudPaper Elevation="2" MaxHeight="@($"{panel.MaxHeight}px")" Class="pa-4">

@@ -163,6 +163,8 @@ public static class RootReducer
             Inputs = copyRun.Inputs with { },
         };
         
-        return state with { Runs = newRuns };
+        state.UiState.RunTemplates[newId] = state.UiState.RunTemplates[copyId];
+        
+        return state with { Runs = newRuns, UiState = state.UiState };
     }
 }

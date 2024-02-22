@@ -28,7 +28,12 @@ public class GraphUiTemplate : IRunUITemplate
                 GridPanel = new ToolbarPanel
                 {
                     Name = nameof(GraphInputsPanel),
-                    Title = "Graph"
+                    Title = "Graph",
+                    Actions = new List<string>
+                    {
+                        MenuActions.Copy,
+                        MenuActions.EngineTree
+                    }
                 }
             },
             new()

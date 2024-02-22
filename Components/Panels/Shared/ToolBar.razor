@@ -1,7 +1,26 @@
+@using Radiate.Client.Domain.Store
+@using Radiate.Client.Domain.Store.Actions
+@using Radiate.Client.Domain.Store.Models.Projections
+@using Radiate.Client.Domain.Store.Schema
+@using Radiate.Client.Domain.Store.Selections
+@inherits StoreComponent<Radiate.Client.Domain.Store.Models.Projections.ToolBarProjection>
+@inject IDialogService DialogService
+@inject NavigationManager Navigation
 
 <MudToolBar Dense="true" class="flex justify-content-between w-100" Style="background: rgba(39,39,47,1);">
     <h5>@Title</h5>
-    @Options
+    <div>
+        <MudMenu Icon="@Icons.Material.Filled.MoreVert">
+            @foreach (var action in Actions)
+            {
+                if (action is MenuActions.Copy)
+                {
+                    <MudMenuItem Icon="@Icons.Material.Outlined.ContentCopy" OnClick="@CopyRun">@action</MudMenuItem>
+                }
+            }
+        </MudMenu>
+    </div>
+    @* @Options *@
 </MudToolBar>
 <div>
     @ChildContent
@@ -9,7 +28,21 @@
 
 @code 
 {
+    [Parameter] public List<string> Actions { get; set; } = new();
     [Parameter] public string Title { get; set; }
     [Parameter] public RenderFragment Options { get; set; }
     [Parameter] public RenderFragment ChildContent { get; set; }
+
+    protected override IObservable<ToolBarProjection> Select() => Store.Select(UiSelectors.SelectToolBarModel);
+    
+    private async Task CopyRun()
+    {
+        var runId = Model.RunId;
+        var newRunId = Guid.NewGuid();
+
+        Store.Dispatch(new CopyRunAction(runId, newRunId));
+        Store.Dispatch(new NavigateToRunAction(newRunId));
+        
+        Navigation.NavigateTo($"/runs/{newRunId}/test/{Model.ModelType.ToLower()}");
+    }
 }

@@ -1,5 +1,7 @@
+using Plotly.Blazor.Traces;
 using Radiate.Client.Domain.Store.Actions;
 using Radiate.Client.Domain.Store.Models.States;
+using Radiate.Client.Domain.Store.Schema;
 using Radiate.Client.Domain.Templates;
 using Radiate.Engines.Schema;
 using Reflow.Reducers;
@@ -51,7 +53,12 @@ public static class RootReducer
     private static RootState AddRun(RootState state, RunCreatedAction action)
     {
         state.Runs[action.Run.RunId] = action.Run with { Index = state.Runs.Count };
-        state.UiState.RunTemplates[action.Run.RunId] = new GraphTemplate();
+        state.UiState.RunTemplates[action.Run.RunId] = action.Run.Inputs.ModelType switch
+        {
+            ModelTypes.Graph => new GraphTemplate(),
+            ModelTypes.Image => new ImageTemplate(),
+            ModelTypes.Tree => new TreeTemplate()
+        };
         return state with { Runs = state.Runs, UiState = state.UiState };
     }
     
@@ -162,8 +169,13 @@ public static class RootReducer
             Index = state.Runs.Count,
             Inputs = copyRun.Inputs with { },
         };
-        
-        state.UiState.RunTemplates[newId] = state.UiState.RunTemplates[copyId];
+
+        state.UiState.RunTemplates[newId] = state.Runs[copyId].Inputs.ModelType switch
+        {
+            ModelTypes.Graph => new GraphTemplate(),
+            ModelTypes.Image => new ImageTemplate(),
+            ModelTypes.Tree => new TreeTemplate()
+        };
         
         return state with { Runs = newRuns, UiState = state.UiState };
     }

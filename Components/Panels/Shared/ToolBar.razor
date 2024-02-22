@@ -17,10 +17,13 @@
                 {
                     <MudMenuItem Icon="@Icons.Material.Outlined.ContentCopy" OnClick="@CopyRun">@action</MudMenuItem>
                 }
+                else if (action is MenuActions.EngineTree)
+                {
+                    <MudMenuItem Icon="@Icons.Material.Outlined.AccountTree" OnClick="@OpenEngineTree">@action</MudMenuItem>
+                }
             }
         </MudMenu>
     </div>
-    @* @Options *@
 </MudToolBar>
 <div>
     @ChildContent
@@ -34,6 +37,19 @@
     [Parameter] public RenderFragment ChildContent { get; set; }
 
     protected override IObservable<ToolBarProjection> Select() => Store.Select(UiSelectors.SelectToolBarModel);
+    
+    private async Task OpenEngineTree()
+    {
+        var options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true,
+            CloseOnEscapeKey = true,
+        };
+
+        var dialogRef = await DialogService.ShowAsync<EngineTreePanel>("Engine Tree", options);
+        await dialogRef.Result;
+    }
     
     private async Task CopyRun()
     {

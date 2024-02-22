@@ -49,10 +49,11 @@
     {
         var runId = Model.RunId;
         var newRunId = Guid.NewGuid();
-
-        Store.Dispatch(new CopyRunAction(runId, newRunId));
-        Store.Dispatch(new NavigateToRunAction(newRunId));
         
         Navigation.NavigateTo($"/runs/{newRunId}/{Model.ModelType.ToLower()}");
+
+        Store.Dispatch(new SetRunLoadingAction(newRunId, true));
+        Store.Dispatch(new NavigateToRunAction(newRunId));
+        Store.Dispatch(new CopyRunAction(runId, newRunId));
     }
 }

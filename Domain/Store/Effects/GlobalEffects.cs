@@ -14,16 +14,34 @@ public class GlobalEffects : IEffectRegistry<RootState>
         new List<IEffect<RootState>>
         {
             CreateNewRunEffect,
-            CreateRunUiEffect
+            CreateRunUiEffect,
+            CopyRunEffect
         };
+
+    private IEffect<RootState> CopyRunEffect => CreateEffect<RootState>(store => store
+        .OnAction<CopyRunAction>()
+        .Select(pair =>
+        {
+            var (state, action) = pair;
+            var (currentRunId, newRunId) = action;
+
+            var currentRun = state.Runs[currentRunId];
+            
+            return new RunCreatedAction(new RunState
+            {
+                RunId = newRunId,
+                Index = state.Runs.Count,
+                Inputs = currentRun.Inputs with { }
+            });
+        }), true);
 
     private IEffect<RootState> CreateNewRunEffect => CreateEffect<RootState>(store => store
         .OnAction<CreateNewRunAction>()
         .Select(pair =>
         {
             var (state, action) = pair;
-            
-            var newRun = new RunState
+
+            return new RunCreatedAction(new RunState
             {
                 RunId = action.RunId,
                 Index = state.Runs.Count,
@@ -32,22 +50,7 @@ public class GlobalEffects : IEffectRegistry<RootState>
                     ModelType = action.ModelType,
                     DataSetType = action.DataSetType
                 }
-            };
-
-            var newRunUi = new RunUiState
-            {
-                RunId = action.RunId,
-                RunTemplate = action.ModelType switch
-                {
-                    ModelTypes.Graph => new GraphTemplate(),
-                    ModelTypes.Image => new ImageTemplate(),
-                    ModelTypes.Tree => new TreeTemplate(),
-                    ModelTypes.MultiObjective => new MultiObjectiveTemplate(),
-                    _ => throw new ArgumentOutOfRangeException()
-                }
-            };
-
-            return new RunCreatedAction(newRun);
+            });
         }), true);
 
     private IEffect<RootState> CreateRunUiEffect => CreateEffect<RootState>(store => store
@@ -56,7 +59,7 @@ public class GlobalEffects : IEffectRegistry<RootState>
         {
             var (_, action) = pair;
 
-            var newRunUi = new RunUiState
+            return new RunUiCreatedAction(new RunUiState
             {
                 RunId = action.Run.RunId,
                 RunTemplate = action.Run.Inputs.ModelType switch
@@ -67,9 +70,7 @@ public class GlobalEffects : IEffectRegistry<RootState>
                     ModelTypes.MultiObjective => new MultiObjectiveTemplate(),
                     _ => throw new ArgumentOutOfRangeException()
                 }
-            };
-
-            return new RunUiCreatedAction(newRunUi);
+            });
         }), true);
 
 }

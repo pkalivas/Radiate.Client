@@ -12,7 +12,6 @@
                     @if (panel.GridPanel is ToolbarPanel)
                     {
                         <ToolBar Title="@panel.GridPanel.Title" Actions="@panel.GridPanel.Actions">
-                            <Options></Options>
                             <ChildContent>
                                 <MudPaper Elevation="2" MaxHeight="@($"{panel.MaxHeight}px")" Class="pa-4">
                                     <PanelDisplay Panel="@panel.GridPanel"/>

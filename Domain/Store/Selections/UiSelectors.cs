@@ -1,6 +1,5 @@
 using Radiate.Client.Domain.Store.Models.Projections;
 using Radiate.Client.Domain.Store.Models.States;
-using Radiate.Client.Domain.Templates;
 using Reflow.Interfaces;
 using Reflow.Selectors;
 

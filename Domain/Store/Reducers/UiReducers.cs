@@ -1,6 +1,5 @@
 using System.Collections.Immutable;
 using Radiate.Client.Domain.Store.Actions;
-using Radiate.Client.Domain.Templates;
 using Reflow.Reducers;
 
 namespace Radiate.Client.Domain.Store.Reducers;

@@ -9,7 +9,8 @@ public static class RootReducer
         new List<IEnumerable<On<RootState>>>
         {
             UiReducers.CreateReducers(),
-            RunReducers.CreateReducers()
+            RunReducers.CreateReducers(),
+            RunUiReducers.CreateReducers()
         }
         .SelectMany(on => on);
 }

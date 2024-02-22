@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Radiate.Client.Domain.Store.Models.Projections;
 using Radiate.Client.Domain.Store.Models.States;
 using Radiate.Client.Services.Mappers;
@@ -26,12 +27,12 @@ public static class EngineSelectors
         });
     
     public static readonly ISelector<RootState, EngineTreePanelProjection> SelectEngineTreePanelModel = Selectors
-        .Create<RootState, UiState, RunState, EngineTreePanelProjection>(UiSelectors.SelectUiState, 
+        .Create<RootState, RunUiState, RunState, EngineTreePanelProjection>(RunUiSelectors.SelectRunUiState, 
             RunSelectors.SelectRun, (ui, run) =>
             {
-                var expanded = ui.EngineStateExpanded.TryGetValue(run.RunId, out var engineTree)
-                    ? engineTree
-                    : run.Outputs.EngineStates.Keys.ToDictionary(key => key, _ => true);
+                var expanded = ui.EngineStateExpanded.Any()
+                    ? ui.EngineStateExpanded
+                    : run.Outputs.EngineStates.Keys.ToImmutableDictionary(key => key, _ => true);
                 
                 return new EngineTreePanelProjection
                 {

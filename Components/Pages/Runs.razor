@@ -4,7 +4,7 @@
 @using Radiate.Client.Domain.Store.Selections
 @using Radiate.Client.Domain.Store.Models.Projections
 @using Radiate.Client.Domain.Store.Actions
-@inherits StoreComponent<RunUiProjection>
+@inherits StoreComponent<StandardRunUiProjection>
 
 <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
     <MudGrid>
@@ -111,7 +111,7 @@
     [Parameter] public Guid RunId { get; set; }
     [Parameter] public string ModelType { get; set; }
 
-    protected override IObservable<RunUiProjection> Select() => Store.Select(UiSelectors.SelectRunTemplate);
+    protected override IObservable<StandardRunUiProjection> Select() => Store.Select(UiSelectors.SelectStandardRunUiModel);
     
     private async Task OnExpandedChanged(bool changed, Guid panelId)
     {

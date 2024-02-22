@@ -50,10 +50,13 @@ public class UiEffects : IEffectRegistry<RootState>
         .Select<(RootState, SetRunOutputsAction), IAction>(pair =>
         {
             var (state, action) = pair;
-            if (!state.UiState.EngineStateExpanded.ContainsKey(state.CurrentRunId))
+            if (state.RunUis.TryGetValue(action.RunId, out var runUi))
             {
-                var treeExpansions = action.EngineOutputs.First().EngineStates.ToDictionary(val => val.Key, _ => true);
-                return new SetEngineTreeExpandedAction(state.CurrentRunId, treeExpansions);
+                if (!runUi.EngineStateExpanded.Any())
+                {
+                    var treeExpansions = action.EngineOutputs.First().EngineStates.ToDictionary(val => val.Key, _ => true);
+                    return new SetEngineTreeExpandedAction(action.RunId, treeExpansions);
+                }
             }
 
             return new NoopAction();

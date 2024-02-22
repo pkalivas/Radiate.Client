@@ -10,15 +10,24 @@ public static class UiSelectors
     public static readonly ISelector<RootState, UiState> SelectUiState =
         Selectors.Create<RootState, UiState>(state => state.UiState);
 
-    public static readonly ISelector<RootState, RunUiProjection> SelectRunTemplate = Selectors
-        .Create<RootState, RunUiProjection>(state =>
+    public static readonly ISelector<RootState, StandardRunUiProjection> SelectStandardRunUiModel = Selectors
+        .Create<RootState, StandardRunUiProjection>(state =>
         {
-            var runTemplates = state.UiState.RunTemplates[state.CurrentRunId];
-            return new RunUiProjection
+            if (state.RunUis.TryGetValue(state.CurrentRunId, out var runUi))
+            {
+                return new StandardRunUiProjection
+                {
+                    RunId = state.CurrentRunId,
+                    IsLoading = false,
+                    UiTemplate = runUi.RunTemplate!.UI
+                };
+            }
+            
+            return new StandardRunUiProjection
             {
                 RunId = state.CurrentRunId,
-                IsSidebarOpen = state.UiState.IsSidebarOpen,
-                UiTemplate = runTemplates.UI
+                IsLoading = true,
+                UiTemplate = null,
             };
         });
 

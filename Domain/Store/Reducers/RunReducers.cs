@@ -20,22 +20,9 @@ public static class RunReducers
         Reducer.On<ResumeEngineRunAction, RootState>(ResumeEngine),
         Reducer.On<CancelEngineRunAction, RootState>(CancelEngine),
     ];
-    
+
     private static RootState AddRun(RootState state, RunCreatedAction action) =>
-        state.UpdateRun(action.Run.RunId, _ => action.Run with {Index = state.Runs.Count}) with
-        {
-            UiState = state.UiState with
-            {
-                RunTemplates = state.UiState.RunTemplates.Add(action.Run.RunId, action.Run.Inputs.ModelType switch
-                {
-                    ModelTypes.Graph => new GraphTemplate(),
-                    ModelTypes.Image => new ImageTemplate(),
-                    ModelTypes.Tree => new TreeTemplate(),
-                    ModelTypes.MultiObjective => new MultiObjectiveTemplate(),
-                    _ => throw new ArgumentOutOfRangeException()
-                })
-            }
-        };
+        state.UpdateRun(action.Run.RunId, _ => action.Run with { Index = state.Runs.Count });
     
     private static RootState AddOutput(RootState state, SetRunOutputsAction action) =>
         state.UpdateRun(action.RunId, run => run with
@@ -51,26 +38,26 @@ public static class RunReducers
         {
             Inputs = action.Inputs
         });
-    
+
     private static RootState CopyRun(RootState state, CopyRunAction action) => state
         .UpdateRun(action.NewRunId, run => run with
         {
             RunId = action.NewRunId,
             Index = state.Runs.Count,
             Inputs = state.Runs[action.CopyRunId].Inputs with { }
-        })
-        .UpdateUi(ui => ui with
-        {
-            RunTemplates = state.UiState.RunTemplates.Add(action.NewRunId, 
-                state.Runs[action.CopyRunId].Inputs.ModelType switch
-                {
-                    ModelTypes.Graph => new GraphTemplate(),
-                    ModelTypes.Image => new ImageTemplate(),
-                    ModelTypes.Tree => new TreeTemplate(),
-                    ModelTypes.MultiObjective => new MultiObjectiveTemplate(),
-                    _ => throw new ArgumentOutOfRangeException()
-                })
         });
+        // .UpdateUi(ui => ui with
+        // {
+        //     RunTemplates = state.UiState.RunTemplates.Add(action.NewRunId, 
+        //         state.Runs[action.CopyRunId].Inputs.ModelType switch
+        //         {
+        //             ModelTypes.Graph => new GraphTemplate(),
+        //             ModelTypes.Image => new ImageTemplate(),
+        //             ModelTypes.Tree => new TreeTemplate(),
+        //             ModelTypes.MultiObjective => new MultiObjectiveTemplate(),
+        //             _ => throw new ArgumentOutOfRangeException()
+        //         })
+        // });
     
     private static RootState RunCompleted(RootState state, EngineStoppedAction action) =>
         state.UpdateRun(action.RunId, run => run with

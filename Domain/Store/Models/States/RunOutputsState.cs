@@ -8,15 +8,15 @@ namespace Radiate.Client.Domain.Store.Models.States;
 
 public record RunOutputsState
 {
-    public string EngineState { get; set; } = "";
-    public string EngineId { get; set; } = "";
+    public string EngineState { get; init; } = "";
+    public string EngineId { get; init; } = "";
     public IImmutableDictionary<string, MetricValueModel> Metrics { get; init; } = ImmutableDictionary<string, MetricValueModel>.Empty;
-    public Dictionary<string, EngineState> EngineStates { get; init; } = new();
-    public ImageOutput ImageOutput { get; set; } = new();
-    public GraphOutput GraphOutput { get; set; } = new();
-    public TreeOutput TreeOutput { get; set; } = new();
-    public ValidationOutput ValidationOutput { get; set; } = new();
-    public ParetoFrontOutput ParetoFrontOutput { get; set; } = new();
+    public IImmutableDictionary<string, EngineState> EngineStates { get; init; } = ImmutableDictionary<string, EngineState>.Empty;
+    public ImageOutput ImageOutput { get; init; } = new();
+    public GraphOutput GraphOutput { get; init; } = new();
+    public TreeOutput TreeOutput { get; init; } = new();
+    public ValidationOutput ValidationOutput { get; init; } = new();
+    public ParetoFrontOutput ParetoFrontOutput { get; init; } = new();
 }
 
 public record GraphOutput
@@ -37,8 +37,8 @@ public record GraphOutput
 
 public record TreeOutput
 {
-    public string Type { get; set; } = "";
-    public List<object> Trees { get; set; } = new();
+    public string Type { get; init; } = "";
+    public IImmutableList<object> Trees { get; init; } = ImmutableList<object>.Empty;
 
     public List<Tree<T>> GetTrees<T>() => Trees
         .Select(tree =>
@@ -55,17 +55,17 @@ public record TreeOutput
 
 public record ImageOutput
 {
-    public ImageEntity Image { get; set; } = new();
+    public ImageEntity Image { get; init; } = new();
 }
 
 public record ValidationOutput
 {
-    public string LossFunction { get; set; } = "";
-    public BatchSetValidation TrainValidation { get; set; } = new();
-    public BatchSetValidation TestValidation { get; set; } = new();
+    public string LossFunction { get; init; } = "";
+    public BatchSetValidation TrainValidation { get; init; } = new();
+    public BatchSetValidation TestValidation { get; init; } = new();
 }
 
 public record ParetoFrontOutput
 {
-    public List<float[]> Front { get; set; } = new();
+    public IImmutableList<float[]> Front { get; init; } = ImmutableList<float[]>.Empty;
 }

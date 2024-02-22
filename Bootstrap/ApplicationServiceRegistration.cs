@@ -45,7 +45,6 @@ public static class ApplicationServiceRegistration
             .AddTransient<IEffectRegistry<RootState>, RunEffects>()
             .AddTransient<IEffectRegistry<RootState>, RunUiEffects>()
             .AddTransient<IEffectRegistry<RootState>, GlobalEffects>()
-            .AddTransient<IEffectRegistry<RootState>, UiEffects>()
             .AddSingleton<IStore<RootState>, Store<RootState>>(sp =>
             {
                 var store = new Store<RootState>(RootReducer.CreateReducers(), new RootState());

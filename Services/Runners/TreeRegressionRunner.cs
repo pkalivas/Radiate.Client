@@ -65,12 +65,12 @@ public class TreeRegressionRunner : MLEngineRunner<GeneticEpoch<TreeGene<float>>
     {
         EngineState = output.GetState(output.EngineId),
         EngineId = output.EngineId,
-        EngineStates = output.EngineStates,
+        EngineStates = output.EngineStates.ToImmutableDictionary(),
         Metrics = MetricMappers.GetMetricValues(output.Metrics).ToImmutableDictionary(key => key.Name),
         TreeOutput = new TreeOutput
         {
             Type = typeof(Tree<float>).FullName,
-            Trees = output.Model.Trees.Select(tree => (object)tree).ToList()
+            Trees = output.Model.Trees.Select(tree => (object)tree).ToImmutableList()
         }
     };
 }

@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Radiate.Schema;
 
 namespace Radiate.Client.Domain.Store.Models.States;
@@ -13,7 +14,7 @@ public record RunState
     public DateTime EndTime { get; init; }
     public RunInputsState Inputs { get; init; } = new();
     public RunOutputsState Outputs { get; init; } = new();
-    public List<float> Scores { get; init; } = new();
+    public IImmutableList<float> Scores { get; init; } = ImmutableList<float>.Empty;
     
     public override int GetHashCode()
     {

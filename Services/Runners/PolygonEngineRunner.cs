@@ -66,7 +66,7 @@ public class PolygonEngineRunner : EngineRunner<GeneticEpoch<PolygonGene>, Polyg
         {
             EngineState = state,
             EngineId = output.EngineId,
-            EngineStates = output.EngineStates,
+            EngineStates = output.EngineStates.ToImmutableDictionary(),
             Metrics = MetricMappers.GetMetricValues(output.Metrics).ToImmutableDictionary(key => key.Name),
             ImageOutput = new ImageOutput
             {

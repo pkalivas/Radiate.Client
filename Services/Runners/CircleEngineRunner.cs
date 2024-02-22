@@ -65,7 +65,7 @@ public class CircleEngineRunner : EngineRunner<GeneticEpoch<CircleGene>, CircleC
         {
             EngineState = state,
             EngineId = output.EngineId,
-            EngineStates = output.EngineStates,
+            EngineStates = output.EngineStates.ToImmutableDictionary(),
             Metrics = MetricMappers.GetMetricValues(output.Metrics).ToImmutableDictionary(key => key.Name),
             ImageOutput = new ImageOutput
             {

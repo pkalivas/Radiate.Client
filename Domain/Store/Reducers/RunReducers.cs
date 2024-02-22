@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Radiate.Client.Domain.Store.Actions;
 using Radiate.Engines.Schema;
 using Reflow.Reducers;
@@ -28,7 +29,7 @@ public static class RunReducers
             Outputs = action.EngineOutputs.Last(),
             Scores = run.Scores
                 .Concat(action.EngineOutputs.Select(val => (float) val.Metrics[MetricNames.Score].Value))
-                .ToList(),
+                .ToImmutableList(),
         });
     
     private static RootState SetRunInputs(RootState state, SetRunInputsAction action) =>

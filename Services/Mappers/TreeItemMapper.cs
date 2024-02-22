@@ -7,7 +7,7 @@ namespace Radiate.Client.Services.Mappers;
 
 public static class TreeItemMapper
 {
-    public static HashSet<TreeItemData<EngineState>> GetItems(Dictionary<string, EngineState> states, 
+    public static HashSet<TreeItemData<EngineState>> GetItems(IReadOnlyDictionary<string, EngineState> states, 
         IReadOnlyDictionary<string, bool> expanded)
     {
         var seen = new HashSet<string>();

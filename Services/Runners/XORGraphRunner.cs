@@ -79,7 +79,7 @@ public class XORGraphRunner : MLEngineRunner<GeneticEpoch<GraphGene<float>>, Per
         {
             EngineState = output.GetState(output.EngineId),
             EngineId = output.EngineId,
-            EngineStates = output.EngineStates,
+            EngineStates = output.EngineStates.ToImmutableDictionary(),
             Metrics = MetricMappers.GetMetricValues(output.Metrics).ToImmutableDictionary(key => key.Name),
             GraphOutput = new GraphOutput
             {

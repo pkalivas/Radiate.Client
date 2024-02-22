@@ -51,8 +51,8 @@ public class MultiObjectiveUiTemplate : IRunUITemplate
 
     public AccordionTemplate LeftSideAccordion => new()
     {
-        ExpansionPanels = new List<ExpansionPanelTemplate>
-        {
+        ExpansionPanels =
+        [
             new()
             {
                 Id = new Guid("C3C00DB8-DBCB-407A-85BF-432D3591CA62"),
@@ -63,13 +63,13 @@ public class MultiObjectiveUiTemplate : IRunUITemplate
                     Title = "Metrics",
                 }
             }
-        }
+        ]
     };
 
     public AccordionTemplate RightSideAccordion { get; } = new()
     {
-        ExpansionPanels = new List<ExpansionPanelTemplate>
-        {
+        ExpansionPanels =
+        [
             new()
             {
                 Id = new Guid("F4114F2B-4C84-455C-89D5-998964CDEB1B"),
@@ -81,6 +81,7 @@ public class MultiObjectiveUiTemplate : IRunUITemplate
                     Title = "Front",
                 }
             },
+
             new()
             {
                 Id = new Guid("6BA53B93-EF5A-4E2B-ABA6-87E095854D37"),
@@ -94,6 +95,6 @@ public class MultiObjectiveUiTemplate : IRunUITemplate
                     Height = 125
                 }
             }
-        },
+        ],
     };
 }

@@ -68,7 +68,7 @@ public class GraphRegressionRunner : MLEngineRunner<GeneticEpoch<GraphGene<float
         bool isLast = false)
     {
         var validation = new ValidationHarness<PerceptronGraph<float>>(output.GetModel(), new MeanSquaredError()).Validate(Frame);
-        
+
         return new()
         {
             EngineState = output.GetState(output.EngineId),

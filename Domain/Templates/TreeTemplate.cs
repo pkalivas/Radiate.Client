@@ -21,8 +21,8 @@ public class TreeUiTemplate : IRunUITemplate
     public GridListTemplate GridList => new()
     {
         Cols = 12,
-        GridPanels = new List<GridPanelTemplate>
-        {
+        GridPanels =
+        [
             new()
             {
                 Id = new Guid("53EA2B0F-E26C-45A3-8DCF-06C742998CF8"),
@@ -38,6 +38,7 @@ public class TreeUiTemplate : IRunUITemplate
                     }
                 }
             },
+
             new()
             {
                 Id = new Guid("365C357D-3A47-418B-84A8-7CBE2DAE1B29"),
@@ -47,13 +48,13 @@ public class TreeUiTemplate : IRunUITemplate
                     Name = nameof(RunControlPanel)
                 }
             }
-        }
+        ]
     };
 
     public AccordionTemplate LeftSideAccordion => new()
     {
-        ExpansionPanels = new List<ExpansionPanelTemplate>
-        {
+        ExpansionPanels =
+        [
             new()
             {
                 Id = new Guid("6A3DD486-DC80-4728-A074-A1D2D79018D9"),
@@ -64,6 +65,7 @@ public class TreeUiTemplate : IRunUITemplate
                     Title = "Validation",
                 }
             },
+
             new()
             {
                 Id = new Guid("C3C00DB8-DBCB-407A-85BF-432D3591CA62"),
@@ -74,13 +76,13 @@ public class TreeUiTemplate : IRunUITemplate
                     Title = "Metrics",
                 }
             }
-        }
+        ]
     };
 
     public AccordionTemplate RightSideAccordion { get; } = new()
     {
-        ExpansionPanels = new List<ExpansionPanelTemplate>
-        {
+        ExpansionPanels =
+        [
             new()
             {
                 Id = new Guid("F4114F2B-4C84-455C-89D5-998964CDEB1B"),
@@ -92,6 +94,7 @@ public class TreeUiTemplate : IRunUITemplate
                     Title = "Scores",
                 }
             },
+
             new()
             {
                 Id = new Guid("D9396C96-8657-447E-863E-8ACDC2A1A1BB"),
@@ -105,6 +108,7 @@ public class TreeUiTemplate : IRunUITemplate
                     Height = 125
                 }
             },
+
             new()
             {
                 Id = new Guid("6BA53B93-EF5A-4E2B-ABA6-87E095854D37"),
@@ -118,6 +122,7 @@ public class TreeUiTemplate : IRunUITemplate
                     Height = 125
                 }
             },
+
             new()
             {
                 Id = new Guid("DDD74B29-572F-41F0-883E-4A458EACF295"),
@@ -131,6 +136,6 @@ public class TreeUiTemplate : IRunUITemplate
                     Height = 125
                 }
             }
-        },
+        ],
     };
 }

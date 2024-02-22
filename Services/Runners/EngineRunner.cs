@@ -1,8 +1,10 @@
+using System.Collections.Immutable;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using Radiate.Client.Domain.Store;
 using Radiate.Client.Domain.Store.Actions;
 using Radiate.Client.Domain.Store.Models.States;
+using Radiate.Client.Services.Mappers;
 using Radiate.Client.Services.Runners.Interfaces;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Interfaces;
@@ -13,7 +15,7 @@ namespace Radiate.Client.Services.Runners;
 
 public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEpoch
 {
-    private static TimeSpan BufferTime => TimeSpan.FromMilliseconds(500);
+    private static TimeSpan BufferTime => TimeSpan.FromMilliseconds(100);
     
     private readonly IStore<RootState> _store;
     private readonly IDisposable _outputSubscription;
@@ -60,6 +62,14 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
         _outputSubscription.Dispose();
         control.Dispose();
     }
+    
+    private RunOutputsState Map(EngineOutput<TEpoch, T> output, RunInputsState inputs, bool isLast = false) => new()
+    {
+        EngineState = output.GetState(output.EngineId),
+        EngineId = output.EngineId,
+        EngineStates = output.EngineStates.ToImmutableDictionary(),
+        Metrics = MetricMappers.GetMetricValues(output.Metrics).ToImmutableDictionary(key => key.Name),
+    };
 
     private void HandleOutputs(IList<(Guid, RunOutputsState)> outputs) =>
         _store.Dispatch(new SetRunOutputsAction(outputs

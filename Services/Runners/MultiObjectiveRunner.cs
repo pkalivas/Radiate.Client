@@ -84,7 +84,7 @@ public class MultiObjectiveRunner : EngineRunner<GeneticEpoch<FloatGene>, float[
         _front.AddAll(output.Epoch.Population
             .Select(val => val.GetFitnessValues()));
         
-        if (_front.Size() < 1100)
+        if (_front.Size() < inputs.MultiObjectiveInputs.FrontMaxSize)
         {
             return new()
             {
@@ -99,14 +99,14 @@ public class MultiObjectiveRunner : EngineRunner<GeneticEpoch<FloatGene>, float[
             };
         }
 
-        if (_front.Size() >= 1100)
+        if (_front.Size() >= inputs.MultiObjectiveInputs.FrontMaxSize)
         {
             _front = _front.ReplaceAll(points => Pareto.CrowdingDistance(points
                     .Select(val => val)
                     .ToArray(), output.Optimize)
                 .Select((val, idx) => (val, idx))
                 .OrderByDescending(val => val.val)
-                .Take(1000)
+                .Take(inputs.MultiObjectiveInputs.FrontMinSize)
                 .Select(val => points[val.idx])
                 .ToList());
         }

@@ -32,4 +32,6 @@ public record ImageInputs
 
 public record MultiObjectiveInputs
 {
+    public int FrontMinSize { get; set; } = 1000;
+    public int FrontMaxSize { get; set; } = 1100;
 }

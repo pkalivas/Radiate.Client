@@ -74,7 +74,7 @@
             <MudText Typo="Typo.h6">DTZ</MudText>
             <MudDivider/>
             <MudGrid Class="mt-3">
-                <MudItem>
+                <MudItem md="6">
                     @if (Model.IsReadonly)
                     {
                         <div class="d-flex align-items-center border-bottom justify-content-between">
@@ -100,6 +100,53 @@
                         </MudSelect>
                     }
                 </MudItem>
+                <MudItem md="6">
+                    @if (Model.IsReadonly)
+                    {
+                        <div class="d-flex align-items-center border-bottom justify-content-between">
+                            <MudText Typo="Typo.body2">Front Min:</MudText>
+                            <MudTooltip Text="The min size of the front.">
+                                <MudIcon Icon="Icons.Info" Size="Size.Small"/>
+                            </MudTooltip>
+                            <MudText Typo="Typo.body2">@Model.Inputs.MultiObjectiveInputs.FrontMinSize</MudText>
+                        </div>
+                    }
+                    else
+                    {
+                        <MudNumericField Label="Front Min"
+                                         Variant="Variant.Filled"
+                                         ReadOnly="@Model.IsReadonly"
+                                         DisableUnderLine="@Model.IsReadonly"
+                                         HideSpinButtons="@Model.IsReadonly"
+                                         Value="@Model.Inputs.MultiObjectiveInputs.FrontMinSize"
+                                         ValueChanged="@((int size) => OnInputChange(Model, inputs => inputs.MultiObjectiveInputs.FrontMinSize = size))">
+                        </MudNumericField>
+                    }
+                </MudItem>
+                <MudItem md="6">
+                    @if (Model.IsReadonly)
+                    {
+                        <div class="d-flex align-items-center border-bottom justify-content-between">
+                            <MudText Typo="Typo.body2">Front Max:</MudText>
+                            <MudTooltip Text="The max size of the front.">
+                                <MudIcon Icon="Icons.Info" Size="Size.Small"/>
+                            </MudTooltip>
+                            <MudText Typo="Typo.body2">@Model.Inputs.MultiObjectiveInputs.FrontMaxSize</MudText>
+                        </div>
+                    }
+                    else
+                    {
+                        <MudNumericField Label="Front Max"
+                                         Variant="Variant.Filled"
+                                         ReadOnly="@Model.IsReadonly"
+                                         DisableUnderLine="@Model.IsReadonly"
+                                         HideSpinButtons="@Model.IsReadonly"
+                                         Value="@Model.Inputs.MultiObjectiveInputs.FrontMaxSize"
+                                         ValueChanged="@((int size) => OnInputChange(Model, inputs => inputs.MultiObjectiveInputs.FrontMaxSize = size))">
+                        </MudNumericField>
+                    }
+                </MudItem>
+
             </MudGrid>
         </MudItem>
 </MudGrid>

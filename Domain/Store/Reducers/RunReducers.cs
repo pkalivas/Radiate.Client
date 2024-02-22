@@ -13,7 +13,6 @@ public static class RunReducers
         Reducer.On<RunCreatedAction, RootState>(AddRun),
         Reducer.On<SetRunOutputsAction, RootState>(AddOutput),
         Reducer.On<SetRunInputsAction, RootState>(SetRunInputs),
-        Reducer.On<SetTargetImageAction, RootState>(SetTargetImage),
         Reducer.On<CopyRunAction, RootState>(CopyRun),
         Reducer.On<EngineStoppedAction, RootState>(RunCompleted),
         Reducer.On<StartEngineAction, RootState>(StartEngine),
@@ -53,18 +52,6 @@ public static class RunReducers
             Inputs = action.Inputs
         });
     
-    private static RootState SetTargetImage(RootState state, SetTargetImageAction action) =>
-        state.UpdateRun(action.RunId, run => run with
-        {
-            Inputs = run.Inputs with
-            {
-                ImageInputs = run.Inputs.ImageInputs with
-                {
-                    TargetImage = action.Image
-                }
-            }
-        });
-
     private static RootState CopyRun(RootState state, CopyRunAction action) => state
         .UpdateRun(action.NewRunId, run => run with
         {

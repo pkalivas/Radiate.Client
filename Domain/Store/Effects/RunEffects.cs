@@ -6,24 +6,25 @@ using Reflow.Actions;
 using Reflow.Effects;
 using Reflow.Interfaces;
 
-namespace Radiate.Client.Domain.Store;
+namespace Radiate.Client.Domain.Store.Effects;
 
-public class RootEffects : IEffectRegistry<RootState>
+public class RunEffects : IEffectRegistry<RootState>
 {
     private readonly IActorService _actorService;
-    
-    public RootEffects(IActorService actorService)
+
+    public RunEffects(IActorService actorService)
     {
         _actorService = actorService;
     }
     
-    public IEnumerable<IEffect<RootState>> CreateEffects() => new IEffect<RootState>[]
-    {
-        StartEngineEffect,
-        CancelEngineEffect,
-        EngineTreeEffect
-    };
-
+    public IEnumerable<IEffect<RootState>> CreateEffects() => 
+        new List<IEffect<RootState>>
+        {
+            StartEngineEffect,
+            CancelEngineEffect,
+            SetTargetImageInputEffect
+        };
+    
     private Effect<RootState> StartEngineEffect => new()
     {
         Run = state => state
@@ -52,20 +53,22 @@ public class RootEffects : IEffectRegistry<RootState>
             })
     };
     
-    private Effect<RootState> EngineTreeEffect => new()
+    private Effect<RootState> SetTargetImageInputEffect => new()
     {
         Run = store => store
-            .OnAction<SetRunOutputsAction>()
-            .Select<(RootState, SetRunOutputsAction), IAction>(pair =>
+            .OnAction<SetTargetImageAction>()
+            .Select<(RootState, SetTargetImageAction), IAction>(pair =>
             {
-                var (state, action) = pair;
-                if (!state.UiState.EngineStateExpanded.ContainsKey(state.CurrentRunId))
-                {
-                    var treeExpansions = action.EngineOutputs.First().EngineStates.ToDictionary(val => val.Key, _ => true);
-                    return new SetEngineTreeExpandedAction(state.CurrentRunId, treeExpansions);
-                }
+                var (runId, image) = pair.Item2;
+                var run = pair.Item1.Runs[runId];
 
-                return new NoopAction();
+                return new SetRunInputsAction(runId, run.Inputs with
+                {
+                    ImageInputs = run.Inputs.ImageInputs with
+                    {
+                        TargetImage = image
+                    }
+                });
             }),
         Dispatch = true
     };

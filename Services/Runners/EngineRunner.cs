@@ -52,10 +52,12 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
             }
         });
         
-        _outputs.OnNext((runId, Map(transforms, result, inputs, true)));
-        _store.Dispatch(new EngineStoppedAction(runId));
+        HandleOutputs(new List<(Guid, RunOutputsState)>
+        {
+            (runId, Map(transforms, result, inputs, true))
+        });
         
-        Thread.Sleep(BufferTime);
+        _store.Dispatch(new EngineStoppedAction(runId));
         
         _pause.OnCompleted();
         _outputs.OnCompleted();

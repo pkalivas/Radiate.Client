@@ -59,6 +59,6 @@ public class XORGraphRunner : DataSetRunner<GeneticEpoch<GraphGene<float>>, Perc
     protected override List<IRunOutputTransform<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>> GetOutputTransforms() => 
         new()
         {
-            new GraphOutputTransform()
+            new GraphOutputTransform(),
         };
 }

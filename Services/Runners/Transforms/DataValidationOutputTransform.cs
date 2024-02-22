@@ -16,10 +16,10 @@ public class DataValidationOutputTransform<TEpoch, T> : IRunOutputTransform<TEpo
     private readonly ILossFunction _lossFunction;
     private readonly TensorFrame _frame;
     
-    public DataValidationOutputTransform(TensorFrame frame, ILossFunction lossFunction)
+    public DataValidationOutputTransform(Guid runId, ITensorFrameService tensorFrameService)
     {
-        _lossFunction = lossFunction;
-        _frame = frame;
+        _lossFunction = new MeanSquaredError();
+        _frame = tensorFrameService.GetTensorFrame(runId);
     }
     
     public RunOutputsState Transform(EngineOutput<TEpoch, T> handle, RunOutputsState output, RunInputsState input, bool isLast)

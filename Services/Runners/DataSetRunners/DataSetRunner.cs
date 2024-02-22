@@ -1,5 +1,6 @@
 using Radiate.Client.Domain.Store;
 using Radiate.Client.Domain.Store.Models.States;
+using Radiate.Client.Services.Runners.Transforms;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Interfaces;
 using Radiate.Extensions;
@@ -16,6 +17,8 @@ public abstract class DataSetRunner<TEpoch, T> : EngineRunner<TEpoch, T> where T
     {
         _tensorFrameService = tensorFrameService;
     }
+    
+    protected IRunOutputTransform<TEpoch, T> ValidationTransform { get; private set; }
 
     protected abstract Task<IEngine<TEpoch, T>> BuildEngine(RunInputsState inputs, TensorFrame frame);
 

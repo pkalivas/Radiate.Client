@@ -7,6 +7,7 @@ public record RunInputsState
     public PopulationInputs PopulationInputs { get; set; } = new();
     public LimitInputs LimitInputs { get; set; } = new();
     public ImageInputs ImageInputs { get; set; } = new();
+    public MultiObjectiveInputs MultiObjectiveInputs { get; set; } = new();
 }
 
 public record PopulationInputs
@@ -29,3 +30,7 @@ public record ImageInputs
     public ImageEntity TargetImage { get; set; } = new();
 }
 
+public record MultiObjectiveInputs
+{
+    public int Problem { get; set; } = 1;
+}

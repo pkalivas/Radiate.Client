@@ -23,6 +23,7 @@ public static class StateOptions
             DataSetTypes.Polygon,
             DataSetTypes.Circle
         ],
+        ModelTypes.MultiObjective => [DataSetTypes.DTZ],
         _ => ["Unknown"]
     };
 }

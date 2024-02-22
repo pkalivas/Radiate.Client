@@ -27,7 +27,7 @@ public class MultiObjectiveUiTemplate : IRunUITemplate
                 Cols = 8,
                 GridPanel = new ToolbarPanel
                 {
-                    Name = nameof(GraphInputsPanel),
+                    Name = nameof(MultiObjectiveInputsPanel),
                     Title = "MultiObjective",
                     Actions = new List<string>
                     {
@@ -74,7 +74,7 @@ public class MultiObjectiveUiTemplate : IRunUITemplate
                 Id = new Guid("F4114F2B-4C84-455C-89D5-998964CDEB1B"),
                 IsOpen = true,
                 MaxHeight = 500,
-                ExpansionPanel = new PanelTemplate()
+                ExpansionPanel = new PanelTemplate
                 {
                     Name = nameof(ParetoFrontChartPanel),
                     Title = "Front",

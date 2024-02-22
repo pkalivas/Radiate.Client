@@ -22,7 +22,6 @@ public class MultiObjectiveRunner : EngineRunner<GeneticEpoch<FloatGene>, float[
     private const int Variables = 4;
     private const int Objectives = 3;
     private const int K = Variables - Objectives + 1;
-    private readonly int choice = 1;
 
     private Front<float[]>? _front;
 
@@ -37,6 +36,10 @@ public class MultiObjectiveRunner : EngineRunner<GeneticEpoch<FloatGene>, float[
         CancellationTokenSource cts, 
         Action<EngineOutput<GeneticEpoch<FloatGene>, float[]>> onEngineComplete)
     {
+        var iterationLimit = inputs.LimitInputs.IterationLimit;
+        var populationSize = inputs.PopulationInputs.PopulationSize;
+        var choice = inputs.MultiObjectiveInputs.Problem;
+        
         Func<float[], float[]> fitnessFunction = choice switch
         {
             1 => FitnessDTLZ1,
@@ -52,7 +55,7 @@ public class MultiObjectiveRunner : EngineRunner<GeneticEpoch<FloatGene>, float[
 
         var engine = Engine.Genetic(codex).Async()
             .Minimizing(Objectives)
-            .PopulationSize(100)
+            .PopulationSize(populationSize)
             .OffspringSelector(new TournamentSelector<FloatGene>())
             .SurvivorSelector(new NSGA2Selector<FloatGene>())
             .Alterers(
@@ -61,7 +64,7 @@ public class MultiObjectiveRunner : EngineRunner<GeneticEpoch<FloatGene>, float[
             .Build();
         
         return engine.Fit()
-            .Limit(Limits.Iteration(2500))
+            .Limit(Limits.Iteration(iterationLimit))
             .Peek(onEngineComplete)
             .TakeWhile(_ => !cts.IsCancellationRequested)
             .ToResult();

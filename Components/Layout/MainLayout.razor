@@ -24,7 +24,7 @@
             </MudButton>
         </div>
         <MudSpacer/>
-        <TestSub/>
+        <ActionLoggerPanel/>
     </MudAppBar>
     <MudDrawer Width="300px" @bind-Open="@_drawerOpen" Variant="DrawerVariant.Mini" Elevation="2" OpenMiniOnHover="true">
         <NavMenu IsOpen="@_drawerOpen"/>
@@ -67,9 +67,12 @@
         if (!result.Canceled)
         {
             var run = (RunState) result.Data;
-            Store.Dispatch(new RunCreatedAction(run));
-            Store.Dispatch(new NavigateToRunAction(run.RunId));
+            
             NavigationManager.NavigateTo($"/runs/{run.RunId}/{run.Inputs.ModelType.ToLower()}");
+
+            Store.Dispatch(new NavigateToRunAction(run.RunId));
+            Store.Dispatch(new SetRunLoadingAction(run.RunId, true));
+            Store.Dispatch(new CreateNewRunAction(run.RunId, run.Inputs.ModelType, run.Inputs.DataSetType));
         }
     }
 }

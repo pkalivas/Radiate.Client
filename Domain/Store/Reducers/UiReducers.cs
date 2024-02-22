@@ -10,7 +10,7 @@ public static class UiReducers
     [
         Reducer.On<NavigateToRunAction, RootState>(NavigateToRun),
         Reducer.On<LayoutChangedAction, RootState>(LayoutChanged),
-        Reducer.On<SetRunTemplateAction, RootState>(SetRunTemplate),
+        Reducer.On<SetRunLoadingAction, RootState>(SetRunLoading)
     ];
     
     private static RootState NavigateToRun(RootState state, NavigateToRunAction action) => state with
@@ -27,22 +27,13 @@ public static class UiReducers
         UiState = state.UiState with { IsSidebarOpen = action.IsSidebarOpen }
     };
     
-    private static RootState SetRunTemplate(RootState state, SetRunTemplateAction action)
+    private static RootState SetRunLoading(RootState state, SetRunLoadingAction action) => state with
     {
-
-        return state;
-    }
-        
-        // => state
-        // .UpdateUi(ui => ui with
-        // {
-        //     RunTemplates = ui.RunTemplates.ContainsKey(action.RunId)
-        //         ? ui.RunTemplates
-        //             .ToImmutableDictionary(pair => pair.Key, pair => pair.Key == action.RunId 
-        //                 ? action.Template 
-        //                 : pair.Value)
-        //         : ui.RunTemplates
-        //             .Concat([new KeyValuePair<Guid, IRunTemplate>(action.RunId, action.Template)])
-        //             .ToImmutableDictionary(pair => pair.Key, pair => pair.Value)
-        // });
+        UiState = state.UiState with
+        {
+            LoadingStates = state.UiState.LoadingStates.ContainsKey(action.RunId)
+                ? state.UiState.LoadingStates.SetItem(action.RunId, action.Loading).ToImmutableDictionary()
+                : state.UiState.LoadingStates.Add(action.RunId, action.Loading).ToImmutableDictionary()
+        }
+    };
 }

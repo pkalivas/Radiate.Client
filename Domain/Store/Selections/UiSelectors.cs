@@ -13,21 +13,17 @@ public static class UiSelectors
     public static readonly ISelector<RootState, StandardRunUiProjection> SelectStandardRunUiModel = Selectors
         .Create<RootState, StandardRunUiProjection>(state =>
         {
-            if (state.RunUis.TryGetValue(state.CurrentRunId, out var runUi))
-            {
-                return new StandardRunUiProjection
-                {
-                    RunId = state.CurrentRunId,
-                    IsLoading = false,
-                    UiTemplate = runUi.RunTemplate!.UI
-                };
-            }
-            
+            var isLoading = state.UiState.LoadingStates.TryGetValue(state.CurrentRunId, out var loadingState) 
+                ? loadingState 
+                : true;
+
             return new StandardRunUiProjection
             {
                 RunId = state.CurrentRunId,
-                IsLoading = true,
-                UiTemplate = null,
+                IsLoading = isLoading,
+                UiTemplate = state.RunUis.TryGetValue(state.CurrentRunId, out var runUi)
+                    ? runUi.RunTemplate?.UI
+                    : null
             };
         });
 

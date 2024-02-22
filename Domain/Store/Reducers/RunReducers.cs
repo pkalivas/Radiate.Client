@@ -1,6 +1,4 @@
 using Radiate.Client.Domain.Store.Actions;
-using Radiate.Client.Domain.Templates;
-using Radiate.Client.Services.Schema;
 using Radiate.Engines.Schema;
 using Reflow.Reducers;
 
@@ -22,7 +20,7 @@ public static class RunReducers
     ];
 
     private static RootState AddRun(RootState state, RunCreatedAction action) =>
-        state.UpdateRun(action.Run.RunId, _ => action.Run with { Index = state.Runs.Count });
+        state.UpdateRun(action.Run.RunId, _ => action.Run);
     
     private static RootState AddOutput(RootState state, SetRunOutputsAction action) =>
         state.UpdateRun(action.RunId, run => run with

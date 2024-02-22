@@ -43,6 +43,8 @@ public static class ApplicationServiceRegistration
     private static IServiceCollection AddReflow(this IServiceCollection services) => 
         services
             .AddTransient<IEffectRegistry<RootState>, RunEffects>()
+            .AddTransient<IEffectRegistry<RootState>, RunUiEffects>()
+            .AddTransient<IEffectRegistry<RootState>, GlobalEffects>()
             .AddTransient<IEffectRegistry<RootState>, UiEffects>()
             .AddSingleton<IStore<RootState>, Store<RootState>>(sp =>
             {

@@ -3,6 +3,7 @@ using Radiate.Client.Domain.Store;
 using Radiate.Client.Domain.Store.Models.States;
 using Radiate.Client.Services.Genome;
 using Radiate.Client.Services.Mappers;
+using Radiate.Client.Services.Runners.Transforms;
 using Radiate.Engines;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Limits;
@@ -20,9 +21,10 @@ public class CircleEngineRunner : EngineRunner<GeneticEpoch<CircleGene>, CircleC
 {
     public CircleEngineRunner(IStore<RootState> store) : base(store) { }
 
+    protected override List<IRunOutputTransform<GeneticEpoch<CircleGene>, CircleChromosome>> OutputTransforms { get; }
     protected override Task OnStartRun(RunInputsState inputs) { return Task.CompletedTask; }
 
-    protected override async Task<EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome>> Fit(RunInputsState inputs,
+    protected override EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome> Fit(RunInputsState inputs,
         CancellationTokenSource cts,
         Action<EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome>> onEngineComplete)
     {
@@ -55,26 +57,26 @@ public class CircleEngineRunner : EngineRunner<GeneticEpoch<CircleGene>, CircleC
             .ToResult();
     }
     
-    protected override RunOutputsState MapToOutput(EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome> output, 
-        RunInputsState inputs,
-        bool isLast = false)
-    {
-        var state = output.GetState(output.EngineId);
-        
-        return  new RunOutputsState
-        {
-            EngineState = state,
-            EngineId = output.EngineId,
-            EngineStates = output.EngineStates.ToImmutableDictionary(),
-            Metrics = MetricMappers.GetMetricValues(output.Metrics).ToImmutableDictionary(key => key.Name),
-            ImageOutput = new ImageOutput
-            {
-                Image = isLast 
-                    ? output.GetModel().Draw(500, 500) 
-                    : output.GetModel().Draw(inputs.ImageInputs.Width, inputs.ImageInputs.Height)
-            }
-        };
-    }
+    // protected override RunOutputsState MapToOutput(EngineOutput<GeneticEpoch<CircleGene>, CircleChromosome> output, 
+    //     RunInputsState inputs,
+    //     bool isLast = false)
+    // {
+    //     var state = output.GetState(output.EngineId);
+    //     
+    //     return  new RunOutputsState
+    //     {
+    //         EngineState = state,
+    //         EngineId = output.EngineId,
+    //         EngineStates = output.EngineStates.ToImmutableDictionary(),
+    //         Metrics = MetricMappers.GetMetricValues(output.Metrics).ToImmutableDictionary(key => key.Name),
+    //         ImageOutput = new ImageOutput
+    //         {
+    //             Image = isLast 
+    //                 ? output.GetModel().Draw(500, 500) 
+    //                 : output.GetModel().Draw(inputs.ImageInputs.Width, inputs.ImageInputs.Height)
+    //         }
+    //     };
+    // }
     
     public static float Fitness(CircleChromosome chromosome, Image<Rgba32> target)
     {

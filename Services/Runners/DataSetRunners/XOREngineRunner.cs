@@ -1,5 +1,6 @@
 using Radiate.Client.Domain.Store;
 using Radiate.Client.Domain.Store.Models.States;
+using Radiate.Client.Services.Runners.Transforms;
 using Radiate.Data;
 using Radiate.Engines;
 using Radiate.Engines.Builders;
@@ -12,27 +13,13 @@ using Radiate.Extensions.Evolution.Alterers;
 using Radiate.Extensions.Evolution.Architects;
 using Radiate.Extensions.Evolution.Architects.Nodes;
 using Radiate.Extensions.Evolution.Programs;
+using Radiate.Factories.Losses;
 using Radiate.Optimizers.Evolution.Interceptors;
 using Radiate.Optimizers.Evolution.Selectors;
 using Radiate.Tensors;
 using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Runners.DataSetRunners;
-
-public abstract class DataSetRunner<TEpoch, T> : EngineRunner<TEpoch, T> where TEpoch : IEpoch
-{
-    protected DataSetRunner(IStore<RootState> store) : base(store) { }
-    
-    protected TensorFrame? Frame { get; private set; }
-    
-    protected abstract Task<TensorFrame> LoadFrame();
-    protected abstract TensorFrame FormatFrame(TensorFrame frame);
-
-    protected override async Task OnStartRun(RunInputsState inputs)
-    {
-        Frame ??= FormatFrame(await LoadFrame());
-    }
-}
 
 public abstract class XOREngineRunner<TEpoch, T> : DataSetRunner<TEpoch, T> where TEpoch : IEpoch
 {
@@ -47,11 +34,10 @@ public abstract class XOREngineRunner<TEpoch, T> : DataSetRunner<TEpoch, T> wher
 
 public class Test : XOREngineRunner<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>
 {
-    public Test(IStore<RootState> store) : base(store)
-    {
-    }
+    public Test(IStore<RootState> store) : base(store) { }
 
-    protected override async Task<EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>> Fit(RunInputsState input, CancellationTokenSource cts, 
+    protected override EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> Fit(RunInputsState input,
+        CancellationTokenSource cts, 
         Action<EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>> onEngineComplete)
     {
         var iterationLimit = input.LimitInputs.IterationLimit;
@@ -84,14 +70,12 @@ public class Test : XOREngineRunner<GeneticEpoch<GraphGene<float>>, PerceptronGr
             .TakeWhile(_ => !cts.IsCancellationRequested)
             .ToResult();
     }
+    
+    protected override List<IRunOutputTransform<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>> OutputTransforms =>
+    [
+        new GraphOutputTransform(),
+        new DataValidationOutputTransform<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>(Frame!, new MeanSquaredError())
+    ];
 
-    protected override RunOutputsState MapToOutput(EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> handle, RunInputsState inputs, bool isLast = false)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override TensorFrame FormatFrame(TensorFrame frame)
-    {
-        throw new NotImplementedException();
-    }
+    protected override TensorFrame FormatFrame(TensorFrame frame) => frame;
 }

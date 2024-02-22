@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using Radiate.Client.Domain.Store;
 using Radiate.Client.Domain.Store.Models.States;
 using Radiate.Client.Services.Mappers;
+using Radiate.Client.Services.Runners.Transforms;
 using Radiate.Data;
 using Radiate.Engines;
 using Radiate.Engines.Entities;
@@ -33,7 +34,12 @@ public class GraphRegressionRunner : MLEngineRunner<GeneticEpoch<GraphGene<float
         return new TensorFrame(features, targets).Transform(Norm.Normalize);
     }
 
-    protected override async Task<EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>> Fit(
+    protected override List<IRunOutputTransform<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>> OutputTransforms
+    {
+        get;
+    }
+
+    protected override EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> Fit(
         RunInputsState inputs, 
         CancellationTokenSource cts,
         Action<EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>> onEngineComplete)
@@ -62,30 +68,30 @@ public class GraphRegressionRunner : MLEngineRunner<GeneticEpoch<GraphGene<float
             .ToResult();
     }
 
-    protected override RunOutputsState MapToOutput(
-        EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> output,
-        RunInputsState inputs,
-        bool isLast = false)
-    {
-        var validation = new ValidationHarness<PerceptronGraph<float>>(output.GetModel(), new MeanSquaredError()).Validate(Frame);
-
-        return new()
-        {
-            EngineState = output.GetState(output.EngineId),
-            EngineId = output.EngineId,
-            EngineStates = output.EngineStates.ToImmutableDictionary(),
-            Metrics = MetricMappers.GetMetricValues(output.Metrics).ToImmutableDictionary(key => key.Name),
-            GraphOutput = new GraphOutput
-            {
-                Type = typeof(Graph<float>).FullName,
-                Graph = output.GetModel().Graph
-            },
-            ValidationOutput = new ValidationOutput
-            {
-                LossFunction = validation.LossFunction,
-                TrainValidation = validation.TrainValidation,
-                TestValidation = validation.TestValidation
-            }
-        };   
-    }
+    // protected override RunOutputsState MapToOutput(
+    //     EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> output,
+    //     RunInputsState inputs,
+    //     bool isLast = false)
+    // {
+    //     var validation = new ValidationHarness<PerceptronGraph<float>>(output.GetModel(), new MeanSquaredError()).Validate(Frame);
+    //
+    //     return new()
+    //     {
+    //         EngineState = output.GetState(output.EngineId),
+    //         EngineId = output.EngineId,
+    //         EngineStates = output.EngineStates.ToImmutableDictionary(),
+    //         Metrics = MetricMappers.GetMetricValues(output.Metrics).ToImmutableDictionary(key => key.Name),
+    //         GraphOutput = new GraphOutput
+    //         {
+    //             Type = typeof(Graph<float>).FullName,
+    //             Graph = output.GetModel().Graph
+    //         },
+    //         ValidationOutput = new ValidationOutput
+    //         {
+    //             LossFunction = validation.LossFunction,
+    //             TrainValidation = validation.TrainValidation,
+    //             TestValidation = validation.TestValidation
+    //         }
+    //     };   
+    // }
 }

@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using Radiate.Client.Domain.Store;
 using Radiate.Client.Domain.Store.Models.States;
 using Radiate.Client.Services.Mappers;
+using Radiate.Client.Services.Runners.Transforms;
 using Radiate.Data;
 using Radiate.Engines;
 using Radiate.Engines.Entities;
@@ -30,7 +31,12 @@ public class TreeRegressionRunner : MLEngineRunner<GeneticEpoch<TreeGene<float>>
         return new TensorFrame(features, targets);
     }
 
-    protected override async Task<EngineOutput<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>>> Fit(RunInputsState inputs,
+    protected override List<IRunOutputTransform<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>>> OutputTransforms
+    {
+        get;
+    }
+
+    protected override EngineOutput<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>> Fit(RunInputsState inputs,
         CancellationTokenSource cts,
         Action<EngineOutput<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>>> onEngineComplete)
     {
@@ -59,18 +65,18 @@ public class TreeRegressionRunner : MLEngineRunner<GeneticEpoch<TreeGene<float>>
             .ToResult();
     }
 
-    protected override RunOutputsState MapToOutput(EngineOutput<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>> output,
-        RunInputsState inputs,
-        bool isLast = false) => new()
-    {
-        EngineState = output.GetState(output.EngineId),
-        EngineId = output.EngineId,
-        EngineStates = output.EngineStates.ToImmutableDictionary(),
-        Metrics = MetricMappers.GetMetricValues(output.Metrics).ToImmutableDictionary(key => key.Name),
-        TreeOutput = new TreeOutput
-        {
-            Type = typeof(Tree<float>).FullName,
-            Trees = output.Model.Trees.Select(tree => (object)tree).ToImmutableList()
-        }
-    };
+    // protected override RunOutputsState MapToOutput(EngineOutput<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>> output,
+    //     RunInputsState inputs,
+    //     bool isLast = false) => new()
+    // {
+    //     EngineState = output.GetState(output.EngineId),
+    //     EngineId = output.EngineId,
+    //     EngineStates = output.EngineStates.ToImmutableDictionary(),
+    //     Metrics = MetricMappers.GetMetricValues(output.Metrics).ToImmutableDictionary(key => key.Name),
+    //     TreeOutput = new TreeOutput
+    //     {
+    //         Type = typeof(Tree<float>).FullName,
+    //         Trees = output.Model.Trees.Select(tree => (object)tree).ToImmutableList()
+    //     }
+    // };
 }

@@ -3,6 +3,7 @@ using Radiate.Client.Domain.Store;
 using Radiate.Client.Domain.Store.Models.States;
 using Radiate.Client.Services.Genome;
 using Radiate.Client.Services.Mappers;
+using Radiate.Client.Services.Runners.Transforms;
 using Radiate.Engines;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Limits;
@@ -20,9 +21,10 @@ public class PolygonEngineRunner : EngineRunner<GeneticEpoch<PolygonGene>, Polyg
 {
     public PolygonEngineRunner(Reflow.Interfaces.IStore<RootState> store) : base(store) { }
 
+    protected override List<IRunOutputTransform<GeneticEpoch<PolygonGene>, PolygonChromosome>> OutputTransforms { get; }
     protected override Task OnStartRun(RunInputsState inputs) { return Task.CompletedTask; }
 
-    protected override async Task<EngineOutput<GeneticEpoch<PolygonGene>, PolygonChromosome>> Fit(RunInputsState inputs, 
+    protected override EngineOutput<GeneticEpoch<PolygonGene>, PolygonChromosome> Fit(RunInputsState inputs, 
         CancellationTokenSource cts,
         Action<EngineOutput<GeneticEpoch<PolygonGene>, PolygonChromosome>> onEngineComplete)
     {
@@ -56,27 +58,27 @@ public class PolygonEngineRunner : EngineRunner<GeneticEpoch<PolygonGene>, Polyg
             .ToResult();
     }
     
-    protected override RunOutputsState MapToOutput(EngineOutput<GeneticEpoch<PolygonGene>, PolygonChromosome> output,
-        RunInputsState inputs,
-        bool isLast = false)
-    {
-        var state = output.GetState(output.EngineId);
-        
-        return new RunOutputsState
-        {
-            EngineState = state,
-            EngineId = output.EngineId,
-            EngineStates = output.EngineStates.ToImmutableDictionary(),
-            Metrics = MetricMappers.GetMetricValues(output.Metrics).ToImmutableDictionary(key => key.Name),
-            ImageOutput = new ImageOutput
-            {
-                Image = isLast 
-                    ? output.GetModel().Draw(500, 500) 
-                    : output.GetModel().Draw(inputs.ImageInputs.Width, inputs.ImageInputs.Height)
-            }
-        };
-    }
-    
+    // protected override RunOutputsState MapToOutput(EngineOutput<GeneticEpoch<PolygonGene>, PolygonChromosome> output,
+    //     RunInputsState inputs,
+    //     bool isLast = false)
+    // {
+    //     var state = output.GetState(output.EngineId);
+    //     
+    //     return new RunOutputsState
+    //     {
+    //         EngineState = state,
+    //         EngineId = output.EngineId,
+    //         EngineStates = output.EngineStates.ToImmutableDictionary(),
+    //         Metrics = MetricMappers.GetMetricValues(output.Metrics).ToImmutableDictionary(key => key.Name),
+    //         ImageOutput = new ImageOutput
+    //         {
+    //             Image = isLast 
+    //                 ? output.GetModel().Draw(500, 500) 
+    //                 : output.GetModel().Draw(inputs.ImageInputs.Width, inputs.ImageInputs.Height)
+    //         }
+    //     };
+    // }
+    //
     public static float Fitness(PolygonChromosome chromosome, Image<Rgba32> target)
     {
         var img = chromosome.Draw(target.Width, target.Height);

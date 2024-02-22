@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using Radiate.Client.Domain.Store;
 using Radiate.Client.Domain.Store.Models.States;
 using Radiate.Client.Services.Mappers;
+using Radiate.Client.Services.Runners.Transforms;
 using Radiate.Client.Services.Schema;
 using Radiate.Engines;
 using Radiate.Engines.Entities;
@@ -27,12 +28,14 @@ public class MultiObjectiveRunner : EngineRunner<GeneticEpoch<FloatGene>, float[
 
     public MultiObjectiveRunner(IStore<RootState> store) : base(store) { }
 
+    protected override List<IRunOutputTransform<GeneticEpoch<FloatGene>, float[]>> OutputTransforms { get; }
+
     protected override async Task OnStartRun(RunInputsState inputs)
     {
         _front = null;
     }
 
-    protected override async Task<EngineOutput<GeneticEpoch<FloatGene>, float[]>> Fit(RunInputsState inputs,
+    protected override EngineOutput<GeneticEpoch<FloatGene>, float[]> Fit(RunInputsState inputs,
         CancellationTokenSource cts, 
         Action<EngineOutput<GeneticEpoch<FloatGene>, float[]>> onEngineComplete)
     {
@@ -69,7 +72,7 @@ public class MultiObjectiveRunner : EngineRunner<GeneticEpoch<FloatGene>, float[
             .ToResult();
     }
 
-    protected override RunOutputsState MapToOutput(EngineOutput<GeneticEpoch<FloatGene>, float[]> output,
+    protected RunOutputsState MapToOutput(EngineOutput<GeneticEpoch<FloatGene>, float[]> output,
         RunInputsState inputs, 
         bool isLast = false)
     {

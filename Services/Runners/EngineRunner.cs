@@ -6,6 +6,7 @@ using Radiate.Client.Domain.Store.Actions;
 using Radiate.Client.Domain.Store.Models.States;
 using Radiate.Client.Services.Mappers;
 using Radiate.Client.Services.Runners.Interfaces;
+using Radiate.Client.Services.Runners.Transforms;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Interfaces;
 using Radiate.Engines.Schema;
@@ -30,6 +31,8 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
             .Where(set => set.Any())
             .Subscribe(HandleOutputs);
     }
+    
+    protected abstract Task<RunOutputsState> Transform(EngineOutput<TEpoch, T> handle, RunOutputsState output, RunInputsState inputs, bool isLast = false);
     
     protected abstract Task OnStartRun(RunInputsState inputs);
     protected abstract Task<EngineOutput<TEpoch, T>> Fit(RunInputsState inputs, CancellationTokenSource cts, Action<EngineOutput<TEpoch, T>> onEngineComplete);
@@ -62,14 +65,19 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
         _outputSubscription.Dispose();
         control.Dispose();
     }
-    
-    private RunOutputsState Map(EngineOutput<TEpoch, T> output, RunInputsState inputs, bool isLast = false) => new()
+
+    private async Task<RunOutputsState> Map(EngineOutput<TEpoch, T> handle, RunInputsState inputs, bool isLast = false)
     {
-        EngineState = output.GetState(output.EngineId),
-        EngineId = output.EngineId,
-        EngineStates = output.EngineStates.ToImmutableDictionary(),
-        Metrics = MetricMappers.GetMetricValues(output.Metrics).ToImmutableDictionary(key => key.Name),
-    };
+        var output = new RunOutputsState
+        {
+            EngineState = handle.GetState(handle.EngineId),
+            EngineId = handle.EngineId,
+            EngineStates = handle.EngineStates.ToImmutableDictionary(),
+            Metrics = MetricMappers.GetMetricValues(handle.Metrics).ToImmutableDictionary(key => key.Name),
+        };
+        
+        return await Transform(handle, output, inputs, isLast);
+    }
 
     private void HandleOutputs(IList<(Guid, RunOutputsState)> outputs) =>
         _store.Dispatch(new SetRunOutputsAction(outputs

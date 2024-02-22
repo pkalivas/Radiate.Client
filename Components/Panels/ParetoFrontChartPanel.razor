@@ -1,0 +1,14 @@
+@inherits StoreComponent<List<double[]>>
+
+<Chart ValuesList="@Model" Type="front" Height="@(Height ?? 200)" ShowGrid="true"/>
+
+@code 
+{
+    [Parameter] public int? Height { get; set; }
+
+    protected override IObservable<List<double[]>> Select() =>
+        Store.Select(state => state.Runs.TryGetValue(state.CurrentRunId, out var run) 
+            ? run.Outputs.ParetoFrontOutput.Front.Select(val => val.Select(inner => (double)inner).ToArray()).ToList() 
+            : new List<double[]>());
+
+}

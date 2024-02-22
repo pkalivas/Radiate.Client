@@ -57,7 +57,8 @@ public static class RootReducer
         {
             ModelTypes.Graph => new GraphTemplate(),
             ModelTypes.Image => new ImageTemplate(),
-            ModelTypes.Tree => new TreeTemplate()
+            ModelTypes.Tree => new TreeTemplate(),
+            ModelTypes.MultiObjective => new MultiObjectiveTemplate()
         };
         return state with { Runs = state.Runs, UiState = state.UiState };
     }
@@ -174,7 +175,8 @@ public static class RootReducer
         {
             ModelTypes.Graph => new GraphTemplate(),
             ModelTypes.Image => new ImageTemplate(),
-            ModelTypes.Tree => new TreeTemplate()
+            ModelTypes.Tree => new TreeTemplate(),
+            ModelTypes.MultiObjective => new MultiObjectiveTemplate()
         };
         
         return state with { Runs = newRuns, UiState = state.UiState };

@@ -2,6 +2,7 @@ using Radiate.Client.Domain.Store.Models.Projections;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Harness;
 using Radiate.Extensions.Evolution.Architects.Groups;
+using Radiate.Optimizers.Evolution.MOEA;
 
 namespace Radiate.Client.Domain.Store.Models.States;
 
@@ -15,6 +16,7 @@ public record RunOutputsState
     public GraphOutput GraphOutput { get; set; } = new();
     public TreeOutput TreeOutput { get; set; } = new();
     public ValidationOutput ValidationOutput { get; set; } = new();
+    public ParetoFrontOutput ParetoFrontOutput { get; set; } = new();
 }
 
 public record GraphOutput
@@ -61,4 +63,9 @@ public record ValidationOutput
     public string LossFunction { get; set; } = "";
     public BatchSetValidation TrainValidation { get; set; } = new();
     public BatchSetValidation TestValidation { get; set; } = new();
+}
+
+public record ParetoFrontOutput
+{
+    public List<float[]> Front { get; set; } = new();
 }

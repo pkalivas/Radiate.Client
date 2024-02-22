@@ -6,19 +6,8 @@ public static class StateOptions
     {
         "Graph",
         "Tree",
-        "Image"
-    };
-    
-    public static List<string> DataSetNames => new()
-    {
-        "XOR",
-        "Regression"
-    };
-    
-    public static List<string> ImageDataSetNames => new()
-    {
-        "Circle",
-        "Polygon"
+        "Image",
+        "MultiObjective"
     };
     
     public static List<string> GetModelDataSets(string modelName) => modelName switch
@@ -34,6 +23,6 @@ public static class StateOptions
             DataSetTypes.Polygon,
             DataSetTypes.Circle
         ],
-        _ => new()
+        _ => ["Unknown"]
     };
 }

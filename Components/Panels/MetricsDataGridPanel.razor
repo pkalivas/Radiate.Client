@@ -11,7 +11,7 @@
                  ShowMenuIcon="false"
                  HorizontalScrollbar="true"
                  Virtualize="true"
-                 Class="mb-3" @key="@Model.RunId">
+                 Class="mb-3">
         <Columns>
             <PropertyColumn StickyLeft="true" Property="x => FormatName(x.Name)" Title="Name" Filterable="true"/>
             <PropertyColumn Property="x => x.Value" Title="Value" Hideable="true"/>

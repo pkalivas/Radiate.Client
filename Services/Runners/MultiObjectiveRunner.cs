@@ -1,6 +1,7 @@
 using Radiate.Client.Domain.Store;
 using Radiate.Client.Domain.Store.Models.States;
-using Radiate.Client.Domain.Store.Shared;
+using Radiate.Client.Services.Mappers;
+using Radiate.Client.Services.Schema;
 using Radiate.Engines;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Limits;
@@ -38,14 +39,13 @@ public class MultiObjectiveRunner : EngineRunner<GeneticEpoch<FloatGene>, float[
     {
         var iterationLimit = inputs.LimitInputs.IterationLimit;
         var populationSize = inputs.PopulationInputs.PopulationSize;
-        var choice = inputs.MultiObjectiveInputs.Problem;
         
-        Func<float[], float[]> fitnessFunction = choice switch
+        Func<float[], float[]> fitnessFunction = inputs.DataSetType switch
         {
-            1 => FitnessDTLZ1,
-            2 => FitnessDTLZ2,
-            6 => FitnessDTZL6,
-            7 => FitnessDTZL7,
+            DataSetTypes.DTLZ1 => FitnessDTLZ1,
+            DataSetTypes.DTLZ2 => FitnessDTLZ2,
+            DataSetTypes.DTLZ6 => FitnessDTZL6,
+            DataSetTypes.DTLZ7 => FitnessDTZL7,
             _ => throw new Exception("Invalid choice.")
         };
         

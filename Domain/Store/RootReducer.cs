@@ -1,8 +1,8 @@
 using Plotly.Blazor.Traces;
 using Radiate.Client.Domain.Store.Actions;
 using Radiate.Client.Domain.Store.Models.States;
-using Radiate.Client.Domain.Store.Schema;
 using Radiate.Client.Domain.Templates;
+using Radiate.Client.Services.Schema;
 using Radiate.Engines.Schema;
 using Reflow.Reducers;
 

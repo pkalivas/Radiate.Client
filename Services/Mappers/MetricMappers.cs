@@ -3,7 +3,7 @@ using Radiate.Engines.Entities;
 using Radiate.Engines.Schema;
 using Radiate.Engines.Statistics.Stats;
 
-namespace Radiate.Client.Domain.Store.Shared;
+namespace Radiate.Client.Services.Mappers;
 
 public static class MetricMappers
 {

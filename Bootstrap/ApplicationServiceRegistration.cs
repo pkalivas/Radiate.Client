@@ -1,8 +1,8 @@
 using Radiate.Client.Domain.Store;
-using Radiate.Client.Domain.Store.Schema;
 using Radiate.Client.Services.Actors;
 using Radiate.Client.Services.Runners;
 using Radiate.Client.Services.Runners.Interfaces;
+using Radiate.Client.Services.Schema;
 using Radiate.Client.Services.Worker;
 using Reflow;
 using Reflow.Interfaces;

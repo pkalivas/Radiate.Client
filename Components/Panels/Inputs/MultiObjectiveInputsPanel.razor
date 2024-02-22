@@ -2,7 +2,7 @@
 @using Radiate.Client.Domain.Store.Models.States
 @using Radiate.Client.Domain.Store.Selections
 @using Radiate.Client.Domain.Store.Actions
-@using Radiate.Client.Domain.Store.Schema
+@using Radiate.Client.Services.Schema
 @inherits StoreComponent<InputsPanelModelProjection>
 
 @if (Model == null)
@@ -82,18 +82,18 @@
                             <MudTooltip Text="The maximum number of iterations to run.">
                                 <MudIcon Icon="Icons.Info" Size="Size.Small"/>
                             </MudTooltip>
-                            <MudText Typo="Typo.body2">@Model.Inputs.MultiObjectiveInputs.Problem</MudText>
+                            <MudText Typo="Typo.body2">@Model.Inputs.DataSetType</MudText>
                         </div>
                     }
                     else
                     {
                         <MudSelect SelectedValuesChanged="@OnModelChange"
-                                   Value="@Model.Inputs.MultiObjectiveInputs.Problem"
+                                   Value="@Model.Inputs.DataSetType"
                                    MultiSelection="false"
-                                   T="int"
+                                   T="string"
                                    Label="DTLZ"
                                    Variant="Variant.Filled">
-                            @foreach (var model in new[] { 1, 2, 6, 7})
+                            @foreach (var model in StateOptions.GetModelDataSets(ModelTypes.MultiObjective))
                             {
                                 <MudSelectItem Value="@model"/>
                             }
@@ -115,11 +115,11 @@
         Store.Dispatch(new SetRunInputsAction(inputs.RunId, newInputs));
     }
     
-    private void OnModelChange(IEnumerable<int> model)
+    private void OnModelChange(IEnumerable<string> model)
     {
         var selectedModel = model.First();
         
-        var newInputs = Model.Inputs with { MultiObjectiveInputs = Model.Inputs.MultiObjectiveInputs with { Problem = selectedModel } };
+        var newInputs = Model.Inputs with { DataSetType = selectedModel };
         Store.Dispatch(new SetRunInputsAction(Model.RunId, newInputs));
     }
 

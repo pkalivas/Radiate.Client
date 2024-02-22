@@ -1,6 +1,6 @@
 using Radiate.Client.Domain.Store;
 using Radiate.Client.Domain.Store.Models.States;
-using Radiate.Client.Domain.Store.Shared;
+using Radiate.Client.Services.Mappers;
 using Radiate.Data;
 using Radiate.Engines;
 using Radiate.Engines.Entities;

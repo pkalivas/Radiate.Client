@@ -3,7 +3,7 @@ using Radiate.Client.Domain.Store.Models;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Schema;
 
-namespace Radiate.Client.Domain.Store.Shared;
+namespace Radiate.Client.Services.Mappers;
 
 public static class TreeItemMapper
 {

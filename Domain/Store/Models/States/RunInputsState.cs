@@ -32,5 +32,4 @@ public record ImageInputs
 
 public record MultiObjectiveInputs
 {
-    public int Problem { get; set; } = 1;
 }

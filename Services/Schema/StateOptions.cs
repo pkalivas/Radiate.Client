@@ -1,4 +1,4 @@
-namespace Radiate.Client.Domain.Store.Schema;
+namespace Radiate.Client.Services.Schema;
 
 public static class StateOptions
 {
@@ -23,7 +23,13 @@ public static class StateOptions
             DataSetTypes.Polygon,
             DataSetTypes.Circle
         ],
-        ModelTypes.MultiObjective => [DataSetTypes.DTZ],
+        ModelTypes.MultiObjective => 
+        [
+            DataSetTypes.DTLZ1,
+            DataSetTypes.DTLZ2,
+            DataSetTypes.DTLZ6,
+            DataSetTypes.DTLZ7
+        ],
         _ => ["Unknown"]
     };
 }

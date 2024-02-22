@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Components;
-using Radiate.Client.Domain.Store.Schema;
+using Radiate.Client.Services.Schema;
 
 namespace Radiate.Client.Domain.Templates;
 

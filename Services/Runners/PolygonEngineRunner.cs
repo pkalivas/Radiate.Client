@@ -1,7 +1,7 @@
 using Radiate.Client.Domain.Store;
 using Radiate.Client.Domain.Store.Models.States;
-using Radiate.Client.Domain.Store.Shared;
 using Radiate.Client.Services.Genome;
+using Radiate.Client.Services.Mappers;
 using Radiate.Engines;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Limits;

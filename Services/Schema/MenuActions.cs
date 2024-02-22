@@ -1,4 +1,4 @@
-namespace Radiate.Client.Domain.Store.Schema;
+namespace Radiate.Client.Services.Schema;
 
 public static class MenuActions
 {

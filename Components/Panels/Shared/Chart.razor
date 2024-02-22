@@ -3,6 +3,7 @@
 @using Margin = Plotly.Blazor.LayoutLib.Margin
 @using Plotly.Blazor.LayoutLib
 @using Plotly.Blazor.LayoutLib.XAxisLib
+@using Radiate.Client.Services.Schema
 
 @if ((Values.Any() || ValuesList.Any()) && Type != "" && layout != null)
 {
@@ -65,34 +66,10 @@
         {
             data = Type switch
             {
-                "bar" => new List<ITrace>
-                {
-                    GetBarTrace()
-                },
-                "pie" => new List<ITrace>
-                {
-                    GetPieTrace()
-                },
-                "front" => new List<ITrace>
-                {
-                    new Scatter3D
-                    {
-                        Mode = Plotly.Blazor.Traces.Scatter3DLib.ModeFlag.Markers,
-                        X = ValuesList.Select((val, idx) => (object) val[0]).ToList(),
-                        Y = ValuesList.Select((val, idx) => (object) val[1]).ToList(),
-                        Z = ValuesList.Select((val, idx) => (object) val[2]).ToList(),
-                    }
-                },
-                _ => new List<ITrace>
-                {
-                    new Scatter
-                    {
-                        Name = "ScatterTrace",
-                        Mode = ModeFlag.Lines,
-                        Y = Values.Select(val => (object) val).ToList(),
-                        X = Values.Select((val, idx) => (object) idx).ToList(),
-                    }
-                },
+                ChartTypes.Bar => [GetBarTrace()],
+                ChartTypes.Pie => [GetPieTrace()],
+                ChartTypes.Front => [GetScatter3D()],
+                _ => [GetScatter()],
             };
             
             chart?.Update();
@@ -106,6 +83,22 @@
         
         base.OnParametersSet();
     }
+
+    private Scatter GetScatter() => new()
+    {
+        Name = "ScatterTrace",
+        Mode = ModeFlag.Lines,
+        Y = Values.Select(val => (object) val).ToList(),
+        X = Values.Select((_, idx) => (object) idx).ToList(),
+    };
+
+    private Scatter3D GetScatter3D() => new()
+    {
+        Mode = Plotly.Blazor.Traces.Scatter3DLib.ModeFlag.Markers,
+        X = ValuesList.Select(val => (object) val[0]).ToList(),
+        Y = ValuesList.Select(val => (object) val[1]).ToList(),
+        Z = ValuesList.Select(val => (object) val[2]).ToList(),
+    };
     
     private Bar GetBarTrace()
     {

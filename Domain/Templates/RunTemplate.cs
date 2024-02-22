@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Components;
 using Radiate.Client.Services.Schema;
 
 namespace Radiate.Client.Domain.Templates;

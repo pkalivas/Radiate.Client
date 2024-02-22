@@ -2,7 +2,6 @@ using Radiate.Client.Domain.Store.Models.Projections;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Harness;
 using Radiate.Extensions.Evolution.Architects.Groups;
-using Radiate.Optimizers.Evolution.MOEA;
 
 namespace Radiate.Client.Domain.Store.Models.States;
 

@@ -18,7 +18,7 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
     private readonly IStore<RootState> _store;
     private readonly IDisposable _outputSubscription;
     private readonly BehaviorSubject<bool> _pause = new(false);
-    private readonly Subject<RunOutputsState> _outputs = new();
+    private readonly Subject<(Guid, RunOutputsState)> _outputs = new();
 
     protected EngineRunner(IStore<RootState> store)
     {
@@ -42,7 +42,7 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
 
         var result = await Fit(inputs, cts, handle =>
         {
-            _outputs.OnNext(MapToOutput(handle, inputs));
+            _outputs.OnNext((runId, MapToOutput(handle, inputs)));
             
             if (_pause.Value)
             {
@@ -50,7 +50,7 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
             }
         });
         
-        _outputs.OnNext(MapToOutput(result, inputs, true));
+        _outputs.OnNext((runId, MapToOutput(result, inputs)));
         _store.Dispatch(new EngineStoppedAction(runId));
         
         Thread.Sleep(BufferTime);
@@ -61,8 +61,12 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
         control.Dispose();
     }
 
-    private void HandleOutputs(IList<RunOutputsState> outputs) =>
+    private void HandleOutputs(IList<(Guid, RunOutputsState)> outputs) =>
         _store.Dispatch(new SetRunOutputsAction(outputs
+            .Select(val => val.Item1)
+            .Distinct()
+            .Single(), outputs
+            .Select(pair => pair.Item2)
             .OrderBy(val => val.Metrics[MetricNames.Index].Value)
             .ToList()));
 }

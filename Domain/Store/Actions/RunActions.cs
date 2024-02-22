@@ -5,7 +5,7 @@ namespace Radiate.Client.Domain.Store.Actions;
 
 public record RunCreatedAction(RunState Run) : IAction;
 
-public record SetRunOutputsAction(List<RunOutputsState> EngineOutputs) : IAction;
+public record SetRunOutputsAction(Guid RunId, List<RunOutputsState> EngineOutputs) : IAction;
 
 public record SetRunInputsAction(Guid RunId, RunInputsState Inputs) : IAction;
 

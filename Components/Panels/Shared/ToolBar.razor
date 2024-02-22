@@ -59,6 +59,6 @@
         Store.Dispatch(new CopyRunAction(runId, newRunId));
         Store.Dispatch(new NavigateToRunAction(newRunId));
         
-        Navigation.NavigateTo($"/runs/{newRunId}/test/{Model.ModelType.ToLower()}");
+        Navigation.NavigateTo($"/runs/{newRunId}/{Model.ModelType.ToLower()}");
     }
 }

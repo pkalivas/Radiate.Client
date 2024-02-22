@@ -27,6 +27,5 @@
     {
         Dispatch(new NavigateToRunAction(run.Item.RunId));
         NavigationManager.NavigateTo($"/runs/{run.Item.RunId}/{run.Item.Inputs.ModelType.ToLower()}");
-        // NavigationManager.NavigateTo($"/runs/{run.Item.RunId}/test/graph");
     }
 }

@@ -54,16 +54,6 @@ public class MultiObjectiveUiTemplate : IRunUITemplate
         {
             new()
             {
-                Id = new Guid("6A3DD486-DC80-4728-A074-A1D2D79018D9"),
-                IsOpen = true,
-                ExpansionPanel = new PanelTemplate
-                {
-                    Name = nameof(ValidationPanel),
-                    Title = "Validation",
-                }
-            },
-            new()
-            {
                 Id = new Guid("C3C00DB8-DBCB-407A-85BF-432D3591CA62"),
                 IsOpen = true,
                 ExpansionPanel = new PanelTemplate
@@ -83,8 +73,8 @@ public class MultiObjectiveUiTemplate : IRunUITemplate
             {
                 Id = new Guid("F4114F2B-4C84-455C-89D5-998964CDEB1B"),
                 IsOpen = true,
-                MaxHeight = 200,
-                ExpansionPanel = new PanelTemplate
+                MaxHeight = 500,
+                ExpansionPanel = new PanelTemplate()
                 {
                     Name = nameof(ParetoFrontChartPanel),
                     Title = "Front",

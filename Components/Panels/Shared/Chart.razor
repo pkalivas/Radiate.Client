@@ -75,8 +75,9 @@
                 },
                 "front" => new List<ITrace>
                 {
-                    new Mesh3D
+                    new Scatter3D
                     {
+                        Mode = Plotly.Blazor.Traces.Scatter3DLib.ModeFlag.Markers,
                         X = ValuesList.Select((val, idx) => (object) val[0]).ToList(),
                         Y = ValuesList.Select((val, idx) => (object) val[1]).ToList(),
                         Z = ValuesList.Select((val, idx) => (object) val[2]).ToList(),

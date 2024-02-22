@@ -7,7 +7,7 @@ namespace Radiate.Client.Domain.Templates;
 
 public class GraphTemplate : IRunTemplate
 {
-    public Guid Id => Guid.NewGuid();
+    public Guid Id => new("8EACF674-1E77-434E-89D5-B5CBC17FA568");
     public string ModelType => ModelTypes.Graph;
     public IRunUITemplate UI => new GraphUiTemplate();
 }

@@ -11,8 +11,17 @@ public static class UiSelectors
     public static readonly ISelector<RootState, UiState> SelectUiState =
         Selectors.Create<RootState, UiState>(state => state.UiState);
 
-    public static readonly ISelector<RootState, IRunTemplate> SelectRunTemplate = Selectors
-        .Create<RootState, IRunTemplate>(state => state.UiState.RunTemplates[state.CurrentRunId]);
+    public static readonly ISelector<RootState, RunUiProjection> SelectRunTemplate = Selectors
+        .Create<RootState, RunUiProjection>(state =>
+        {
+            var runTemplates = state.UiState.RunTemplates[state.CurrentRunId];
+            return new RunUiProjection
+            {
+                RunId = state.CurrentRunId,
+                IsSidebarOpen = state.UiState.IsSidebarOpen,
+                UiTemplate = runTemplates.UI
+            };
+        });
 
     public static readonly ISelector<RootState, ToolBarProjection> SelectToolBarModel = Selectors
         .Create<RootState, RunState, ToolBarProjection>(RunSelectors.SelectRun, run => new ToolBarProjection

@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using Radiate.Client.Domain.Store.Actions;
+using Radiate.Client.Domain.Templates;
 using Reflow.Reducers;
 
 namespace Radiate.Client.Domain.Store.Reducers;
@@ -11,6 +12,7 @@ public static class UiReducers
         Reducer.On<NavigateToRunAction, RootState>(NavigateToRun),
         Reducer.On<SetEngineTreeExpandedAction, RootState>(SetTreeExpansions),
         Reducer.On<LayoutChangedAction, RootState>(LayoutChanged),
+        Reducer.On<SetRunTemplateAction, RootState>(SetRunTemplate),
     ];
     
     private static RootState NavigateToRun(RootState state, NavigateToRunAction action) => state with
@@ -37,4 +39,23 @@ public static class UiReducers
                     .Concat([new KeyValuePair<Guid, Dictionary<string, bool>>(action.RunId, action.Expanded)])
                     .ToImmutableDictionary(pair => pair.Key, pair => pair.Value)
         });
+
+    private static RootState SetRunTemplate(RootState state, SetRunTemplateAction action)
+    {
+
+        return state;
+    }
+        
+        // => state
+        // .UpdateUi(ui => ui with
+        // {
+        //     RunTemplates = ui.RunTemplates.ContainsKey(action.RunId)
+        //         ? ui.RunTemplates
+        //             .ToImmutableDictionary(pair => pair.Key, pair => pair.Key == action.RunId 
+        //                 ? action.Template 
+        //                 : pair.Value)
+        //         : ui.RunTemplates
+        //             .Concat([new KeyValuePair<Guid, IRunTemplate>(action.RunId, action.Template)])
+        //             .ToImmutableDictionary(pair => pair.Key, pair => pair.Value)
+        // });
 }

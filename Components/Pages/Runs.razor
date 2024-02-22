@@ -2,11 +2,13 @@
 @rendermode InteractiveServer
 @using Radiate.Client.Domain.Templates
 @using Radiate.Client.Domain.Store.Selections
-@inherits StoreComponent<IRunTemplate>
+@using Radiate.Client.Domain.Store.Models.Projections
+@using Radiate.Client.Domain.Store.Actions
+@inherits StoreComponent<RunUiProjection>
 
 <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
     <MudGrid>
-        @foreach (var panel in Model.UI.GridList.GridPanels)
+        @foreach (var panel in Model.UiTemplate.GridList.GridPanels)
         {
             <MudItem md="@panel.Cols" @key="@panel.Id">
                 @if (panel.GridPanel is ToolbarPanel)
@@ -32,7 +34,7 @@
     <MudGrid>
         <MudItem md="8">
             <MudExpansionPanels Dense="true" Elevation="2" MultiExpansion="true">
-                @foreach (var panel in Model.UI.LeftSideAccordion.ExpansionPanels)
+                @foreach (var panel in Model.UiTemplate.LeftSideAccordion.ExpansionPanels)
                 {
                     if (panel.ExpansionPanel is ToolbarPanel)
                     {
@@ -52,7 +54,11 @@
                     }
                     else
                     {
-                        <MudExpansionPanel IsExpanded="@panel.IsOpen" Dense="true" MaxHeight="@panel.MaxHeight" @key="panel.Id">
+                        <MudExpansionPanel IsExpanded="@panel.IsOpen" 
+                                           Dense="true"
+                                           MaxHeight="@panel.MaxHeight"
+                                           IsExpandedChanged="@((bool changed) => OnExpandedChanged(changed, panel.Id))"
+                                           @key="panel.Id">
                             <TitleContent>
                                 <PanelHeaderPanel Title="@panel.ExpansionPanel.Title"/>
                             </TitleContent>
@@ -66,7 +72,7 @@
         </MudItem>
         <MudItem md="4">
             <MudExpansionPanels Dense="true" Elevation="2" MultiExpansion="true">
-                @foreach (var panel in Model.UI.RightSideAccordion.ExpansionPanels)
+                @foreach (var panel in Model.UiTemplate.RightSideAccordion.ExpansionPanels)
                 {
                     if (panel.ExpansionPanel is ToolbarPanel)
                     {
@@ -105,5 +111,13 @@
     [Parameter] public Guid RunId { get; set; }
     [Parameter] public string ModelType { get; set; }
 
-    protected override IObservable<IRunTemplate> Select() => Store.Select(UiSelectors.SelectRunTemplate);
+    protected override IObservable<RunUiProjection> Select() => Store.Select(UiSelectors.SelectRunTemplate);
+    
+    private async Task OnExpandedChanged(bool changed, Guid panelId)
+    {
+        Dispatch(new SetPanelsExpandedAction(Model.RunId, new Dictionary<Guid, bool>
+        {
+            [panelId] = changed
+        }));
+    }
 }

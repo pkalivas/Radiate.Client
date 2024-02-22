@@ -1,5 +1,6 @@
 using Radiate.Client.Domain.Store;
 using Radiate.Client.Domain.Store.Effects;
+using Radiate.Client.Services;
 using Radiate.Client.Services.Actors;
 using Radiate.Client.Services.Runners;
 using Radiate.Client.Services.Runners.Interfaces;
@@ -16,6 +17,7 @@ public static class ApplicationServiceRegistration
         services
             .AddReflow()
             .AddEngineRunners()
+            .AddSingleton<IDataSetService, DataSetService>()
             .AddSingleton<IActorService, ActorService>()
             .AddSingleton<IWorkItemQueue, WorkItemQueue>()
             .AddHostedService<BackgroundWorkerService>()

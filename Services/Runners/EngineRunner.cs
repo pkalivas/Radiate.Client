@@ -32,21 +32,19 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
             .Subscribe(HandleOutputs);
     }
     
-    protected abstract List<IRunOutputTransform<TEpoch, T>> OutputTransforms { get; }
-    
-    protected abstract Task OnStartRun(RunInputsState inputs);
-    protected abstract EngineOutput<TEpoch, T> Fit(RunInputsState inputs, CancellationTokenSource cts, Action<EngineOutput<TEpoch, T>> onEngineComplete);
+    protected abstract Task<EngineOutput<TEpoch, T>> Fit(Guid runId, RunInputsState inputs, CancellationTokenSource cts, Action<EngineOutput<TEpoch, T>> onEngineComplete);
+
+    protected abstract List<IRunOutputTransform<TEpoch, T>> GetOutputTransforms();
     
     public async Task StartRun(Guid runId, RunInputsState inputs, CancellationTokenSource cts)
     {
-        await OnStartRun(inputs);
-        
+        var transforms = GetOutputTransforms();
         var control = _store.Select(state => state.Runs[runId].IsPaused)
             .Subscribe(isPaused => _pause.OnNext(isPaused));
 
-        var result = Fit(inputs, cts, handle =>
+        var result = await Fit(runId, inputs, cts, handle =>
         {
-            _outputs.OnNext((runId, Map(handle, inputs)));
+            _outputs.OnNext((runId, Map(transforms, handle, inputs)));
             
             if (_pause.Value)
             {
@@ -54,7 +52,7 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
             }
         });
         
-        _outputs.OnNext((runId, Map(result, inputs, true)));
+        _outputs.OnNext((runId, Map(transforms, result, inputs, true)));
         _store.Dispatch(new EngineStoppedAction(runId));
         
         Thread.Sleep(BufferTime);
@@ -65,7 +63,19 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
         control.Dispose();
     }
 
-    private RunOutputsState Map(EngineOutput<TEpoch, T> handle, RunInputsState inputs, bool isLast = false)
+    private void HandleOutputs(IList<(Guid, RunOutputsState)> outputs) =>
+        _store.Dispatch(new SetRunOutputsAction(outputs
+            .Select(val => val.Item1)
+            .Distinct()
+            .Single(), outputs
+            .Select(pair => pair.Item2)
+            .OrderBy(val => val.Metrics[MetricNames.Index].Value)
+            .ToList()));
+    
+    private static RunOutputsState Map(IEnumerable<IRunOutputTransform<TEpoch, T>> transforms,
+        EngineOutput<TEpoch, T> handle,
+        RunInputsState inputs, 
+        bool isLast = false)
     {
         var output = new RunOutputsState
         {
@@ -75,15 +85,6 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
             Metrics = MetricMappers.GetMetricValues(handle.Metrics).ToImmutableDictionary(key => key.Name),
         };
         
-        return OutputTransforms.Aggregate(output, (state, transformer) => transformer.Transform(handle, state, inputs, isLast));
+        return transforms.Aggregate(output, (state, transformer) => transformer.Transform(handle, state, inputs, isLast));
     }
-
-    private void HandleOutputs(IList<(Guid, RunOutputsState)> outputs) =>
-        _store.Dispatch(new SetRunOutputsAction(outputs
-            .Select(val => val.Item1)
-            .Distinct()
-            .Single(), outputs
-            .Select(pair => pair.Item2)
-            .OrderBy(val => val.Metrics[MetricNames.Index].Value)
-            .ToList()));
 }

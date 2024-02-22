@@ -27,16 +27,10 @@ public class MultiObjectiveRunner : EngineRunner<GeneticEpoch<FloatGene>, float[
     private Front<float[]>? _front;
 
     public MultiObjectiveRunner(IStore<RootState> store) : base(store) { }
-
-    protected override List<IRunOutputTransform<GeneticEpoch<FloatGene>, float[]>> OutputTransforms { get; }
-
-    protected override async Task OnStartRun(RunInputsState inputs)
-    {
-        _front = null;
-    }
-
-    protected override EngineOutput<GeneticEpoch<FloatGene>, float[]> Fit(RunInputsState inputs,
-        CancellationTokenSource cts, 
+    
+    protected override async Task<EngineOutput<GeneticEpoch<FloatGene>, float[]>> Fit(Guid runId, 
+        RunInputsState inputs, 
+        CancellationTokenSource cts,
         Action<EngineOutput<GeneticEpoch<FloatGene>, float[]>> onEngineComplete)
     {
         var iterationLimit = inputs.LimitInputs.IterationLimit;
@@ -71,6 +65,49 @@ public class MultiObjectiveRunner : EngineRunner<GeneticEpoch<FloatGene>, float[
             .TakeWhile(_ => !cts.IsCancellationRequested)
             .ToResult();
     }
+
+    protected override List<IRunOutputTransform<GeneticEpoch<FloatGene>, float[]>> GetOutputTransforms() => new()
+    {
+        new FrontOutputTransform()
+    };
+    
+
+    // protected override EngineOutput<GeneticEpoch<FloatGene>, float[]> Fit(RunInputsState inputs,
+    //     CancellationTokenSource cts, 
+    //     Action<EngineOutput<GeneticEpoch<FloatGene>, float[]>> onEngineComplete)
+    // {
+    //     var iterationLimit = inputs.LimitInputs.IterationLimit;
+    //     var populationSize = inputs.PopulationInputs.PopulationSize;
+    //     
+    //     Func<float[], float[]> fitnessFunction = inputs.DataSetType switch
+    //     {
+    //         DataSetTypes.DTLZ1 => FitnessDTLZ1,
+    //         DataSetTypes.DTLZ2 => FitnessDTLZ2,
+    //         DataSetTypes.DTLZ6 => FitnessDTZL6,
+    //         DataSetTypes.DTLZ7 => FitnessDTZL7,
+    //         _ => throw new Exception("Invalid choice.")
+    //     };
+    //     
+    //     var codex = new Codex<FloatGene, float[]>()
+    //         .Encoder(() => Genotype.Create(Chromosome.FloatChromosome(Variables)))
+    //         .Decoder(geno => fitnessFunction(geno.GetChromosome().Select(g => g.Allele).ToArray()));
+    //
+    //     var engine = Engine.Genetic(codex).Async()
+    //         .Minimizing(Objectives)
+    //         .PopulationSize(populationSize)
+    //         .OffspringSelector(new TournamentSelector<FloatGene>())
+    //         .SurvivorSelector(new NSGA2Selector<FloatGene>())
+    //         .Alterers(
+    //             new Mutator<FloatGene>(1f / Variables),
+    //             new SimulatedBinaryCrossover<FloatGene, float>(2.5f, 1f))
+    //         .Build();
+    //     
+    //     return engine.Fit()
+    //         .Limit(Limits.Iteration(iterationLimit))
+    //         .Peek(onEngineComplete)
+    //         .TakeWhile(_ => !cts.IsCancellationRequested)
+    //         .ToResult();
+    // }
 
     protected RunOutputsState MapToOutput(EngineOutput<GeneticEpoch<FloatGene>, float[]> output,
         RunInputsState inputs, 

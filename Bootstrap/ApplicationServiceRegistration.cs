@@ -17,7 +17,7 @@ public static class ApplicationServiceRegistration
         services
             .AddReflow()
             .AddEngineRunners()
-            .AddSingleton<IDataSetService, DataSetService>()
+            .AddSingleton<ITensorFrameService, TensorFrameService>()
             .AddSingleton<IActorService, ActorService>()
             .AddSingleton<IWorkItemQueue, WorkItemQueue>()
             .AddHostedService<BackgroundWorkerService>()

@@ -10,11 +10,11 @@ namespace Radiate.Client.Services.Runners.DataSetRunners;
 
 public abstract class DataSetRunner<TEpoch, T> : EngineRunner<TEpoch, T> where TEpoch : IEpoch
 {
-    private readonly IDataSetService _dataSetService;
+    private readonly ITensorFrameService _tensorFrameService;
 
-    protected DataSetRunner(IDataSetService dataSetService, IStore<RootState> store) : base(store)
+    protected DataSetRunner(ITensorFrameService tensorFrameService, IStore<RootState> store) : base(store)
     {
-        _dataSetService = dataSetService;
+        _tensorFrameService = tensorFrameService;
     }
 
     protected abstract Task<IEngine<TEpoch, T>> BuildEngine(RunInputsState inputs, TensorFrame frame);
@@ -28,7 +28,7 @@ public abstract class DataSetRunner<TEpoch, T> : EngineRunner<TEpoch, T> where T
     {
         var frame = await BuildFrame(inputs);
         
-        _dataSetService.SetTensorFrame(runId, frame);
+        _tensorFrameService.SetTensorFrame(runId, frame);
         
         return (await BuildEngine(inputs, frame)).Fit()
             .Peek(onEngineComplete)

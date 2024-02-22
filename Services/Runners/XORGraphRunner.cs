@@ -21,7 +21,7 @@ namespace Radiate.Client.Services.Runners;
 
 public class XORGraphRunner : DataSetRunner<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>
 {
-    public XORGraphRunner(IDataSetService dataSetService, IStore<RootState> store) : base(dataSetService, store) { }
+    public XORGraphRunner(ITensorFrameService tensorFrameService, IStore<RootState> store) : base(tensorFrameService, store) { }
 
     protected override async Task<IEngine<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>> BuildEngine(RunInputsState inputs, TensorFrame frame)
     {

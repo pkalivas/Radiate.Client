@@ -28,9 +28,6 @@ public static class RunReducers
         state.UpdateRun(action.RunId, run => run with
         {
             Outputs = action.EngineOutput,
-            // Scores = run.Scores
-            //     .Concat(action.EngineOutputs.Select(val => (float) val.Metrics[MetricNames.Score].Value))
-            //     .ToImmutableList(),
         });
     
     private static RootState AddRunScores(RootState state, SetRunScoresAction action) =>

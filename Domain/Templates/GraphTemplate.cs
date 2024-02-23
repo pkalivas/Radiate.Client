@@ -24,33 +24,40 @@ public class GraphUITemplate : IRunUITemplate
                 new GridPanel.GridItem
                 {
                     ColSpan = 7,
-                    Panel = new TabPanel
+                    Panel = new PaperPanel
                     {
-                        Id = new Guid("53EA2B0F-E26C-45A3-8DCF-06C742998CF8"),
-                        Tabs =
-                        [
-                            new()
-                            {
-                                Panel = new PaperPanel
-                                {
-                                    Id = new Guid("A5F2CFCD-9BB6-4511-84C3-9AB72CA8EF75"),
-                                    Content = typeof(AccuracyChartPanel),
-                                    Title = "Accuracy",
-                                    Height = 225
-                                }
-                            },
-                            new()
-                            {
-                                Panel = new PaperPanel
-                                {
-                                    Id = new Guid("4B5E7C33-5F17-4CBE-A2E0-783EE9663693"),
-                                    Content = typeof(ScorePanel),
-                                    Title = "Score",
-                                    Height = 225
-                                }
-                            }
-                        ]
+                        Id = new Guid("A5F2CFCD-9BB6-4511-84C3-9AB72CA8EF75"),
+                        Content = typeof(AccuracyChartPanel),
+                        Title = "Accuracy",
+                        Height = 300
                     }
+                    // Panel = new TabPanel
+                    // {
+                    //     Id = new Guid("53EA2B0F-E26C-45A3-8DCF-06C742998CF8"),
+                    //     Tabs =
+                    //     [
+                    //         new()
+                    //         {
+                    //             Panel = new PaperPanel
+                    //             {
+                    //                 Id = new Guid("A5F2CFCD-9BB6-4511-84C3-9AB72CA8EF75"),
+                    //                 Content = typeof(AccuracyChartPanel),
+                    //                 Title = "Accuracy",
+                    //                 Height = 225
+                    //             }
+                    //         },
+                    //         new()
+                    //         {
+                    //             Panel = new PaperPanel
+                    //             {
+                    //                 Id = new Guid("4B5E7C33-5F17-4CBE-A2E0-783EE9663693"),
+                    //                 Content = typeof(ScorePanel),
+                    //                 Title = "Score",
+                    //                 Height = 225
+                    //             }
+                    //         }
+                    //     ]
+                    // }
                 },
                 new GridPanel.GridItem
                 {

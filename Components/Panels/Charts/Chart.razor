@@ -11,12 +11,12 @@
 }
 
 @code {
-    [Parameter] public int Height { get; set; } = 200;
+    [Parameter] public int Height { get; set; } = 300;
     [Parameter] public bool ShowGrid { get; set; } = false;
     [Parameter] public List<ITrace> Data { get; set; } = new();
 
     private PlotlyChart chart;
-    private Config config = new() { Responsive = true};
+    private Config config = new() { Responsive = true, AutoSizable = true};
 
     private Layout? layout;
 
@@ -26,7 +26,8 @@
     {
         layout = new()
         {
-            Height = Height,
+            // Height = Height,
+            AutoSize = true,
             Font = new Font
             {
                 Color = "#a9a9a9"

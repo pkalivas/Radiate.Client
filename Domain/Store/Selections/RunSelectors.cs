@@ -106,9 +106,9 @@ public static class RunSelectors
             Traces = new List<ITrace>
             {
                 TraceMappers.GetScatter(state.Outputs.ValidationOutput.TrainValidation.PredictionValidations
-                    .Select(pred => (double) pred.Confidence).ToArray(), "Actual"),
+                    .Select(pred => (double) pred.Confidence).ToArray(), "Predicted"),
                 TraceMappers.GetScatter(state.Outputs.ValidationOutput.TrainValidation.PredictionValidations
-                    .Select(pred => (double)pred.Label.First()).ToArray(), "Predicted")
+                    .Select(pred => (double)pred.Label.First()).ToArray(), "Actual")
             }
         });
 }

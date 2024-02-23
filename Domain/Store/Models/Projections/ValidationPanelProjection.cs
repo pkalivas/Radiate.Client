@@ -1,3 +1,5 @@
+using Plotly.Blazor;
+
 namespace Radiate.Client.Domain.Store.Models.Projections;
 
 public record ValidationPanelProjection
@@ -5,6 +7,7 @@ public record ValidationPanelProjection
     public Guid RunId { get; init; }
     public string LossFunction { get; init; } = "";
     public List<ValidationSet> Validations { get; init; } = new();
+    public List<ITrace> Traces { get; init; } = new();
 }
 
 public record ValidationSet

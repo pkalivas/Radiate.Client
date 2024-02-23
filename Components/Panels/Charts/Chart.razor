@@ -5,17 +5,14 @@
 @using Plotly.Blazor.LayoutLib.XAxisLib
 @using Radiate.Client.Services.Schema
 
-@if ((Values.Any() || ValuesList.Any() || Data.Any()) && layout != null)
+@if (Data.Any() && layout != null)
 {
     <PlotlyChart @bind-Config="config" @bind-Layout="layout" @bind-Data="data" @ref="chart"/>
 }
 
 @code {
     [Parameter] public int Height { get; set; } = 200;
-    [Parameter] public string Type { get; set; } = "";
     [Parameter] public bool ShowGrid { get; set; } = false;
-    [Parameter] public double[] Values { get; set; } = Array.Empty<double>();
-    [Parameter] public List<double[]> ValuesList { get; set; } = new();
     [Parameter] public List<ITrace> Data { get; set; } = new();
 
     private PlotlyChart chart;
@@ -63,19 +60,7 @@
             },
         };
         
-        if ((Values.Any() || ValuesList.Any()) && Type != "")
-        {
-            data = Type switch
-            {
-                ChartTypes.Bar => [GetBarTrace()],
-                ChartTypes.Pie => [GetPieTrace()],
-                ChartTypes.Front => [GetScatter3D()],
-                _ => [GetScatter()],
-            };
-            
-            chart?.Update();
-        }
-        else if (Data.Any())
+        if (Data.Any())
         {
             data = Data;
             chart?.Update();
@@ -92,53 +77,5 @@
         }
         
         base.OnParametersSet();
-    }
-
-    private Scatter GetScatter() => new()
-    {
-        Name = "ScatterTrace",
-        Mode = ModeFlag.Lines,
-        Y = Values.Select(val => (object) val).ToList(),
-        X = Values.Select((_, idx) => (object) idx).ToList(),
-    };
-
-    private Scatter3D GetScatter3D() => new()
-    {
-        Mode = Plotly.Blazor.Traces.Scatter3DLib.ModeFlag.Markers,
-        X = ValuesList.Select(val => (object) val[0]).ToList(),
-        Y = ValuesList.Select(val => (object) val[1]).ToList(),
-        Z = ValuesList.Select(val => (object) val[2]).ToList(),
-    };
-    
-    private Bar GetBarTrace()
-    {
-        var buckets = Values
-            .GroupBy(val => val)
-            .Select(group => new {Value = group.Key, Count = group.Count()})
-            .OrderByDescending(group => group.Count)
-            .ToList();
-        
-        return new Bar
-        {
-            Name = "BarTrace",
-            X = buckets.Select(val => (object) val.Value).ToList(),
-            Y = buckets.Select((val, idx) => (object) val.Count).ToList(),
-        };
-    }
-    
-    private Pie GetPieTrace()
-    {
-        var buckets = Values
-            .GroupBy(val => val)
-            .Select(group => new {Value = group.Key, Count = group.Count()})
-            .OrderByDescending(group => group.Count)
-            .ToList();
-        
-        return new Pie
-        {
-            Name = "PieTrace",
-            Values = buckets.Select(val => (object) val.Value).ToList(),
-            Labels = buckets.Select((val, idx) => (object) val.Count).ToList(),
-        };
     }
 }

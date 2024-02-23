@@ -14,6 +14,9 @@ public static class RunSelectors
     public static ISelector<RootState, RunState> SelectRun => Selectors
         .Create<RootState, RunState>(state => state.Runs.TryGetValue(state.CurrentRunId, out var run) ? run : new RunState());
     
+    public static ISelector<RootState, ValidationOutput> SelectValidationOutput => Selectors
+        .Create<RootState, RunState, ValidationOutput>(SelectRun, run => run.Outputs.ValidationOutput);
+    
     public static ISelector<RootState, InputsPanelModelProjection> SelectInputsModel => Selectors
         .Create<RootState, RunState, InputsPanelModelProjection>(SelectRun, run => new InputsPanelModelProjection
         {
@@ -89,6 +92,25 @@ public static class RunSelectors
                 }
             }
             .Where(val => val.DataPoints > 0)
-            .ToList()
+            .ToList(),
+            Traces = new List<ITrace>
+            {
+                TraceMappers.GetScatter(state.Outputs.ValidationOutput.TrainValidation.PredictionValidations
+                    .Select(pred => (double) pred.Confidence).ToArray()),
+                TraceMappers.GetScatter(state.Outputs.ValidationOutput.TrainValidation.PredictionValidations
+                    .Select(pred => (double)pred.Label.First()).ToArray())
+            }
+        });
+    
+    public static ISelector<RootState, AccuracyChartPanelProjection> SelectAccuracyChartPanelModel => Selectors
+        .Create<RootState, RunState, AccuracyChartPanelProjection>(SelectRun, state => new AccuracyChartPanelProjection
+        {
+            Traces = new List<ITrace>
+            {
+                TraceMappers.GetScatter(state.Outputs.ValidationOutput.TrainValidation.PredictionValidations
+                    .Select(pred => (double) pred.Confidence).ToArray(), "Actual"),
+                TraceMappers.GetScatter(state.Outputs.ValidationOutput.TrainValidation.PredictionValidations
+                    .Select(pred => (double)pred.Label.First()).ToArray(), "Predicted")
+            }
         });
 }

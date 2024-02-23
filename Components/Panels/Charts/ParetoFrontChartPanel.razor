@@ -1,3 +1,4 @@
+@using Radiate.Client.Services.Mappers
 @inherits StoreComponent<List<ITrace>>
 
 <Chart Data="@Model" Type="front" Height="@(Height ?? 500)" ShowGrid="true"/>
@@ -16,13 +17,7 @@
 
             return new List<ITrace>
             {
-                new Scatter3D
-                {
-                    Mode = Plotly.Blazor.Traces.Scatter3DLib.ModeFlag.Markers,
-                    X = points.Select(val => (object) val[0]).ToList(),
-                    Y = points.Select(val => (object) val[1]).ToList(),
-                    Z = points.Select(val => (object) val[2]).ToList(),
-                }
+                TraceMappers.GetScatter3DTrace(points)
             };
         });
 

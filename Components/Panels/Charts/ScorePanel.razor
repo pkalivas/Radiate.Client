@@ -1,4 +1,5 @@
 @using Plotly.Blazor.Traces.ScatterLib
+@using Radiate.Client.Services.Mappers
 @inherits StoreComponent<List<ITrace>>
 
 <Chart Data="@Model" Height="@(Height ?? 200)" ShowGrid="true"/>
@@ -16,13 +17,7 @@
 
             return new List<ITrace>
             {
-                new Scatter
-                {
-                    Name = "ScatterTrace",
-                    Mode = ModeFlag.Lines,
-                    Y = scores.Select(val => (object) val).ToList(),
-                    X = scores.Select((_, idx) => (object) idx).ToList(),
-                }
+                TraceMappers.GetScatter(scores)
             };
         });
 

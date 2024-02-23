@@ -5,9 +5,9 @@ namespace Radiate.Client.Services.Mappers;
 
 public static class TraceMappers
 {
-    public static Scatter GetScatter(double[] values) => new()
+    public static Scatter GetScatter(double[] values, string name = "") => new()
     {
-        Name = "ScatterTrace",
+        Name = name,
         Mode = ModeFlag.Lines,
         Y = values.Select(val => (object) val).ToList(),
         X = values.Select((_, idx) => (object) idx).ToList(),
@@ -44,4 +44,13 @@ public static class TraceMappers
             Labels = buckets.Select((val, idx) => (object) val.Count).ToList(),
         };
     }
+
+    public static Scatter3D GetScatter3DTrace(List<double[]> points) => new Scatter3D
+    {
+        Mode = Plotly.Blazor.Traces.Scatter3DLib.ModeFlag.Markers,
+        X = points.Select(val => (object) val[0]).ToList(),
+        Y = points.Select(val => (object) val[1]).ToList(),
+        Z = points.Select(val => (object) val[2]).ToList(),
+    };
+    
 }

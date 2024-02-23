@@ -59,3 +59,10 @@ public class ChartPanelTemplate : PanelTemplate
 }
 
 public class ToolbarPanel : PanelTemplate { }
+
+public class CardPanel : PanelTemplate { }
+
+public class TabPanel : PanelTemplate
+{
+    public List<PanelTemplate> Tabs { get; set; } = new();
+}

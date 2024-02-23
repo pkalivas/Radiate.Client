@@ -91,3 +91,8 @@ h1:focus {
   margin-left: 4px;
   margin-right: 4px;
 }
+
+.toolbar-container .btn {
+  margin-left: 4px;
+  margin-right: 4px;
+}

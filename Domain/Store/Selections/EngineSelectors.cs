@@ -26,6 +26,17 @@ public static class EngineSelectors
             Index = run.Outputs.Metrics.TryGetValue(MetricNames.Index, out var indexMetric) ? (int)indexMetric.Value : 0
         });
     
+    public static readonly ISelector<RootState, RunSimpleStatsPanelProjection> SelectRunSimpleStatsPanelModel = Selectors
+        .Create<RootState, RunState, RunSimpleStatsPanelProjection>(RunSelectors.SelectRun, run => new RunSimpleStatsPanelProjection
+        {
+            RunId = run.RunId,
+            StartTime = run.StartTime,
+            EndTime = run.IsCompleted ? run.EndTime : DateTime.Now,
+            ElapsedTime = run.IsCompleted ? run.EndTime - run.StartTime : DateTime.Now - run.StartTime,
+            Score = run.Outputs.Metrics.TryGetValue(MetricNames.Score, out var metric) ? metric.Value : 0f,
+            Index = run.Outputs.Metrics.TryGetValue(MetricNames.Index, out var indexMetric) ? (int)indexMetric.Value : 0
+        });
+    
     public static readonly ISelector<RootState, EngineTreePanelProjection> SelectEngineTreePanelModel = Selectors
         .Create<RootState, RunUiState, RunState, EngineTreePanelProjection>(RunUiSelectors.SelectRunUiState, 
             RunSelectors.SelectRun, (ui, run) =>

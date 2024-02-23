@@ -1,6 +1,6 @@
 @inherits StoreComponent<AccuracyChartPanelProjection>
 
-<Chart Data="@Model.Traces" Height="@(Height ?? 250)" ShowGrid="true" />
+<Chart Data="@Model.Traces" Height="@(Height ?? 200)" ShowGrid="true" />
 
 @code {
     [Parameter] public int? Height { get; set; }

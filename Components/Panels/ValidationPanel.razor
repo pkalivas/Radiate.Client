@@ -2,61 +2,54 @@
 
 @if (Model != null)
 {
-    <MudGrid>
-        <MudItem md="8">
-            <Chart Data="@Model.Traces" Height="250" ShowGrid="true" />
-        </MudItem>
-        <MudItem md="4">
-            <MudSimpleTable Hover="true" Dense="true" Elevation="0">
-                <thead>
-                <tr>
-                    <th></th>
-                    @foreach (var h in @Model.Validations)
-                    {
-                        <th>@h.Name</th>
-                    }
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Class.</td>
-                    @foreach (var col in Model.Validations)
-                    {
-                        <td>@col.ClassificationAccuracy</td>
-                    }
-                </tr>
-                <tr>
-                    <td>Reg.</td>
-                    @foreach (var col in Model.Validations)
-                    {
-                        <td>@col.RegressionAccuracy</td>
-                    }
-                </tr>
-                <tr>
-                    <td>Cat.</td>
-                    @foreach (var col in Model.Validations)
-                    {
-                        <td>@col.CategoricalAccuracy</td>
-                    }
-                </tr>
-                <tr>
-                    <td>Loss.</td>
-                    @foreach (var col in Model.Validations)
-                    {
-                        <td>@col.TotalLoss</td>
-                    }
-                </tr>
-                <tr>
-                    <td>Points</td>
-                    @foreach (var col in Model.Validations)
-                    {
-                        <td>@col.DataPoints</td>
-                    }
-                </tr>
-                </tbody>
-            </MudSimpleTable>
-        </MudItem>
-    </MudGrid>
+    <MudSimpleTable Hover="true" Dense="true" Elevation="0">
+        <thead>
+        <tr>
+            <th></th>
+            @foreach (var h in @Model.Validations)
+            {
+                <th>@h.Name</th>
+            }
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Class.</td>
+            @foreach (var col in Model.Validations)
+            {
+                <td>@col.ClassificationAccuracy</td>
+            }
+        </tr>
+        <tr>
+            <td>Reg.</td>
+            @foreach (var col in Model.Validations)
+            {
+                <td>@col.RegressionAccuracy</td>
+            }
+        </tr>
+        <tr>
+            <td>Cat.</td>
+            @foreach (var col in Model.Validations)
+            {
+                <td>@col.CategoricalAccuracy</td>
+            }
+        </tr>
+        <tr>
+            <td>Loss.</td>
+            @foreach (var col in Model.Validations)
+            {
+                <td>@col.TotalLoss</td>
+            }
+        </tr>
+        <tr>
+            <td>Points</td>
+            @foreach (var col in Model.Validations)
+            {
+                <td>@col.DataPoints</td>
+            }
+        </tr>
+        </tbody>
+    </MudSimpleTable>
 }
 
 @code 

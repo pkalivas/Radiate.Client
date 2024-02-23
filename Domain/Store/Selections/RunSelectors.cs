@@ -45,7 +45,7 @@ public static class RunSelectors
                 {
                     metric.Name switch
                     {
-                        MetricNames.FitnessDistribution => TraceMappers.GetBarTrace(metric.Distribution),
+                        MetricNames.FitnessDistribution => TraceMappers.GetScatter(metric.Distribution),
                         MetricNames.GenomeSizeDistribution => TraceMappers.GetPieTrace(metric.Distribution),
                         MetricNames.AgeDistribution => TraceMappers.GetBarTrace(metric.Distribution),
                         _ => new Scatter()

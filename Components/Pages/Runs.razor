@@ -9,15 +9,44 @@
             @foreach (var panel in Model!.UiTemplate!.GridList.GridPanels)
             {
                 <MudItem md="@panel.Cols" @key="@panel.Id">
-                    @if (panel.GridPanel is ToolbarPanel)
+                    @if (panel.GridPanel is ToolbarPanel toolBarPanel)
                     {
                         <ToolBar Title="@panel.GridPanel.Title" Actions="@panel.GridPanel.Actions">
                             <ChildContent>
-                                <MudPaper Elevation="2" MaxHeight="@($"{panel.MaxHeight}px")" Class="pa-4">
+                                <MudPaper Elevation="2" MaxHeight="@($"{panel.MaxHeight}px")" Class="pa-4 h-100 mx-auto">
                                     <PanelDisplay Panel="@panel.GridPanel"/>
                                 </MudPaper>
                             </ChildContent>
                         </ToolBar>
+                    }
+                    else if (panel.GridPanel is CardPanel cardPanel)
+                    {
+                        <MudCard Elevation="2" Class="pa-2 h-100 mx-auto">
+                            <MudCardHeader>
+                                <CardHeaderContent>
+                                    <PanelHeaderPanel Title="@cardPanel.Title"/>
+                                </CardHeaderContent>
+                            </MudCardHeader>
+                            <MudCardContent>
+                                <MudDivider/>
+                                <PanelDisplay Panel="@panel.GridPanel"/>
+                            </MudCardContent>
+                        </MudCard>
+                    }
+                    else if (panel.GridPanel is TabPanel tabPanel)
+                    {
+                        <MudTabs Elevation="2" Centered="true">
+                            @foreach (var tab in tabPanel.Tabs)
+                            {
+                                <MudTabPanel Text="@tab.Title" @key="@tab.Name">
+                                    <ChildContent>
+                                        <MudPaper MaxHeight="@($"{panel.MaxHeight}px")" Class="pa-4 h-100 mx-auto">
+                                            <PanelDisplay Panel="@tab"/>
+                                        </MudPaper>
+                                    </ChildContent>
+                                </MudTabPanel>
+                            }
+                        </MudTabs>
                     }
                     else
                     {

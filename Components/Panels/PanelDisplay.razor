@@ -1,96 +1,55 @@
 
-@switch (Panel.Name)
+@if (Panel is GridPanel gridPanel)
 {
-    case nameof(GraphInputsPanel):
-        <GraphInputsPanel/>
-        break;
-    case nameof(RunControlPanel):
-        <RunControlPanel/>
-        break;
-    case nameof(ValidationPanel):
-        <ValidationPanel/>
-        break;
-    case nameof(MetricsDataGridPanel):
-        <MetricsDataGridPanel/>
-        break;
-    case nameof(ScorePanel):
-        <ScorePanel/>
-        break;
-    case nameof(ImageTargetCurrentDisplayPanel):
-        <ImageTargetCurrentDisplayPanel/>
-        break;
-    case nameof(ImageInputsPanel):
-        <ImageInputsPanel/>
-        break;
-    case nameof(ParetoFrontChartPanel):
-        <ParetoFrontChartPanel/>
-        break;
-    case nameof(MultiObjectiveInputsPanel):
-        <MultiObjectiveInputsPanel/>
-        break;
-    case nameof(AccuracyChartPanel):
-        <AccuracyChartPanel/>
-        break;
-    case nameof(RunSimpleStatsPanel):
-        <RunSimpleStatsPanel/>
-        break;
-    default:
-        <div>Panel not found</div>
-        break;
+    <MudGrid>
+        @foreach (var gridItem in gridPanel.Items)
+        {
+            <MudItem md="@gridItem.ColSpan" @key="@gridItem.Panel.Id">
+                <PanelDisplay Panel="@gridItem.Panel"/>
+            </MudItem>
+        }
+    </MudGrid>
+}
+else if (Panel is TabPanel tabPanel)
+{
+    <MudTabs Elevation="2" Centered="true" Rounded="false">
+        @foreach (var tabItem in tabPanel.Tabs)
+        {
+            <MudTabPanel Text="@tabItem.Panel.Title" @key="@tabItem.Panel.Id">
+                    <PanelDisplay Panel="@tabItem.Panel"/>
+            </MudTabPanel>
+        }
+    </MudTabs>
+}
+else if (Panel is PaperPanel paperPanel)
+{
+    <MudPaper Elevation="2" Height="@($"{paperPanel.Height}px")">
+        <DynamicComponent Type="@paperPanel.Content"/>
+    </MudPaper>
+}
+else if (Panel is CardPanel cardPanel)
+{
+    <MudCard Elevation="2" class="h-100">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <PanelHeaderPanel Title="@cardPanel.Title"/>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudDivider/>
+            <DynamicComponent Type="@cardPanel.Content" />
+       </MudCardContent>
+    </MudCard>
+}
+else
+{
+    <MudPaper Elevation="2">
+        <MudText Typo="Typo.h6" Class="pa-2">
+            Panel type not supported
+        </MudText>
+    </MudPaper>
 }
 
 @code {
     [Parameter] public IPanel Panel { get; set; }
 }
-
-@* *@
-@* @if (Panel is ChartPanelTemplate chartPanel) *@
-@* { *@
-@*     <MetricSummaryChartPanel MetricName="@chartPanel.Name" ChartHeight="@chartPanel.Height" ChartType="@chartPanel.ChartType"/> *@
-@* } *@
-@* else *@
-@* { *@
-@*     @switch (Panel.Name) *@
-@*     { *@
-@*         case nameof(GraphInputsPanel): *@
-@*             <GraphInputsPanel/> *@
-@*             break; *@
-@*         case nameof(RunControlPanel): *@
-@*             <RunControlPanel/> *@
-@*             break; *@
-@*         case nameof(ValidationPanel): *@
-@*             <ValidationPanel/> *@
-@*             break; *@
-@*         case nameof(MetricsDataGridPanel): *@
-@*             <MetricsDataGridPanel/> *@
-@*             break; *@
-@*         case nameof(ScorePanel): *@
-@*             <ScorePanel/> *@
-@*             break; *@
-@*         case nameof(ImageTargetCurrentDisplayPanel): *@
-@*             <ImageTargetCurrentDisplayPanel/> *@
-@*             break; *@
-@*         case nameof(ImageInputsPanel): *@
-@*             <ImageInputsPanel/> *@
-@*             break; *@
-@*         case nameof(ParetoFrontChartPanel): *@
-@*             <ParetoFrontChartPanel/> *@
-@*             break; *@
-@*         case nameof(MultiObjectiveInputsPanel): *@
-@*             <MultiObjectiveInputsPanel/> *@
-@*             break; *@
-@*         case nameof(AccuracyChartPanel): *@
-@*             <AccuracyChartPanel/> *@
-@*             break; *@
-@*         case nameof(RunSimpleStatsPanel): *@
-@*             <RunSimpleStatsPanel/> *@
-@*             break; *@
-@*         default: *@
-@*             <div>Panel not found</div> *@
-@*             break; *@
-@*     } *@
-@* } *@
-@* *@
-@* @code { *@
-@*     [Parameter] public PanelTemplate Panel { get; set; } *@
-@* } *@

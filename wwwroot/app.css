@@ -96,3 +96,18 @@ h1:focus {
   margin-left: 4px;
   margin-right: 4px;
 }
+
+.parent-container {
+  position: relative;
+}
+
+.child-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

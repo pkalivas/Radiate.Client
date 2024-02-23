@@ -82,7 +82,6 @@ public interface IRunTemplate
 public interface IPanel
 {
     Guid Id { get; }
-    string Name { get; }
     string Title { get; }
     List<string> Actions { get; }
 }
@@ -95,20 +94,24 @@ public interface IRunUITemplate
 public abstract class Panel : IPanel
 {
     public Guid Id { get; init; }
-    public string Name { get; init; }
     public string Title { get; init; } = string.Empty;
-    public int Cols { get; init; } = 3;
     public List<string> Actions { get; set; } = new();
 }
 
-public class PaperPanel : Panel { }
+public class PaperPanel : Panel
+{
+    public int Height { get; init; } = 250;
+    public Type Content { get; init; }
+}
 
-public class CardPanel : Panel { }
+public class CardPanel : Panel
+{
+    public Type Content { get; set; }
+}
 
 public class GridPanel : Panel
 {
-    public int Cols { get; set; }
-    public List<GridItem> Panels { get; set; } = new();
+    public List<GridItem> Items { get; set; } = new();
 
     public class GridItem
     {
@@ -143,9 +146,7 @@ public class TestUI : IRunUITemplate
         new GridPanel
         {
             Id = new Guid("496D83AB-3660-45B8-B9D6-2C8A23B66B12"),
-            Name = "GridPanel",
-            Cols = 12,
-            Panels =
+            Items =
             [
                 new GridPanel.GridItem
                 {
@@ -159,9 +160,10 @@ public class TestUI : IRunUITemplate
                             {
                                 Panel = new PaperPanel
                                 {
-                                    Id = new Guid("4B5E7C33-5F17-4CBE-A2E0-783EE9663693"),
-                                    Name = nameof(AccuracyChartPanel),
-                                    Title = "Accuracy"
+                                    Id = new Guid("A5F2CFCD-9BB6-4511-84C3-9AB72CA8EF75"),
+                                    Content = typeof(AccuracyChartPanel),
+                                    Title = "Accuracy",
+                                    Height = 225
                                 }
                             },
                             new()
@@ -169,8 +171,9 @@ public class TestUI : IRunUITemplate
                                 Panel = new PaperPanel
                                 {
                                     Id = new Guid("4B5E7C33-5F17-4CBE-A2E0-783EE9663693"),
-                                    Name = nameof(ScorePanel),
-                                    Title = "Score"
+                                    Content = typeof(ScorePanel),
+                                    Title = "Score",
+                                    Height = 225
                                 }
                             }
                         ]
@@ -182,8 +185,8 @@ public class TestUI : IRunUITemplate
                     Panel = new CardPanel
                     {
                         Id = new Guid("B3234C56-9806-4E4E-ABF2-2471D90B5D91"),
-                        Name = nameof(RunSimpleStatsPanel),
-                        Title = "Stats"
+                        Content = typeof(RunSimpleStatsPanel),
+                        Title = "Stats",
                     }
                 },
                 new GridPanel.GridItem
@@ -192,7 +195,7 @@ public class TestUI : IRunUITemplate
                     Panel = new CardPanel
                     {
                         Id = new Guid("365C357D-3A47-418B-84A8-7CBE2DAE1B29"),
-                        Name = nameof(RunControlPanel),
+                        Content = typeof(RunControlPanel),
                         Title = "Control"
                     }
                 }

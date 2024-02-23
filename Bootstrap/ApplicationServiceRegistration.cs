@@ -32,6 +32,7 @@ public static class ApplicationServiceRegistration
             .AddScoped<GraphRegressionRunner>()
             .AddScoped<TreeRegressionRunner>()
             .AddScoped<MultiObjectiveRunner>()
+            .AddScoped<SinWaveGraphRunner>()
             .AddScoped<EngineRunnerFactory>(sp => (model, data) => (model, data) switch
             {
                 (ModelTypes.Tree, DataSetTypes.Regression) => sp.GetRequiredService<TreeRegressionRunner>(),
@@ -40,6 +41,7 @@ public static class ApplicationServiceRegistration
                 (ModelTypes.Image, DataSetTypes.Circle) => sp.GetRequiredService<CircleEngineRunner>(),
                 (ModelTypes.Image, DataSetTypes.Polygon) => sp.GetRequiredService<PolygonEngineRunner>(),
                 (ModelTypes.MultiObjective, _) => sp.GetRequiredService<MultiObjectiveRunner>(),
+                (ModelTypes.Graph, DataSetTypes.SinWave) => sp.GetRequiredService<SinWaveGraphRunner>(),
                 _ => throw new ArgumentException($"Runner {model} {data}.")
             });
     

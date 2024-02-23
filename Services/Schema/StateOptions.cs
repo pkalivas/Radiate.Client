@@ -15,7 +15,8 @@ public static class StateOptions
         ModelTypes.Graph =>
         [
             DataSetTypes.Xor,
-            DataSetTypes.Regression
+            DataSetTypes.Regression,
+            DataSetTypes.SinWave
         ],
         ModelTypes.Tree => [DataSetTypes.Regression],
         ModelTypes.Image =>

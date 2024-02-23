@@ -90,15 +90,13 @@ public static class RunSelectors
                     Duration = state.Outputs.ValidationOutput.TestValidation.Duration,
                     DataPoints = state.Outputs.ValidationOutput.TestValidation.DataPoints
                 }
-            }
-            .Where(val => val.DataPoints > 0)
-            .ToList(),
+            },
             Traces = new List<ITrace>
             {
                 TraceMappers.GetScatter(state.Outputs.ValidationOutput.TrainValidation.PredictionValidations
-                    .Select(pred => (double) pred.Confidence).ToArray()),
+                    .Select(pred => (double) pred.Confidence).ToArray(), "Prediction"),
                 TraceMappers.GetScatter(state.Outputs.ValidationOutput.TrainValidation.PredictionValidations
-                    .Select(pred => (double)pred.Label.First()).ToArray())
+                    .Select(pred => (double)pred.Label.First()).ToArray(), "Actual")
             }
         });
     

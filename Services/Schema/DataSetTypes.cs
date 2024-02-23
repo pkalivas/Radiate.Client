@@ -10,6 +10,7 @@ public static class DataSetTypes
     public const string DTLZ2 = "DTLZ2";
     public const string DTLZ6 = "DTLZ6";
     public const string DTLZ7 = "DTLZ7";
+    public const string SinWave = "SinWave";
 
     public static List<string> DTZTypes = new()
     {

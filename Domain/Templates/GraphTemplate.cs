@@ -57,6 +57,7 @@ public class GraphUiTemplate : IRunUITemplate
             {
                 Id = new Guid("6A3DD486-DC80-4728-A074-A1D2D79018D9"),
                 IsOpen = true,
+                MaxHeight = 275,
                 ExpansionPanel = new PanelTemplate
                 {
                     Name = nameof(ValidationPanel),
@@ -80,17 +81,7 @@ public class GraphUiTemplate : IRunUITemplate
     {
         ExpansionPanels =
         [
-            new()
-            {
-                Id = new Guid("555ABE00-29EF-414C-8688-7B80225E5769"),
-                IsOpen = true,
-                MaxHeight = 250,
-                ExpansionPanel = new PanelTemplate
-                {
-                    Name = nameof(AccuracyChartPanel),
-                    Title = "Accuracy",
-                }
-            },
+            
             new()
             {
                 Id = new Guid("F4114F2B-4C84-455C-89D5-998964CDEB1B"),

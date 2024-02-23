@@ -66,8 +66,8 @@ public class GlobalEffects : IEffectRegistry<RootState>
                 {
                     ModelTypes.Graph => new GraphTemplate(),
                     ModelTypes.Image => new ImageTemplate(),
-                    // ModelTypes.Tree => new TreeTemplate(),
-                    // ModelTypes.MultiObjective => new MultiObjectiveTemplate(),
+                    ModelTypes.Tree => new TreeTemplate(),
+                    ModelTypes.MultiObjective => new MultiObjectiveTemplate(),
                     _ => throw new ArgumentOutOfRangeException()
                 }
             });

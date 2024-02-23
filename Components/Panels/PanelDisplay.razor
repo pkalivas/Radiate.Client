@@ -1,51 +1,96 @@
 
-@if (Panel is ChartPanelTemplate chartPanel)
+@switch (Panel.Name)
 {
-    <MetricSummaryChartPanel MetricName="@chartPanel.Name" ChartHeight="@chartPanel.Height" ChartType="@chartPanel.ChartType"/>
-}
-else
-{
-    @switch (Panel.Name)
-    {
-        case nameof(GraphInputsPanel):
-            <GraphInputsPanel/>
-            break;
-        case nameof(RunControlPanel):
-            <RunControlPanel/>
-            break;
-        case nameof(ValidationPanel):
-            <ValidationPanel/>
-            break;
-        case nameof(MetricsDataGridPanel):
-            <MetricsDataGridPanel/>
-            break;
-        case nameof(ScorePanel):
-            <ScorePanel/>
-            break;
-        case nameof(ImageTargetCurrentDisplayPanel):
-            <ImageTargetCurrentDisplayPanel/>
-            break;
-        case nameof(ImageInputsPanel):
-            <ImageInputsPanel/>
-            break;
-        case nameof(ParetoFrontChartPanel):
-            <ParetoFrontChartPanel/>
-            break;
-        case nameof(MultiObjectiveInputsPanel):
-            <MultiObjectiveInputsPanel/>
-            break;
-        case nameof(AccuracyChartPanel):
-            <AccuracyChartPanel/>
-            break;
-        case nameof(RunSimpleStatsPanel):
-            <RunSimpleStatsPanel/>
-            break;
-        default:
-            <div>Panel not found</div>
-            break;
-    }
+    case nameof(GraphInputsPanel):
+        <GraphInputsPanel/>
+        break;
+    case nameof(RunControlPanel):
+        <RunControlPanel/>
+        break;
+    case nameof(ValidationPanel):
+        <ValidationPanel/>
+        break;
+    case nameof(MetricsDataGridPanel):
+        <MetricsDataGridPanel/>
+        break;
+    case nameof(ScorePanel):
+        <ScorePanel/>
+        break;
+    case nameof(ImageTargetCurrentDisplayPanel):
+        <ImageTargetCurrentDisplayPanel/>
+        break;
+    case nameof(ImageInputsPanel):
+        <ImageInputsPanel/>
+        break;
+    case nameof(ParetoFrontChartPanel):
+        <ParetoFrontChartPanel/>
+        break;
+    case nameof(MultiObjectiveInputsPanel):
+        <MultiObjectiveInputsPanel/>
+        break;
+    case nameof(AccuracyChartPanel):
+        <AccuracyChartPanel/>
+        break;
+    case nameof(RunSimpleStatsPanel):
+        <RunSimpleStatsPanel/>
+        break;
+    default:
+        <div>Panel not found</div>
+        break;
 }
 
 @code {
-    [Parameter] public PanelTemplate Panel { get; set; }
+    [Parameter] public IPanel Panel { get; set; }
 }
+
+@* *@
+@* @if (Panel is ChartPanelTemplate chartPanel) *@
+@* { *@
+@*     <MetricSummaryChartPanel MetricName="@chartPanel.Name" ChartHeight="@chartPanel.Height" ChartType="@chartPanel.ChartType"/> *@
+@* } *@
+@* else *@
+@* { *@
+@*     @switch (Panel.Name) *@
+@*     { *@
+@*         case nameof(GraphInputsPanel): *@
+@*             <GraphInputsPanel/> *@
+@*             break; *@
+@*         case nameof(RunControlPanel): *@
+@*             <RunControlPanel/> *@
+@*             break; *@
+@*         case nameof(ValidationPanel): *@
+@*             <ValidationPanel/> *@
+@*             break; *@
+@*         case nameof(MetricsDataGridPanel): *@
+@*             <MetricsDataGridPanel/> *@
+@*             break; *@
+@*         case nameof(ScorePanel): *@
+@*             <ScorePanel/> *@
+@*             break; *@
+@*         case nameof(ImageTargetCurrentDisplayPanel): *@
+@*             <ImageTargetCurrentDisplayPanel/> *@
+@*             break; *@
+@*         case nameof(ImageInputsPanel): *@
+@*             <ImageInputsPanel/> *@
+@*             break; *@
+@*         case nameof(ParetoFrontChartPanel): *@
+@*             <ParetoFrontChartPanel/> *@
+@*             break; *@
+@*         case nameof(MultiObjectiveInputsPanel): *@
+@*             <MultiObjectiveInputsPanel/> *@
+@*             break; *@
+@*         case nameof(AccuracyChartPanel): *@
+@*             <AccuracyChartPanel/> *@
+@*             break; *@
+@*         case nameof(RunSimpleStatsPanel): *@
+@*             <RunSimpleStatsPanel/> *@
+@*             break; *@
+@*         default: *@
+@*             <div>Panel not found</div> *@
+@*             break; *@
+@*     } *@
+@* } *@
+@* *@
+@* @code { *@
+@*     [Parameter] public PanelTemplate Panel { get; set; } *@
+@* } *@

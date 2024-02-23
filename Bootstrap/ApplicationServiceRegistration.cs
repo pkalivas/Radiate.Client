@@ -17,6 +17,7 @@ public static class ApplicationServiceRegistration
         services
             .AddReflow()
             .AddEngineRunners()
+            .AddTransient<InputsService>()
             .AddSingleton<IValidationService, ValidationService>()
             .AddSingleton<ITensorFrameService, TensorFrameService>()
             .AddSingleton<IActorService, ActorService>()

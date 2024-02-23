@@ -9,8 +9,8 @@ namespace Radiate.Client.Domain.Templates;
 
 public class GraphTemplate : IRunTemplate
 {
-    public Guid Id { get; }
-    public string ModelType { get; }
+    public Guid Id => Guid.NewGuid();
+    public string ModelType => ModelTypes.Graph;
     public IRunUITemplate UI => new GraphUITemplate();
 }
 

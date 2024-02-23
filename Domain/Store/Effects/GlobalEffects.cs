@@ -2,6 +2,7 @@ using System.Reactive.Linq;
 using Radiate.Client.Domain.Store.Actions;
 using Radiate.Client.Domain.Store.Models.States;
 using Radiate.Client.Domain.Templates;
+using Radiate.Client.Services;
 using Radiate.Client.Services.Schema;
 using Reflow.Interfaces;
 using static Reflow.Effects.Effects;
@@ -10,6 +11,13 @@ namespace Radiate.Client.Domain.Store.Effects;
 
 public class GlobalEffects : IEffectRegistry<RootState>
 {
+    private readonly InputsService _inputsService;
+
+    public GlobalEffects(InputsService inputsService)
+    {
+        _inputsService = inputsService;
+    }
+    
     public IEnumerable<IEffect<RootState>> CreateEffects() =>
         new List<IEffect<RootState>>
         {
@@ -45,11 +53,7 @@ public class GlobalEffects : IEffectRegistry<RootState>
             {
                 RunId = action.RunId,
                 Index = state.Runs.Count,
-                Inputs = new RunInputsState
-                {
-                    ModelType = action.ModelType,
-                    DataSetType = action.DataSetType
-                }
+                Inputs = _inputsService.CreateInputs(action.ModelType, action.DataSetType)
             });
         }), true);
 

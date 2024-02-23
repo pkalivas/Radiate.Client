@@ -1,6 +1,7 @@
 using Radiate.Client.Components.Panels;
 using Radiate.Client.Components.Panels.Charts;
 using Radiate.Client.Components.Panels.Inputs;
+using Radiate.Client.Domain.Store.Models.States;
 using Radiate.Client.Domain.Templates.Panels;
 using Radiate.Client.Services.Schema;
 using Radiate.Engines.Schema;
@@ -26,7 +27,7 @@ public class MultiObjectiveUITemplate : IRunUITemplate
             [
                 new GridPanel.GridItem
                 {
-                    ColSpan = 12,
+                    ColSpan = 10,
                     Panel = new ToolbarPanel
                     {
                         Id = new Guid("8FCA10DB-1073-494C-BF90-57847A736449"),

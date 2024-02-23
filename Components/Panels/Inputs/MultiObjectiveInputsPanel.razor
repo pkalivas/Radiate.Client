@@ -6,10 +6,8 @@
     return;
 }
 
-<MudGrid Class="mb-3">
+<MudGrid Class="px-4">
     <MudItem md="4">
-        <MudText Typo="Typo.h6">Population</MudText>
-        <MudDivider/>
         <MudGrid Class="mt-3">
             <MudItem md="6">
                 @if (Model.IsReadonly)
@@ -37,8 +35,6 @@
         </MudGrid>
     </MudItem>
     <MudItem md="4">
-        <MudText Typo="Typo.h6">Limits</MudText>
-        <MudDivider/>
         <MudGrid Class="mt-3">
             <MudItem>
                 @if (Model.IsReadonly)
@@ -66,8 +62,6 @@
         </MudGrid>
     </MudItem>
     <MudItem md="4">
-            <MudText Typo="Typo.h6">DTZ</MudText>
-            <MudDivider/>
             <MudGrid Class="mt-3">
                 <MudItem md="6">
                     @if (Model.IsReadonly)

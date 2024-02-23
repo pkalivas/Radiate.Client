@@ -14,6 +14,7 @@ public static class EngineSelectors
         .Create<RootState, RunState, RunControlPanelProjection>(RunSelectors.SelectRun, run => new RunControlPanelProjection
         {
             RunId = run.RunId,
+            ModelType = run.Inputs.ModelType,
             IsRunning = run.IsRunning,
             IsPaused = run.IsPaused,
             IsCompleted = run.IsCompleted,

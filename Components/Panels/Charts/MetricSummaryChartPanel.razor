@@ -1,0 +1,71 @@
+@inherits StoreComponent<MetricSummaryChartPanelProjection>
+
+@if (Model != null)
+{
+    <div class="col">
+        <div class="row">
+            <div class="col-4">
+                <div class="row border-bottom ml-1">
+                    <div class="col">
+                        <h6>∧</h6>
+                    </div>
+                    <div class="col" style="font-size: 12px;">
+                        @Model.Value.Max
+                    </div>
+                </div>
+                <div class="row border-bottom ml-1">
+                    <div class="col">
+                        <h6>∨</h6>
+                    </div>
+                    <div class="col" style="font-size: 12px;">
+                        @Model.Value.Min
+                    </div>
+                </div>
+                <div class="row border-bottom ml-1">
+                    <div class="col">
+                        <h6>μ</h6>
+                    </div>
+                    <div class="col" style="font-size: 12px;">
+                        @Model.Value.Mean
+                    </div>
+                </div>
+                <div class="row border-bottom ml-1">
+                    <div class="col">
+                        <h6>K</h6>
+                    </div>
+                    <div class="col" style="font-size: 12px;">
+                        @Model.Value.Kurtosis
+                    </div>
+                </div>
+                <div class="row border-bottom ml-1">
+                    <div class="col">
+                        <h6>S</h6>
+                    </div>
+                    <div class="col" style="font-size: 12px;">
+                        @Model.Value.Skewness
+                    </div>
+                </div>
+                <div class="row border-bottom ml-1">
+                    <div class="col">
+                        <h6>s²</h6>
+                    </div>
+                    <div class="col" style="font-size: 12px;">
+                        @Model.Value.Variance
+                    </div>
+                </div>
+            </div>
+            <div class="col-8 mx-auto">
+                <Chart Data="@Model.Traces" Height="@(ChartHeight ?? 0)"></Chart>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public string MetricName { get; set; }
+    [Parameter] public int? ChartHeight { get; set; }
+    
+    protected override IObservable<MetricSummaryChartPanelProjection> Select() =>
+        Store.Select(RunSelectors.SelectMetricSummaryChartPanelModel(MetricName));
+
+}

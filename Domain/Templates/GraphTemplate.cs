@@ -1,7 +1,9 @@
 using Radiate.Client.Components.Panels;
 using Radiate.Client.Components.Panels.Charts;
+using Radiate.Client.Components.Panels.Inputs;
 using Radiate.Client.Domain.Templates.Panels;
 using Radiate.Client.Services.Schema;
+using Radiate.Engines.Schema;
 
 namespace Radiate.Client.Domain.Templates;
 
@@ -23,6 +25,21 @@ public class GraphUITemplate : IRunUITemplate
             [
                 new GridPanel.GridItem
                 {
+                    ColSpan = 12,
+                    Panel = new ToolbarPanel
+                    {
+                        Id = new Guid("8FCA10DB-1073-494C-BF90-57847A736449"),
+                        Content = typeof(GraphInputsPanel),
+                        Title = "Graph",
+                        Actions =
+                        [
+                            MenuActions.Copy,
+                            MenuActions.EngineTree
+                        ]
+                    }
+                },
+                new GridPanel.GridItem
+                {
                     ColSpan = 7,
                     Panel = new PaperPanel
                     {
@@ -31,33 +48,6 @@ public class GraphUITemplate : IRunUITemplate
                         Title = "Accuracy",
                         Height = 300
                     }
-                    // Panel = new TabPanel
-                    // {
-                    //     Id = new Guid("53EA2B0F-E26C-45A3-8DCF-06C742998CF8"),
-                    //     Tabs =
-                    //     [
-                    //         new()
-                    //         {
-                    //             Panel = new PaperPanel
-                    //             {
-                    //                 Id = new Guid("A5F2CFCD-9BB6-4511-84C3-9AB72CA8EF75"),
-                    //                 Content = typeof(AccuracyChartPanel),
-                    //                 Title = "Accuracy",
-                    //                 Height = 225
-                    //             }
-                    //         },
-                    //         new()
-                    //         {
-                    //             Panel = new PaperPanel
-                    //             {
-                    //                 Id = new Guid("4B5E7C33-5F17-4CBE-A2E0-783EE9663693"),
-                    //                 Content = typeof(ScorePanel),
-                    //                 Title = "Score",
-                    //                 Height = 225
-                    //             }
-                    //         }
-                    //     ]
-                    // }
                 },
                 new GridPanel.GridItem
                 {
@@ -77,11 +67,6 @@ public class GraphUITemplate : IRunUITemplate
                         Id = new Guid("365C357D-3A47-418B-84A8-7CBE2DAE1B29"),
                         Content = typeof(RunControlPanel),
                         Title = "Control",
-                        Actions =
-                        [
-                            MenuActions.Copy,
-                            MenuActions.EngineTree
-                        ]
                     }
                 },
                 new GridPanel.GridItem
@@ -110,6 +95,59 @@ public class GraphUITemplate : IRunUITemplate
                                     Id = new Guid("6A3DD486-DC80-4728-A074-A1D2D79018D9"),
                                     Content = typeof(ValidationPanel),
                                     Title = "Validation",
+                                }
+                            },
+                            new GridPanel.GridItem
+                            {
+                                ColSpan = 12,
+                                Panel = new TabPanel
+                                {
+                                    Id = new Guid("9867301E-CD35-40B4-A411-4E9589CDB7DD"),
+                                    Tabs = 
+                                    [
+                                        new TabPanel.TabItem
+                                        {
+                                            Panel = new PaperPanel
+                                            {
+                                                Id = new Guid("19687ECB-52DD-4D4A-B260-3EB55FB39B93"),
+                                                Title = "Fitness Dist.",
+                                                Content = typeof(MetricSummaryChartPanel),
+                                                Props = new Dictionary<string, object>
+                                                {
+                                                    ["MetricName"] = MetricNames.FitnessDistribution,
+                                                    ["ChartHeight"] = 200
+                                                }
+                                            }
+                                        },
+                                        new TabPanel.TabItem
+                                        {
+                                            Panel = new PaperPanel
+                                            {
+                                                Id = new Guid("89DBD37A-4D39-4CD0-987E-0768C2C916C8"),
+                                                Title = "Age Dist.",
+                                                Content = typeof(MetricSummaryChartPanel),
+                                                Props = new Dictionary<string, object>
+                                                {
+                                                    ["MetricName"] = MetricNames.AgeDistribution,
+                                                    ["ChartHeight"] = 200
+                                                }
+                                            }
+                                        },
+                                        new TabPanel.TabItem
+                                        {
+                                            Panel = new PaperPanel
+                                            {
+                                                Id = new Guid("FA2CB9C6-54FE-40AF-AA4D-2CD538B82B36"),
+                                                Title = "Genome Size",
+                                                Content = typeof(MetricSummaryChartPanel),
+                                                Props = new Dictionary<string, object>
+                                                {
+                                                    ["MetricName"] = MetricNames.GenomeSizeDistribution,
+                                                    ["ChartHeight"] = 200
+                                                }
+                                            }
+                                        }
+                                    ]
                                 }
                             }
                         ]

@@ -64,7 +64,7 @@ public class GlobalEffects : IEffectRegistry<RootState>
                 RunId = action.Run.RunId,
                 RunTemplate = action.Run.Inputs.ModelType switch
                 {
-                    ModelTypes.Graph => new Test(),
+                    ModelTypes.Graph => new GraphTemplate(),
                     // ModelTypes.Image => new ImageTemplate(),
                     // ModelTypes.Tree => new TreeTemplate(),
                     // ModelTypes.MultiObjective => new MultiObjectiveTemplate(),

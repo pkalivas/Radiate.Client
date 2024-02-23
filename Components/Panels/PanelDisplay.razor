@@ -1,3 +1,4 @@
+@using Radiate.Client.Domain.Templates.Panels
 
 @if (Panel is GridPanel gridPanel)
 {
@@ -16,7 +17,7 @@ else if (Panel is TabPanel tabPanel)
         @foreach (var tabItem in tabPanel.Tabs)
         {
             <MudTabPanel Text="@tabItem.Panel.Title" @key="@tabItem.Panel.Id">
-                    <PanelDisplay Panel="@tabItem.Panel"/>
+                <PanelDisplay Panel="@tabItem.Panel"/>
             </MudTabPanel>
         }
     </MudTabs>
@@ -32,7 +33,7 @@ else if (Panel is CardPanel cardPanel)
     <MudCard Elevation="2" class="h-100">
         <MudCardHeader>
             <CardHeaderContent>
-                <PanelHeaderPanel Title="@cardPanel.Title"/>
+                <PanelHeader Title="@cardPanel.Title" Actions="@cardPanel.Actions"/>
             </CardHeaderContent>
         </MudCardHeader>
         <MudCardContent>

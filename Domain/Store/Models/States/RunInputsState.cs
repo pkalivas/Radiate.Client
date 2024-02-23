@@ -1,6 +1,4 @@
 using Radiate.Factories.Losses;
-using Radiate.Records;
-using Radiate.Tensors;
 
 namespace Radiate.Client.Domain.Store.Models.States;
 

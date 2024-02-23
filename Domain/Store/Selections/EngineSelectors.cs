@@ -59,6 +59,8 @@ public static class EngineSelectors
         .Create<RootState, RunControlPanelProjection, EngineTreePanelProjection, PanelToolbarProjection>(SelectRunControlPanelModel, SelectEngineTreePanelModel,
             (control, model) => new PanelToolbarProjection
             {
+                RunId = control.RunId,
+                ModelType = control.Inputs.ModelType,
                 IsRunning = control.IsRunning,
                 IsPaused = control.IsPaused,
                 IsComplete = control.IsCompleted,

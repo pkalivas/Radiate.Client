@@ -1,0 +1,60 @@
+@inherits StoreComponent<PanelToolbarProjection>
+@inject IDialogService DialogService
+@inject NavigationManager Navigation
+
+<div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+        <MudText Typo="Typo.body1" Style="ml-5">@Title</MudText>
+    </div>
+    <div class="d-flex align-items-center mr-1">
+        <RunIcon IsRunning="@Model.IsRunning" IsPaused="@Model.IsPaused" IsComplete="@Model.IsComplete"/>
+        <MudMenu Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small">
+            @foreach (var action in Actions)
+            {
+                if (action is MenuActions.Copy)
+                {
+                    <MudMenuItem Icon="@Icons.Material.Outlined.ContentCopy" IconSize="Size.Small" OnClick="@CopyRun">@action</MudMenuItem>
+                }
+                else if (action is MenuActions.EngineTree)
+                {
+                    <MudMenuItem Icon="@Icons.Material.Outlined.AccountTree" IconSize="Size.Small" OnClick="@OpenEngineTree">@action</MudMenuItem>
+                }
+            }
+        </MudMenu>
+    </div>
+</div>
+
+@code
+{
+    [Parameter] public List<string> Actions { get; set; } = new();
+    [Parameter] public string Title { get; set; }
+
+    protected override IObservable<PanelToolbarProjection> Select() => Store.Select(EngineSelectors.SelectPanelToolbarModel);
+    
+    private string FormatDuration(TimeSpan duration) => duration.ToString("mm\\:ss\\:ffff");
+    
+    private async Task OpenEngineTree()
+    {
+        var options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true,
+            CloseOnEscapeKey = true,
+        };
+
+        var dialogRef = await DialogService.ShowAsync<EngineTreePanel>("Engine Tree", options);
+        await dialogRef.Result;
+    }
+    
+    private async Task CopyRun()
+    {
+        var runId = Model.RunId;
+        var newRunId = Guid.NewGuid();
+        
+        Navigation.NavigateTo($"/runs/{newRunId}/{Model.ModelType.ToLower()}");
+
+        Store.Dispatch(new SetRunLoadingAction(newRunId, true));
+        Store.Dispatch(new NavigateToRunAction(newRunId));
+        Store.Dispatch(new CopyRunAction(runId, newRunId));
+    }
+}

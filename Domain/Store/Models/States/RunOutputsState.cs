@@ -2,7 +2,6 @@ using System.Collections.Immutable;
 using Radiate.Client.Domain.Store.Models.Projections;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Harness;
-using Radiate.Extensions.Evolution.Architects.Groups;
 using Radiate.Extensions.Evolution.Programs;
 
 namespace Radiate.Client.Domain.Store.Models.States;

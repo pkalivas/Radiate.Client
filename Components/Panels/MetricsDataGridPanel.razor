@@ -1,4 +1,3 @@
-@using System.Text.Json
 @inherits StoreComponent<MetricDataGridPanelProjection>
 
 @if (Model.Values.Any())
@@ -7,9 +6,10 @@
                  Elevation="0"
                  Items="@Model.Values"
                  FixedHeader="true"
-                 ShowMenuIcon="false"
+                 ShowMenuIcon="true"
                  HorizontalScrollbar="true"
-                 Virtualize="true"
+                 ShowColumnOptions="true"
+                 ColumnResizeMode="ResizeMode.Column"
                  Class="mb-3">
         <Columns>
             <PropertyColumn StickyLeft="true" Property="x => FormatName(x.Name)" Title="Name" Filterable="true"/>
@@ -23,8 +23,10 @@
             <PropertyColumn Property="x => x.Skewness" Title="Skew." Hideable="true" Groupable="true" Filterable="true"/>
             <PropertyColumn Property="x => FormatDuration(x.MeanTime)" Title="Avg. Duration" Hideable="true" Groupable="true" Filterable="true"/>
             <PropertyColumn Property="x => FormatDuration(x.Total)" Title="Duration" Hideable="true" Groupable="true" Filterable="true"/>
-
         </Columns>
+        <PagerContent>
+            <MudDataGridPager T="MetricValueModel" />
+        </PagerContent>
     </MudDataGrid>
     
 }

@@ -1,140 +1,114 @@
-// using Radiate.Client.Components.Panels;
-// using Radiate.Client.Components.Panels.Charts;
-// using Radiate.Client.Components.Panels.Inputs;
-// using Radiate.Client.Services.Schema;
-// using Radiate.Engines.Schema;
-//
-// namespace Radiate.Client.Domain.Templates;
-//
-// public class GraphTemplate : IRunTemplate
-// {
-//     public Guid Id => new("8EACF674-1E77-434E-89D5-B5CBC17FA568");
-//     public string ModelType => ModelTypes.Graph;
-//     public IRunUITemplate UI => new GraphUiTemplate();
-// }
-//
-// public class GraphUiTemplate : IRunUITemplate
-// {
-//     public Guid Id => new("AFDB4F48-1A58-4D95-85DD-530E43105E20");
-//
-//     public GridListTemplate GridList => new()
-//     {
-//         Cols = 12,
-//         GridPanels = new List<GridPanelTemplate>
-//         {
-//             new()
-//             {
-//                 Id = new Guid("53EA2B0F-E26C-45A3-8DCF-06C742998CF8"),
-//                 Cols = 8,
-//                 GridPanel = new ToolbarPanelTemplate
-//                 {
-//                     Name = nameof(GraphInputsPanel),
-//                     Title = "Graph",
-//                     Actions = new List<string>
-//                     {
-//                         MenuActions.Copy,
-//                         MenuActions.EngineTree
-//                     }
-//                 }
-//             },
-//             new()
-//             {
-//                 Id = new Guid("365C357D-3A47-418B-84A8-7CBE2DAE1B29"),
-//                 Cols = 4,
-//                 GridPanel = new PanelTemplate
-//                 {
-//                     Name = nameof(RunControlPanel)
-//                 }
-//             }
-//         }
-//     };
-//
-//     public AccordionTemplate LeftSideAccordion => new()
-//     {
-//         ExpansionPanels =
-//         [
-//             new()
-//             {
-//                 Id = new Guid("6A3DD486-DC80-4728-A074-A1D2D79018D9"),
-//                 IsOpen = true,
-//                 MaxHeight = 275,
-//                 ExpansionPanel = new PanelTemplate
-//                 {
-//                     Name = nameof(ValidationPanel),
-//                     Title = "Validation",
-//                 }
-//             },
-//             new()
-//             {
-//                 Id = new Guid("C3C00DB8-DBCB-407A-85BF-432D3591CA62"),
-//                 IsOpen = true,
-//                 ExpansionPanel = new PanelTemplate
-//                 {
-//                     Name = nameof(MetricsDataGridPanel),
-//                     Title = "Metrics",
-//                 }
-//             }
-//         ]
-//     };
-//
-//     public AccordionTemplate RightSideAccordion { get; } = new()
-//     {
-//         ExpansionPanels =
-//         [
-//             
-//             new()
-//             {
-//                 Id = new Guid("F4114F2B-4C84-455C-89D5-998964CDEB1B"),
-//                 IsOpen = true,
-//                 MaxHeight = 200,
-//                 ExpansionPanel = new PanelTemplate
-//                 {
-//                     Name = nameof(ScorePanel),
-//                     Title = "Scores",
-//                 }
-//             },
-//
-//             new()
-//             {
-//                 Id = new Guid("D9396C96-8657-447E-863E-8ACDC2A1A1BB"),
-//                 MaxHeight = 150,
-//                 IsOpen = true,
-//                 ExpansionPanel = new ChartPanelTemplate
-//                 {
-//                     Name = MetricNames.FitnessDistribution,
-//                     ChartType = ChartTypes.Line,
-//                     Title = MetricNames.FitnessDistribution,
-//                     Height = 125
-//                 }
-//             },
-//
-//             new()
-//             {
-//                 Id = new Guid("6BA53B93-EF5A-4E2B-ABA6-87E095854D37"),
-//                 MaxHeight = 150,
-//                 IsOpen = true,
-//                 ExpansionPanel = new ChartPanelTemplate
-//                 {
-//                     Name = MetricNames.AgeDistribution,
-//                     Title = MetricNames.AgeDistribution,
-//                     ChartType = ChartTypes.Bar,
-//                     Height = 125
-//                 }
-//             },
-//
-//             new()
-//             {
-//                 Id = new Guid("DDD74B29-572F-41F0-883E-4A458EACF295"),
-//                 MaxHeight = 150,
-//                 IsOpen = true,
-//                 ExpansionPanel = new ChartPanelTemplate
-//                 {
-//                     Name = MetricNames.GenomeSizeDistribution,
-//                     Title = MetricNames.GenomeSizeDistribution,
-//                     ChartType = ChartTypes.Pie,
-//                     Height = 125
-//                 }
-//             }
-//         ],
-//     };
-// }
+using Radiate.Client.Components.Panels;
+using Radiate.Client.Components.Panels.Charts;
+using Radiate.Client.Domain.Templates.Panels;
+using Radiate.Client.Services.Schema;
+
+namespace Radiate.Client.Domain.Templates;
+
+public class GraphTemplate : IRunTemplate
+{
+    public Guid Id { get; }
+    public string ModelType { get; }
+    public IRunUITemplate UI => new GraphUITemplate();
+}
+
+public class GraphUITemplate : IRunUITemplate
+{
+    public List<IPanel> Panels =>
+    [
+        new GridPanel
+        {
+            Id = new Guid("496D83AB-3660-45B8-B9D6-2C8A23B66B12"),
+            Items =
+            [
+                new GridPanel.GridItem
+                {
+                    ColSpan = 7,
+                    Panel = new TabPanel
+                    {
+                        Id = new Guid("53EA2B0F-E26C-45A3-8DCF-06C742998CF8"),
+                        Tabs =
+                        [
+                            new()
+                            {
+                                Panel = new PaperPanel
+                                {
+                                    Id = new Guid("A5F2CFCD-9BB6-4511-84C3-9AB72CA8EF75"),
+                                    Content = typeof(AccuracyChartPanel),
+                                    Title = "Accuracy",
+                                    Height = 225
+                                }
+                            },
+                            new()
+                            {
+                                Panel = new PaperPanel
+                                {
+                                    Id = new Guid("4B5E7C33-5F17-4CBE-A2E0-783EE9663693"),
+                                    Content = typeof(ScorePanel),
+                                    Title = "Score",
+                                    Height = 225
+                                }
+                            }
+                        ]
+                    }
+                },
+                new GridPanel.GridItem
+                {
+                    ColSpan = 3,
+                    Panel = new CardPanel
+                    {
+                        Id = new Guid("B3234C56-9806-4E4E-ABF2-2471D90B5D91"),
+                        Content = typeof(RunSimpleStatsPanel),
+                        Title = "Stats",
+                    }
+                },
+                new GridPanel.GridItem
+                {
+                    ColSpan = 2,
+                    Panel = new CardPanel
+                    {
+                        Id = new Guid("365C357D-3A47-418B-84A8-7CBE2DAE1B29"),
+                        Content = typeof(RunControlPanel),
+                        Title = "Control",
+                        Actions =
+                        [
+                            MenuActions.Copy,
+                            MenuActions.EngineTree
+                        ]
+                    }
+                },
+                new GridPanel.GridItem
+                {
+                    ColSpan = 8,
+                    Panel = new CardPanel
+                    {
+                        Id = new Guid("17207E0C-9149-47AD-9DFF-306F89044460"),
+                        Content = typeof(MetricsDataGridPanel),
+                        Title = "Metrics",
+                    }
+                },
+                new GridPanel.GridItem
+                {
+                    ColSpan = 4,
+                    Panel = new GridPanel
+                    {
+                        Id = new Guid("6A3DD486-DC80-4728-A074-A1D2D79018D9"),
+                        Items =
+                        [
+                            new GridPanel.GridItem
+                            {
+                                ColSpan = 12,
+                                Panel = new CardPanel
+                                {
+                                    Id = new Guid("6A3DD486-DC80-4728-A074-A1D2D79018D9"),
+                                    Content = typeof(ValidationPanel),
+                                    Title = "Validation",
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ];
+}

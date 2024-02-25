@@ -20,15 +20,11 @@
         </MudMenu>
     </div>
 </MudToolBar>
-<div class="">
-    @ChildContent
-</div>
 
 @code 
 {
     [Parameter] public List<string> Actions { get; set; } = new();
     [Parameter] public string Title { get; set; }
-    [Parameter] public RenderFragment ChildContent { get; set; }
 
     protected override IObservable<ToolBarProjection> Select() => Store.Select(UiSelectors.SelectToolBarModel);
     

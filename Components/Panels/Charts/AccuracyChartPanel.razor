@@ -1,9 +1,9 @@
 @inherits StoreComponent<AccuracyChartPanelProjection>
 
-<Chart Data="@Model.Traces" Height="@(Height ?? 250)" ShowGrid="true" />
+<Chart Data="@Model.Traces" Height="@Height" ShowGrid="false" />
 
 @code {
-    [Parameter] public int? Height { get; set; }
+    [Parameter] public int Height { get; set; }
 
     protected override IObservable<AccuracyChartPanelProjection> Select() => Store.Select(RunSelectors.SelectAccuracyChartPanelModel);
 

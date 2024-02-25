@@ -11,10 +11,10 @@ public class GraphTemplate : IRunTemplate
 {
     public Guid Id => Guid.NewGuid();
     public string ModelType => ModelTypes.Graph;
-    public IRunUITemplate UI => new GraphUITemplate();
+    public IRunUITemplate UI => new GraphUiTemplate();
 }
 
-public class GraphUITemplate : IRunUITemplate
+public class GraphUiTemplate : IRunUITemplate
 {
     public List<IPanel> Panels =>
     [
@@ -25,12 +25,13 @@ public class GraphUITemplate : IRunUITemplate
             [
                 new GridPanel.GridItem
                 {
-                    ColSpan = 12,
+                    ColSpan = 7,
                     Panel = new ToolbarPanel
                     {
                         Id = new Guid("8FCA10DB-1073-494C-BF90-57847A736449"),
                         Content = typeof(GraphInputsPanel),
                         Title = "Graph",
+                        Height = 250,
                         Actions =
                         [
                             MenuActions.Copy,
@@ -40,43 +41,75 @@ public class GraphUITemplate : IRunUITemplate
                 },
                 new GridPanel.GridItem
                 {
-                    ColSpan = 7,
-                    Panel = new PaperPanel
-                    {
-                        Id = new Guid("A5F2CFCD-9BB6-4511-84C3-9AB72CA8EF75"),
-                        Content = typeof(AccuracyChartPanel),
-                        Title = "Accuracy",
-                        Height = 300
-                    }
-                },
-                new GridPanel.GridItem
-                {
                     ColSpan = 3,
-                    Panel = new CardPanel
+                    Panel = new PaperPanel
                     {
                         Id = new Guid("B3234C56-9806-4E4E-ABF2-2471D90B5D91"),
                         Content = typeof(RunSimpleStatsPanel),
                         Title = "Stats",
+                        Height = 250,
                     }
                 },
                 new GridPanel.GridItem
                 {
                     ColSpan = 2,
-                    Panel = new CardPanel
+                    Panel = new PaperPanel
                     {
                         Id = new Guid("365C357D-3A47-418B-84A8-7CBE2DAE1B29"),
                         Content = typeof(RunControlPanel),
                         Title = "Control",
+                        Height = 250,
+                    }
+                },
+                new GridPanel.GridItem
+                {
+                    ColSpan = 4,
+                    Panel = new PaperPanel
+                    {
+                        Id = new Guid("A5F2CFCD-9BB6-4511-84C3-9AB72CA8EF75"),
+                        Content = typeof(AccuracyChartPanel),
+                        Title = "Accuracy",
+                        Height = 250,
+                        Props = new Dictionary<string, object>
+                        {
+                            ["Height"] = 200
+                        }
+                    }
+                },
+                new GridPanel.GridItem
+                {
+                    ColSpan = 4,
+                    Panel = new PaperPanel
+                    {
+                        Id = new Guid("1AB95A03-9B5D-4D7C-B0EB-06797C2367F3"),
+                        Content = typeof(ScorePanel),
+                        Title = "Score",
+                        Height = 250,
+                        Props = new Dictionary<string, object>
+                        {
+                            ["Height"] = 200
+                        }
+                    }
+                },
+                new GridPanel.GridItem
+                {
+                    ColSpan = 4,
+                    Panel = new PaperPanel
+                    {
+                        Id = new Guid("E3F6D540-AA06-449E-B503-456930DCB8EA"),
+                        Content = typeof(ValidationPanel),
+                        Title = "Validation",
                     }
                 },
                 new GridPanel.GridItem
                 {
                     ColSpan = 8,
-                    Panel = new CardPanel
+                    Panel = new PaperPanel
                     {
                         Id = new Guid("17207E0C-9149-47AD-9DFF-306F89044460"),
                         Content = typeof(MetricsDataGridPanel),
                         Title = "Metrics",
+                        Height = 500
                     }
                 },
                 new GridPanel.GridItem
@@ -87,16 +120,6 @@ public class GraphUITemplate : IRunUITemplate
                         Id = new Guid("6A3DD486-DC80-4728-A074-A1D2D79018D9"),
                         Items =
                         [
-                            new GridPanel.GridItem
-                            {
-                                ColSpan = 12,
-                                Panel = new CardPanel
-                                {
-                                    Id = new Guid("6A3DD486-DC80-4728-A074-A1D2D79018D9"),
-                                    Content = typeof(ValidationPanel),
-                                    Title = "Validation",
-                                }
-                            },
                             new GridPanel.GridItem
                             {
                                 ColSpan = 12,

@@ -1,0 +1,47 @@
+@inject IDialogService DialogService
+@inject NavigationManager Navigation
+@inherits StoreComponent<ToolBarProjection>
+
+<MudMenu Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small">
+    @foreach (var action in Actions)
+    {
+        if (action is MenuActions.Copy)
+        {
+            <MudMenuItem Icon="@Icons.Material.Outlined.ContentCopy" IconSize="Size.Small" OnClick="@CopyRun">@action</MudMenuItem>
+        }
+        else if (action is MenuActions.EngineTree)
+        {
+            <MudMenuItem Icon="@Icons.Material.Outlined.AccountTree" IconSize="Size.Small" OnClick="@OpenEngineTree">@action</MudMenuItem>
+        }
+    }
+</MudMenu>
+
+@code {
+    [Parameter] public List<string> Actions { get; set; } = new();
+    
+    protected override IObservable<ToolBarProjection> Select() => Store.Select(UiSelectors.SelectToolBarModel);
+    
+    private async Task OpenEngineTree()
+    {
+        var options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true,
+            CloseOnEscapeKey = true,
+        };
+
+        var dialogRef = await DialogService.ShowAsync<EngineTreePanel>("Engine Tree", options);
+        await dialogRef.Result;
+    }
+    
+    private async Task CopyRun()
+    {
+        var newRunId = Guid.NewGuid();
+        
+        Navigation.NavigateTo($"/runs/{newRunId}/{Model!.ModelType.ToLower()}");
+
+        Store.Dispatch(new SetRunLoadingAction(newRunId, true));
+        Store.Dispatch(new NavigateToRunAction(newRunId));
+        Store.Dispatch(new CopyRunAction(Model.RunId, newRunId));
+    }
+}

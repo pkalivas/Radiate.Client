@@ -11,24 +11,10 @@
         }
     </MudContainer>
 }
-else
-{
-    <MudProgressCircular Size="Size.Large" Color="Color.Primary" Class="mt-4"/>
-}
 
 @code {
     [Parameter] public Guid RunId { get; set; }
     [Parameter] public string ModelType { get; set; }
 
     protected override IObservable<StandardRunUiProjection> Select() => Store.Select(UiSelectors.SelectStandardRunUiModel);
-    
-    private async Task OnExpandedChanged(bool changed, Guid panelId) =>
-        await InvokeAsync(() => Dispatch(new SetPanelsExpandedAction(Model.RunId, new Dictionary<Guid, bool>
-        {
-            [panelId] = changed
-        })));
-    
-    private bool GetIsExpanded(Guid panelId) => Model.IsLoading 
-        ? false 
-        : Model.IsExpanded.TryGetValue(panelId, out var ex) ? ex : false;
 }

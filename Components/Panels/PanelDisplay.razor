@@ -11,6 +11,13 @@
         }
     </MudGrid>
 }
+else if (Panel is ToolbarPanel toolBarPanel)
+{
+    <MudPaper Elevation="2" Height="@($"{toolBarPanel.Height}px")" Class="h-full">
+        <ToolBar Title="@toolBarPanel.Title" Actions="@toolBarPanel.Actions"/>
+        <DynamicComponent Type="@toolBarPanel.Content"/>
+    </MudPaper>
+}
 else if (Panel is TabPanel tabPanel)
 {
     <MudTabs Elevation="2" Centered="true" Rounded="false">
@@ -25,6 +32,7 @@ else if (Panel is TabPanel tabPanel)
 else if (Panel is PaperPanel paperPanel)
 {
     <MudPaper Elevation="2" Height="@($"{paperPanel.Height}px")" Class="pa-3">
+        <PanelHeader Title="@paperPanel.Title"/>
         <DynamicComponent Type="@paperPanel.Content" Parameters="@paperPanel.Props"/>
     </MudPaper>
 }
@@ -33,24 +41,16 @@ else if (Panel is CardPanel cardPanel)
     <MudCard Elevation="2" class="h-100">
         <MudCardHeader>
             <CardHeaderContent>
-                <PanelHeader Title="@cardPanel.Title"/>
+                <MudText Typo="Typo.h6">@cardPanel.Title</MudText>
             </CardHeaderContent>
+            <CardHeaderActions>
+                <ActionsButton Actions="@cardPanel.Actions"/>
+            </CardHeaderActions>
         </MudCardHeader>
         <MudCardContent>
-            <MudDivider/>
-            <DynamicComponent Type="@cardPanel.Content" />
+            <DynamicComponent Type="@cardPanel.Content" Parameters="@cardPanel.Props" />
        </MudCardContent>
     </MudCard>
-}
-else if (Panel is ToolbarPanel toolBarPanel)
-{
-    <ToolBar Title="@toolBarPanel.Title" Actions="@toolBarPanel.Actions">
-        <ChildContent>
-            <MudPaper Elevation="2">
-                <DynamicComponent Type="@toolBarPanel.Content"/>
-            </MudPaper>
-        </ChildContent>
-    </ToolBar>
 }
 else
 {

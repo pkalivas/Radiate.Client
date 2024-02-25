@@ -1,11 +1,11 @@
 @using Radiate.Client.Services.Mappers
 @inherits StoreComponent<List<ITrace>>
 
-<Chart Data="@Model" Height="@(Height ?? 200)" ShowGrid="true"/>
+<Chart Data="@Model" Height="@Height" ShowGrid="false"/>
 
 @code 
 {
-    [Parameter] public int? Height { get; set; }
+    [Parameter] public int Height { get; set; }
 
     protected override IObservable<List<ITrace>> Select() =>
         Store.Select(state =>

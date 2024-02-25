@@ -1,11 +1,11 @@
 @using Radiate.Client.Services.Mappers
 @inherits StoreComponent<List<ITrace>>
 
-<Chart Data="@Model" Height="@(Height ?? 500)" ShowGrid="true"/>
+<Chart Data="@Model" Height="@Height" ShowGrid="true"/>
 
 @code 
 {
-    [Parameter] public int? Height { get; set; }
+    [Parameter] public int Height { get; set; }
 
     protected override IObservable<List<ITrace>> Select() =>
         Store.Select(state =>
@@ -13,7 +13,6 @@
             var points = state.Runs.TryGetValue(state.CurrentRunId, out var run)
                 ? run.Outputs.ParetoFrontOutput.Front.Select(val => val.Select(inner => (double) inner).ToArray()).ToList()
                 : new List<double[]>();
-
 
             return new List<ITrace>
             {

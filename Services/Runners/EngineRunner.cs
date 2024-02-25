@@ -32,7 +32,10 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner where TEpoch : IEp
             .Subscribe(HandleOutputs);
     }
     
-    protected abstract Task<EngineOutput<TEpoch, T>> Fit(Guid runId, RunInputsState inputs, CancellationTokenSource cts, Action<EngineOutput<TEpoch, T>> onEngineComplete);
+    protected abstract Task<EngineOutput<TEpoch, T>> Fit(Guid runId,
+        RunInputsState inputs,
+        CancellationTokenSource cts,
+        Action<EngineOutput<TEpoch, T>> onEngineComplete);
 
     protected abstract List<IRunOutputTransform<TEpoch, T>> GetOutputTransforms();
     

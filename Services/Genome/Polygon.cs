@@ -1,3 +1,4 @@
+using Radiate.Client.Services.Genome.Interfaces;
 using Radiate.Optimizers.Interfaces;
 using Radiate.Schema;
 using SixLabors.ImageSharp;
@@ -8,7 +9,7 @@ using SixLabors.ImageSharp.Processing;
 
 namespace Radiate.Client.Services.Genome;
 
-public class Polygon : IMean<Polygon>, ICopy<Polygon>
+public class Polygon : IMean<Polygon>, IFactory<Polygon>, IDrawable
 {
     private readonly float[] _data;
     private readonly int _length;
@@ -106,4 +107,5 @@ public class Polygon : IMean<Polygon>, ICopy<Polygon>
     }
     
     private static float Clamp(float val) => val < 0f ? 0f : Math.Min(val, 1f);
+    public Polygon NewInstance() => NewRandom(_length);
 }

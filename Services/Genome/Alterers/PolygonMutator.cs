@@ -1,7 +1,8 @@
+using Radiate.Client.Services.Genome.Genes;
 using Radiate.Optimizers.Evolution.Alterers;
 using Radiate.Optimizers.Evolution.Genome.Interfaces;
 
-namespace Radiate.Client.Services.Genome;
+namespace Radiate.Client.Services.Genome.Alterers;
 
 public class PolygonMutator : Mutator<PolygonGene>
 {

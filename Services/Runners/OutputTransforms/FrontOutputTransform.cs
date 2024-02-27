@@ -45,7 +45,7 @@ public class FrontOutputTransform : IRunOutputTransform<GeneticEpoch<FloatGene>,
                 .ToList());
         }
 
-        return  output with 
+        return output with 
         {
             ParetoFrontOutput = new ParetoFrontOutput
             {

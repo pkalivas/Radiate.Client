@@ -1,6 +1,5 @@
 using Akka.Actor;
 using Radiate.Client.Services.Actors.Commands;
-using Radiate.Client.Services.Runners.Builders.XOR;
 using Radiate.Client.Services.Runners.Interfaces;
 using Radiate.Client.Services.Worker;
 
@@ -24,30 +23,25 @@ public class RunsActor : ReceiveActor
     
     private async Task Handle(RunsActorMessage<StartRunCommand> message)
     {
-        await using var scope = _serviceProvider.CreateAsyncScope();
-        var workItemQueue = scope.ServiceProvider.GetRequiredService<IWorkItemQueue>();
-        var runFactory = scope.ServiceProvider.GetRequiredService<EngineRunnerFactory>();
+        await using var outerScope = _serviceProvider.CreateAsyncScope();
+        var workItemQueue = outerScope.ServiceProvider.GetRequiredService<IWorkItemQueue>();
         
         if (_cancellationTokenSource.Token.IsCancellationRequested)
         {
             _cancellationTokenSource.Dispose();
             _cancellationTokenSource = new CancellationTokenSource();
         }
+
+        var (runId, inputs) = message.Message;
         
-        var inputs = message.Message.Inputs;
-        var runner = runFactory(inputs.ModelType, inputs.DataSetType);
-        
-        workItemQueue.Enqueue(async token =>
+        workItemQueue.Enqueue(async token => await Task.Run(async () =>
         {
-            await Task.Run(async () =>
-            {
-                await using var scope = _serviceProvider.CreateAsyncScope();
+            await using var scope = _serviceProvider.CreateAsyncScope();
+            var builderFactory = scope.ServiceProvider.GetRequiredService<EngineRunnerFactory>();
+            
+            var builder = builderFactory(inputs.ModelType, inputs.DataSetType);
 
-                var builder = scope.ServiceProvider.GetRequiredService<XorGraphBuilder>();
-
-                // await runner.StartRun(message.RunId, message.Message.Inputs, _cancellationTokenSource);
-                await builder.Run(message.RunId, message.Message.Inputs, _cancellationTokenSource);
-            }, token);
-        });
+            await builder.Run(runId, inputs, _cancellationTokenSource);
+        }, token));
     }
 }

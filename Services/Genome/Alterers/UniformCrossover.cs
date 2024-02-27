@@ -2,7 +2,7 @@ using Radiate.Optimizers.Evolution.Alterers;
 using Radiate.Optimizers.Evolution.Genome.Interfaces;
 using Radiate.Schema;
 
-namespace Radiate.Client.Services.Genome;
+namespace Radiate.Client.Services.Genome.Alterers;
 
 public class UniformCrossover<TGene> : Crossover<TGene> where TGene : IGene<TGene>
 {

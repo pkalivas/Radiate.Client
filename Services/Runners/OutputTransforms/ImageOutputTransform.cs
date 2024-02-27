@@ -1,5 +1,6 @@
 using Radiate.Client.Domain.Store.Models.States;
-using Radiate.Client.Services.Genome;
+using Radiate.Client.Services.Genome.Chromosomes;
+using Radiate.Client.Services.Genome.Genes;
 using Radiate.Engines.Entities;
 using Radiate.Extensions;
 

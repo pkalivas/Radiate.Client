@@ -1,3 +1,4 @@
+using Radiate.Client.Services.Genome.Interfaces;
 using Radiate.Optimizers.Interfaces;
 using Radiate.Schema;
 using SixLabors.ImageSharp;
@@ -8,14 +9,18 @@ using SixLabors.ImageSharp.Processing;
 
 namespace Radiate.Client.Services.Genome;
 
-public class Circle : IMean<Circle>, ICopy<Circle>
+public class Circle : IMean<Circle>, IFactory<Circle>, IDrawable
 {
     private readonly float[] _data;
+    
+    public Circle() : this(NewRandom()._data) { }
     
     public Circle(float[] data)
     {
         _data = data;
     }
+    
+    public Circle NewInstance() => NewRandom();
     
     public Circle Copy() => new(_data
         .Select(val => val)

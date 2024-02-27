@@ -3,6 +3,9 @@ using Radiate.Client.Domain.Store.Effects;
 using Radiate.Client.Services;
 using Radiate.Client.Services.Actors;
 using Radiate.Client.Services.Runners;
+using Radiate.Client.Services.Runners.Builders.MultiObjective;
+using Radiate.Client.Services.Runners.Builders.Regression;
+using Radiate.Client.Services.Runners.Builders.SinWave;
 using Radiate.Client.Services.Runners.Builders.XOR;
 using Radiate.Client.Services.Runners.Interfaces;
 using Radiate.Client.Services.Schema;
@@ -37,15 +40,32 @@ public static class ApplicationServiceRegistration
             .AddScoped<SinWaveGraphRunner>()
             
             .AddScoped<XorGraphBuilder>()
-            .AddScoped<EngineRunnerFactory>(sp => (model, data) => (model, data) switch
+            .AddScoped<GraphRegressionBuilder>()
+            .AddScoped<TreeRegressionBuilder>()
+            .AddScoped<GraphSinWaveBuilder>()
+            .AddScoped<MultiObjectiveDTLZBuilder>()
+            
+            .AddScoped<EngineRunnerFactory>(sp => (model, data) => model switch
             {
-                (ModelTypes.Tree, DataSetTypes.Regression) => sp.GetRequiredService<TreeRegressionRunner>(),
-                (ModelTypes.Graph, DataSetTypes.Regression) => sp.GetRequiredService<GraphRegressionRunner>(),
-                (ModelTypes.Graph, DataSetTypes.Xor) => sp.GetRequiredService<XORGraphRunner>(),
-                (ModelTypes.Image, DataSetTypes.Circle) => sp.GetRequiredService<CircleEngineRunner>(),
-                (ModelTypes.Image, DataSetTypes.Polygon) => sp.GetRequiredService<PolygonEngineRunner>(),
-                (ModelTypes.MultiObjective, _) => sp.GetRequiredService<MultiObjectiveRunner>(),
-                (ModelTypes.Graph, DataSetTypes.SinWave) => sp.GetRequiredService<SinWaveGraphRunner>(),
+                ModelTypes.Graph => data switch
+                {
+                    DataSetTypes.Regression => sp.GetRequiredService<GraphRegressionBuilder>(),
+                    DataSetTypes.Xor => sp.GetRequiredService<XorGraphBuilder>(),
+                    DataSetTypes.SinWave => sp.GetRequiredService<GraphSinWaveBuilder>(),
+                    _ => throw new ArgumentException($"Runner {model} {data}.")
+                },
+                ModelTypes.Tree => data switch
+                {
+                    DataSetTypes.Regression => sp.GetRequiredService<TreeRegressionBuilder>(),
+                    _ => throw new ArgumentException($"Runner {model} {data}.")
+                },
+                ModelTypes.MultiObjective => data switch
+                {
+                    _ => sp.GetRequiredService<MultiObjectiveDTLZBuilder>(),
+                },
+                
+                // (ModelTypes.Image, DataSetTypes.Circle) => sp.GetRequiredService<CircleEngineRunner>(),
+                // (ModelTypes.Image, DataSetTypes.Polygon) => sp.GetRequiredService<PolygonEngineRunner>(),
                 _ => throw new ArgumentException($"Runner {model} {data}.")
             });
     

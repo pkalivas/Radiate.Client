@@ -1,5 +1,6 @@
 using System.Collections;
 using Radiate.Client.Domain.Store.Models;
+using Radiate.Client.Services.Genome.Genes;
 using Radiate.Optimizers.Evolution.Genome.Interfaces;
 using Radiate.States;
 using SixLabors.ImageSharp;
@@ -7,7 +8,7 @@ using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
-namespace Radiate.Client.Services.Genome;
+namespace Radiate.Client.Services.Genome.Chromosomes;
 
 public class PolygonChromosome : IChromosome<PolygonGene>
 {

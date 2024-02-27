@@ -15,9 +15,9 @@ using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Runners.Image;
 
-public class CircleBuilder : ImageBuilder<CircleGene, Circle>
+public class CircleRunner : ImageRunner<CircleGene, Circle>
 {
-    public CircleBuilder(IStore<RootState> store) : base(store) { }
+    public CircleRunner(IStore<RootState> store) : base(store) { }
 
     protected override async Task<IEngine<GeneticEpoch<CircleGene>, ImageChromosome<CircleGene, Circle>>> BuildEngine(Guid runId, RunInputsState inputs)
     {

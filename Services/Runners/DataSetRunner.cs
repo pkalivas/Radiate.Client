@@ -7,13 +7,13 @@ using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Runners;
 
-public abstract class DataSetBuilder<TEpoch, T> : EngineBuilder<TEpoch, T>
+public abstract class DataSetRunner<TEpoch, T> : EngineRunner<TEpoch, T>
     where TEpoch : IEpoch
     where T : IPredictionModel<T>
 {
     private readonly ITensorFrameService _tensorFrameService;
     
-    protected DataSetBuilder(ITensorFrameService tensorFrameService, IStore<RootState> store) : base(store)
+    protected DataSetRunner(ITensorFrameService tensorFrameService, IStore<RootState> store) : base(store)
     {
         _tensorFrameService = tensorFrameService;
     }

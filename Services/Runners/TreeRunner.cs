@@ -8,9 +8,9 @@ using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Runners;
 
-public abstract class TreeBuilder : DataSetBuilder<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>>
+public abstract class TreeRunner : DataSetRunner<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>>
 {
-    protected TreeBuilder(ITensorFrameService tensorFrameService, IStore<RootState> store) 
+    protected TreeRunner(ITensorFrameService tensorFrameService, IStore<RootState> store) 
         : base(tensorFrameService, store) { }
     
     protected override RunOutputsState MapOnOutput(RunInputsState runInputs,

@@ -14,13 +14,13 @@ using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Runners.MultiObjective;
 
-public class MultiObjectiveDTLZBuilder : MultiObjectiveBuilder
+public class MultiObjectiveDtlzRunner : MultiObjectiveRunner
 {
     private const int Variables = 4;
     private const int Objectives = 3;
     private const int K = Variables - Objectives + 1;
     
-    public MultiObjectiveDTLZBuilder(IStore<RootState> store) : base(store) { }
+    public MultiObjectiveDtlzRunner(IStore<RootState> store) : base(store) { }
 
     protected override async Task<IEngine<GeneticEpoch<FloatGene>, float[]>> BuildEngine(Guid runId, RunInputsState inputs)
     {

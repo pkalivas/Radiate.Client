@@ -31,35 +31,35 @@ public static class ApplicationServiceRegistration
 
     private static IServiceCollection AddEngineRunners(this IServiceCollection services) =>
         services
-            .AddScoped<XorGraphBuilder>()
-            .AddScoped<GraphRegressionBuilder>()
-            .AddScoped<TreeRegressionBuilder>()
-            .AddScoped<GraphSinWaveBuilder>()
-            .AddScoped<MultiObjectiveDTLZBuilder>()
-            .AddScoped<PolygonBuilder>()
-            .AddScoped<CircleBuilder>()
+            .AddScoped<GraphXorRunner>()
+            .AddScoped<GraphRegressionRunner>()
+            .AddScoped<TreeRegressionRunner>()
+            .AddScoped<GraphSinWaveRunner>()
+            .AddScoped<MultiObjectiveDtlzRunner>()
+            .AddScoped<PolygonRunner>()
+            .AddScoped<CircleRunner>()
             .AddScoped<EngineRunnerFactory>(sp => (model, data) => model switch
             {
                 ModelTypes.Graph => data switch
                 {
-                    DataSetTypes.Regression => sp.GetRequiredService<GraphRegressionBuilder>(),
-                    DataSetTypes.Xor => sp.GetRequiredService<XorGraphBuilder>(),
-                    DataSetTypes.SinWave => sp.GetRequiredService<GraphSinWaveBuilder>(),
+                    DataSetTypes.Regression => sp.GetRequiredService<GraphRegressionRunner>(),
+                    DataSetTypes.Xor => sp.GetRequiredService<GraphXorRunner>(),
+                    DataSetTypes.SinWave => sp.GetRequiredService<GraphSinWaveRunner>(),
                     _ => throw new ArgumentException($"Runner {model} {data}.")
                 },
                 ModelTypes.Tree => data switch
                 {
-                    DataSetTypes.Regression => sp.GetRequiredService<TreeRegressionBuilder>(),
+                    DataSetTypes.Regression => sp.GetRequiredService<TreeRegressionRunner>(),
                     _ => throw new ArgumentException($"Runner {model} {data}.")
                 },
                 ModelTypes.MultiObjective => data switch
                 {
-                    _ => sp.GetRequiredService<MultiObjectiveDTLZBuilder>(),
+                    _ => sp.GetRequiredService<MultiObjectiveDtlzRunner>(),
                 },
                 ModelTypes.Image => data switch
                 {
-                    DataSetTypes.Polygon => sp.GetRequiredService<PolygonBuilder>(),
-                    DataSetTypes.Circle => sp.GetRequiredService<CircleBuilder>(),
+                    DataSetTypes.Polygon => sp.GetRequiredService<PolygonRunner>(),
+                    DataSetTypes.Circle => sp.GetRequiredService<CircleRunner>(),
                 },
                 _ => throw new ArgumentException($"Runner {model} {data}.")
             });

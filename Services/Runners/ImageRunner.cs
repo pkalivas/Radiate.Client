@@ -12,13 +12,13 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace Radiate.Client.Services.Runners;
 
-public abstract class ImageBuilder<TGene, TAllele> : EngineBuilder<GeneticEpoch<TGene>, ImageChromosome<TGene, TAllele>>
+public abstract class ImageRunner<TGene, TAllele> : EngineRunner<GeneticEpoch<TGene>, ImageChromosome<TGene, TAllele>>
     where TGene : ImageGene<TGene, TAllele>
     where TAllele : IDrawable, IFactory<TAllele>
 {
     private const int FinalSize = 500;
     
-    protected ImageBuilder(IStore<RootState> store) : base(store) { }
+    protected ImageRunner(IStore<RootState> store) : base(store) { }
 
     protected override RunOutputsState MapOnOutput(RunInputsState runInputs,
         RunOutputsState runOutputs,

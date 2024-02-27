@@ -12,14 +12,14 @@ using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Runners;
 
-public delegate IEngineBuilder EngineRunnerFactory(string model, string data);
+public delegate IEngineRunner EngineRunnerFactory(string model, string data);
 
-public interface IEngineBuilder
+public interface IEngineRunner
 {
     Task Run(Guid runId, RunInputsState inputs, CancellationTokenSource cts);
 }
 
-public abstract class EngineBuilder<TEpoch, T> : IEngineBuilder, IDisposable 
+public abstract class EngineRunner<TEpoch, T> : IEngineRunner, IDisposable 
     where TEpoch : IEpoch
 {
     private static TimeSpan BufferTime => TimeSpan.FromMilliseconds(100);
@@ -28,7 +28,7 @@ public abstract class EngineBuilder<TEpoch, T> : IEngineBuilder, IDisposable
     private readonly IDisposable _outputSubscription;
     private readonly Subject<(Guid, RunOutputsState)> _outputs = new();
     
-    protected EngineBuilder(IStore<RootState> store)
+    protected EngineRunner(IStore<RootState> store)
     {
         _store = store;
         _outputSubscription = _outputs

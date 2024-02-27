@@ -15,9 +15,9 @@ using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Runners.SinWave;
 
-public class GraphSinWaveBuilder : GraphBuilder
+public class GraphSinWaveRunner : GraphRunner
 {
-    public GraphSinWaveBuilder(ITensorFrameService tensorFrameService, IStore<RootState> store) 
+    public GraphSinWaveRunner(ITensorFrameService tensorFrameService, IStore<RootState> store) 
         : base(tensorFrameService, store) { }
 
     protected override IEngine<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> BuildEngine(RunInputsState inputs, TensorFrame frame)

@@ -16,9 +16,9 @@ using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Runners.Image;
 
-public class PolygonBuilder : ImageBuilder<PolygonGene, Polygon>
+public class PolygonRunner : ImageRunner<PolygonGene, Polygon>
 {
-    public PolygonBuilder(IStore<RootState> store) : base(store) { }
+    public PolygonRunner(IStore<RootState> store) : base(store) { }
 
     protected override async Task<IEngine<GeneticEpoch<PolygonGene>, ImageChromosome<PolygonGene, Polygon>>> BuildEngine(Guid runId, RunInputsState inputs)
     {

@@ -8,11 +8,11 @@ using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Runners;
 
-public abstract class MultiObjectiveBuilder : EngineBuilder<GeneticEpoch<FloatGene>, float[]>
+public abstract class MultiObjectiveRunner : EngineRunner<GeneticEpoch<FloatGene>, float[]>
 {
     private Front<float[]>? _front;
     
-    protected MultiObjectiveBuilder(IStore<RootState> store) : base(store) { }
+    protected MultiObjectiveRunner(IStore<RootState> store) : base(store) { }
 
     protected override RunOutputsState MapOnOutput(RunInputsState runInputs,
         RunOutputsState runOutputs,

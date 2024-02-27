@@ -16,9 +16,9 @@ using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Runners.XOR;
 
-public class XorGraphBuilder : GraphBuilder
+public class GraphXorRunner : GraphRunner
 {
-    public XorGraphBuilder(ITensorFrameService tensorFrameService, IStore<RootState> store) 
+    public GraphXorRunner(ITensorFrameService tensorFrameService, IStore<RootState> store) 
         : base(tensorFrameService, store) { }
     
     protected override async Task<TensorFrame> BuildFrame(RunInputsState inputs)

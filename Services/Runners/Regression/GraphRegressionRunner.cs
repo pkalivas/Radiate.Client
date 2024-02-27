@@ -16,9 +16,9 @@ using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Runners.Regression;
 
-public class GraphRegressionBuilder : GraphBuilder
+public class GraphRegressionRunner : GraphRunner
 {
-    public GraphRegressionBuilder(ITensorFrameService tensorFrameService, IStore<RootState> store)
+    public GraphRegressionRunner(ITensorFrameService tensorFrameService, IStore<RootState> store)
         : base(tensorFrameService, store) { }
 
     protected override IEngine<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> BuildEngine(RunInputsState inputs, TensorFrame frame)

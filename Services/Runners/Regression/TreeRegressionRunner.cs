@@ -15,9 +15,9 @@ using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Runners.Regression;
 
-public class TreeRegressionBuilder : TreeBuilder
+public class TreeRegressionRunner : TreeRunner
 {
-    public TreeRegressionBuilder(ITensorFrameService tensorFrameService, IStore<RootState> store) 
+    public TreeRegressionRunner(ITensorFrameService tensorFrameService, IStore<RootState> store) 
         : base(tensorFrameService, store) { }
 
     protected override IEngine<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>> BuildEngine(RunInputsState inputs, TensorFrame frame)

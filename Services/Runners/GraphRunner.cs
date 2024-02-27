@@ -8,9 +8,9 @@ using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Runners;
 
-public abstract class GraphBuilder : DataSetBuilder<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>
+public abstract class GraphRunner : DataSetRunner<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>
 {
-    protected GraphBuilder(ITensorFrameService tensorFrameService, IStore<RootState> store) 
+    protected GraphRunner(ITensorFrameService tensorFrameService, IStore<RootState> store) 
         : base(tensorFrameService, store) { }
     
     protected override RunOutputsState MapOnOutput(RunInputsState runInputs,

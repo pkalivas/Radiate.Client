@@ -3,6 +3,7 @@ using Radiate.Client.Domain.Store.Effects;
 using Radiate.Client.Services;
 using Radiate.Client.Services.Actors;
 using Radiate.Client.Services.Runners;
+using Radiate.Client.Services.Runners.Builders;
 using Radiate.Client.Services.Runners.Interfaces;
 using Radiate.Client.Services.Schema;
 using Radiate.Client.Services.Worker;
@@ -34,6 +35,7 @@ public static class ApplicationServiceRegistration
             .AddScoped<TreeRegressionRunner>()
             .AddScoped<MultiObjectiveRunner>()
             .AddScoped<SinWaveGraphRunner>()
+            .AddScoped<XorGraphBuilder>()
             .AddScoped<EngineRunnerFactory>(sp => (model, data) => (model, data) switch
             {
                 (ModelTypes.Tree, DataSetTypes.Regression) => sp.GetRequiredService<TreeRegressionRunner>(),

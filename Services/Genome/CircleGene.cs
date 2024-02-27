@@ -1,4 +1,5 @@
 using Radiate.Optimizers.Evolution.Genome.Interfaces;
+using Radiate.Optimizers.Interfaces;
 
 namespace Radiate.Client.Services.Genome;
 

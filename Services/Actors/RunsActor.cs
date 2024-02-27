@@ -1,5 +1,6 @@
 using Akka.Actor;
 using Radiate.Client.Services.Actors.Commands;
+using Radiate.Client.Services.Runners.Builders;
 using Radiate.Client.Services.Runners.Interfaces;
 using Radiate.Client.Services.Worker;
 
@@ -40,7 +41,12 @@ public class RunsActor : ReceiveActor
         {
             await Task.Run(async () =>
             {
-                await runner.StartRun(message.RunId, message.Message.Inputs, _cancellationTokenSource);
+                await using var scope = _serviceProvider.CreateAsyncScope();
+
+                var builder = scope.ServiceProvider.GetRequiredService<XorGraphBuilder>();
+
+                // await runner.StartRun(message.RunId, message.Message.Inputs, _cancellationTokenSource);
+                await builder.Run(message.RunId, message.Message.Inputs, _cancellationTokenSource);
             }, token);
         });
     }

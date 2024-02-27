@@ -22,21 +22,12 @@ public static class UiSelectors
             var isLoading = uiState.LoadingStates.TryGetValue(runUi.RunId, out var loadingState) 
                 ? loadingState 
                 : true;
-            
-            if (runUi.RunTemplate != null)
-            {
-                // foreach (var panel in runUi.RunTemplate.UI.LeftSideAccordion.ExpansionPanels)
-                // {
-                //     panel.IsOpen = false;
-                // }
-            }
 
             return new StandardRunUiProjection
             {
                 RunId = runUi.RunId,
                 IsLoading = isLoading,
                 UiTemplate = runUi.RunTemplate!.UI,
-                IsExpanded = runUi.PanelExpanded
             };
         });
 

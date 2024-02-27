@@ -60,7 +60,6 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner, IDisposable where
         
         await harness.Run();
         
-        
         pauseControl.Dispose();
     }
     

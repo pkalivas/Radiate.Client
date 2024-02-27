@@ -9,6 +9,4 @@ public record RunUiState
     public IRunTemplate? RunTemplate { get; init; }
     public IImmutableDictionary<string, bool> EngineStateExpanded { get; init; } = 
         new Dictionary<string, bool>().ToImmutableDictionary();
-    public IImmutableDictionary<Guid, bool> PanelExpanded { get; init; } = 
-        new Dictionary<Guid, bool>().ToImmutableDictionary();
 }

@@ -1,4 +1,3 @@
-using Radiate.Optimizers.Evolution.Genome.Interfaces;
 using Radiate.Optimizers.Interfaces;
 using Radiate.Schema;
 using SixLabors.ImageSharp;

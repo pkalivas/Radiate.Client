@@ -5,7 +5,7 @@ using Radiate.Optimizers.Interfaces;
 using Radiate.Tensors;
 using Reflow.Interfaces;
 
-namespace Radiate.Client.Services.Runners.Builders;
+namespace Radiate.Client.Services.Runners;
 
 public abstract class DataSetBuilder<TEpoch, T> : EngineBuilder<TEpoch, T>
     where TEpoch : IEpoch

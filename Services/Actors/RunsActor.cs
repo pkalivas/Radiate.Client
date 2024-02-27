@@ -1,6 +1,6 @@
 using Akka.Actor;
 using Radiate.Client.Services.Actors.Commands;
-using Radiate.Client.Services.Runners.Interfaces;
+using Radiate.Client.Services.Runners;
 using Radiate.Client.Services.Worker;
 
 namespace Radiate.Client.Services.Actors;

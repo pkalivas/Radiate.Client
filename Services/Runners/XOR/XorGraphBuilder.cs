@@ -14,7 +14,7 @@ using Radiate.Optimizers.Evolution.Selectors;
 using Radiate.Tensors;
 using Reflow.Interfaces;
 
-namespace Radiate.Client.Services.Runners.Builders.XOR;
+namespace Radiate.Client.Services.Runners.XOR;
 
 public class XorGraphBuilder : GraphBuilder
 {

@@ -6,7 +6,7 @@ using Radiate.Optimizers.Evolution.Genome.Genes;
 using Radiate.Optimizers.Evolution.MOEA;
 using Reflow.Interfaces;
 
-namespace Radiate.Client.Services.Runners.Builders;
+namespace Radiate.Client.Services.Runners;
 
 public abstract class MultiObjectiveBuilder : EngineBuilder<GeneticEpoch<FloatGene>, float[]>
 {

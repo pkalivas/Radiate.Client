@@ -1,7 +1,5 @@
 using Radiate.Client.Domain.Store;
 using Radiate.Client.Domain.Store.Models.States;
-using Radiate.Client.Services.Runners.OutputTransforms;
-using Radiate.Data;
 using Radiate.Engines;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Interfaces;
@@ -15,14 +13,14 @@ using Radiate.Extensions.Operations;
 using Radiate.Tensors;
 using Reflow.Interfaces;
 
-namespace Radiate.Client.Services.Runners;
+namespace Radiate.Client.Services.Runners.SinWave;
 
-public class SinWaveGraphRunner : DataSetRunner<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>
+public class GraphSinWaveBuilder : GraphBuilder
 {
-    public SinWaveGraphRunner(ITensorFrameService tensorFrameService, IStore<RootState> store) 
+    public GraphSinWaveBuilder(ITensorFrameService tensorFrameService, IStore<RootState> store) 
         : base(tensorFrameService, store) { }
 
-    protected override async Task<IEngine<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>> BuildEngine(RunInputsState inputs, TensorFrame frame)
+    protected override IEngine<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> BuildEngine(RunInputsState inputs, TensorFrame frame)
     {
         var graph = Architect.Graph<float>()
             .SetOutputs(Ops.Linear<float>())
@@ -38,16 +36,10 @@ public class SinWaveGraphRunner : DataSetRunner<GeneticEpoch<GraphGene<float>>, 
 
     protected override async Task<TensorFrame> BuildFrame(RunInputsState inputs)
     {
-        var (features, targets) = await new SinWave().LoadDataSet();
+        var (features, targets) = await new Data.SinWave().LoadDataSet();
         
         return new TensorFrame(features, targets)
             .Shift(5)
-            .Split();    
+            .Split();      
     }
-    
-    protected override List<IRunOutputTransform<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>> GetOutputTransforms() => 
-        new()
-        {
-            new GraphOutputTransform(),
-        };
 }

@@ -1,35 +1,28 @@
 using Radiate.Client.Domain.Store;
 using Radiate.Client.Domain.Store.Models.States;
-using Radiate.Client.Services.Runners.OutputTransforms;
 using Radiate.Client.Services.Schema;
 using Radiate.Engines;
 using Radiate.Engines.Entities;
+using Radiate.Engines.Interfaces;
 using Radiate.Engines.Limits;
-using Radiate.Extensions;
 using Radiate.Optimizers.Evolution.Alterers;
 using Radiate.Optimizers.Evolution.Codex;
 using Radiate.Optimizers.Evolution.Genome;
 using Radiate.Optimizers.Evolution.Genome.Genes;
-using Radiate.Optimizers.Evolution.MOEA;
 using Radiate.Optimizers.Evolution.Selectors;
 using Reflow.Interfaces;
 
-namespace Radiate.Client.Services.Runners;
+namespace Radiate.Client.Services.Runners.MultiObjective;
 
-public class MultiObjectiveRunner : EngineRunner<GeneticEpoch<FloatGene>, float[]>
+public class MultiObjectiveDTLZBuilder : MultiObjectiveBuilder
 {
     private const int Variables = 4;
     private const int Objectives = 3;
     private const int K = Variables - Objectives + 1;
-
-    private Front<float[]>? _front;
-
-    public MultiObjectiveRunner(IStore<RootState> store) : base(store) { }
     
-    protected override async Task<EngineOutput<GeneticEpoch<FloatGene>, float[]>> Fit(Guid runId, 
-        RunInputsState inputs, 
-        CancellationTokenSource cts,
-        Action<EngineOutput<GeneticEpoch<FloatGene>, float[]>> onEngineComplete)
+    public MultiObjectiveDTLZBuilder(IStore<RootState> store) : base(store) { }
+
+    protected override async Task<IEngine<GeneticEpoch<FloatGene>, float[]>> BuildEngine(Guid runId, RunInputsState inputs)
     {
         var iterationLimit = inputs.LimitInputs.IterationLimit;
         var populationSize = inputs.PopulationInputs.PopulationSize;
@@ -47,7 +40,7 @@ public class MultiObjectiveRunner : EngineRunner<GeneticEpoch<FloatGene>, float[
             .Encoder(() => Genotype.Create(Chromosome.FloatChromosome(Variables)))
             .Decoder(geno => fitnessFunction(geno.GetChromosome().Select(g => g.Allele).ToArray()));
 
-        var engine = Engine.Genetic(codex).Async()
+        return Engine.Genetic(codex).Async()
             .Minimizing(Objectives)
             .PopulationSize(populationSize)
             .OffspringSelector(new TournamentSelector<FloatGene>())
@@ -55,19 +48,9 @@ public class MultiObjectiveRunner : EngineRunner<GeneticEpoch<FloatGene>, float[
             .Alterers(
                 new Mutator<FloatGene>(1f / Variables),
                 new SimulatedBinaryCrossover<FloatGene, float>(2.5f, 1f))
-            .Build();
-        
-        return engine.Fit()
-            .Limit(Limits.Iteration(iterationLimit))
-            .Peek(onEngineComplete)
-            .TakeWhile(_ => !cts.IsCancellationRequested)
-            .ToResult();
+            .Build()
+            .Limit(Limits.Iteration(iterationLimit));
     }
-
-    protected override List<IRunOutputTransform<GeneticEpoch<FloatGene>, float[]>> GetOutputTransforms() => new()
-    {
-        new FrontOutputTransform()
-    };
     
     public static float[] FitnessDTLZ1(float[] values)
     {

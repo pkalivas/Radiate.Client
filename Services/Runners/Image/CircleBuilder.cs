@@ -8,20 +8,18 @@ using Radiate.Engines;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Interfaces;
 using Radiate.Engines.Limits;
-using Radiate.Extensions;
 using Radiate.Optimizers.Evolution.Alterers;
 using Radiate.Optimizers.Evolution.Codex;
 using Radiate.Optimizers.Evolution.Genome;
-using Radiate.Schema;
 using Reflow.Interfaces;
 
-namespace Radiate.Client.Services.Runners.Builders.Image;
+namespace Radiate.Client.Services.Runners.Image;
 
-public class PolygonBuilder : ImageBuilder<PolygonGene, Polygon>
+public class CircleBuilder : ImageBuilder<CircleGene, Circle>
 {
-    public PolygonBuilder(IStore<RootState> store) : base(store) { }
+    public CircleBuilder(IStore<RootState> store) : base(store) { }
 
-    protected override async Task<IEngine<GeneticEpoch<PolygonGene>, ImageChromosome<PolygonGene, Polygon>>> BuildEngine(Guid runId, RunInputsState inputs)
+    protected override async Task<IEngine<GeneticEpoch<CircleGene>, ImageChromosome<CircleGene, Circle>>> BuildEngine(Guid runId, RunInputsState inputs)
     {
         var imageInput = inputs.ImageInputs;
         var populationInput = inputs.PopulationInputs;
@@ -29,21 +27,20 @@ public class PolygonBuilder : ImageBuilder<PolygonGene, Polygon>
          
         var image = imageInput.TargetImage.ImageData;
 
-        var random = RandomRegistry.GetRandom();
-        var codex = new Codex<PolygonGene, ImageChromosome<PolygonGene, Polygon>>()
-            .Encoder(() => Genotype.Create(new ImageChromosome<PolygonGene, Polygon>(Enumerable
+        var codex = new Codex<CircleGene, ImageChromosome<CircleGene, Circle>>()
+            .Encoder(() => Genotype.Create(new ImageChromosome<CircleGene, Circle>(Enumerable
                 .Range(0, imageInput.NumShapes)
-                .Select(_ => new PolygonGene(Polygon.NewRandom(imageInput.NumVertices, random)))
+                .Select(_ => new CircleGene(Circle.NewRandom()))
                 .ToArray())))
-            .Decoder(geno => (ImageChromosome<PolygonGene, Polygon>)geno.GetChromosome());
+            .Decoder(geno => (ImageChromosome<CircleGene, Circle>)geno.GetChromosome());
 
         return Engine.Genetic(codex).Async()
             .PopulationSize(populationInput.PopulationSize)
             .Minimizing()
             .Alterers(
-                new PolygonMutator(populationInput.MutationRate, 0.1f),
-                new MeanCrossover<PolygonGene>(),
-                new UniformCrossover<PolygonGene>(0.5f))
+                new CircleMutator(populationInput.MutationRate, 0.1f),
+                new MeanCrossover<CircleGene>(),
+                new UniformCrossover<CircleGene>(0.5f))
             .Build(geno => Fitness(geno, image))
             .Limit(Limits.Iteration(iterationLimit));
     }

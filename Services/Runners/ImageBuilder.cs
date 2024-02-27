@@ -10,7 +10,7 @@ using Reflow.Interfaces;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
-namespace Radiate.Client.Services.Runners.Builders;
+namespace Radiate.Client.Services.Runners;
 
 public abstract class ImageBuilder<TGene, TAllele> : EngineBuilder<GeneticEpoch<TGene>, ImageChromosome<TGene, TAllele>>
     where TGene : ImageGene<TGene, TAllele>

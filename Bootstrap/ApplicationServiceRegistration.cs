@@ -3,12 +3,11 @@ using Radiate.Client.Domain.Store.Effects;
 using Radiate.Client.Services;
 using Radiate.Client.Services.Actors;
 using Radiate.Client.Services.Runners;
-using Radiate.Client.Services.Runners.Builders.Image;
-using Radiate.Client.Services.Runners.Builders.MultiObjective;
-using Radiate.Client.Services.Runners.Builders.Regression;
-using Radiate.Client.Services.Runners.Builders.SinWave;
-using Radiate.Client.Services.Runners.Builders.XOR;
-using Radiate.Client.Services.Runners.Interfaces;
+using Radiate.Client.Services.Runners.Image;
+using Radiate.Client.Services.Runners.MultiObjective;
+using Radiate.Client.Services.Runners.Regression;
+using Radiate.Client.Services.Runners.SinWave;
+using Radiate.Client.Services.Runners.XOR;
 using Radiate.Client.Services.Schema;
 using Radiate.Client.Services.Worker;
 using Reflow;
@@ -32,14 +31,6 @@ public static class ApplicationServiceRegistration
 
     private static IServiceCollection AddEngineRunners(this IServiceCollection services) =>
         services
-            .AddScoped<XORGraphRunner>()
-            .AddScoped<CircleEngineRunner>()
-            .AddScoped<PolygonEngineRunner>()
-            .AddScoped<GraphRegressionRunner>()
-            .AddScoped<TreeRegressionRunner>()
-            .AddScoped<MultiObjectiveRunner>()
-            .AddScoped<SinWaveGraphRunner>()
-            
             .AddScoped<XorGraphBuilder>()
             .AddScoped<GraphRegressionBuilder>()
             .AddScoped<TreeRegressionBuilder>()
@@ -47,7 +38,6 @@ public static class ApplicationServiceRegistration
             .AddScoped<MultiObjectiveDTLZBuilder>()
             .AddScoped<PolygonBuilder>()
             .AddScoped<CircleBuilder>()
-            
             .AddScoped<EngineRunnerFactory>(sp => (model, data) => model switch
             {
                 ModelTypes.Graph => data switch
@@ -71,9 +61,6 @@ public static class ApplicationServiceRegistration
                     DataSetTypes.Polygon => sp.GetRequiredService<PolygonBuilder>(),
                     DataSetTypes.Circle => sp.GetRequiredService<CircleBuilder>(),
                 },
-                
-                // (ModelTypes.Image, DataSetTypes.Circle) => sp.GetRequiredService<CircleEngineRunner>(),
-                // (ModelTypes.Image, DataSetTypes.Polygon) => sp.GetRequiredService<PolygonEngineRunner>(),
                 _ => throw new ArgumentException($"Runner {model} {data}.")
             });
     

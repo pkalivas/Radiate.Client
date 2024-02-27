@@ -2,7 +2,6 @@ using System.Collections;
 using Radiate.Client.Domain.Store.Models;
 using Radiate.Client.Services.Genome.Genes;
 using Radiate.Client.Services.Genome.Interfaces;
-using Radiate.Optimizers.Evolution.Genome;
 using Radiate.Optimizers.Evolution.Genome.Interfaces;
 using Radiate.Optimizers.Interfaces;
 using Radiate.States;

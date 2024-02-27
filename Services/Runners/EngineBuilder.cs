@@ -10,7 +10,9 @@ using Radiate.Engines.Harness;
 using Radiate.Engines.Interfaces;
 using Reflow.Interfaces;
 
-namespace Radiate.Client.Services.Runners.Builders;
+namespace Radiate.Client.Services.Runners;
+
+public delegate IEngineBuilder EngineRunnerFactory(string model, string data);
 
 public interface IEngineBuilder
 {
@@ -59,7 +61,7 @@ public abstract class EngineBuilder<TEpoch, T> : IEngineBuilder, IDisposable
         harness.OnOutput += output => _outputs.OnNext((runId, MapOutput(output, inputs)));
         harness.OnStop += output =>
         {
-            _outputs.OnNext((runId, MapStop(output, inputs)));
+            _store.Dispatch(new BatchRunOutputsAction(runId, [MapStop(output, inputs)]));
             _store.Dispatch(new EngineStoppedAction(runId));
         };
         

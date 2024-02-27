@@ -6,26 +6,26 @@ using Radiate.Extensions.Evolution.Architects.Nodes;
 using Radiate.Extensions.Evolution.Programs;
 using Reflow.Interfaces;
 
-namespace Radiate.Client.Services.Runners.Builders;
+namespace Radiate.Client.Services.Runners;
 
-public abstract class TreeBuilder : DataSetBuilder<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>>
+public abstract class GraphBuilder : DataSetBuilder<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>
 {
-    protected TreeBuilder(ITensorFrameService tensorFrameService, IStore<RootState> store) 
+    protected GraphBuilder(ITensorFrameService tensorFrameService, IStore<RootState> store) 
         : base(tensorFrameService, store) { }
     
     protected override RunOutputsState MapOnOutput(RunInputsState runInputs,
         RunOutputsState runOutputs,
-        EngineOutput<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>> output) => runOutputs with
+        EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> output) => runOutputs with
     {
-        TreeOutput = new TreeOutput
+        GraphOutput = new GraphOutput
         {
-            Tree = output.GetModel(),
-            Type = typeof(ExpressionTree<float>).FullName
+            Graph = output.GetModel(),
+            Type = typeof(PerceptronGraph<float>).FullName
         }
     };
 
     protected override RunOutputsState MapOnStop(RunInputsState runInputs,
         RunOutputsState runOutputs,
-        EngineOutput<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>> output) =>
+        EngineOutput<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> output) =>
         MapOnOutput(runInputs, runOutputs, output);
 }

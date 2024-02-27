@@ -14,7 +14,7 @@ using Radiate.Tensors;
 using Radiate.Tensors.Enums;
 using Reflow.Interfaces;
 
-namespace Radiate.Client.Services.Runners.Builders.Regression;
+namespace Radiate.Client.Services.Runners.Regression;
 
 public class GraphRegressionBuilder : GraphBuilder
 {

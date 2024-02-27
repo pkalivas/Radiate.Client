@@ -1,6 +1,6 @@
 using Akka.Actor;
 using Radiate.Client.Services.Actors.Commands;
-using Radiate.Client.Services.Runners;
+using Radiate.Client.Services.Runners.Interfaces;
 using Radiate.Client.Services.Worker;
 
 namespace Radiate.Client.Services.Actors;
@@ -37,11 +37,9 @@ public class RunsActor : ReceiveActor
         workItemQueue.Enqueue(async token => await Task.Run(async () =>
         {
             await using var scope = _serviceProvider.CreateAsyncScope();
-            var builderFactory = scope.ServiceProvider.GetRequiredService<EngineRunnerFactory>();
+            var runnerFactory = scope.ServiceProvider.GetRequiredService<EngineRunnerFactory>();
             
-            var builder = builderFactory(inputs.ModelType, inputs.DataSetType);
-
-            await builder.Run(runId, inputs, _cancellationTokenSource);
+            await runnerFactory(inputs.ModelType, inputs.DataSetType).Run(runId, inputs, _cancellationTokenSource);
         }, token));
     }
 }

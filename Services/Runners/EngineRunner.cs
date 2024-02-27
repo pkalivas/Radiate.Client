@@ -5,6 +5,7 @@ using Radiate.Client.Domain.Store;
 using Radiate.Client.Domain.Store.Actions;
 using Radiate.Client.Domain.Store.Models.States;
 using Radiate.Client.Services.Mappers;
+using Radiate.Client.Services.Runners.Interfaces;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Harness;
 using Radiate.Engines.Interfaces;
@@ -12,15 +13,7 @@ using Reflow.Interfaces;
 
 namespace Radiate.Client.Services.Runners;
 
-public delegate IEngineRunner EngineRunnerFactory(string model, string data);
-
-public interface IEngineRunner
-{
-    Task Run(Guid runId, RunInputsState inputs, CancellationTokenSource cts);
-}
-
-public abstract class EngineRunner<TEpoch, T> : IEngineRunner, IDisposable 
-    where TEpoch : IEpoch
+public abstract class EngineRunner<TEpoch, T> : IEngineRunner, IDisposable where TEpoch : IEpoch
 {
     private static TimeSpan BufferTime => TimeSpan.FromMilliseconds(100);
 

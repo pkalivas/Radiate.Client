@@ -3,6 +3,7 @@ using Radiate.Client.Domain.Store.Effects;
 using Radiate.Client.Services;
 using Radiate.Client.Services.Actors;
 using Radiate.Client.Services.Runners;
+using Radiate.Client.Services.Runners.Builders.Image;
 using Radiate.Client.Services.Runners.Builders.MultiObjective;
 using Radiate.Client.Services.Runners.Builders.Regression;
 using Radiate.Client.Services.Runners.Builders.SinWave;
@@ -44,6 +45,8 @@ public static class ApplicationServiceRegistration
             .AddScoped<TreeRegressionBuilder>()
             .AddScoped<GraphSinWaveBuilder>()
             .AddScoped<MultiObjectiveDTLZBuilder>()
+            .AddScoped<PolygonBuilder>()
+            .AddScoped<CircleBuilder>()
             
             .AddScoped<EngineRunnerFactory>(sp => (model, data) => model switch
             {
@@ -62,6 +65,11 @@ public static class ApplicationServiceRegistration
                 ModelTypes.MultiObjective => data switch
                 {
                     _ => sp.GetRequiredService<MultiObjectiveDTLZBuilder>(),
+                },
+                ModelTypes.Image => data switch
+                {
+                    DataSetTypes.Polygon => sp.GetRequiredService<PolygonBuilder>(),
+                    DataSetTypes.Circle => sp.GetRequiredService<CircleBuilder>(),
                 },
                 
                 // (ModelTypes.Image, DataSetTypes.Circle) => sp.GetRequiredService<CircleEngineRunner>(),

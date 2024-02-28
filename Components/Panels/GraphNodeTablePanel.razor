@@ -1,3 +1,4 @@
+@inject IDialogService DialogService
 @inherits StoreComponent<GraphNodeTablePanelProjection>
 
 @if (Model?.Graph == null)
@@ -6,35 +7,42 @@
 }
 else
 {
-    <MudDataGrid Items="@Model.Graph.Graph" 
-                 Filterable="false"
-                 SortMode="@SortMode.None" 
-                 Dense="true"
-                 Elevation="0">
-        <Columns>
-            <PropertyColumn Property="x => x.Index" />
-            <PropertyColumn Property="x => x.NodeType" />
-            <PropertyColumn Property="x => x.Allele" Title="Op" />
-            <PropertyColumn Property="x => x.IsValid()" Title="Is Valid"/>
-            <PropertyColumn Property="x => x.IsEnabled" Title="Is Enabled"/>
-            <TemplateColumn CellClass="d-flex justify-end">
-                <CellTemplate>
-                    <MudStack Row>
-                        <MudIconButton Size="@Size.Small"
-                                   Variant="@Variant.Outlined"
-                                   Color="@Color.Primary"
-                                   Icon="@Icons.Material.Outlined.AccountTree"/>
-                    </MudStack>
-                </CellTemplate>
-            </TemplateColumn>
-        </Columns>
-        @* <PagerContent> *@
-        @*     <MudDataGridPager T="GraphGene<float>" /> *@
-        @* </PagerContent> *@
-    </MudDataGrid>
+    <MudTable Items="@Model.Graph.Graph" FixedHeader="true" Height="400px" Dense="true" Elevation="0">
+        <HeaderContent>
+            <MudTh>Index</MudTh>
+            <MudTh>NodeType</MudTh>
+            <MudTh>Op</MudTh>
+            <MudTh>Valid</MudTh>
+            <MudTh>Enabled</MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Index">@context.Index</MudTd>
+            <MudTd DataLabel="Node Type">@context.NodeType</MudTd>
+            <MudTd DataLabel="Op">@context.Allele.ToString()</MudTd>
+            <MudTd DataLabel="Valid">@context.IsValid()</MudTd>
+            <MudTd DataLabel="IsEnabled">@context.IsEnabled</MudTd>
+            <MudTd>
+                <MudIconButton Size="@Size.Small"
+                               Variant="@Variant.Outlined"
+                               Color="@Color.Primary"
+                               Icon="@Icons.Material.Outlined.AccountTree"
+                               OnClick="@(() => OpenNodeDialog(context.Index))"/>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
 }
 
 @code {
     protected override IObservable<GraphNodeTablePanelProjection> Select() =>
         Store.Select(GraphSelectors.SelectGraphNodeTablePanelModel);
+
+    private async Task OpenNodeDialog(int index)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("Graph", Model.Graph.Graph);
+        parameters.Add("Index", index);
+        var dialog = await DialogService.ShowAsync<NodeTreeDialog>("Node Dialog", parameters);
+        var result = await dialog.Result;
+    }
 }

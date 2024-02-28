@@ -1,0 +1,26 @@
+@using Radiate.Extensions.Evolution.Architects.Groups
+@using Radiate.Client.Services.Mappers
+
+<MudDialog>
+    <DialogContent>
+        <MudTreeView Items="@TreeItemMapper.NodeTree(Index, Graph)" Dense="true">
+            <ItemTemplate>
+                <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.TreeItems">
+                    <Content>
+                        <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChild"/>
+                        <pre>@context.Data.Index</pre>
+                    </Content>
+                </MudTreeViewItem>
+            </ItemTemplate>
+        </MudTreeView>
+    </DialogContent>
+    <DialogActions>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public int Index { get; set; }
+    [Parameter] public Graph<float> Graph { get; set; } 
+}

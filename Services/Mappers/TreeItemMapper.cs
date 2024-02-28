@@ -2,11 +2,56 @@ using MudBlazor;
 using Radiate.Client.Domain.Store.Models;
 using Radiate.Engines.Entities;
 using Radiate.Engines.Schema;
+using Radiate.Extensions.Evolution.Architects.Interfaces;
 
 namespace Radiate.Client.Services.Mappers;
 
 public static class TreeItemMapper
 {
+    public static HashSet<TreeItemData<TNode>> NodeTree<TGroup, TNode, T>(int index, INodeGroup<TGroup, TNode, T> nodeGroup)
+        where TGroup : INodeGroup<TGroup, TNode, T>
+        where TNode : INode<TNode, T>
+    {
+        var result = new HashSet<TreeItemData<TNode>>();
+        
+        foreach (var child in nodeGroup[index]!.GetChildren())
+        {
+            foreach (var item in GetTreeItems(index, child, nodeGroup))
+            {
+                result.Add(item);
+            }
+        }
+
+        return result;
+    }
+    
+    private static HashSet<TreeItemData<TNode>> GetTreeItems<TGroup, TNode, T>(int baseIndex, int index, INodeGroup<TGroup, TNode, T> nodeGroup)
+        where TGroup : INodeGroup<TGroup, TNode, T>
+        where TNode : INode<TNode, T>
+    {
+        if (baseIndex == index)
+        {
+            return [];
+        }
+
+        var currentNode = nodeGroup[index]!;
+        
+        var currentTreeItem = new TreeItemData<TNode>(Icons.Material.Outlined.Folder, Color.Default, currentNode)
+        {
+            IsExpanded = true
+        };
+
+        foreach (var child in currentNode.GetChildren())
+        {
+            foreach (var item in GetTreeItems(baseIndex, child, nodeGroup))
+            {
+                currentTreeItem.TreeItems.Add(item);
+            }
+        }
+
+        return [currentTreeItem];
+    }
+
     public static HashSet<TreeItemData<EngineState>> GetItems(IReadOnlyDictionary<string, EngineState> states, 
         IReadOnlyDictionary<string, bool> expanded)
     {

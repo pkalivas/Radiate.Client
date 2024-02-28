@@ -30,7 +30,7 @@ public class TreeUiTemplate : IRunUITemplate
                     Panel = new ToolbarPanel
                     {
                         Id = new Guid("8FCA10DB-1073-494C-BF90-57847A736449"),
-                        Content = typeof(GraphInputsPanel),
+                        Content = typeof(TreeInputsPanel),
                         Title = "Tree",
                         Actions =
                         [

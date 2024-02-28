@@ -29,21 +29,34 @@ public class GraphXorRunner : GraphRunner
 
     protected override IEngine<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> BuildEngine(RunInputsState inputs, TensorFrame frame)
     {
-        var iterationLimit = inputs.LimitInputs.IterationLimit;
+        var iterationInputs = inputs.LimitInputs;
+        var populationInputs = inputs.PopulationInputs;
+        var graphInputs = inputs.GraphInputs;
         
         var regression = Architect.Graph<float>().ToRegression(frame);
          
         var engineOne = Engine.Genetic(regression).Async()
-            .Setup(EngineSetup.Neat<float>())
+            .PopulationSize(populationInputs.PopulationSize)
+            .Setup(EngineSetup.Neat<float>(
+                populationInputs.CrossoverRate,
+                populationInputs.MutationRate,
+                graphInputs.AddGateRate,
+                graphInputs.AddWeightRate,
+                graphInputs.AddLinkRate))
             .Build();
          
         var engineTwo = Engine.Genetic(engineOne)
-            .Setup(EngineSetup.Neat<float>())
+            .Setup(EngineSetup.Neat<float>(
+                populationInputs.CrossoverRate,
+                populationInputs.MutationRate,
+                graphInputs.AddGateRate, 
+                graphInputs.AddWeightRate,
+                graphInputs.AddLinkRate))
             .Build();
          
         var engineThree = Engine.Genetic(engineOne)
             .SurvivorSelector(new TournamentSelector<GraphGene<float>>())
-            .Alterers(new ProgramMutator<GraphGene<float>, float>(.52f, .1f))
+            .Alterers(new ProgramMutator<GraphGene<float>, float>(0.5f, .1f))
             .Interceptors(new UniqueInterceptor<GraphGene<float>>())
             .Build();
 
@@ -51,6 +64,6 @@ public class GraphXorRunner : GraphRunner
                 Engine.Cyclic(
                     engineTwo.Limit(Limits.SteadyAccuracy(15)),
                     engineThree.Limit(Limits.Iteration(1))))
-            .Limit(Limits.Seconds(10), Limits.Iteration(iterationLimit), Limits.Accuracy(0.01f));
+            .Limit(Limits.Seconds(10), Limits.Iteration(iterationInputs.IterationLimit), Limits.Accuracy(0.01f));
     }
 }

@@ -23,7 +23,7 @@ public class CircleRunner : ImageRunner<CircleGene, Circle>
     {
         var imageInput = inputs.ImageInputs;
         var populationInput = inputs.PopulationInputs;
-        var iterationLimit = inputs.LimitInputs.IterationLimit;
+        var iterationInputs = inputs.LimitInputs;
          
         var image = imageInput.TargetImage.ImageData;
 
@@ -42,6 +42,6 @@ public class CircleRunner : ImageRunner<CircleGene, Circle>
                 new MeanCrossover<CircleGene>(),
                 new UniformCrossover<CircleGene>(0.5f))
             .Build(geno => Fitness(geno, image))
-            .Limit(Limits.Iteration(iterationLimit));
+            .Limit(Limits.Iteration(iterationInputs.IterationLimit));
     }
 }

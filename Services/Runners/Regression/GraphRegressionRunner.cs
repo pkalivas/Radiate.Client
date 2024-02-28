@@ -23,13 +23,22 @@ public class GraphRegressionRunner : GraphRunner
 
     protected override IEngine<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> BuildEngine(RunInputsState inputs, TensorFrame frame)
     {
+        var iterationInputs = inputs.LimitInputs;
+        var populationInputs = inputs.PopulationInputs;
+        var graphInputs = inputs.GraphInputs;
+        
         var problem = Architect.Graph<float>()
             .SetOutputs(Ops.Linear<float>())
             .ToCodex(frame.CodexShape)
             .ToRegression(frame).Complexity(50);
          
         var one = Engine.Genetic(problem).Async()
-            .Setup(EngineSetup.Neat<float>())
+            .Setup(EngineSetup.Neat<float>(
+                populationInputs.CrossoverRate,
+                populationInputs.MutationRate,
+                graphInputs.AddGateRate,
+                graphInputs.AddWeightRate,
+                graphInputs.AddLinkRate))
             .Build();
          
         var two = Engine.Genetic(one)
@@ -39,7 +48,7 @@ public class GraphRegressionRunner : GraphRunner
         return Engine.Cyclic(
                 one.Limit(Limits.SteadyAccuracy(15)),
                 two.Limit(Limits.Iteration(3)))
-            .Limit(Limits.Seconds(15), Limits.Accuracy(0.0001f), Limits.Iteration(inputs.LimitInputs.IterationLimit));
+            .Limit(Limits.Seconds(15), Limits.Accuracy(0.0001f), Limits.Iteration(iterationInputs.IterationLimit));
     }
 
     protected override async Task<TensorFrame> BuildFrame(RunInputsState inputs)

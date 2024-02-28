@@ -6,10 +6,12 @@ public record RunInputsState
 {
     public string ModelType { get; set; } = "Graph";
     public string DataSetType { get; set; } = "XOR";
-    public PopulationInputs PopulationInputs { get; set; } = new();
-    public LimitInputs LimitInputs { get; set; } = new();
-    public ImageInputs ImageInputs { get; set; } = new();
-    public MultiObjectiveInputs MultiObjectiveInputs { get; set; } = new();
+    public GraphInputs GraphInputs { get; init; } = new();
+    public TreeInputs TreeInputs { get; init; } = new();
+    public PopulationInputs PopulationInputs { get; init; } = new();
+    public LimitInputs LimitInputs { get; init; } = new();
+    public ImageInputs ImageInputs { get; init; } = new();
+    public MultiObjectiveInputs MultiObjectiveInputs { get; init; } = new();
     public DataSetInputs DataSetInputs { get; set; } = new();
 }
 
@@ -17,6 +19,20 @@ public record PopulationInputs
 {
     public int PopulationSize { get; set; } = 50;
     public float MutationRate { get; set; } = 0.02f;
+    public float CrossoverRate { get; set; } = 0.7f;
+}
+
+public record GraphInputs 
+{
+    public float AddGateRate { get; set; } = 0.05f;
+    public float AddLinkRate { get; set; } = 0.05f;
+    public float AddWeightRate { get; set; } = 0.05f;
+    public float AddMemoryRate { get; set; } = 0.01f;
+}
+
+public record TreeInputs 
+{
+    public int MaxDepth { get; set; } = 5;
 }
 
 public record LimitInputs

@@ -35,7 +35,8 @@ public static class UiSelectors
         .Create<RootState, RunState, ToolBarProjection>(RunSelectors.SelectRun, run => new ToolBarProjection
         {
             RunId = run.RunId,
-            ModelType = run.Inputs.ModelType
+            ModelType = run.Inputs.ModelType,
+            DataSetType = run.Inputs.DataSetType,
         });
 }
         

@@ -3,7 +3,16 @@
 @inject NavigationManager Navigation
 
 <MudToolBar Dense="true" class="flex justify-content-between w-100" Style="background: rgba(39,39,47,1);">
-    <h5>@Title</h5>
+    <div class="container">
+        <div class="row w-25 align-items-center">
+            <div class="col">
+                <h5>@Title</h5>
+            </div>
+            <div class="col">
+                <h6>@Model!.DataSetType</h6>
+            </div>
+        </div>
+    </div>
     <div>
         <MudMenu Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small">
             @foreach (var action in Actions)

@@ -60,6 +60,7 @@ public static class ApplicationServiceRegistration
                 {
                     DataSetTypes.Polygon => sp.GetRequiredService<PolygonRunner>(),
                     DataSetTypes.Circle => sp.GetRequiredService<CircleRunner>(),
+                    _ => throw new ArgumentException($"Runner {model} {data}.")
                 },
                 _ => throw new ArgumentException($"Runner {model} {data}.")
             });

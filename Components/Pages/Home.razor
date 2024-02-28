@@ -3,18 +3,20 @@
 @inject NavigationManager NavigationManager
 @inherits StoreComponent<RootState>
 
-<MudTable OnRowClick="@((TableRowClickEventArgs<RunState> args) => OnSelect(args))" Items="@Model?.Runs.Values.ToList()" Class="mx-4 px-8">
-    <HeaderContent>
-        <MudTh></MudTh>
-        <MudTh>Model</MudTh>
-        <MudTh>Data Set</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd>@context.Index</MudTd>
-        <MudTd DataLabel="Model">@context.Inputs.ModelType</MudTd>
-        <MudTd DataLabel="Data Set">@context.Inputs.DataSetType</MudTd>
-    </RowTemplate>
-</MudTable>
+<div class="mt-5">
+    <MudTable OnRowClick="@((TableRowClickEventArgs<RunState> args) => OnSelect(args))" Items="@Model?.Runs.Values.OrderByDescending(val => val.Index).ToList()" Class="mx-4 px-8">
+        <HeaderContent>
+            <MudTh></MudTh>
+            <MudTh>Model</MudTh>
+            <MudTh>Data Set</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>@context.Index</MudTd>
+            <MudTd DataLabel="Model">@context.Inputs.ModelType</MudTd>
+            <MudTd DataLabel="Data Set">@context.Inputs.DataSetType</MudTd>
+        </RowTemplate>
+    </MudTable>
+</div>
 
 @code
 {

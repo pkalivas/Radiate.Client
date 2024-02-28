@@ -6,12 +6,14 @@
 
 <MudFileUpload T="IBrowserFile" Accept=".png, .jpg" MaximumFileCount="1" FilesChanged="UploadImage">
     <ButtonTemplate>
-        <MudButton HtmlTag="label"
-                   Size="Size.Small"
-                   Variant="Variant.Filled"
-                   Color="Color.Primary"
-                   StartIcon="@Icons.Material.Filled.CloudUpload"
-                   for="@context.Id">
+        <MudButton
+                Class="w-100"
+                HtmlTag="label"
+                Size="Size.Small"
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                StartIcon="@Icons.Material.Filled.CloudUpload"
+                for="@context.Id">
             Upload
         </MudButton>
     </ButtonTemplate>

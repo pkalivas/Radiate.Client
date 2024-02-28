@@ -2,13 +2,14 @@
 @inject IJSRuntime JS
 
 <ButtonTemplate>
-    <MudButton HtmlTag="download"
-               Size="Size.Small"
-               Variant="Variant.Filled"
-               Color="Color.Tertiary"
-               Disabled="@IsDisabled.Value"
-               StartIcon="@Icons.Material.Filled.Download"
-               OnClick="@DownloadImage">
+    <MudButton Class="w-100"
+            HtmlTag="download"
+            Size="Size.Small"
+            Variant="Variant.Filled"
+            Color="Color.Tertiary"
+            Disabled="@IsDisabled.Value"
+            StartIcon="@Icons.Material.Filled.Download"
+            OnClick="@DownloadImage">
         Download
     </MudButton>
 </ButtonTemplate>

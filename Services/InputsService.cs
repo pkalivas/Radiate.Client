@@ -25,6 +25,10 @@ public class InputsService
         {
             ModelType = modelType,
             DataSetType = dataSetType,
+            TreeInputs = new TreeInputs
+            {
+                MaxDepth = 5
+            },
             LimitInputs = new LimitInputs
             {
                 IterationLimit = 1000
@@ -32,7 +36,8 @@ public class InputsService
             PopulationInputs = new PopulationInputs
             {
                 PopulationSize = 100,
-                MutationRate = 0.02f
+                MutationRate = 0.01f,
+                CrossoverRate = 0.1f
             }
         },
         (ModelTypes.MultiObjective, _) => new RunInputsState

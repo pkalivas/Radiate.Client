@@ -22,16 +22,25 @@ public class GraphSinWaveRunner : GraphRunner
 
     protected override IEngine<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> BuildEngine(RunInputsState inputs, TensorFrame frame)
     {
+        var populationInputs = inputs.PopulationInputs;
+        var graphInputs = inputs.GraphInputs;
+        var iterationInputs = inputs.LimitInputs;
+        
         var graph = Architect.Graph<float>()
             .SetOutputs(Ops.Linear<float>())
             .Build(builder => builder.Lstm(1));
         
         var problem = new GraphCodex<float>(graph).ToRegression(frame).Complexity(50);
-        
+
         return Engine.Genetic(problem).Async()
-            .Setup(EngineSetup.RecurrentNeat<float>())
-            .Build()
-            .Limit(Limits.Iteration(inputs.LimitInputs.IterationLimit));
+            .PopulationSize(populationInputs.PopulationSize)
+            .Setup(EngineSetup.RecurrentNeat<float>(
+                graphInputs.AddGateRate,
+                graphInputs.AddWeightRate,
+                graphInputs.AddMemoryRate,
+                graphInputs.AddLinkRate))
+            .Limit(Limits.Iteration(iterationInputs.IterationLimit))
+            .Build();
     }
 
     protected override async Task<TensorFrame> BuildFrame(RunInputsState inputs)

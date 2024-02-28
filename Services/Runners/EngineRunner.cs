@@ -51,6 +51,8 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner, IDisposable where
                 }
             });
         
+        cts.Token.Register(() => harness.Stop());
+        
         harness.OnOutput += output => _outputs.OnNext((runId, MapOutput(output, inputs)));
         harness.OnStop += output =>
         {

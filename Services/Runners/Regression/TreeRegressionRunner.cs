@@ -22,6 +22,7 @@ public class TreeRegressionRunner : TreeRunner
 
     protected override IEngine<GeneticEpoch<TreeGene<float>>, ExpressionTree<float>> BuildEngine(RunInputsState inputs, TensorFrame frame)
     {
+        var populationInputs = inputs.PopulationInputs;
         var treeInputs = inputs.TreeInputs;
         
         var problem = Architect.Tree<float>()
@@ -29,7 +30,10 @@ public class TreeRegressionRunner : TreeRunner
             .ToRegressionProblem(frame);
          
         var steepener = Engine.Genetic(problem).Async()
-            .Setup(TreeSetup.Expression<float>())
+            .Setup(TreeSetup.Expression<float>(
+                populationInputs.CrossoverRate,
+                populationInputs.MutationRate,
+                treeInputs.MaxDepth))
             .Build();
          
         var windener = Engine.Genetic(problem).Async()

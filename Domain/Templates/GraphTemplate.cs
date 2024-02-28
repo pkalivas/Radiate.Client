@@ -114,7 +114,6 @@ public class GraphUiTemplate : IRunUITemplate
                                 Id = new Guid("17207E0C-9149-47AD-9DFF-306F89044460"),
                                 Content = typeof(MetricsDataGridPanel),
                                 Title = "Metrics",
-                                Height = 500
                             },
                             new()
                             {
@@ -122,17 +121,9 @@ public class GraphUiTemplate : IRunUITemplate
                                 Id = new Guid("610F9B58-6680-4C79-99DB-14AFAC93BF9F"),
                                 Content = typeof(GraphNodeTablePanel),
                                 Title = "Graph Nodes",
-                                Height = 500
                             }
                         ]
                     }
-                    // Panel = new PaperPanel
-                    // {
-                    //     Id = new Guid("17207E0C-9149-47AD-9DFF-306F89044460"),
-                    //     Content = typeof(MetricsDataGridPanel),
-                    //     Title = "Metrics",
-                    //     Height = 500
-                    // }
                 },
                 new GridPanel.GridItem
                 {
@@ -198,17 +189,6 @@ public class GraphUiTemplate : IRunUITemplate
                         ]
                     }
                 },
-                // new GridPanel.GridItem
-                // {
-                //     ColSpan = 8,
-                //     Panel = new PaperPanel
-                //     {
-                //         Id = new Guid("610F9B58-6680-4C79-99DB-14AFAC93BF9F"),
-                //         Content = typeof(GraphNodeTablePanel),
-                //         Title = "Graph Nodes",
-                //         Height = 575
-                //     }
-                // }
             ]
         }
     ];

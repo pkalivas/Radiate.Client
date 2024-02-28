@@ -7,7 +7,7 @@
     <DialogContent>
         <MudTreeView Items="@Items" Dense="true">
             <ItemTemplate>
-                <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.TreeItems"> 
+                <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.TreeItems">
                     <Content>
                         <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChild"/>
                         <NodeDisplay Node="@context.Data" Underling="true"/>

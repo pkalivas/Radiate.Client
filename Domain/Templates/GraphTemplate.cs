@@ -104,23 +104,26 @@ public class GraphUiTemplate : IRunUITemplate
                 new GridPanel.GridItem
                 {
                     ColSpan = 8,
-                    Panel = new AccordionPanel
+                    Panel = new TabPanel
                     {
-                        Panels =
+                        Id = new Guid("57B2E6CA-DF7D-4E87-9D67-ACC68327F694"),
+                        Tabs =
                         [
-                            new()
+                            new PaperPanel
                             {
-                                Expanded = true,
+                                DisplayHeader = false,
+                                Height = 500,
                                 Id = new Guid("17207E0C-9149-47AD-9DFF-306F89044460"),
-                                Content = typeof(MetricsDataGridPanel),
                                 Title = "Metrics",
+                                Content = typeof(MetricsDataGridPanel),
                             },
-                            new()
+                            new PaperPanel
                             {
-                                Expanded = false,
+                                DisplayHeader = false,
+                                Height = 500,
                                 Id = new Guid("610F9B58-6680-4C79-99DB-14AFAC93BF9F"),
-                                Content = typeof(OpNodeTablePanel),
                                 Title = "Graph Nodes",
+                                Content = typeof(OpNodeTablePanel),
                             }
                         ]
                     }
@@ -141,46 +144,40 @@ public class GraphUiTemplate : IRunUITemplate
                                     Id = new Guid("9867301E-CD35-40B4-A411-4E9589CDB7DD"),
                                     Tabs = 
                                     [
-                                        new TabPanel.TabItem
+                                        new PaperPanel
                                         {
-                                            Panel = new PaperPanel
+                                            DisplayHeader = false,
+                                            Id = new Guid("19687ECB-52DD-4D4A-B260-3EB55FB39B93"),
+                                            Title = "Fitness Dist.",
+                                            Content = typeof(MetricSummaryChartPanel),
+                                            Props = new Dictionary<string, object>
                                             {
-                                                Id = new Guid("19687ECB-52DD-4D4A-B260-3EB55FB39B93"),
-                                                Title = "Fitness Dist.",
-                                                Content = typeof(MetricSummaryChartPanel),
-                                                Props = new Dictionary<string, object>
-                                                {
-                                                    ["MetricName"] = MetricNames.FitnessDistribution,
-                                                    ["ChartHeight"] = 200
-                                                }
+                                                ["MetricName"] = MetricNames.FitnessDistribution,
+                                                ["ChartHeight"] = 200
                                             }
                                         },
-                                        new TabPanel.TabItem
+                                        new PaperPanel
                                         {
-                                            Panel = new PaperPanel
+                                            DisplayHeader = false,
+                                            Id = new Guid("89DBD37A-4D39-4CD0-987E-0768C2C916C8"),
+                                            Title = "Age Dist.",
+                                            Content = typeof(MetricSummaryChartPanel),
+                                            Props = new Dictionary<string, object>
                                             {
-                                                Id = new Guid("89DBD37A-4D39-4CD0-987E-0768C2C916C8"),
-                                                Title = "Age Dist.",
-                                                Content = typeof(MetricSummaryChartPanel),
-                                                Props = new Dictionary<string, object>
-                                                {
-                                                    ["MetricName"] = MetricNames.AgeDistribution,
-                                                    ["ChartHeight"] = 200
-                                                }
+                                                ["MetricName"] = MetricNames.AgeDistribution,
+                                                ["ChartHeight"] = 200
                                             }
                                         },
-                                        new TabPanel.TabItem
+                                        new PaperPanel
                                         {
-                                            Panel = new PaperPanel
+                                            DisplayHeader = false,
+                                            Id = new Guid("FA2CB9C6-54FE-40AF-AA4D-2CD538B82B36"),
+                                            Title = "Genome Size",
+                                            Content = typeof(MetricSummaryChartPanel),
+                                            Props = new Dictionary<string, object>
                                             {
-                                                Id = new Guid("FA2CB9C6-54FE-40AF-AA4D-2CD538B82B36"),
-                                                Title = "Genome Size",
-                                                Content = typeof(MetricSummaryChartPanel),
-                                                Props = new Dictionary<string, object>
-                                                {
-                                                    ["MetricName"] = MetricNames.GenomeSizeDistribution,
-                                                    ["ChartHeight"] = 200
-                                                }
+                                                ["MetricName"] = MetricNames.GenomeSizeDistribution,
+                                                ["ChartHeight"] = 200
                                             }
                                         }
                                     ]

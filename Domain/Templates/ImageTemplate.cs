@@ -96,32 +96,26 @@ public class ImageUITemplate : IRunUITemplate
                                     Id = new Guid("9867301E-CD35-40B4-A411-4E9589CDB7DD"),
                                     Tabs = 
                                     [
-                                        new TabPanel.TabItem
+                                         new PaperPanel
                                         {
-                                            Panel = new PaperPanel
+                                            Id = new Guid("19687ECB-52DD-4D4A-B260-3EB55FB39B93"),
+                                            Title = "Fitness Dist.",
+                                            Content = typeof(MetricSummaryChartPanel),
+                                            Props = new Dictionary<string, object>
                                             {
-                                                Id = new Guid("19687ECB-52DD-4D4A-B260-3EB55FB39B93"),
-                                                Title = "Fitness Dist.",
-                                                Content = typeof(MetricSummaryChartPanel),
-                                                Props = new Dictionary<string, object>
-                                                {
-                                                    ["MetricName"] = MetricNames.FitnessDistribution,
-                                                    ["ChartHeight"] = 200
-                                                }
+                                                ["MetricName"] = MetricNames.FitnessDistribution,
+                                                ["ChartHeight"] = 200
                                             }
                                         },
-                                        new TabPanel.TabItem
+                                        new PaperPanel
                                         {
-                                            Panel = new PaperPanel
+                                            Id = new Guid("89DBD37A-4D39-4CD0-987E-0768C2C916C8"),
+                                            Title = "Age Dist.",
+                                            Content = typeof(MetricSummaryChartPanel),
+                                            Props = new Dictionary<string, object>
                                             {
-                                                Id = new Guid("89DBD37A-4D39-4CD0-987E-0768C2C916C8"),
-                                                Title = "Age Dist.",
-                                                Content = typeof(MetricSummaryChartPanel),
-                                                Props = new Dictionary<string, object>
-                                                {
-                                                    ["MetricName"] = MetricNames.AgeDistribution,
-                                                    ["ChartHeight"] = 200
-                                                }
+                                                ["MetricName"] = MetricNames.AgeDistribution,
+                                                ["ChartHeight"] = 200
                                             }
                                         }
                                     ]

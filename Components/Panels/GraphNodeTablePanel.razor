@@ -1,0 +1,40 @@
+@inherits StoreComponent<GraphNodeTablePanelProjection>
+
+@if (Model?.Graph == null)
+{
+    <div>Loading...</div>
+}
+else
+{
+    <MudDataGrid Items="@Model.Graph.Graph" 
+                 Filterable="false"
+                 SortMode="@SortMode.None" 
+                 Dense="true"
+                 Elevation="0">
+        <Columns>
+            <PropertyColumn Property="x => x.Index" />
+            <PropertyColumn Property="x => x.NodeType" />
+            <PropertyColumn Property="x => x.Allele" Title="Op" />
+            <PropertyColumn Property="x => x.IsValid()" Title="Is Valid"/>
+            <PropertyColumn Property="x => x.IsEnabled" Title="Is Enabled"/>
+            <TemplateColumn CellClass="d-flex justify-end">
+                <CellTemplate>
+                    <MudStack Row>
+                        <MudIconButton Size="@Size.Small"
+                                   Variant="@Variant.Outlined"
+                                   Color="@Color.Primary"
+                                   Icon="@Icons.Material.Outlined.AccountTree"/>
+                    </MudStack>
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+        @* <PagerContent> *@
+        @*     <MudDataGridPager T="GraphGene<float>" /> *@
+        @* </PagerContent> *@
+    </MudDataGrid>
+}
+
+@code {
+    protected override IObservable<GraphNodeTablePanelProjection> Select() =>
+        Store.Select(GraphSelectors.SelectGraphNodeTablePanelModel);
+}

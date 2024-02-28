@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using Radiate.Client.Domain.Templates;
 
 namespace Radiate.Client.Domain.Store.Models.Projections;

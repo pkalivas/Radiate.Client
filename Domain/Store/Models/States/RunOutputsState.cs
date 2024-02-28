@@ -24,14 +24,14 @@ public record GraphOutput
     public string Type { get; set; } = "";
     public object Graph { get; set; } = new();
 
-    public PerceptronGraph<T> GetGraph<T>()
+    public PerceptronGraph<T>? GetGraph<T>()
     {
         if (Graph is PerceptronGraph<T> graph)
         {
             return graph;
         }
-        
-        throw new Exception("Graph is not of the expected type");
+
+        return null;
     }
 }
 

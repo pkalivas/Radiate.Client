@@ -102,14 +102,38 @@ public class TreeUiTemplate : IRunUITemplate
                 new GridPanel.GridItem
                 {
                     ColSpan = 8,
-                    Panel = new PaperPanel
+                    Panel = new AccordionPanel
                     {
-                        Id = new Guid("17207E0C-9149-47AD-9DFF-306F89044460"),
-                        Content = typeof(MetricsDataGridPanel),
-                        Title = "Metrics",
-                        Height = 500
+                        Panels =
+                        [
+                            new()
+                            {
+                                Expanded = true,
+                                Id = new Guid("17207E0C-9149-47AD-9DFF-306F89044460"),
+                                Content = typeof(MetricsDataGridPanel),
+                                Title = "Metrics",
+                            },
+                            new()
+                            {
+                                Expanded = false,
+                                Id = new Guid("610F9B58-6680-4C79-99DB-14AFAC93BF9F"),
+                                Content = typeof(OpNodeTablePanel),
+                                Title = "Tree Nodes",
+                            }
+                        ]
                     }
                 },
+                // new GridPanel.GridItem
+                // {
+                //     ColSpan = 8,
+                //     Panel = new PaperPanel
+                //     {
+                //         Id = new Guid("17207E0C-9149-47AD-9DFF-306F89044460"),
+                //         Content = typeof(MetricsDataGridPanel),
+                //         Title = "Metrics",
+                //         Height = 500
+                //     }
+                // },
                 new GridPanel.GridItem
                 {
                     ColSpan = 4,

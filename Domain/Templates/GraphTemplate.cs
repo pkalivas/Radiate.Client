@@ -119,7 +119,7 @@ public class GraphUiTemplate : IRunUITemplate
                             {
                                 Expanded = false,
                                 Id = new Guid("610F9B58-6680-4C79-99DB-14AFAC93BF9F"),
-                                Content = typeof(GraphNodeTablePanel),
+                                Content = typeof(OpNodeTablePanel),
                                 Title = "Graph Nodes",
                             }
                         ]

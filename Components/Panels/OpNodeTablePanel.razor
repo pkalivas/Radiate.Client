@@ -1,0 +1,265 @@
+@inject IDialogService DialogService
+@using Radiate.Extensions.Evolution.Architects.Nodes
+@using Radiate.Extensions.Schema
+@using Radiate.Extensions.Operations
+@inherits StoreComponent<OpNodeTablePanelProjection>
+
+@if (Model?.NodeGroup != null)
+{
+    <MudDataGrid Items="@Model.NodeGroup" 
+                 Dense="true"
+                 Elevation="0"
+                 FixedHeader="true"
+                 Height="400px" ColumnResizeMode="ResizeMode.Column">
+        <Columns>
+            <HierarchyColumn T="Node<IOp<float>>" ButtonDisabledFunc="@(_ => !Model.IsComplete)" />
+            <PropertyColumn Property="x => x.Index"/>
+            <TemplateColumn Title="Node Type">
+                <CellTemplate>
+                    @if (context.Item!.IsEnabled)
+                    {
+                        var item = context.Item!;
+                        if (item.NodeType is NodeTypes.Input)
+                        {
+                            <MudChip Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small">
+                                @context.Item!.NodeType
+                            </MudChip>
+                        }
+                        else if (item.NodeType is NodeTypes.Gate)
+                        {
+                            <MudChip Color="Color.Success" Variant="Variant.Filled" Size="Size.Small">
+                                @context.Item!.NodeType
+                            </MudChip>
+                        }
+                        else if (item.NodeType is NodeTypes.Weight)
+                        {
+                            <MudChip Color="Color.Inherit" Variant="Variant.Filled" Size="Size.Small">
+                                @context.Item!.NodeType
+                            </MudChip>
+                        }
+                        else if (item.NodeType is NodeTypes.Link)
+                        {
+                            <MudChip Color="Color.Info" Variant="Variant.Filled" Size="Size.Small">
+                                @context.Item!.NodeType
+                            </MudChip>
+                        }
+                        else if (item.NodeType is NodeTypes.Memory)
+                        {
+                            <MudChip Color="Color.Secondary" Variant="Variant.Filled" Size="Size.Small">
+                                @context.Item!.NodeType
+                            </MudChip>
+                        }
+                        else
+                        {
+                            <MudChip Color="Color.Warning" Variant="Variant.Filled" Size="Size.Small">
+                                @context.Item!.NodeType
+                            </MudChip>
+                        }
+                    }
+                    else
+                    {
+                        var item = context.Item!;
+                        if (item.NodeType is NodeTypes.Input)
+                        {
+                            <MudChip Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small">
+                                @context.Item!.NodeType
+                            </MudChip>
+                        }
+                        else if (item.NodeType is NodeTypes.Gate)
+                        {
+                            <MudChip Color="Color.Success" Variant="Variant.Outlined" Size="Size.Small">
+                                @context.Item!.NodeType
+                            </MudChip>
+                        }
+                        else if (item.NodeType is NodeTypes.Weight)
+                        {
+                            <MudChip Color="Color.Inherit" Variant="Variant.Outlined" Size="Size.Small">
+                                @context.Item!.NodeType
+                            </MudChip>
+                        }
+                        else if (item.NodeType is NodeTypes.Link)
+                        {
+                            <MudChip Color="Color.Info" Variant="Variant.Outlined" Size="Size.Small">
+                                @context.Item!.NodeType
+                            </MudChip>
+                        }
+                        else if (item.NodeType is NodeTypes.Memory)
+                        {
+                            <MudChip Color="Color.Secondary" Variant="Variant.Outlined" Size="Size.Small">
+                                @context.Item!.NodeType
+                            </MudChip>
+                        }
+                        else
+                        {
+                            <MudChip Color="Color.Warning" Variant="Variant.Outlined" Size="Size.Small">
+                                @context.Item!.NodeType
+                            </MudChip>
+                        }
+                    }
+                </CellTemplate>
+            </TemplateColumn>
+            <PropertyColumn Property="x => x.Value" Title="Op" />
+            <TemplateColumn Title="# Inc./Out.">
+                <CellTemplate>
+                    <MudText Typo="Typo.h6">
+                        @($"{context.Item.Incoming.Count} / {context.Item.Outgoing.Count}")
+                    </MudText>
+                </CellTemplate>
+            </TemplateColumn>
+            <TemplateColumn Title="Direction">
+                <CellTemplate>
+                    @if (context.Item.Direction is DirectionTypes.Forward)
+                    {
+                        <MudIcon Icon="@Icons.Material.Outlined.Forward" Size="Size.Small" Color="Color.Success"/>
+                    }
+                    else
+                    {
+                        <MudIcon Icon="@Icons.Material.Outlined.Replay" Size="Size.Small" Color="Color.Warning"/>
+                    }
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+        <ChildRowContent>
+            <MudCard Elevation="0">
+                <MudCardContent>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="row">
+                                    <MudText Typo="Typo.body1">Incoming</MudText>
+                                </div>
+                                <div class="row">
+                                    <MudList row="true" Dense="true">
+                                        @foreach (var incoming in context.Item.Incoming)
+                                        {
+                                            <MudListItem>
+                                                <NodeDisplay Node="@(Model.NodeGroup[incoming])"/>
+                                            </MudListItem>
+                                        }
+                                    </MudList>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="row">
+                                    <MudText Typo="Typo.body1">Outgoing</MudText>
+                                </div>
+                                <div class="row">
+                                    <MudList row="true" Dense="true">
+                                        @foreach (var outgoing in context.Item.Outgoing)
+                                        {
+                                            <MudListItem>
+                                                <NodeDisplay Node="@(Model.NodeGroup[outgoing])"/>
+                                            </MudListItem>
+                                        }
+                                    </MudList>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </MudCardContent>
+                <MudCardActions>
+                    <div class="w-full d-flex justify-content-end">
+                        <MudButton Size="@Size.Small"
+                                   Variant="@Variant.Filled"
+                                   Color="@Color.Primary"
+                                   Disabled="@(!Model.IsComplete)"
+                                   OnClick="@(() => OpenNodeDialog(context.Item.Index))">
+                            <MudIcon Icon="@Icons.Material.Outlined.AccountTree" Size="Size.Small"/>
+                        </MudButton>
+                    </div>
+                </MudCardActions>
+            </MudCard>
+        </ChildRowContent>
+    </MudDataGrid>
+}
+
+@code {
+    protected override IObservable<OpNodeTablePanelProjection> Select() =>
+        Store.Select(ModelSelectors.SelectOpNodeTablePanelModel);
+
+    private async Task OpenNodeDialog(int index)
+    {
+        var dialog = await DialogService.ShowAsync<NodeTreeDialog>("Node Dialog", new DialogParameters
+        {
+            {"NodeGroup", Model!.NodeGroup},
+            {"Index", index}
+        });
+        
+        await dialog.Result;
+    }
+}
+
+
+
+@* <MudTable Items="@Model.Graph.Graph" FixedHeader="true" Height="400px" Dense="true" Elevation="0"> *@
+@*     <HeaderContent> *@
+@*         <MudTh>Index</MudTh> *@
+@*         <MudTh>NodeType</MudTh> *@
+@*         <MudTh>Op</MudTh> *@
+@*         <MudTh>Valid</MudTh> *@
+@*         <MudTh>Enabled</MudTh> *@
+@*         <MudTh></MudTh> *@
+@*     </HeaderContent> *@
+@*     <RowTemplate> *@
+@*         <MudTd DataLabel="Index">@context.Index</MudTd> *@
+@*         <MudTd DataLabel="Node Type">@context.NodeType</MudTd> *@
+@*         <MudTd DataLabel="Op">@context.Allele.ToString()</MudTd> *@
+@*         <MudTd DataLabel="Valid">@context.IsValid()</MudTd> *@
+@*         <MudTd DataLabel="IsEnabled">@context.IsEnabled</MudTd> *@
+@*         <MudTd> *@
+@*             <MudIconButton Size="@Size.Small" *@
+@*                            Variant="@Variant.Outlined" *@
+@*                            Color="@Color.Primary" *@
+@*                            Disabled="@(!Model.IsComplete)" *@
+@*                            Icon="@Icons.Material.Outlined.AccountTree" *@
+@*                            OnClick="@(() => OpenNodeDialog(context.Index))"/> *@
+@*         </MudTd> *@
+@*     </RowTemplate> *@
+@* </MudTable> *@
+
+
+@* <MudDataGrid Items="@employees" Filterable="false" SortMode="@SortMode.None" Groupable="false"> *@
+@*     <Columns> *@
+@*         <PropertyColumn Property="x => x.Name" /> *@
+@*         <PropertyColumn Property="x => x.Position" /> *@
+@*         <PropertyColumn Property="x => x.YearsEmployed" Title="Years Employed" /> *@
+@*         <PropertyColumn Property="x => x.Salary" Format="C" /> *@
+@*         <PropertyColumn Property="x => x.Salary * x.YearsEmployed" Title="Total Earned" Format="C" /> *@
+@*         <TemplateColumn CellClass="d-flex justify-end"> *@
+@*             <CellTemplate> *@
+@*                 <MudStack Row> *@
+@*                     <MudRating Size="@Size.Small" SelectedValue="@context.Item.Rating" /> *@
+@*                     <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary">Hire</MudButton> *@
+@*                 </MudStack> *@
+@*             </CellTemplate> *@
+@*         </TemplateColumn> *@
+@*     </Columns> *@
+@* </MudDataGrid> *@
+
+@* <MudDataGrid Items="@Elements" *@
+@*              ReadOnly="@_isReadOnly" EditMode="@DataGridEditMode.Cell"> *@
+@*     <Columns> *@
+@*         <HierarchyColumn T="Element" ButtonDisabledFunc="@(x => x.Sign == "He")" /> *@
+@*         <PropertyColumn Property="x => x.Number" Title="Nr" /> *@
+@*         <PropertyColumn Property="x => x.Sign" /> *@
+@*         <PropertyColumn Property="x => x.Name" /> *@
+@*         <PropertyColumn Property="x => x.Position" /> *@
+@*         <PropertyColumn Property="x => x.Molar" Title="Molar mass" /> *@
+@*     </Columns> *@
+@*     <ChildRowContent> *@
+@*         <MudCard> *@
+@*             <MudCardHeader> *@
+@*                 <CardHeaderContent> *@
+@*                     <MudText Typo="Typo.h6">@context.Item.Name</MudText> *@
+@*                 </CardHeaderContent> *@
+@*             </MudCardHeader> *@
+@*             <MudCardContent> *@
+@*                 <MudText>This element is number @context.Item.Number</MudText> *@
+@*                 <MudText>This element has a molar mass of @context.Item.Molar</MudText> *@
+@*             </MudCardContent> *@
+@*         </MudCard> *@
+@*     </ChildRowContent> *@
+@*     <PagerContent> *@
+@*         <MudDataGridPager T="Element" /> *@
+@*     </PagerContent> *@
+@* </MudDataGrid> *@

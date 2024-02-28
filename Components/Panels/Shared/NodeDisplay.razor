@@ -1,0 +1,78 @@
+@using Radiate.Extensions.Evolution.Architects.Interfaces
+@using Radiate.Extensions.Operations
+@using Radiate.Extensions.Schema
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <MudIcon Icon="@GetIcon(Node)" Color="@GetColor(Node)" Size="Size.Small"/>
+        </div>
+        <div class="col">
+            <MudText Typo="Typo.body1">@Node.Index</MudText>
+        </div>
+        <div class="col">
+            <MudText Typo="Typo.body2">@Node.NodeType</MudText>
+        </div>
+        <div class="col">
+            @if (Node.IsValid)
+            {
+                <MudIcon Icon="@Icons.Material.Outlined.Check" Color="Color.Success" Size="Size.Small"/>
+            }
+            else
+            {
+                <MudIcon Icon="@Icons.Material.Outlined.Error" Color="Color.Warning" Size="Size.Small"/>
+            }
+        </div>
+        <div class="col">
+            @if (Node.IsEnabled)
+            {
+                <MudIcon Icon="@Icons.Material.Outlined.Circle" Color="Color.Success" Size="Size.Small"/>
+            }
+            else
+            {
+                <MudIcon Icon="@Icons.Material.Outlined.Circle" Color="Color.Warning" Size="Size.Small"/>
+            }
+        </div>
+        <div class="col">
+            @if (Node.IsRecurrent)
+            {
+                <MudIcon Icon="@Icons.Material.Outlined.Replay" Color="Color.Success" Size="Size.Small"/>
+            }
+            else
+            {
+                <MudIcon Icon="@Icons.Material.Outlined.Forward" Color="Color.Success" Size="Size.Small"/>
+            }
+        </div>
+    </div>
+    @if (Underling)
+    {
+        <MudDivider/>
+    }
+</div>
+
+@code {
+    [Parameter] public INode<IOp<float>> Node { get; set; }
+    [Parameter] public bool Underling { get; set; } = false;
+    
+    private static string GetIcon(INode<IOp<float>> node) => node.NodeType switch
+    {
+        NodeTypes.Input => Icons.Material.Outlined.SettingsInputComponent,
+        NodeTypes.Gate => Icons.Material.Outlined.Functions,
+        NodeTypes.Weight => Icons.Material.Outlined.Numbers,
+        NodeTypes.Link => Icons.Material.Outlined.Link,
+        NodeTypes.Memory => Icons.Material.Outlined.Memory,
+        NodeTypes.Output => Icons.Material.Outlined.Output,
+        _ => Icons.Material.Outlined.Label
+    };
+
+    private static Color GetColor(INode<IOp<float>> node) => node.NodeType switch
+    {
+        NodeTypes.Input => Color.Success,
+        NodeTypes.Gate => Color.Primary,
+        NodeTypes.Weight => Color.Dark,
+        NodeTypes.Link => Color.Info,
+        NodeTypes.Memory => Color.Warning,
+        NodeTypes.Output => Color.Secondary,
+        _ => Color.Default
+    };
+}

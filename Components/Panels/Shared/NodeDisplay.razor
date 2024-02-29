@@ -11,7 +11,16 @@
             <MudText Typo="Typo.body1">@Node.Index</MudText>
         </div>
         <div class="col">
-            <MudText Typo="Typo.body2">@Node.NodeType</MudText>
+            <MudText Typo="Typo.body2">
+                @if (Node.NodeType is NodeTypes.Gate)
+                {
+                    @Node.Op.Name
+                }
+                else
+                {
+                    @Node.NodeType
+                }
+            </MudText>
         </div>
         <div class="col">
             @if (Node.IsEnabled)

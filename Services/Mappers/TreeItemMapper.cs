@@ -5,15 +5,15 @@ namespace Radiate.Client.Services.Mappers;
 
 public static class TreeItemMapper
 {
-    public static HashSet<TreeItemData<NodeItem>> NodeTree(int index, NodeItem[] nodeGroup)
+    public static HashSet<TreeItemData<NodeItem>> NodeTree(int index, NodeItem[] nodeGroup, bool expanded = false)
     {
         var currentNode = nodeGroup[index];
         var seen = new HashSet<int>(new[] { index });
-        var root = new TreeItemData<NodeItem>(currentNode);
+        var root = new TreeItemData<NodeItem>(currentNode) { IsExpanded = expanded };
 
         foreach (var child in currentNode.Children)
         {
-            foreach (var item in GetTreeItems(index, child, nodeGroup, seen))
+            foreach (var item in GetTreeItems(index, child, nodeGroup, seen, expanded))
             {
                 root.TreeItems.Add(item);
             }
@@ -44,7 +44,11 @@ public static class TreeItemMapper
         return result;
     }
     
-    private static HashSet<TreeItemData<NodeItem>> GetTreeItems(int baseIndex, int index, NodeItem[] nodeGroup, HashSet<int> seen)
+    private static HashSet<TreeItemData<NodeItem>> GetTreeItems(int baseIndex, 
+        int index,
+        IReadOnlyList<NodeItem> nodeGroup,
+        ISet<int> seen,
+        bool expanded = false)
     {
         if (baseIndex == index)
         {
@@ -53,7 +57,7 @@ public static class TreeItemMapper
 
         var currentNode = nodeGroup[index]!;
         seen.Add(index);
-        var currentTreeItem = new TreeItemData<NodeItem>(currentNode);
+        var currentTreeItem = new TreeItemData<NodeItem>(currentNode) { IsExpanded = expanded };
 
         foreach (var child in currentNode.Children)
         {
@@ -62,7 +66,7 @@ public static class TreeItemMapper
                 continue;
             }
             
-            foreach (var item in GetTreeItems(baseIndex, child, nodeGroup, seen))
+            foreach (var item in GetTreeItems(baseIndex, child, nodeGroup, seen, expanded))
             {
                 currentTreeItem.TreeItems.Add(item);
             }

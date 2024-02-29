@@ -46,16 +46,16 @@
         var dialogRef = await DialogService.ShowAsync<EngineTreePanel>("Engine Tree", options);
         await dialogRef.Result;
     }
-    
-    private async Task CopyRun()
+
+    private async Task CopyRun() => await Task.Run(() =>
     {
-        var runId = Model.RunId;
+        var runId = Model!.RunId;
         var newRunId = Guid.NewGuid();
-        
+
         Navigation.NavigateTo($"/runs/{newRunId}/{Model.ModelType.ToLower()}");
 
         Store.Dispatch(new SetRunLoadingAction(newRunId, true));
         Store.Dispatch(new NavigateToRunAction(newRunId));
         Store.Dispatch(new CopyRunAction(runId, newRunId));
-    }
+    });
 }

@@ -1,6 +1,6 @@
 @inherits StoreComponent<MetricDataGridPanelProjection>
 
-@if (Model.Values.Any())
+@if (Model != null && Model.Values.Any())
 {
     <MudDataGrid Dense="true"
                  Elevation="0"
@@ -28,7 +28,6 @@
             <MudDataGridPager T="MetricValueModel" />
         </PagerContent>
     </MudDataGrid>
-    
 }
 
 @code {
@@ -36,7 +35,7 @@
     protected override IObservable<MetricDataGridPanelProjection> Select() =>
         Store.Select(RunSelectors.SelectMetricDataGridPanelModel);
 
-    private string FormatDuration(TimeSpan duration) => duration.ToString("mm\\:ss\\:ffff");
+    private static string FormatDuration(TimeSpan duration) => duration.ToString("mm\\:ss\\:ffff");
 
-    private string FormatName(string name) => name.Split("`")[0];
+    private static string FormatName(string name) => name.Split("`")[0];
 }

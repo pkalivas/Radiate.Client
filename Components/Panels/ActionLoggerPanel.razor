@@ -1,16 +1,16 @@
 @inject ILogger<ActionLoggerPanel> Logger
 @inherits StoreComponent<Radiate.Client.Domain.Store.RootState>
 
-@count
+@_count
 
 @code {
     
-    private int count = 0;
+    private int _count = 0;
     protected override void OnSubscribed()
     {
         Subscribe<object>(act =>
         {
-            count++;
+            _count++;
             Logger.LogInformation($"Received action {act.GetType().FullName}", act);
         
             InvokeAsync(StateHasChanged);

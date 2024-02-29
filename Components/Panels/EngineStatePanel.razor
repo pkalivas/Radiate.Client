@@ -1,6 +1,9 @@
 @inherits StoreComponent<EngineTreePanelProjection>
 
-<EngineStateDisplay EngineState="@Model.CurrentEngineState"/>
+@if (Model != null)
+{
+    <EngineStateDisplay EngineState="@Model.CurrentEngineState"/>    
+}
 
 @code {
     protected override IObservable<EngineTreePanelProjection> Select() =>

@@ -123,7 +123,7 @@ public class GraphUiTemplate : IRunUITemplate
                                 Height = 500,
                                 Id = new Guid("610F9B58-6680-4C79-99DB-14AFAC93BF9F"),
                                 Title = "Graph Nodes",
-                                Content = typeof(OpNodeTablePanel),
+                                Content = typeof(NodeTablePanel),
                             }
                         ]
                     }

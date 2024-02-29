@@ -1,19 +1,31 @@
 @using Radiate.Client.Services.Mappers
 
-<MudDialog>
+<MudDialog DisableSidePadding="true">
     <DialogContent>
-        <MudTreeView Items="@Items" Dense="true">
-            <ItemTemplate>
-                <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.TreeItems">
-                    <Content>
-                        <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChild"/>
-                        <NodeDisplay Node="@context.Data" Underling="true"/>
-                    </Content>
-                </MudTreeViewItem>
-            </ItemTemplate>
-        </MudTreeView>
+        <MudContainer Style="max-height: 500px; overflow-y: scroll">
+            <MudTreeView Items="@Items" Dense="true" Hover="true" ExpandOnClick="true">
+                <ItemTemplate>
+                    <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.TreeItems">
+                        <Content>
+                            <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChild"/>
+                            <NodeDisplay Node="@context.Data"/>
+                        </Content>
+                    </MudTreeViewItem>
+                </ItemTemplate>
+            </MudTreeView>
+        </MudContainer>
     </DialogContent>
     <DialogActions>
+        <MudButton OnClick="@ExpandAll">
+            @if (_allExpanded)
+            {
+                <MudText>Collapse All</MudText>
+            }
+            else
+            {
+                <MudText>Expand All</MudText>
+            }
+        </MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -24,11 +36,18 @@
     [Parameter] public NodeItem[] NodeGroup { get; set; }
 
     private HashSet<TreeItemData<NodeItem>> Items { get; set; }
+    private bool _allExpanded = false;
 
     protected override Task OnInitializedAsync()
     {
         Items = TreeItemMapper.NodeTree(Index, NodeGroup);
         return base.OnInitializedAsync();
+    }
+
+    private void ExpandAll()
+    {
+        Items = TreeItemMapper.NodeTree(Index, NodeGroup, !_allExpanded);   
+        _allExpanded = !_allExpanded;
     }
 
 }

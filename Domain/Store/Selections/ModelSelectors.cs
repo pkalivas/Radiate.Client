@@ -1,9 +1,8 @@
+using Radiate.Client.Domain.Store.Models;
 using Radiate.Client.Domain.Store.Models.Projections;
 using Radiate.Client.Domain.Store.Models.States;
 using Radiate.Client.Services.Schema;
-using Radiate.Extensions.Evolution.Architects.Factories;
-using Radiate.Extensions.Evolution.Architects.Groups;
-using Radiate.Extensions.Evolution.Architects.Nodes;
+using Radiate.Extensions.Evolution.Architects.Interfaces;
 using Radiate.Extensions.Operations;
 using Reflow.Interfaces;
 using Reflow.Selectors;
@@ -13,16 +12,37 @@ namespace Radiate.Client.Domain.Store.Selections;
 public static class ModelSelectors
 {
     public static readonly ISelector<RootState, OpNodeTablePanelProjection> SelectOpNodeTablePanelModel = Selectors
-        .Create<RootState, RunState, OpNodeTablePanelProjection>(RunSelectors.SelectRun, run => new OpNodeTablePanelProjection
-        {
-            RunId = run.RunId,
-            NodeGroup = run.Inputs.ModelType is ModelTypes.Graph 
-                ? run.Outputs.GraphOutput.GetGraph<float>()?.Graph.ToNodes() ?? new NodeGroup<IOp<float>>()
-                : run.Outputs.TreeOutput.GetTrees<float>()?.Trees
-                    .Select(tree => new NodeGroup<IOp<float>>(new OpNodeFactory<Node<IOp<float>>, float>(tree.GetFactory().Values), tree
-                        .Select(node => new Node<IOp<float>>(node))
-                        .ToArray()))
-                    .FirstOrDefault(new NodeGroup<IOp<float>>()) ?? new NodeGroup<IOp<float>>(),
-            IsComplete = run.IsCompleted,
-        });
+        .Create<RootState, RunState, OpNodeTablePanelProjection>(RunSelectors.SelectRun, run =>
+            new OpNodeTablePanelProjection
+            {
+                RunId = run.RunId,
+                NodeItems = run.Inputs.ModelType switch
+                {
+                    ModelTypes.Graph => MapToNodeItems(run.Outputs.GraphOutput.GetGraph<float>()?.Graph),
+                    ModelTypes.Tree => MapToNodeItems(run.Outputs.TreeOutput.GetTrees<float>()?.Trees.FirstOrDefault()),
+                    _ => Array.Empty<NodeItem>()
+                },
+                IsComplete = run.IsCompleted,
+            });
+
+    private static NodeItem[] MapToNodeItems<TNode>(INodeGroup<TNode, IOp<float>>? nodeGroup)
+        where TNode : INode<TNode, IOp<float>> => nodeGroup is null 
+            ? Array.Empty<NodeItem>() 
+            : nodeGroup
+                .Select(node => new NodeItem
+                {
+                    NodeId = node.NodeId,
+                    Index = node.Index,
+                    Op = node.Value,
+                    NodeType = node.NodeType,
+                    Direction = node.Direction,
+                    IsValid = node.IsValid,
+                    IsEnabled = node.IsEnabled,
+                    IsRecurrent = node.IsRecurrent,
+                    Incoming = node.Incoming,
+                    Outgoing = node.Outgoing,
+                    Children = node.GetChildren()
+                })
+                .ToArray();
+
 }

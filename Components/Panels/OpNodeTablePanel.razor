@@ -1,18 +1,16 @@
 @inject IDialogService DialogService
-@using Radiate.Extensions.Evolution.Architects.Nodes
 @using Radiate.Extensions.Schema
-@using Radiate.Extensions.Operations
 @inherits StoreComponent<OpNodeTablePanelProjection>
 
-@if (Model?.NodeGroup != null)
+@if (Model?.NodeItems != null)
 {
-    <MudDataGrid Items="@Model.NodeGroup" 
+    <MudDataGrid Items="@Model.NodeItems" 
                  Dense="true"
                  Elevation="0"
                  FixedHeader="true"
                  Height="400px" ColumnResizeMode="ResizeMode.Column">
         <Columns>
-            <HierarchyColumn T="Node<IOp<float>>" ButtonDisabledFunc="@(_ => !Model.IsComplete)" />
+            <HierarchyColumn T="NodeItem" ButtonDisabledFunc="@(_ => !Model.IsComplete)" />
             <PropertyColumn Property="x => x.Index"/>
             <TemplateColumn Title="Node Type">
                 <CellTemplate>
@@ -98,7 +96,7 @@
                     }
                 </CellTemplate>
             </TemplateColumn>
-            <PropertyColumn Property="x => x.Value" Title="Op" />
+            <PropertyColumn Property="x => x.Op" Title="Op" />
             <TemplateColumn Title="# Inc./Out.">
                 <CellTemplate>
                     <MudText Typo="Typo.h6">
@@ -133,7 +131,7 @@
                                         @foreach (var incoming in context.Item.Incoming)
                                         {
                                             <MudListItem>
-                                                <NodeDisplay Node="@(Model.NodeGroup[incoming])"/>
+                                                <NodeDisplay Node="@(Model.NodeItems[incoming])"/>
                                             </MudListItem>
                                         }
                                     </MudList>
@@ -148,7 +146,7 @@
                                         @foreach (var outgoing in context.Item.Outgoing)
                                         {
                                             <MudListItem>
-                                                <NodeDisplay Node="@(Model.NodeGroup[outgoing])"/>
+                                                <NodeDisplay Node="@(Model.NodeItems[outgoing])"/>
                                             </MudListItem>
                                         }
                                     </MudList>
@@ -181,7 +179,7 @@
     {
         var dialog = await DialogService.ShowAsync<NodeTreeDialog>("Node Dialog", new DialogParameters
         {
-            {"NodeGroup", Model!.NodeGroup},
+            {"NodeGroup", Model!.NodeItems},
             {"Index", index}
         });
         

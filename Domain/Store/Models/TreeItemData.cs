@@ -1,21 +1,13 @@
-using MudBlazor;
-
 namespace Radiate.Client.Domain.Store.Models;
 
 public class TreeItemData<T>
 {
-    public string Icon { get; set; }
-    public Color Color { get; set; }
-    public T Data { get; set; }
-
+    public T Data { get; init; }
+    public HashSet<TreeItemData<T>> TreeItems { get; init; } = new();
     public bool IsExpanded { get; set; } = false;
-    
-    public HashSet<TreeItemData<T>> TreeItems { get; set; } = new();
 
-    public TreeItemData(string icon, Color color, T data)
+    public TreeItemData(T data)
     {
-        Icon = icon;
-        Color = color;
         Data = data;
     }
     

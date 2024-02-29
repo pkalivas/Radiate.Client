@@ -44,17 +44,13 @@
             }
         </div>
     </div>
-    @if (Underling)
-    {
-        <MudDivider/>
-    }
+    <MudDivider/>
 </div>
 
 @code {
-    [Parameter] public INode<IOp<float>> Node { get; set; }
-    [Parameter] public bool Underling { get; set; } = false;
+    [Parameter] public NodeItem Node { get; set; }
     
-    private static string GetIcon(INode<IOp<float>> node) => node.NodeType switch
+    private static string GetIcon(NodeItem node) => node.NodeType switch
     {
         NodeTypes.Input => Icons.Material.Outlined.SettingsInputComponent,
         NodeTypes.Gate => Icons.Material.Outlined.Functions,
@@ -65,7 +61,7 @@
         _ => Icons.Material.Outlined.Label
     };
 
-    private static Color GetColor(INode<IOp<float>> node) => node.NodeType switch
+    private static Color GetColor(NodeItem node) => node.NodeType switch
     {
         NodeTypes.Input => Color.Success,
         NodeTypes.Gate => Color.Primary,

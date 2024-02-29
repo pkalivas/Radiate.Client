@@ -1,147 +1,62 @@
 @inherits StoreComponent<InputsPanelModelProjection>
 
-@if (Model == null)
-{
-    <p>Loading...</p>
-    return;
-}
-
-<MudGrid Class="px-4">
-    <MudItem md="4">
-        <MudGrid Class="mt-3">
-            <MudItem md="6">
-                @if (Model.IsReadonly)
-                {
-                    <div class="d-flex align-items-center border-bottom justify-content-between">
-                        <MudText Typo="Typo.body2">Size:</MudText>
-                        <MudTooltip Text="The number of individuals in the population.">
-                            <MudIcon Icon="Icons.Info" Size="Size.Small"/>
-                        </MudTooltip>
-                        <MudText Typo="Typo.body2">@Model.Inputs.PopulationInputs.PopulationSize</MudText>
-                    </div>
-                }
-                else
-                {
-                    <MudNumericField Label="Population Size"
-                                     Variant="Variant.Filled"
-                                     Value="@Model.Inputs.PopulationInputs.PopulationSize"
-                                     ReadOnly="@Model.IsReadonly"
-                                     DisableUnderLine="@Model.IsReadonly"
-                                     HideSpinButtons="@Model.IsReadonly"
-                                     ValueChanged="@((int size) => OnInputChange(Model, inputs => inputs.PopulationInputs.PopulationSize = size))">
-                    </MudNumericField>
-                }
-            </MudItem>
-        </MudGrid>
+<MudGrid Class="px-4 mt-3">
+    <MudItem md="3">
+        <MudNumericField Label="Population Size"
+                         Variant="Variant.Filled"
+                         Value="@Model.Inputs.PopulationInputs.PopulationSize"
+                         ReadOnly="@Model.IsReadonly"
+                         DisableUnderLine="@Model.IsReadonly"
+                         HideSpinButtons="@Model.IsReadonly"
+                         ValueChanged="@((int size) => OnInputChange(Model, inputs => inputs.PopulationInputs.PopulationSize = size))">
+        </MudNumericField>
     </MudItem>
-    <MudItem md="4">
-        <MudGrid Class="mt-3">
-            <MudItem>
-                @if (Model.IsReadonly)
-                {
-                    <div class="d-flex align-items-center border-bottom justify-content-between">
-                        <MudText Typo="Typo.body2">Iteration:</MudText>
-                        <MudTooltip Text="The maximum number of iterations to run.">
-                            <MudIcon Icon="Icons.Info" Size="Size.Small"/>
-                        </MudTooltip>
-                        <MudText Typo="Typo.body2">@Model.Inputs.LimitInputs.IterationLimit</MudText>
-                    </div>
-                }
-                else
-                {
-                    <MudNumericField Label="Iteration"
-                                     Variant="Variant.Filled"
-                                     ReadOnly="@Model.IsReadonly"
-                                     DisableUnderLine="@Model.IsReadonly"
-                                     HideSpinButtons="@Model.IsReadonly"
-                                     Value="@Model.Inputs.LimitInputs.IterationLimit"
-                                     ValueChanged="@((int limit) => OnInputChange(Model, inputs => inputs.LimitInputs.IterationLimit = limit))">
-                    </MudNumericField>
-                }
-            </MudItem>
-        </MudGrid>
+    <MudItem md="3">
+        <MudNumericField Label="Iteration"
+                         Variant="Variant.Filled"
+                         ReadOnly="@Model.IsReadonly"
+                         DisableUnderLine="@Model.IsReadonly"
+                         HideSpinButtons="@Model.IsReadonly"
+                         Value="@Model.Inputs.LimitInputs.IterationLimit"
+                         ValueChanged="@((int limit) => OnInputChange(Model, inputs => inputs.LimitInputs.IterationLimit = limit))">
+        </MudNumericField>
     </MudItem>
-    <MudItem md="4">
-            <MudGrid Class="mt-3">
-                <MudItem md="6">
-                    @if (Model.IsReadonly)
-                    {
-                        <div class="d-flex align-items-center border-bottom justify-content-between">
-                            <MudText Typo="Typo.body2">DTZ:</MudText>
-                            <MudTooltip Text="The maximum number of iterations to run.">
-                                <MudIcon Icon="Icons.Info" Size="Size.Small"/>
-                            </MudTooltip>
-                            <MudText Typo="Typo.body2">@Model.Inputs.DataSetType</MudText>
-                        </div>
-                    }
-                    else
-                    {
-                        <MudSelect SelectedValuesChanged="@OnModelChange"
-                                   Value="@Model.Inputs.DataSetType"
-                                   MultiSelection="false"
-                                   T="string"
-                                   Label="DTLZ"
-                                   Variant="Variant.Filled">
-                            @foreach (var model in StateOptions.GetModelDataSets(ModelTypes.MultiObjective))
-                            {
-                                <MudSelectItem Value="@model"/>
-                            }
-                        </MudSelect>
-                    }
-                </MudItem>
-                <MudItem md="6">
-                    @if (Model.IsReadonly)
-                    {
-                        <div class="d-flex align-items-center border-bottom justify-content-between">
-                            <MudText Typo="Typo.body2">Front Min:</MudText>
-                            <MudTooltip Text="The min size of the front.">
-                                <MudIcon Icon="Icons.Info" Size="Size.Small"/>
-                            </MudTooltip>
-                            <MudText Typo="Typo.body2">@Model.Inputs.MultiObjectiveInputs.FrontMinSize</MudText>
-                        </div>
-                    }
-                    else
-                    {
-                        <MudNumericField Label="Front Min"
-                                         Variant="Variant.Filled"
-                                         ReadOnly="@Model.IsReadonly"
-                                         DisableUnderLine="@Model.IsReadonly"
-                                         HideSpinButtons="@Model.IsReadonly"
-                                         Value="@Model.Inputs.MultiObjectiveInputs.FrontMinSize"
-                                         ValueChanged="@((int size) => OnInputChange(Model, inputs => inputs.MultiObjectiveInputs.FrontMinSize = size))">
-                        </MudNumericField>
-                    }
-                </MudItem>
-                <MudItem md="6">
-                    @if (Model.IsReadonly)
-                    {
-                        <div class="d-flex align-items-center border-bottom justify-content-between">
-                            <MudText Typo="Typo.body2">Front Max:</MudText>
-                            <MudTooltip Text="The max size of the front.">
-                                <MudIcon Icon="Icons.Info" Size="Size.Small"/>
-                            </MudTooltip>
-                            <MudText Typo="Typo.body2">@Model.Inputs.MultiObjectiveInputs.FrontMaxSize</MudText>
-                        </div>
-                    }
-                    else
-                    {
-                        <MudNumericField Label="Front Max"
-                                         Variant="Variant.Filled"
-                                         ReadOnly="@Model.IsReadonly"
-                                         DisableUnderLine="@Model.IsReadonly"
-                                         HideSpinButtons="@Model.IsReadonly"
-                                         Value="@Model.Inputs.MultiObjectiveInputs.FrontMaxSize"
-                                         ValueChanged="@((int size) => OnInputChange(Model, inputs => inputs.MultiObjectiveInputs.FrontMaxSize = size))">
-                        </MudNumericField>
-                    }
-                </MudItem>
-
-            </MudGrid>
-        </MudItem>
+    <MudItem md="3">
+        <MudSelect SelectedValuesChanged="@OnModelChange"
+                   Value="@Model.Inputs.DataSetType"
+                   MultiSelection="false"
+                   T="string"
+                   Label="DTLZ"
+                   Variant="Variant.Filled">
+            @foreach (var model in StateOptions.GetModelDataSets(ModelTypes.MultiObjective))
+            {
+                <MudSelectItem Value="@model"/>
+            }
+        </MudSelect>
+    </MudItem>
+    <MudItem md="3">
+        <MudNumericField Label="Front Min"
+                         Variant="Variant.Filled"
+                         ReadOnly="@Model.IsReadonly"
+                         DisableUnderLine="@Model.IsReadonly"
+                         HideSpinButtons="@Model.IsReadonly"
+                         Value="@Model.Inputs.MultiObjectiveInputs.FrontMinSize"
+                         ValueChanged="@((int size) => OnInputChange(Model, inputs => inputs.MultiObjectiveInputs.FrontMinSize = size))">
+        </MudNumericField>
+    </MudItem>
+    <MudItem md="3">
+        <MudNumericField Label="Front Max"
+                         Variant="Variant.Filled"
+                         ReadOnly="@Model.IsReadonly"
+                         DisableUnderLine="@Model.IsReadonly"
+                         HideSpinButtons="@Model.IsReadonly"
+                         Value="@Model.Inputs.MultiObjectiveInputs.FrontMaxSize"
+                         ValueChanged="@((int size) => OnInputChange(Model, inputs => inputs.MultiObjectiveInputs.FrontMaxSize = size))">
+        </MudNumericField>
+    </MudItem>
 </MudGrid>
 
 @code {
-
     protected override IObservable<InputsPanelModelProjection> Select() => Store.Select(RunSelectors.SelectInputsModel);
     
     private async Task OnInputChange(InputsPanelModelProjection inputs, Action<RunInputsState> setter)

@@ -25,7 +25,7 @@ public static class TraceMappers
         {
             Name = "BarTrace",
             X = buckets.Select(val => (object) val.Value).ToList(),
-            Y = buckets.Select((val, idx) => (object) val.Count).ToList(),
+            Y = buckets.Select(val => (object) val.Count).ToList(),
         };
     }
     
@@ -41,11 +41,11 @@ public static class TraceMappers
         {
             Name = "PieTrace",
             Values = buckets.Select(val => (object) val.Value).ToList(),
-            Labels = buckets.Select((val, idx) => (object) val.Count).ToList(),
+            Labels = buckets.Select(val => (object) val.Count).ToList(),
         };
     }
 
-    public static Scatter3D GetScatter3DTrace(List<double[]> points) => new Scatter3D
+    public static Scatter3D GetScatter3DTrace(List<double[]> points) => new()
     {
         Mode = Plotly.Blazor.Traces.Scatter3DLib.ModeFlag.Markers,
         X = points.Select(val => (object) val[0]).ToList(),

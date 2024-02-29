@@ -102,23 +102,26 @@ public class TreeUiTemplate : IRunUITemplate
                 new GridPanel.GridItem
                 {
                     ColSpan = 8,
-                    Panel = new AccordionPanel
+                    Panel = new TabPanel
                     {
-                        Panels =
+                        Id = new Guid("57B2E6CA-DF7D-4E87-9D67-ACC68327F694"),
+                        Tabs =
                         [
-                            new()
+                            new PaperPanel
                             {
-                                Expanded = true,
+                                DisplayHeader = false,
+                                Height = 500,
                                 Id = new Guid("17207E0C-9149-47AD-9DFF-306F89044460"),
-                                Content = typeof(MetricsDataGridPanel),
                                 Title = "Metrics",
+                                Content = typeof(MetricsDataGridPanel),
                             },
-                            new()
+                            new PaperPanel
                             {
-                                Expanded = false,
+                                DisplayHeader = false,
+                                Height = 500,
                                 Id = new Guid("610F9B58-6680-4C79-99DB-14AFAC93BF9F"),
-                                Content = typeof(OpNodeTablePanel),
                                 Title = "Tree Nodes",
+                                Content = typeof(OpNodeTablePanel),
                             }
                         ]
                     }

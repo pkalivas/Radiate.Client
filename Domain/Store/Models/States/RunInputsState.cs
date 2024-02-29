@@ -1,5 +1,3 @@
-using Radiate.Factories.Losses;
-
 namespace Radiate.Client.Domain.Store.Models.States;
 
 public record RunInputsState 
@@ -12,7 +10,6 @@ public record RunInputsState
     public LimitInputs LimitInputs { get; init; } = new();
     public ImageInputs ImageInputs { get; init; } = new();
     public MultiObjectiveInputs MultiObjectiveInputs { get; init; } = new();
-    public DataSetInputs DataSetInputs { get; set; } = new();
 }
 
 public record PopulationInputs
@@ -53,9 +50,4 @@ public record MultiObjectiveInputs
 {
     public int FrontMinSize { get; set; } = 1000;
     public int FrontMaxSize { get; set; } = 1100;
-}
-
-public record DataSetInputs
-{
-    public Loss LossFunction { get; set; } = Loss.MSE;
 }

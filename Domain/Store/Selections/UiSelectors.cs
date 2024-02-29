@@ -37,6 +37,7 @@ public static class UiSelectors
             RunId = run.RunId,
             ModelType = run.Inputs.ModelType,
             DataSetType = run.Inputs.DataSetType,
+            IsRunning = run.IsRunning,
         });
 }
         

@@ -46,9 +46,6 @@ else if (Panel is CardPanel cardPanel)
             <CardHeaderContent>
                 <MudText Typo="Typo.h6">@cardPanel.Title</MudText>
             </CardHeaderContent>
-            <CardHeaderActions>
-                <ActionsButton Actions="@cardPanel.Actions"/>
-            </CardHeaderActions>
         </MudCardHeader>
         <MudCardContent>
             <DynamicComponent Type="@cardPanel.Content" Parameters="@cardPanel.Props" />
@@ -57,10 +54,14 @@ else if (Panel is CardPanel cardPanel)
 }
 else if (Panel is AccordionPanel accordionPanel)
 {
-    <MudExpansionPanels Dense="true" MultiExpansion="true">
+    @if (accordionPanel.Toolbar != null)
+    {
+        <DynamicComponent Type="accordionPanel.Toolbar!"/>
+    }
+    <MudExpansionPanels Dense="true" MultiExpansion="true" @key="accordionPanel.Id">
         @foreach (var exPanel in accordionPanel.Panels)
         {
-            <MudExpansionPanel IsInitiallyExpanded="exPanel.Expanded">
+            <MudExpansionPanel IsInitiallyExpanded="exPanel.Expanded" @key="exPanel.Id">
                 <TitleContent>
                     <PanelHeader Title="@exPanel.Title"/>
                 </TitleContent>

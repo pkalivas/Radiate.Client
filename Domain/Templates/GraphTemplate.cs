@@ -1,6 +1,7 @@
 using Radiate.Client.Components.Panels;
 using Radiate.Client.Components.Panels.Charts;
 using Radiate.Client.Components.Panels.Inputs;
+using Radiate.Client.Components.Panels.Shared;
 using Radiate.Client.Domain.Templates.Panels;
 using Radiate.Client.Services.Schema;
 using Radiate.Engines.Schema;
@@ -16,7 +17,9 @@ public class GraphTemplate : IRunTemplate
 
 public class GraphUiTemplate : IRunUITemplate
 {
-    public List<IPanel> Panels =>
+    public List<IPanel> Panels => ActualPanels;
+    
+    private static List<IPanel> ActualPanels =>
     [
         new GridPanel
         {
@@ -189,4 +192,54 @@ public class GraphUiTemplate : IRunUITemplate
             ]
         }
     ];
+    
+    private static List<IPanel> TestPanels =>
+    [
+        new GridPanel
+        {
+            Id = new Guid("496D83AB-3660-45B8-B9D6-2C8A23B66B12"),
+            Items =
+            [
+                new GridPanel.GridItem
+                {
+                    ColSpan = 8,
+                    Panel = new AccordionPanel
+                    {
+                        Id = new Guid("67C01629-F0CD-42CA-A902-B6E7192C3300"),
+                        Toolbar = typeof(ToolBar),
+                        Panels = new List<AccordionPanelItem>
+                        {
+                            new()
+                            {
+                                Id = new Guid("88D6BD18-DD38-4AD9-8064-43D0665ADD99"),
+                                Expanded = true,
+                                Content = typeof(GraphInputsPanel),
+                                Title = "Inputs",
+                            },
+                            new()
+                            {
+                                Expanded = false,
+                                Id = new Guid("4F263A18-446A-455D-BC37-698F67DE5846"),
+                                Content = typeof(NodeTablePanel),
+                                Title = "Nodes"
+                            }
+                        }
+                    }
+                },
+                new GridPanel.GridItem
+                {
+                    ColSpan = 4,
+                    Panel = new PaperPanel
+                    {
+                        Id = new Guid("A4D0A6AA-678E-448F-B71F-3CF53A745CEF"),
+                        Content = typeof(RunControlPanel),
+                        Title = "Control",
+                        Height = 250,
+                    }
+                },
+            ]
+        }
+    ];
 }
+
+    

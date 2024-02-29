@@ -14,16 +14,6 @@
             <MudText Typo="Typo.body2">@Node.NodeType</MudText>
         </div>
         <div class="col">
-            @if (Node.IsValid)
-            {
-                <MudIcon Icon="@Icons.Material.Outlined.Check" Color="Color.Success" Size="Size.Small"/>
-            }
-            else
-            {
-                <MudIcon Icon="@Icons.Material.Outlined.Error" Color="Color.Warning" Size="Size.Small"/>
-            }
-        </div>
-        <div class="col">
             @if (Node.IsEnabled)
             {
                 <MudIcon Icon="@Icons.Material.Outlined.Circle" Color="Color.Success" Size="Size.Small"/>

@@ -5,12 +5,10 @@ using Radiate.Engines.Entities;
 using Radiate.Engines.Interfaces;
 using Radiate.Engines.Limits;
 using Radiate.Extensions.Engines;
-using Radiate.Extensions.Evolution.Alterers;
 using Radiate.Extensions.Evolution.Architects;
 using Radiate.Extensions.Evolution.Architects.Nodes;
 using Radiate.Extensions.Evolution.Programs;
 using Radiate.Optimizers.Evolution.Interceptors;
-using Radiate.Optimizers.Evolution.Selectors;
 using Radiate.Tensors;
 using Reflow.Interfaces;
 
@@ -33,9 +31,9 @@ public class GraphXorRunner : GraphRunner
         var populationInputs = inputs.PopulationInputs;
         var graphInputs = inputs.GraphInputs;
         
-        var regression = Architect.Graph<float>().ToRegression(frame);
+        var regression = Architect.Graph<float>().ToRegression(frame).Complexity(20);
          
-        var engineOne = Engine.Genetic(regression).Async()
+        return Engine.Genetic(regression).Async()
             .PopulationSize(populationInputs.PopulationSize)
             .Setup(EngineSetup.Neat<float>(
                 populationInputs.CrossoverRate,
@@ -43,27 +41,8 @@ public class GraphXorRunner : GraphRunner
                 graphInputs.AddGateRate,
                 graphInputs.AddWeightRate,
                 graphInputs.AddLinkRate))
-            .Build();
-         
-        var engineTwo = Engine.Genetic(engineOne)
-            .Setup(EngineSetup.Neat<float>(
-                populationInputs.CrossoverRate,
-                populationInputs.MutationRate,
-                graphInputs.AddGateRate, 
-                graphInputs.AddWeightRate,
-                graphInputs.AddLinkRate))
-            .Build();
-         
-        var engineThree = Engine.Genetic(engineOne)
-            .SurvivorSelector(new TournamentSelector<GraphGene<float>>())
-            .Alterers(new ProgramMutator<GraphGene<float>, float>(0.5f, .1f))
             .Interceptors(new UniqueInterceptor<GraphGene<float>>())
+            .Limit(Limits.Iteration(iterationInputs.IterationLimit), Limits.Accuracy(0.01f))
             .Build();
-
-        return Engine.Concat(engineOne.Limit(Limits.Iteration(20)),
-                Engine.Cyclic(
-                    engineTwo.Limit(Limits.SteadyAccuracy(15)),
-                    engineThree.Limit(Limits.Iteration(1))))
-            .Limit(Limits.Seconds(10), Limits.Iteration(iterationInputs.IterationLimit), Limits.Accuracy(0.01f));
     }
 }

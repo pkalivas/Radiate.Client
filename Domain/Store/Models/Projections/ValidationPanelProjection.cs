@@ -1,7 +1,3 @@
-using Plotly.Blazor;
-using Radiate.Client.Services.Schema;
-using Radiate.Engines.Entities;
-
 namespace Radiate.Client.Domain.Store.Models.Projections;
 
 public record ValidationPanelProjection

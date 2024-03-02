@@ -31,7 +31,7 @@ else if (Panel is TabPanel tabPanel)
 }
 else if (Panel is PaperPanel paperPanel)
 {
-    <MudPaper Elevation="2" Height="@($"{paperPanel.Height}px")" Class="pa-3">
+    <MudPaper Elevation="2" Height="@($"{paperPanel.Height}px")" Class="pa-3" @key="paperPanel.Id">
         @if (paperPanel.DisplayHeader)
         {
             <PanelHeader Title="@paperPanel.Title"/>

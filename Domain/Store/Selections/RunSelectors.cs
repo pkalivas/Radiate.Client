@@ -101,16 +101,30 @@ public static class RunSelectors
         });
     
     public static ISelector<RootState, AccuracyChartPanelProjection> SelectAccuracyChartPanelModel => Selectors
-        .Create<RootState, RunState, AccuracyChartPanelProjection>(SelectRun, state => new AccuracyChartPanelProjection
-        {
-            Traces = new List<ITrace>
-            {
-                TraceMappers.GetScatter(state.Outputs.ValidationOutput.TrainValidation.PredictionValidations
-                    .Select(pred => (double) pred.Confidence).ToArray(), "Predicted"),
-                TraceMappers.GetScatter(state.Outputs.ValidationOutput.TrainValidation.PredictionValidations
-                    .Select(pred => (double)pred.Label.First()).ToArray(), "Actual")
-            }
-        });
+        .Create<RootState, RunState, RunUiState, AccuracyChartPanelProjection>(SelectRun, RunUiSelectors.SelectRunUiState,
+            (state, uiState) => new AccuracyChartPanelProjection
+            { 
+                RunId = state.RunId,
+                TrainTestType = uiState.TrainTest,
+                Traces = uiState.TrainTest switch
+                {
+                    TrainTestTypes.Train => new List<ITrace>
+                    {
+                        TraceMappers.GetScatter(state.Outputs.ValidationOutput.TrainValidation.PredictionValidations
+                            .Select(pred => (double)pred.Confidence).ToArray(), "Predicted"),
+                        TraceMappers.GetScatter(state.Outputs.ValidationOutput.TrainValidation.PredictionValidations
+                            .Select(pred => (double)pred.Label.First()).ToArray(), "Actual")
+                    },
+                    TrainTestTypes.Test => new List<ITrace>
+                    {
+                        TraceMappers.GetScatter(state.Outputs.ValidationOutput.TestValidation.PredictionValidations
+                            .Select(pred => (double)pred.Confidence).ToArray(), "Predicted"),
+                        TraceMappers.GetScatter(state.Outputs.ValidationOutput.TestValidation.PredictionValidations
+                            .Select(pred => (double)pred.Label.First()).ToArray(), "Actual")
+                    },
+                    _ => new List<ITrace>()
+                }
+            });
     
     private static ValidationPrediction Map(PredictionValidation val) => new()
     {

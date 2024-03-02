@@ -16,9 +16,6 @@ public static class RunSelectors
     public static ISelector<RootState, RunState> SelectRun => Selectors
         .Create<RootState, RunState>(state => state.Runs.TryGetValue(state.CurrentRunId, out var run) ? run : new RunState());
     
-    public static ISelector<RootState, ValidationOutput> SelectValidationOutput => Selectors
-        .Create<RootState, RunState, ValidationOutput>(SelectRun, run => run.Outputs.ValidationOutput);
-    
     public static ISelector<RootState, InputsPanelModelProjection> SelectInputsModel => Selectors
         .Create<RootState, RunState, InputsPanelModelProjection>(SelectRun, run => new InputsPanelModelProjection
         {

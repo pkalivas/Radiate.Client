@@ -7,6 +7,7 @@
             <MudMenu Label="@Model.TrainTest"
                      Variant="Variant.Filled"
                      EndIcon="@Icons.Material.Filled.KeyboardArrowDown"
+                     DisableElevation="true"
                      IconColor="Color.Primary">
                 <MudMenuItem OnClick="@SetTrainTestTrain">Train</MudMenuItem>
                 <MudMenuItem OnClick="@SetTrainTestTest">Test</MudMenuItem>
@@ -61,10 +62,10 @@
                     @foreach (var predictionValidation in Model.CurrentValidation.PredictionValidations)
                     {
                         <tr>
-                            <td>@predictionValidation.PredictedValue</td>
-                            <td>@predictionValidation.ActualValue</td>
-                            <td>@predictionValidation.Difference</td>
-                            <td>@predictionValidation.Loss</td>
+                            <td>@(Math.Round(predictionValidation.PredictedValue, 5))</td>
+                            <td>@(Math.Round(predictionValidation.ActualValue, 5))</td>
+                            <td>@(Math.Round(predictionValidation.Difference, 5))</td>
+                            <td>@(Math.Round(predictionValidation.Loss, 5))</td>
                         </tr>
                     }
                 </tbody>

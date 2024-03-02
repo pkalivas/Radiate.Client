@@ -61,7 +61,7 @@ else if (Panel is AccordionPanel accordionPanel)
     <MudExpansionPanels Dense="true" MultiExpansion="true" @key="accordionPanel.Id">
         @foreach (var exPanel in accordionPanel.Panels)
         {
-            <MudExpansionPanel IsInitiallyExpanded="exPanel.Expanded" @key="exPanel.Id">
+            <MudExpansionPanel IsInitiallyExpanded="exPanel.Expanded" Dense="true" @key="exPanel.Id">
                 <TitleContent>
                     <PanelHeader Title="@exPanel.Title"/>
                 </TitleContent>

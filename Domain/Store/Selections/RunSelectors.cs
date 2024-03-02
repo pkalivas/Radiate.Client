@@ -3,6 +3,8 @@ using Plotly.Blazor.Traces;
 using Radiate.Client.Domain.Store.Models.Projections;
 using Radiate.Client.Domain.Store.Models.States;
 using Radiate.Client.Services.Mappers;
+using Radiate.Client.Services.Schema;
+using Radiate.Engines.Entities;
 using Radiate.Engines.Schema;
 using Reflow.Interfaces;
 using Reflow.Selectors;
@@ -64,40 +66,41 @@ public static class RunSelectors
         });
     
     public static ISelector<RootState, ValidationPanelProjection> SelectValidationPanelProjection => Selectors
-        .Create<RootState, RunState, ValidationPanelProjection>(SelectRun, state => new ValidationPanelProjection
+        .Create<RootState, RunState, RunUiState, ValidationPanelProjection>(SelectRun, RunUiSelectors.SelectRunUiState, 
+        (state, uiState) => new ValidationPanelProjection
         {
             RunId = state.RunId,
             LossFunction = state.Outputs.ValidationOutput.LossFunction,
-            Validations = new List<ValidationSet>
+            TrainTest = uiState.TrainTest,
+            CurrentValidation = uiState.TrainTest switch
             {
-                new()
+                TrainTestTypes.Train => new ValidationSet
                 {
-                    Name = "Train",
+                    Name = TrainTestTypes.Train,
                     ClassificationAccuracy = state.Outputs.ValidationOutput.TrainValidation.ClassificationAccuracy,
                     RegressionAccuracy = state.Outputs.ValidationOutput.TrainValidation.RegressionAccuracy,
                     CategoricalAccuracy = state.Outputs.ValidationOutput.TrainValidation.CategoricalAccuracy,
                     TotalLoss = state.Outputs.ValidationOutput.TrainValidation.TotalLoss,
                     Duration = state.Outputs.ValidationOutput.TrainValidation.Duration,
-                    DataPoints = state.Outputs.ValidationOutput.TrainValidation.DataPoints
+                    DataPoints = state.Outputs.ValidationOutput.TrainValidation.DataPoints,
+                    PredictionValidations = state.Outputs.ValidationOutput.TrainValidation.PredictionValidations
+                        .Select(Map)
+                        .ToList()
                 },
-                new()
+                TrainTestTypes.Test => new ValidationSet
                 {
-                    Name = "Test",
+                    Name = TrainTestTypes.Test,
                     ClassificationAccuracy = state.Outputs.ValidationOutput.TestValidation.ClassificationAccuracy,
                     RegressionAccuracy = state.Outputs.ValidationOutput.TestValidation.RegressionAccuracy,
                     CategoricalAccuracy = state.Outputs.ValidationOutput.TestValidation.CategoricalAccuracy,
                     TotalLoss = state.Outputs.ValidationOutput.TestValidation.TotalLoss,
                     Duration = state.Outputs.ValidationOutput.TestValidation.Duration,
-                    DataPoints = state.Outputs.ValidationOutput.TestValidation.DataPoints
-                }
+                    DataPoints = state.Outputs.ValidationOutput.TestValidation.DataPoints,
+                    PredictionValidations = state.Outputs.ValidationOutput.TestValidation.PredictionValidations
+                        .Select(Map)
+                        .ToList()
+                },
             },
-            Traces = new List<ITrace>
-            {
-                TraceMappers.GetScatter(state.Outputs.ValidationOutput.TrainValidation.PredictionValidations
-                    .Select(pred => (double) pred.Confidence).ToArray(), "Prediction"),
-                TraceMappers.GetScatter(state.Outputs.ValidationOutput.TrainValidation.PredictionValidations
-                    .Select(pred => (double)pred.Label.First()).ToArray(), "Actual")
-            }
         });
     
     public static ISelector<RootState, AccuracyChartPanelProjection> SelectAccuracyChartPanelModel => Selectors
@@ -111,4 +114,11 @@ public static class RunSelectors
                     .Select(pred => (double)pred.Label.First()).ToArray(), "Actual")
             }
         });
+    
+    private static ValidationPrediction Map(PredictionValidation val) => new()
+    {
+        Loss = val.Loss,
+        ActualValue = val.Label.First(),
+        PredictedValue = val.FeatureOutput.Count() > 1 ? val.Classification : val.Confidence
+    };
 }

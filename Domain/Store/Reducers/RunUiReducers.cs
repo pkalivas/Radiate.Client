@@ -10,6 +10,7 @@ public static class RunUiReducers
     [
         Reducer.On<SetEngineTreeExpandedAction, RootState>(SetTreeExpansions),
         Reducer.On<RunUiCreatedAction, RootState>(AddRunUi),
+        Reducer.On<SetTrainTestTypeAction, RootState>(SetTrainTestType)
     ];
 
     private static RootState AddRunUi(RootState state, RunUiCreatedAction action) => state
@@ -19,5 +20,11 @@ public static class RunUiReducers
         .UpdateRunUi(action.RunId, ui => ui with
         {
             EngineStateExpanded = action.Expanded.ToImmutableDictionary()
+        });
+
+    private static RootState SetTrainTestType(RootState state, SetTrainTestTypeAction action) => state
+        .UpdateRunUi(action.RunId, ui => ui with
+        {
+            TrainTest = action.TrainTestType
         });
 }

@@ -6,24 +6,23 @@
     <div class="container">
         <div class="row w-25 align-items-center">
             <div class="col">
-                <h5>@Title&nbsp;@Model!.DataSetType</h5>
+                <h5>@Model!.ModelType&nbsp;@Model!.DataSetType</h5>
             </div>
         </div>
     </div>
     <div>
-        <MudMenu Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small" Dense="true">
-            @foreach (var action in Actions)
-            {
-                if (action is MenuActions.Copy)
-                {
-                    <MudMenuItem Icon="@Icons.Material.Outlined.ContentCopy" IconSize="Size.Small" OnClick="@CopyRun">@action</MudMenuItem>
-                }
-                else if (action is MenuActions.EngineTree)
-                {
-                    <MudMenuItem Icon="@Icons.Material.Outlined.AccountTree" IconSize="Size.Small" OnClick="@OpenEngineTree">@action</MudMenuItem>
-                }
-            }
-        </MudMenu>
+        <div class="d-flex align-items-center">
+            <MudIconButton Icon="@Icons.Material.Outlined.ContentCopy"
+                           Size="Size.Small"
+                           OnClick="@CopyRun"
+                           Class="mr-2"/>
+
+            <MudIconButton Icon="@Icons.Material.Outlined.AccountTree"
+                           Size="Size.Small"
+                           OnClick="@OpenEngineTree"
+                           Class="mr-2"/>
+
+        </div>
     </div>
 </MudToolBar>
 <MudProgressLinear Indeterminate="@Model.IsRunning" Rounded="true" Color="Color.Success" Size="Size.Small"/>

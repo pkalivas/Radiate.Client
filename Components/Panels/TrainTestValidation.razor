@@ -1,0 +1,85 @@
+@using System.Text.Json
+@inherits StoreComponent<ValidationPanelProjection>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <MudMenu Label="@Model.TrainTest"
+                     Variant="Variant.Filled"
+                     EndIcon="@Icons.Material.Filled.KeyboardArrowDown"
+                     IconColor="Color.Primary">
+                <MudMenuItem OnClick="@SetTrainTestTrain">Train</MudMenuItem>
+                <MudMenuItem OnClick="@SetTrainTestTest">Test</MudMenuItem>
+            </MudMenu>
+        </div>
+        <div class="col">
+            <div class="border-bottom d-flex justify-content-between">
+                <MudText Typo="Typo.body1">Class.</MudText>
+                <MudText Typo="Typo.body2">@(Math.Round(Model.CurrentValidation.ClassificationAccuracy, 5))</MudText>
+            </div>
+        </div>
+        <div class="col">
+            <div class="border-bottom d-flex justify-content-between">
+                <MudText Typo="Typo.body1">Reg.</MudText>
+                <MudText Typo="Typo.body2">@(Math.Round(Model.CurrentValidation.RegressionAccuracy, 5))</MudText>
+            </div>
+        </div>
+        <div class="col">
+            <div class="border-bottom d-flex justify-content-between">
+                <MudText Typo="Typo.body1">Cat.</MudText>
+                <MudText Typo="Typo.body2">@Model.CurrentValidation.CategoricalAccuracy</MudText>
+            </div>
+        </div>
+        <div class="col">
+            <div class="border-bottom d-flex justify-content-between">
+                <MudText Typo="Typo.body1">Loss</MudText>
+                <MudText Typo="Typo.body2">@(Math.Round(Model.CurrentValidation.TotalLoss, 5))</MudText>
+            </div>
+        </div>
+        <div class="col">
+            <div class="border-bottom d-flex justify-content-between">
+                <MudText Typo="Typo.body1"># Points</MudText>
+                <MudText Typo="Typo.body2">@Model.CurrentValidation.DataPoints</MudText>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2 mb-2">
+        <MudDivider/>
+    </div>
+    <div class="row">
+        <div class="col">
+            <MudSimpleTable Hover="true" Dense="true" Elevation="0" FixedHeader="true" Style="height: 300px;">
+                <thead>
+                    <tr>
+                        <th>Predicted</th>
+                        <th>Actual</th>
+                        <th>Difference</th>
+                        <th>@Model.LossFunction</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var predictionValidation in Model.CurrentValidation.PredictionValidations)
+                    {
+                        <tr>
+                            <td>@predictionValidation.PredictedValue</td>
+                            <td>@predictionValidation.ActualValue</td>
+                            <td>@predictionValidation.Difference</td>
+                            <td>@predictionValidation.Loss</td>
+                        </tr>
+                    }
+                </tbody>
+            </MudSimpleTable>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    protected override IObservable<ValidationPanelProjection> Select() =>
+        Store.Select(RunSelectors.SelectValidationPanelProjection);
+
+    private void SetTrainTestTrain() => Store.Dispatch(new SetTrainTestTypeAction(Model.RunId, TrainTestTypes.Train));
+    
+    private void SetTrainTestTest() => Store.Dispatch(new SetTrainTestTypeAction(Model.RunId, TrainTestTypes.Test));
+
+}

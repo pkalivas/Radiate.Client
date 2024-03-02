@@ -1,4 +1,6 @@
 using Plotly.Blazor;
+using Radiate.Client.Services.Schema;
+using Radiate.Engines.Entities;
 
 namespace Radiate.Client.Domain.Store.Models.Projections;
 
@@ -6,8 +8,8 @@ public record ValidationPanelProjection
 {
     public Guid RunId { get; init; }
     public string LossFunction { get; init; } = "";
-    public List<ValidationSet> Validations { get; init; } = new();
-    public List<ITrace> Traces { get; init; } = new();
+    public string TrainTest { get; init; } = "";
+    public ValidationSet CurrentValidation { get; init; } = new();
 }
 
 public record ValidationSet
@@ -19,4 +21,13 @@ public record ValidationSet
     public float TotalLoss { get; init; }
     public TimeSpan Duration { get; init; }
     public int DataPoints { get; init; }
+    public List<ValidationPrediction> PredictionValidations { get; init; } = new();
+}
+
+public record ValidationPrediction
+{
+    public float Loss { get; init; }
+    public float ActualValue { get; init; }
+    public float PredictedValue { get; init; }
+    public float Difference => ActualValue - PredictedValue;
 }

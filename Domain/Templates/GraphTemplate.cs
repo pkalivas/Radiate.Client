@@ -218,17 +218,17 @@ public class GraphUiTemplate : IRunUITemplate
                             },
                             new()
                             {
-                                Id = new Guid("0277DCC6-B002-409F-A62A-C9B29F564419"),
-                                Expanded = true,
-                                Content = typeof(TrainTestValidation),
-                                Title = "Train/Test"
-                            },
-                            new()
-                            {
                                 Expanded = false,
                                 Id = new Guid("4F263A18-446A-455D-BC37-698F67DE5846"),
                                 Content = typeof(NodeTablePanel),
                                 Title = "Nodes"
+                            },
+                            new()
+                            {
+                                Id = new Guid("0277DCC6-B002-409F-A62A-C9B29F564419"),
+                                Expanded = false,
+                                Content = typeof(TrainTestValidation),
+                                Title = "Train/Test"
                             },
                             new()
                             {

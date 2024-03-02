@@ -20,7 +20,7 @@ else if (Panel is ToolbarPanel toolBarPanel)
 }
 else if (Panel is TabPanel tabPanel)
 {
-    <MudTabs Elevation="2" Centered="true" Rounded="false">
+    <MudTabs Elevation="2" Centered="true" Rounded="false" @key="tabPanel.Id">
         @foreach (var tabItem in tabPanel.Tabs)
         {
             <MudTabPanel Text="@tabItem.Title" @key="@tabItem.Id">

@@ -85,7 +85,7 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner, IDisposable where
         _outputs.Dispose();
     }
     
-    private static RunOutputsState Map(RunInputsState inputs, EngineOutput<TEpoch, T> output) => new()
+    private static RunOutputsState Map(RunInputsState inputs, EngineHandle output) => new()
     {
         EngineState = output.GetState(output.EngineId),
         EngineId = output.EngineId,

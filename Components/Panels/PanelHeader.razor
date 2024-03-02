@@ -14,5 +14,6 @@
     [Parameter] public List<string> Actions { get; set; } = new();
     [Parameter] public string Title { get; set; }
 
-    protected override IObservable<PanelToolbarProjection> Select() => Store.Select(EngineSelectors.SelectPanelToolbarModel);
+    protected override IObservable<PanelToolbarProjection> Select() => 
+        Store.Select(EngineSelectors.SelectPanelToolbarModel);
 }

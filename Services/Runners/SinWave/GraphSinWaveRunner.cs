@@ -46,7 +46,6 @@ public class GraphSinWaveRunner : GraphRunner
     protected override async Task<TensorFrame> BuildFrame(RunInputsState inputs)
     {
         var (features, targets) = await new Data.SinWave().LoadDataSet();
-        
         return new TensorFrame(features, targets)
             .Shift(5)
             .Split();      

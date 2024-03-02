@@ -38,7 +38,7 @@ public abstract class MultiObjectiveRunner : EngineRunner<GeneticEpoch<FloatGene
         
         if (_front.Size() < runInputs.MultiObjectiveInputs.FrontMaxSize)
         {
-            return  runOutputs with 
+            return runOutputs with 
             {
                 ParetoFrontOutput = new ParetoFrontOutput
                 {

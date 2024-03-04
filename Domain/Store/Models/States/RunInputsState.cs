@@ -45,7 +45,7 @@ public record ImageInputs
     public int Width { get; set; } = 50;
     public int NumShapes { get; set; } = 150;
     public int NumVertices { get; set; } = 4;
-    [JsonIgnore] public ImageEntity TargetImage { get; set; } = new();
+    public ImageEntity TargetImage { get; set; } = new();
 }
 
 public record MultiObjectiveInputs

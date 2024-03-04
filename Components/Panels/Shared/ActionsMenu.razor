@@ -1,0 +1,31 @@
+@inherits StoreComponent<ToolBarProjection>
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
+
+<MudMenu Dense="true" Icon="@Icons.Material.Outlined.MoreHoriz" Size="Size.Small">
+    <MudMenuItem OnClick="@CopyRun">Copy</MudMenuItem>
+    <MudMenuItem OnClick="@InspectRun">Inspect</MudMenuItem>
+</MudMenu>
+
+@code {
+    protected override IObservable<ToolBarProjection> Select() => Store.Select(UiSelectors.SelectToolBarModel);
+    
+    private async Task CopyRun() => await Task.Run(() =>
+    {
+        var runId = Model!.RunId;
+        var newRunId = Guid.NewGuid();
+
+        NavigationManager.NavigateTo($"/runs/{newRunId}/{Model.ModelType.ToLower()}");
+
+        Store.Dispatch(new SetRunLoadingAction(newRunId, true));
+        Store.Dispatch(new NavigateToRunAction(newRunId));
+        Store.Dispatch(new CopyRunAction(runId, newRunId));
+    });
+    
+    private async Task InspectRun() => await DialogService.ShowAsync<InspectDialog>("Inspect Run", new DialogOptions
+    {
+        CloseButton = true,
+        MaxWidth = MaxWidth.Large,
+        FullWidth = true,
+    });
+}

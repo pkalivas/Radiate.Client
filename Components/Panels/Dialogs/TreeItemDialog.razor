@@ -9,7 +9,7 @@
                     <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.TreeItems">
                         <Content>
                             <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChild"/>
-                            <DynamicComponent Type="ChildContent" Parameters="@GetChildContentProps(context)"/>
+                            <DynamicComponent Type="ChildContent" Parameters="@ChildContentProps(context.Data)"/>
                         </Content>
                     </MudTreeViewItem>
                 </ItemTemplate>
@@ -35,12 +35,12 @@
 
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-    
+
     [Parameter] public int Index { get; set; }
     [Parameter] public TItem[] Items { get; set; }
     [Parameter] public Type ChildContent { get; set; }
     [Parameter] public Func<TItem, Dictionary<string, object>> ChildContentProps { get; set; }
-    
+
     private HashSet<TreeItemData<TItem>> _items { get; set; } = new();
     private bool _expanded = false;
 
@@ -55,6 +55,4 @@
         _expanded = !_expanded;
         _items = TreeItemMapper.ToTree(Index, Items, _expanded);
     }
-    
-    private IDictionary<string, object> GetChildContentProps(TreeItemData<TItem> item) => ChildContentProps(item.Data);
 }

@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Radiate.Client.Domain.Store.Models.States;
 
 public record RunInputsState 
@@ -43,7 +45,7 @@ public record ImageInputs
     public int Width { get; set; } = 50;
     public int NumShapes { get; set; } = 150;
     public int NumVertices { get; set; } = 4;
-    public ImageEntity TargetImage { get; set; } = new();
+    [JsonIgnore] public ImageEntity TargetImage { get; set; } = new();
 }
 
 public record MultiObjectiveInputs

@@ -1,0 +1,56 @@
+@using System.Text.Json
+@inherits StoreComponent<RunState>
+
+<MudDialog>
+    <DialogContent>
+        <MudContainer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-4">
+                        <MudList Clickable="true" @bind-SelectedItem="@_selectedItem" @bind-SelectedValue="@_selectedValue">
+                            <MudListItem Text="Inputs" Dense="true" InitiallyExpanded="true">
+                                <NestedList>
+                                    <MudListItem Text="Population" Value="@Model.Inputs.PopulationInputs"/>
+                                    <MudListItem Text="Graph" Value="@Model.Inputs.GraphInputs"/>
+                                    <MudListItem Text="Tree" Value="@Model.Inputs.TreeInputs"/>
+                                    <MudListItem Text="Limit" Value="@Model.Inputs.LimitInputs"/>
+                                    <MudListItem Text="Image" Value="@Model.Inputs.ImageInputs"/>
+                                    <MudListItem Text="MultiObjective" Value="@Model.Inputs.MultiObjectiveInputs"/>
+                                </NestedList>
+                            </MudListItem>
+                            <MudListItem Text="Outputs" Dense="true" InitiallyExpanded="true">
+                                <NestedList>
+                                    <MudListItem Text="Engine States" Value="@Model.Outputs.EngineStateOutputs"/>
+                                    <MudListItem Text="Graph" Value="@Model.Outputs.GraphOutput"/>
+                                    <MudListItem Text="Tree" Value="@Model.Outputs.TreeOutput"/>
+                                    <MudListItem Text="Validation" Value="@Model.Outputs.ValidationOutput"/>
+                                    <MudListItem Text="Pareto Front" Value="@Model.Outputs.ParetoFrontOutput"/>
+                                </NestedList>
+                            </MudListItem>
+                        </MudList>
+                    </div>
+                    <div class="col">
+                        @if (_selectedValue != null)
+                        {
+                            <h3>@_selectedItem.Text</h3>
+                            <MudDivider/>
+                            <div style="max-height: 400px; width: 700px; overflow-y: auto; overflow-x: auto;">
+                                <pre>@JsonSerializer.Serialize(_selectedValue, new JsonSerializerOptions {WriteIndented = true})</pre>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            
+        </MudContainer>                
+    </DialogContent>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    protected override IObservable<RunState> Select() => Store.Select(RunSelectors.SelectRun);
+
+    private MudListItem _selectedItem;
+    private object? _selectedValue = null;
+}

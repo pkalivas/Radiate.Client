@@ -2,25 +2,26 @@
 @inherits StoreComponent<EngineStateTableModelProjection>
 @inject IDialogService DialogService
 
-@if (@Model?.EngineOutputs != null)
+@if (Model?.EngineOutputs != null)
 {
     <MudTable Elevation="0" 
               Items="@Model.EngineOutputs" 
               T="EngineOutput" 
               Class="table-striped"
               FixedHeader="true"
-              Dense="true"
-              Height="200px">
+              Dense="true">
         <HeaderContent>
             <MudTh>Index</MudTh>
             <MudTh>Engine</MudTh>
             <MudTh>State</MudTh>
+            <MudTh>Time</MudTh>
             <MudTh></MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd>@context.Index</MudTd>
             <MudTd>@context.Name</MudTd>
             <MudTd>@context.State</MudTd>
+            <MudTd>@FormatDuration(context.Metrics.TryGetValue(MetricNames.Time, out var time) ? time.Total : TimeSpan.Zero)</MudTd>
             <MudTh>
                 <MudButton Color="Color.Primary"
                            Variant="Variant.Outlined" 
@@ -57,6 +58,9 @@
         };
 
         var dialog = await DialogService.ShowAsync<TreeItemDialog<EngineOutput>>("Engine Output", parameters, options);
-        var result = await dialog.Result;
+        
+        await dialog.Result;
     }
+    
+    private static string FormatDuration(TimeSpan duration) => duration.ToString("mm\\:ss\\:ffff");
 }

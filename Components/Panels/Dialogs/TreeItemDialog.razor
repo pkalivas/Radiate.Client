@@ -17,16 +17,19 @@
         </MudContainer>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@ToggleExpanded">
-            @if (_expanded)
-            {
-                <MudText>Collapse All</MudText>
-            }
-            else
-            {
-                <MudText>Expand All</MudText>
-            }
-        </MudButton>
+        @if (Items.Length > 1)
+        {
+            <MudButton OnClick="@ToggleExpanded">
+                @if (_expanded)
+                {
+                    <MudText>Collapse All</MudText>
+                }
+                else
+                {
+                    <MudText>Expand All</MudText>
+                }
+            </MudButton>
+        }
     </DialogActions>
 </MudDialog>
 

@@ -83,23 +83,23 @@ public class GraphUiTemplate : IRunUITemplate
                                         new GridPanel.GridItem
                                         {
                                             ColSpan = 7,
-                                            Panel = new PaperPanel
+                                            Panel = new BoundedPaperPanel
                                             {
                                                 Id = new Guid("B3234C56-9806-4E4E-ABF2-2471D90B5D91"),
+                                                Height = 230,
                                                 Content = typeof(RunSimpleStatsPanel),
                                                 Title = "Stats",
-                                                Height = 250,
                                             }
                                         },
                                         new GridPanel.GridItem
                                         {
                                             ColSpan = 5,
-                                            Panel = new PaperPanel
+                                            Panel = new BoundedPaperPanel
                                             {
                                                 Id = new Guid("365C357D-3A47-418B-84A8-7CBE2DAE1B29"),
+                                                Height = 230,
                                                 Content = typeof(RunControlPanel),
                                                 Title = "Control",
-                                                Height = 250,
                                             }
                                         },
                                     ]
@@ -113,7 +113,7 @@ public class GraphUiTemplate : IRunUITemplate
                                     Id = new Guid("8ABC3316-1156-47EA-A573-381B2EDF7AE3"),
                                     Tabs = 
                                     [
-                                        new PaperPanel
+                                        new BoundedPaperPanel
                                         {
                                             Id = new Guid("A5F2CFCD-9BB6-4511-84C3-9AB72CA8EF75"),
                                             Content = typeof(AccuracyChartPanel),
@@ -125,7 +125,7 @@ public class GraphUiTemplate : IRunUITemplate
                                                 ["Height"] = 200
                                             }
                                         },
-                                        new PaperPanel
+                                        new BoundedPaperPanel
                                         {
                                             Id = new Guid("1AB95A03-9B5D-4D7C-B0EB-06797C2367F3"),
                                             Content = typeof(ScorePanel),
@@ -148,23 +148,25 @@ public class GraphUiTemplate : IRunUITemplate
                                     Id = new Guid("9867301E-CD35-40B4-A411-4E9589CDB7DD"),
                                     Tabs = 
                                     [
-                                        new PaperPanel
+                                        new BoundedPaperPanel
                                         {
                                             DisplayHeader = false,
                                             Id = new Guid("19687ECB-52DD-4D4A-B260-3EB55FB39B93"),
                                             Title = "Fitness Dist.",
                                             Content = typeof(MetricSummaryChartPanel),
+                                            Height = 250,
                                             Props = new Dictionary<string, object>
                                             {
                                                 ["MetricName"] = MetricNames.FitnessDistribution,
                                                 ["ChartHeight"] = 200
                                             }
                                         },
-                                        new PaperPanel
+                                        new BoundedPaperPanel
                                         {
                                             DisplayHeader = false,
                                             Id = new Guid("89DBD37A-4D39-4CD0-987E-0768C2C916C8"),
                                             Title = "Age Dist.",
+                                            Height = 250,
                                             Content = typeof(MetricSummaryChartPanel),
                                             Props = new Dictionary<string, object>
                                             {
@@ -172,11 +174,12 @@ public class GraphUiTemplate : IRunUITemplate
                                                 ["ChartHeight"] = 200
                                             }
                                         },
-                                        new PaperPanel
+                                        new BoundedPaperPanel
                                         {
                                             DisplayHeader = false,
                                             Id = new Guid("FA2CB9C6-54FE-40AF-AA4D-2CD538B82B36"),
                                             Title = "Genome Size",
+                                            Height = 250,
                                             Content = typeof(MetricSummaryChartPanel),
                                             Props = new Dictionary<string, object>
                                             {
@@ -185,6 +188,16 @@ public class GraphUiTemplate : IRunUITemplate
                                             }
                                         }
                                     ]
+                                }
+                            },
+                            new GridPanel.GridItem
+                            {
+                                ColSpan = 12,
+                                Panel = new PaperPanel
+                                {
+                                    Id = new Guid("48623FCA-577B-4DFE-98ED-AFE905D11CDB"),
+                                    Content = typeof(EngineStateTablePanel),
+                                    Title = "Engine States",
                                 }
                             }
                         ]

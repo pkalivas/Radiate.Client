@@ -3,14 +3,7 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <MudMenu Label="@Model.TrainTest"
-                     Variant="Variant.Filled"
-                     EndIcon="@Icons.Material.Filled.KeyboardArrowDown"
-                     DisableElevation="true"
-                     IconColor="Color.Primary">
-                <MudMenuItem OnClick="@SetTrainTestTrain">Train</MudMenuItem>
-                <MudMenuItem OnClick="@SetTrainTestTest">Test</MudMenuItem>
-            </MudMenu>
+            <TrainTestToggle/>
         </div>
         <div class="col">
             <div class="border-bottom d-flex justify-content-between">
@@ -48,7 +41,11 @@
     </div>
     <div class="row">
         <div class="col">
-            <MudSimpleTable Hover="true" Dense="true" Elevation="0" FixedHeader="true" Style="height: 300px;">
+            <MudSimpleTable Hover="true" 
+                            Dense="true"
+                            Elevation="0"
+                            FixedHeader="true"
+                            Style="@(Model.CurrentValidation.PredictionValidations.Count > 8 ? "height: 300px;" : "")">
                 <thead>
                     <tr>
                         <th>Predicted</th>
@@ -77,9 +74,4 @@
 
     protected override IObservable<ValidationPanelProjection> Select() =>
         Store.Select(RunSelectors.SelectValidationPanelProjection);
-
-    private void SetTrainTestTrain() => Store.Dispatch(new SetTrainTestTypeAction(Model.RunId, TrainTestTypes.Train));
-    
-    private void SetTrainTestTest() => Store.Dispatch(new SetTrainTestTypeAction(Model.RunId, TrainTestTypes.Test));
-
 }

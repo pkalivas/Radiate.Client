@@ -39,7 +39,7 @@
             </TemplateColumn>
         </Columns>
         <ChildRowContent>
-            <MudCard Elevation="0">
+            <MudCard Elevation="1">
                 <MudCardContent>
                     <div class="container">
                         <div class="row">
@@ -75,9 +75,7 @@
                             </div>
                         </div>
                     </div>
-                </MudCardContent>
-                <MudCardActions>
-                    <div class="w-full d-flex justify-content-end">
+                    <div class="d-flex flex-row-reverse">
                         <MudButton Size="@Size.Small"
                                    Variant="@Variant.Filled"
                                    Color="@Color.Primary"
@@ -86,6 +84,8 @@
                             Node Path
                         </MudButton>
                     </div>
+                </MudCardContent>
+                <MudCardActions>
                 </MudCardActions>
             </MudCard>
         </ChildRowContent>

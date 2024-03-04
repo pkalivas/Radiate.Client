@@ -18,6 +18,16 @@ else if (Panel is ToolbarPanel toolBarPanel)
         <DynamicComponent Type="@toolBarPanel.Content"/>
     </MudPaper>
 }
+else if (Panel is BoundedPaperPanel boundedPaperPanel)
+{
+    <MudPaper Elevation="2" Class="pa-3" Height="@($"{boundedPaperPanel.Height}px")" @key="boundedPaperPanel.Id">
+        @if (boundedPaperPanel.DisplayHeader)
+        {
+            <PanelHeader Title="@boundedPaperPanel.Title"/>
+        }
+        <DynamicComponent Type="@boundedPaperPanel.Content" Parameters="@boundedPaperPanel.Props"/>
+    </MudPaper>
+}
 else if (Panel is TabPanel tabPanel)
 {
     <MudTabs Elevation="2" Centered="true" Rounded="false" @key="tabPanel.Id">
@@ -31,7 +41,7 @@ else if (Panel is TabPanel tabPanel)
 }
 else if (Panel is PaperPanel paperPanel)
 {
-    <MudPaper Elevation="2" Height="@($"{paperPanel.Height}px")" Class="pa-3" @key="paperPanel.Id">
+    <MudPaper Elevation="2" Class="pa-3" @key="paperPanel.Id">
         @if (paperPanel.DisplayHeader)
         {
             <PanelHeader Title="@paperPanel.Title"/>

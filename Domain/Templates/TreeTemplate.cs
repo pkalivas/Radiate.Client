@@ -89,7 +89,6 @@ public class TreeUiTemplate : IRunUITemplate
                                                 Id = new Guid("B3234C56-9806-4E4E-ABF2-2471D90B5D91"),
                                                 Content = typeof(RunSimpleStatsPanel),
                                                 Title = "Stats",
-                                                Height = 250,
                                             }
                                         },
                                         new GridPanel.GridItem
@@ -100,7 +99,6 @@ public class TreeUiTemplate : IRunUITemplate
                                                 Id = new Guid("365C357D-3A47-418B-84A8-7CBE2DAE1B29"),
                                                 Content = typeof(RunControlPanel),
                                                 Title = "Control",
-                                                Height = 250,
                                             }
                                         },
                                     ]
@@ -114,7 +112,7 @@ public class TreeUiTemplate : IRunUITemplate
                                     Id = new Guid("8ABC3316-1156-47EA-A573-381B2EDF7AE3"),
                                     Tabs = 
                                     [
-                                        new PaperPanel
+                                        new BoundedPaperPanel
                                         {
                                             Id = new Guid("A5F2CFCD-9BB6-4511-84C3-9AB72CA8EF75"),
                                             Content = typeof(AccuracyChartPanel),
@@ -126,7 +124,7 @@ public class TreeUiTemplate : IRunUITemplate
                                                 ["Height"] = 200
                                             }
                                         },
-                                        new PaperPanel
+                                        new BoundedPaperPanel
                                         {
                                             Id = new Guid("1AB95A03-9B5D-4D7C-B0EB-06797C2367F3"),
                                             Content = typeof(ScorePanel),
@@ -196,7 +194,6 @@ public class TreeUiTemplate : IRunUITemplate
                                     Id = new Guid("48623FCA-577B-4DFE-98ED-AFE905D11CDB"),
                                     Content = typeof(EngineStateTablePanel),
                                     Title = "Engine States",
-                                    Height = 250,
                                 }
                             }
                         ]

@@ -61,7 +61,7 @@ public class MultiObjectiveUiTemplate : IRunUITemplate
                 new GridPanel.GridItem
                 {
                     ColSpan = 8,
-                    Panel = new PaperPanel
+                    Panel = new BoundedPaperPanel
                     {
                         Id = new Guid("17207E0C-9149-47AD-9DFF-306F89044460"),
                         Content = typeof(MetricsDataGridPanel),
@@ -72,7 +72,7 @@ public class MultiObjectiveUiTemplate : IRunUITemplate
                 new GridPanel.GridItem
                 {
                     ColSpan = 4,
-                    Panel = new PaperPanel
+                    Panel = new BoundedPaperPanel
                     {
                         Id = new Guid("621B1B13-671E-4EF0-86C4-D7172BFC49D5"),
                         Content = typeof(ParetoFrontChartPanel),

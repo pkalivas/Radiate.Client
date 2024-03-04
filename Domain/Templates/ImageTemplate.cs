@@ -42,7 +42,7 @@ public class ImageUiTemplate : IRunUITemplate
                 new GridPanel.GridItem
                 {
                     ColSpan = 7,
-                    Panel = new PaperPanel
+                    Panel = new BoundedPaperPanel
                     {
                         Id = new Guid("621B1B13-671E-4EF0-86C4-D7172BFC49D5"),
                         Content = typeof(ImageTargetCurrentDisplayPanel),

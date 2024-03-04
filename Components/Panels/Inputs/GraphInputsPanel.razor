@@ -42,14 +42,19 @@
         </MudNumericField>
     </MudItem>
     <MudItem md="3">
-        <MudNumericField Label="Add Weight Rate"
-                         Variant="Variant.Filled"
-                         ReadOnly="@Model.IsReadonly"
-                         DisableUnderLine="@Model.IsReadonly"
-                         HideSpinButtons="@Model.IsReadonly"
-                         Value="@Model.Inputs.GraphInputs.AddWeightRate"
-                         ValueChanged="@((float rate) => OnInputChange(Model, inputs => inputs.GraphInputs.AddWeightRate = rate))">
-        </MudNumericField>
+        <FloatInputField Label="Add Weight Rate"
+                         IsReadonly="@Model.IsReadonly"
+                         Inputs="@Model.Inputs"
+                         ValueGetter="@(inputs => inputs.GraphInputs.AddWeightRate)"
+                         InputsChanged="@((float rate) => OnInputChange(Model, inputs => inputs.GraphInputs.AddWeightRate = rate))"/>
+        @* <MudNumericField Label="Add Weight Rate" *@
+        @*                  Variant="Variant.Filled" *@
+        @*                  ReadOnly="@Model.IsReadonly" *@
+        @*                  DisableUnderLine="@Model.IsReadonly" *@
+        @*                  HideSpinButtons="@Model.IsReadonly" *@
+        @*                  Value="@Model.Inputs.GraphInputs.AddWeightRate" *@
+        @*                  ValueChanged="@((float rate) => OnInputChange(Model, inputs => inputs.GraphInputs.AddWeightRate = rate))"> *@
+        @* </MudNumericField> *@
     </MudItem>
     <MudItem md="3">
         <MudNumericField Label="Add Link Rate"

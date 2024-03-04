@@ -1,0 +1,40 @@
+
+@if (!IsReadonly)
+{
+    <MudNumericField Label="@Label"
+                     Variant="Variant.Filled"
+                     ReadOnly="@IsReadonly"
+                     DisableUnderLine="@IsReadonly"
+                     HideSpinButtons="@IsReadonly"
+                     Value="@GetValue()"
+                     ValueChanged="@((float value) => OnValueChanged(value))">
+    </MudNumericField>
+}
+else
+{
+    <div class="container">
+        <div class="row border-bottom">
+            <div class="col-8">
+                <MudText Typo="Typo.body2">@Label:</MudText>
+            </div>
+            <div class="col">
+                <MudText Typo="Typo.body2">@GetValue()</MudText>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public string Label { get; set; }
+    [Parameter] public bool IsReadonly { get; set; }
+    [Parameter] public RunInputsState Inputs { get; set; }
+    [Parameter] public Func<RunInputsState, float> ValueGetter { get; set; }
+    [Parameter] public EventCallback<float> InputsChanged { get; set; }
+    
+    private void OnValueChanged(float value)
+    {
+        InputsChanged.InvokeAsync(value);
+    }
+    
+    private float GetValue() => ValueGetter(Inputs);
+}

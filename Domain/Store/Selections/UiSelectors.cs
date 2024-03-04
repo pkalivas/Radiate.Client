@@ -1,5 +1,6 @@
 using Radiate.Client.Domain.Store.Models.Projections;
 using Radiate.Client.Domain.Store.Models.States;
+using Radiate.Client.Services.Mappers;
 using Reflow.Interfaces;
 using Reflow.Selectors;
 
@@ -28,6 +29,7 @@ public static class UiSelectors
                 RunId = runUi.RunId,
                 IsLoading = isLoading,
                 UiTemplate = runUi.RunTemplate!.UI,
+                Panels = TreeItemMapper.ToTree(0, runUi.Panels.Values.ToArray(), true)
             };
         });
 

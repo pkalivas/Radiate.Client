@@ -29,119 +29,31 @@ public class RunUiEffects : IEffectRegistry<RootState>
             var (_, action) = pair;
             var runUi = action.RunUi;
             
-            var flattenedPanels = PanelMapper.Flatten(runUi.RunTemplate!.UI.Panels, panel => panel switch
+            var flattenedPanels = PanelMapper.Flatten(runUi.RunTemplate!.UI.Panels);
+            var panelIndexLookup = flattenedPanels
+                .Select((panel, index) => (panel, index))
+                .ToDictionary(pair => pair.panel.Id, pair => pair.index);
+
+            return new RunUiPanelsCreatedAction(runUi.RunId, flattenedPanels.Select(panel => panel switch
             {
                 AccordionPanelItem accPanelItem => new RunPanelState
                 {
-                    Visible = true,
+                    Visible = accPanelItem.Expanded,
                     Panel = accPanelItem,
                     PanelKey = accPanelItem.Id.ToString() + accPanelItem.Expanded,
-                    Id = accPanelItem.Id
+                    Id = accPanelItem.Id,
+                    Index = panelIndexLookup[accPanelItem.Id],
+                    Children = accPanelItem.ChildPanels.Select(child => panelIndexLookup[child.Id])
                 },
                 _ => new RunPanelState
                 {
                     Visible = true,
                     Panel = panel,
                     PanelKey = panel.Id.ToString(),
-                    Id = panel.Id
+                    Id = panel.Id,
+                    Index = panelIndexLookup[panel.Id],
+                    Children = panel.ChildPanels.Select(child => panelIndexLookup[child.Id])
                 }
-            });
-            var panelLookup = flattenedPanels.ToDictionary(key => key.Id);
-            var panelIndexLookup = flattenedPanels
-                .Select((panel, index) => (panel, index))
-                .ToDictionary(pair => pair.panel.Id, pair => pair.index);
-
-            foreach (var panel in flattenedPanels)
-            {
-            }
-            
-            
-
-            return new RunUiPanelsCreatedAction(runUi.RunId, CreatePanels(runUi).ToArray());
+            }).ToArray());
         }), true);
-    
-    private static List<RunPanelState> CreatePanels(RunUiState runUi)
-    {
-        var result = new List<RunPanelState>();
-
-        foreach (var panel in runUi.RunTemplate!.UI.Panels)
-        {
-            result.AddRange(FlattenPanel(panel));
-        }
-
-        return result;
-    }
-
-    private static IEnumerable<RunPanelState> FlattenPanel(IPanel panel)
-    {
-        var result = new List<RunPanelState>();
-        
-        if (panel is GridPanel gridPanel)
-        {
-            result.Add(new RunPanelState
-            {
-                Visible = true,
-                Panel = panel,
-                PanelKey = panel.Id.ToString(),
-                Id = panel.Id
-            });
-            
-            foreach (var child in gridPanel.Items.Select(i => i.Panel))
-            {
-                result.AddRange(FlattenPanel(child));
-            }
-        }
-        else if (panel is TabPanel tabPanel)
-        {
-            result.Add(new RunPanelState
-            {
-                Visible = true,
-                Panel = panel,
-                PanelKey = panel.Id.ToString(),
-                Id = panel.Id
-            });
-            
-            foreach (var child in tabPanel.ChildPanels)
-            {
-                result.AddRange(FlattenPanel(child));
-            }
-        }
-        else if (panel is AccordionPanel accordionPanel)
-        {
-            result.Add(new RunPanelState
-            {
-                Visible = true,
-                Panel = panel,
-                PanelKey = panel.Id.ToString(),
-                Id = panel.Id
-            });
-            
-            foreach (var child in accordionPanel.ChildPanels)
-            {
-                result.AddRange(FlattenPanel(child));
-            }
-        }
-        else if (panel is AccordionPanelItem accPanelItem)
-        {
-            result.Add(new RunPanelState
-            {
-                Visible = accPanelItem.Expanded,
-                Panel = panel,
-                PanelKey = panel.Id.ToString() + accPanelItem.Expanded,
-                Id = panel.Id
-            });
-        }
-        else
-        {
-            result.Add(new RunPanelState
-            {
-                Visible = true,
-                Panel = panel,
-                PanelKey = panel.Id.ToString(),
-                Id = panel.Id
-            });
-        }
-        
-        return result;
-    }
 }

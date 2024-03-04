@@ -12,10 +12,10 @@ public class ImageTemplate : IRunTemplate
 {
     public Guid Id => Guid.NewGuid();
     public string ModelType => ModelTypes.Image;
-    public IRunUITemplate UI => new ImageUITemplate();
+    public IRunUITemplate UI => new ImageUiTemplate();
 }
 
-public class ImageUITemplate : IRunUITemplate
+public class ImageUiTemplate : IRunUITemplate
 {
     public List<IPanel> Panels =>
     [

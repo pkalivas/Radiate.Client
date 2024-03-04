@@ -18,9 +18,7 @@ public class TreeTemplate : IRunTemplate
 
 public class TreeUiTemplate : IRunUITemplate
 {
-    public List<IPanel> Panels => TestPanels;
-     
-     private static List<IPanel> TestPanels =>
+    public List<IPanel> Panels =>
     [
         new GridPanel
         {

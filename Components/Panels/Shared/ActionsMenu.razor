@@ -2,9 +2,21 @@
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
 
-<MudMenu Dense="true" Icon="@Icons.Material.Outlined.MoreHoriz" Size="Size.Small">
-    <MudMenuItem OnClick="@CopyRun">Copy</MudMenuItem>
-    <MudMenuItem OnClick="@InspectRun">Inspect</MudMenuItem>
+<MudMenu Dense="true" Icon="@Icons.Material.Outlined.MoreVert" Size="Size.Small">
+    <MudMenuItem>
+        <MudButton OnClick="@CopyRun"
+                   Size="Size.Small"
+                   StartIcon="@Icons.Material.Outlined.ContentCopy">
+            Copy
+        </MudButton>
+    </MudMenuItem>
+    <MudMenuItem>
+        <MudButton OnClick="@InspectRun"
+                   Size="Size.Small"
+                   StartIcon="@Icons.Material.Outlined.Insights">
+            Inspect
+        </MudButton>
+    </MudMenuItem>
 </MudMenu>
 
 @code {

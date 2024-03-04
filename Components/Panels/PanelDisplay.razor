@@ -74,6 +74,7 @@ else if (Panel is AccordionPanel accordionPanel)
             <MudExpansionPanel IsInitiallyExpanded="exPanel.Expanded" Dense="true" @key="exPanel.Id">
                 <TitleContent>
                     <PanelHeader Title="@exPanel.Title"/>
+                    <MudDivider/>
                 </TitleContent>
                 <ChildContent>
                     <DynamicComponent Type="@exPanel.Content"/>

@@ -1,0 +1,36 @@
+@if (!IsReadonly)
+{
+    <MudSelect SelectedValuesChanged="@OnValueChanged"
+               Value="@Value"
+               MultiSelection="false"
+               T="string"
+               Label="@Label"
+               Variant="Variant.Filled">
+        @foreach (var val in Items)
+        {
+            <MudSelectItem Value="@val"/>
+        }
+    </MudSelect>
+}
+else
+{
+    <div class="column border-bottom">
+        <div>
+            <strong>@Label:</strong>
+        </div>
+        <div>@Value</div>
+    </div>
+}
+
+@code {
+    [Parameter] public string Label { get; set; }
+    [Parameter] public bool IsReadonly { get; set; }
+    [Parameter] public string Value { get; set; }
+    [Parameter] public IEnumerable<string> Items { get; set; }
+    [Parameter] public EventCallback<string> InputsChanged { get; set; }
+    
+    private void OnValueChanged(IEnumerable<string> value)
+    {
+        InputsChanged.InvokeAsync(value.First());
+    }
+}

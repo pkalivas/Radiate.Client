@@ -2,57 +2,35 @@
 
 <MudGrid Class="px-4 mt-3">
     <MudItem md="3">
-        <MudNumericField Label="Population Size"
-                         Variant="Variant.Filled"
-                         Value="@Model.Inputs.PopulationInputs.PopulationSize"
-                         ReadOnly="@Model.IsReadonly"
-                         DisableUnderLine="@Model.IsReadonly"
-                         HideSpinButtons="@Model.IsReadonly"
-                         ValueChanged="@((int size) => OnInputChange(Model, inputs => inputs.PopulationInputs.PopulationSize = size))">
-        </MudNumericField>
+        <IntInputField Label="Population Size"
+                       IsReadonly="@Model.IsReadonly"
+                       Value="@Model.Inputs.PopulationInputs.PopulationSize"
+                       InputsChanged="@((int val) => OnInputChange(Model, inputs => inputs.PopulationInputs.PopulationSize = val))"/>
     </MudItem>
     <MudItem md="3">
-        <MudNumericField Label="Iteration"
-                         Variant="Variant.Filled"
-                         ReadOnly="@Model.IsReadonly"
-                         DisableUnderLine="@Model.IsReadonly"
-                         HideSpinButtons="@Model.IsReadonly"
-                         Value="@Model.Inputs.LimitInputs.IterationLimit"
-                         ValueChanged="@((int limit) => OnInputChange(Model, inputs => inputs.LimitInputs.IterationLimit = limit))">
-        </MudNumericField>
+        <IntInputField Label="Iteration Limit"
+                       IsReadonly="@Model.IsReadonly"
+                       Value="@Model.Inputs.LimitInputs.IterationLimit"
+                       InputsChanged="@((int val) => OnInputChange(Model, inputs => inputs.LimitInputs.IterationLimit = val))"/>
     </MudItem>
     <MudItem md="3">
-        <MudSelect SelectedValuesChanged="@OnModelChange"
-                   Value="@Model.Inputs.DataSetType"
-                   MultiSelection="false"
-                   T="string"
-                   Label="DTLZ"
-                   Variant="Variant.Filled">
-            @foreach (var model in StateOptions.GetModelDataSets(ModelTypes.MultiObjective))
-            {
-                <MudSelectItem Value="@model"/>
-            }
-        </MudSelect>
+        <SelectInputField Label="DTLZ Problem"
+                          Value="@Model.Inputs.DataSetType"
+                          IsReadonly="@Model.IsReadonly"
+                          Items="@StateOptions.GetModelDataSets(ModelTypes.MultiObjective)"
+                          InputsChanged="@((string val) => OnInputChange(Model, inputs => inputs.DataSetType = val))"/>
     </MudItem>
     <MudItem md="3">
-        <MudNumericField Label="Front Min"
-                         Variant="Variant.Filled"
-                         ReadOnly="@Model.IsReadonly"
-                         DisableUnderLine="@Model.IsReadonly"
-                         HideSpinButtons="@Model.IsReadonly"
-                         Value="@Model.Inputs.MultiObjectiveInputs.FrontMinSize"
-                         ValueChanged="@((int size) => OnInputChange(Model, inputs => inputs.MultiObjectiveInputs.FrontMinSize = size))">
-        </MudNumericField>
+        <IntInputField Label="Front Min"
+                       IsReadonly="@Model.IsReadonly"
+                       Value="@Model.Inputs.MultiObjectiveInputs.FrontMinSize"
+                       InputsChanged="@((int val) => OnInputChange(Model, inputs => inputs.MultiObjectiveInputs.FrontMinSize = val))"/>
     </MudItem>
     <MudItem md="3">
-        <MudNumericField Label="Front Max"
-                         Variant="Variant.Filled"
-                         ReadOnly="@Model.IsReadonly"
-                         DisableUnderLine="@Model.IsReadonly"
-                         HideSpinButtons="@Model.IsReadonly"
-                         Value="@Model.Inputs.MultiObjectiveInputs.FrontMaxSize"
-                         ValueChanged="@((int size) => OnInputChange(Model, inputs => inputs.MultiObjectiveInputs.FrontMaxSize = size))">
-        </MudNumericField>
+        <IntInputField Label="Front Max"
+                       IsReadonly="@Model.IsReadonly"
+                       Value="@Model.Inputs.MultiObjectiveInputs.FrontMaxSize"
+                       InputsChanged="@((int val) => OnInputChange(Model, inputs => inputs.MultiObjectiveInputs.FrontMaxSize = val))"/>
     </MudItem>
 </MudGrid>
 
@@ -65,13 +43,4 @@
         setter(newInputs);
         Store.Dispatch(new SetRunInputsAction(inputs.RunId, newInputs));
     }
-    
-    private void OnModelChange(IEnumerable<string> model)
-    {
-        var selectedModel = model.First();
-        
-        var newInputs = Model.Inputs with { DataSetType = selectedModel };
-        Store.Dispatch(new SetRunInputsAction(Model.RunId, newInputs));
-    }
-
 }

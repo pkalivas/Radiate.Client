@@ -2,59 +2,38 @@
 
 <MudGrid Class="mb-3">
     <MudItem md="3">
-        <MudNumericField Label="Population Size"
-                         Variant="Variant.Filled"
-                         Value="@Model.Inputs.PopulationInputs.PopulationSize"
-                         ReadOnly="@Model.IsReadonly"
-                         DisableUnderLine="@Model.IsReadonly"
-                         HideSpinButtons="@Model.IsReadonly"
-                         ValueChanged="@((int size) => OnInputChange(Model, inputs => inputs.PopulationInputs.PopulationSize = size))">
-        </MudNumericField>
+        <IntInputField Label="Population Size"
+                       IsReadonly="@Model.IsReadonly"
+                       Value="@Model.Inputs.PopulationInputs.PopulationSize"
+                       InputsChanged="@((int val) => OnInputChange(Model, inputs => inputs.PopulationInputs.PopulationSize = val))"/>
     </MudItem>
     <MudItem md="3">
-        <MudNumericField Label="Mutation Rate"
-                         Variant="Variant.Filled"
-                         ReadOnly="@Model.IsReadonly"
-                         DisableUnderLine="@Model.IsReadonly"
-                         HideSpinButtons="@Model.IsReadonly"
+       <FloatInputField Label="Mutation Rate"
+                         IsReadonly="@Model.IsReadonly"
                          Value="@Model.Inputs.PopulationInputs.MutationRate"
-                         ValueChanged="@((float rate) => OnInputChange(Model, inputs => inputs.PopulationInputs.MutationRate = rate))">
-        </MudNumericField>
+                         InputsChanged="@((float rate) => OnInputChange(Model, inputs => inputs.PopulationInputs.MutationRate = rate))"/>
     </MudItem>
     <MudItem md="3">
-        <MudNumericField Label="Crossover Rate"
-                         Variant="Variant.Filled"
-                         ReadOnly="@Model.IsReadonly"
-                         DisableUnderLine="@Model.IsReadonly"
-                         HideSpinButtons="@Model.IsReadonly"
+        <FloatInputField Label="Crossover Rate"
+                         IsReadonly="@Model.IsReadonly"
                          Value="@Model.Inputs.PopulationInputs.CrossoverRate"
-                         ValueChanged="@((float rate) => OnInputChange(Model, inputs => inputs.PopulationInputs.CrossoverRate = rate))">
-        </MudNumericField>
+                         InputsChanged="@((float rate) => OnInputChange(Model, inputs => inputs.PopulationInputs.CrossoverRate = rate))"/>
     </MudItem>
     <MudItem md="3">
-        <MudNumericField Label="Max Depth"
-                         Variant="Variant.Filled"
-                         ReadOnly="@Model.IsReadonly"
-                         DisableUnderLine="@Model.IsReadonly"
-                         HideSpinButtons="@Model.IsReadonly"
-                         Value="@Model.Inputs.TreeInputs.MaxDepth"
-                         ValueChanged="@((int depth) => OnInputChange(Model, inputs => inputs.TreeInputs.MaxDepth = depth))">
-        </MudNumericField>
+        <IntInputField Label="Max Depth"
+                       IsReadonly="@Model.IsReadonly"
+                       Value="@Model.Inputs.TreeInputs.MaxDepth"
+                       InputsChanged="@((int val) => OnInputChange(Model, inputs => inputs.TreeInputs.MaxDepth = val))"/>
     </MudItem>
     <MudItem md="3">
-        <MudNumericField Label="Iteration"
-                         Variant="Variant.Filled"
-                         ReadOnly="@Model.IsReadonly"
-                         DisableUnderLine="@Model.IsReadonly"
-                         HideSpinButtons="@Model.IsReadonly"
+        <IntInputField Label="Iteration Limit"
+                         IsReadonly="@Model.IsReadonly"
                          Value="@Model.Inputs.LimitInputs.IterationLimit"
-                         ValueChanged="@((int limit) => OnInputChange(Model, inputs => inputs.LimitInputs.IterationLimit = limit))">
-        </MudNumericField>
+                         InputsChanged="@((int val) => OnInputChange(Model, inputs => inputs.LimitInputs.IterationLimit = val))"/>
     </MudItem>
 </MudGrid>
 
 @code {
-
     protected override IObservable<InputsPanelModelProjection> Select() => Store.Select(RunSelectors.SelectInputsModel);
     
     private async Task OnInputChange(InputsPanelModelProjection inputs, Action<RunInputsState> setter)

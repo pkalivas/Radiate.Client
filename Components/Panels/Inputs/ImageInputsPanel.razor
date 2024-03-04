@@ -2,88 +2,56 @@
 
 <MudGrid Class="px-4 mt-3">
     <MudItem md="3">
-        <MudNumericField Label="Population Size"
-                         Variant="Variant.Filled"
-                         Value="@Model.Inputs.PopulationInputs.PopulationSize"
-                         ReadOnly="@Model.IsReadonly"
-                         DisableUnderLine="@Model.IsReadonly"
-                         HideSpinButtons="@Model.IsReadonly"
-                         ValueChanged="@((int size) => OnInputChange(Model, inputs => inputs.PopulationInputs.PopulationSize = size))">
-        </MudNumericField>
+        <IntInputField Label="Population Size"
+                       IsReadonly="@Model.IsReadonly"
+                       Value="@Model.Inputs.PopulationInputs.PopulationSize"
+                       InputsChanged="@((int val) => OnInputChange(Model, inputs => inputs.PopulationInputs.PopulationSize = val))"/>
     </MudItem>
     <MudItem md="3">
-        <MudNumericField Label="Mutation Rate"
-                         Variant="Variant.Filled"
-                         ReadOnly="@Model.IsReadonly"
-                         DisableUnderLine="@Model.IsReadonly"
-                         HideSpinButtons="@Model.IsReadonly"
+<FloatInputField Label="Mutation Rate"
+                         IsReadonly="@Model.IsReadonly"
                          Value="@Model.Inputs.PopulationInputs.MutationRate"
-                         ValueChanged="@((float rate) => OnInputChange(Model, inputs => inputs.PopulationInputs.MutationRate = rate))">
-        </MudNumericField>
+                         InputsChanged="@((float rate) => OnInputChange(Model, inputs => inputs.PopulationInputs.MutationRate = rate))"/>
     </MudItem>
     <MudItem md="3">
-        <MudNumericField Label="Crossover Rate"
-                         Variant="Variant.Filled"
-                         ReadOnly="@Model.IsReadonly"
-                         DisableUnderLine="@Model.IsReadonly"
-                         HideSpinButtons="@Model.IsReadonly"
+<FloatInputField Label="Crossover Rate"
+                         IsReadonly="@Model.IsReadonly"
                          Value="@Model.Inputs.PopulationInputs.CrossoverRate"
-                         ValueChanged="@((float rate) => OnInputChange(Model, inputs => inputs.PopulationInputs.CrossoverRate = rate))">
-        </MudNumericField>
+                         InputsChanged="@((float rate) => OnInputChange(Model, inputs => inputs.PopulationInputs.CrossoverRate = rate))"/>
     </MudItem>
     <MudItem md="3">
-        <MudNumericField Label="# Shapes"
-                         Variant="Variant.Filled"
-                         ReadOnly="@Model.IsReadonly"
-                         DisableUnderLine="@Model.IsReadonly"
-                         HideSpinButtons="@Model.IsReadonly"
-                         Value="@Model.Inputs.ImageInputs.NumShapes"
-                         ValueChanged="@((int numShapes) => OnInputChange(Model, inputs => inputs.ImageInputs.NumShapes= numShapes))">
-        </MudNumericField>
+        <IntInputField Label="# Shapes"
+                       IsReadonly="@Model.IsReadonly"
+                       Value="@Model.Inputs.ImageInputs.NumShapes"
+                       InputsChanged="@((int val) => OnInputChange(Model, inputs => inputs.ImageInputs.NumShapes = val))"/>
     </MudItem>
     
     @if (Model.Inputs.DataSetType == "Polygon")
     {
         <MudItem md="3">
-            <MudNumericField Label="# Verticies"
-                             Variant="Variant.Filled"
-                             ReadOnly="@Model.IsReadonly"
-                             DisableUnderLine="@Model.IsReadonly"
-                             HideSpinButtons="@Model.IsReadonly"
-                             Value="@Model.Inputs.ImageInputs.NumVertices"
-                             ValueChanged="@((int numShapes) => OnInputChange(Model, inputs => inputs.ImageInputs.NumVertices = numShapes))">
-            </MudNumericField>
+            <IntInputField Label="# Vertices"
+                       IsReadonly="@Model.IsReadonly"
+                       Value="@Model.Inputs.ImageInputs.NumVertices"
+                       InputsChanged="@((int val) => OnInputChange(Model, inputs => inputs.ImageInputs.NumVertices = val))"/>
         </MudItem>
     }
     <MudItem md="3">
-        <MudNumericField Label="Image Height"
-                         Variant="Variant.Filled"
-                         ReadOnly="@Model.IsReadonly"
-                         DisableUnderLine="@Model.IsReadonly"
-                         HideSpinButtons="@Model.IsReadonly"
-                         Value="@Model.Inputs.ImageInputs.Height"
-                         ValueChanged="@((int height) => OnInputChange(Model, inputs => inputs.ImageInputs.Height = height))">
-        </MudNumericField>
+        <IntInputField Label="Image Height"
+                       IsReadonly="@Model.IsReadonly"
+                       Value="@Model.Inputs.ImageInputs.Height"
+                       InputsChanged="@((int val) => OnInputChange(Model, inputs => inputs.ImageInputs.Height = val))"/>
     </MudItem>
     <MudItem md="3">
-        <MudNumericField Label="Image Width"
-                         Variant="Variant.Filled"
-                         ReadOnly="@Model.IsReadonly"
-                         DisableUnderLine="@Model.IsReadonly"
-                         HideSpinButtons="@Model.IsReadonly"
-                         Value="@Model.Inputs.ImageInputs.Width"
-                         ValueChanged="@((int width) => OnInputChange(Model, inputs => inputs.ImageInputs.Width = width))">
-        </MudNumericField>
+        <IntInputField Label="Image Width"
+                       IsReadonly="@Model.IsReadonly"
+                       Value="@Model.Inputs.ImageInputs.Width"
+                       InputsChanged="@((int val) => OnInputChange(Model, inputs => inputs.ImageInputs.Width = val))"/>
     </MudItem>
     <MudItem md="3">
-        <MudNumericField Label="Iteration"
-                         Variant="Variant.Filled"
-                         ReadOnly="@Model.IsReadonly"
-                         DisableUnderLine="@Model.IsReadonly"
-                         HideSpinButtons="@Model.IsReadonly"
+        <IntInputField Label="Iteration Limit"
+                         IsReadonly="@Model.IsReadonly"
                          Value="@Model.Inputs.LimitInputs.IterationLimit"
-                         ValueChanged="@((int limit) => OnInputChange(Model, inputs => inputs.LimitInputs.IterationLimit = limit))">
-        </MudNumericField>
+                         InputsChanged="@((int val) => OnInputChange(Model, inputs => inputs.LimitInputs.IterationLimit = val))"/>
     </MudItem>
 </MudGrid>
 

@@ -1,9 +1,63 @@
 @using System.Text.Json
+@using Radiate.Client.Domain.Store.Models.States.Outputs
 @inherits StoreComponent<EngineStateTableModelProjection>
+@inject IDialogService DialogService
 
-<pre>@JsonSerializer.Serialize(Model, new JsonSerializerOptions { WriteIndented = true })</pre>
+@if (@Model?.EngineOutputs != null)
+{
+    <MudTable Elevation="0" 
+              Items="@Model.EngineOutputs" 
+              T="EngineOutput" 
+              Class="table-striped"
+              FixedHeader="true"
+              Dense="true"
+              Height="200px">
+        <HeaderContent>
+            <MudTh>Index</MudTh>
+            <MudTh>Engine</MudTh>
+            <MudTh>State</MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>@context.Index</MudTd>
+            <MudTd>@context.Name</MudTd>
+            <MudTd>@context.State</MudTd>
+            <MudTh>
+                <MudButton Color="Color.Primary"
+                           Variant="Variant.Outlined" 
+                           Size="Size.Small"
+                           OnClick="@(() => ShowDialog(context))">
+                    <MudIcon Icon="@Icons.Material.Outlined.MenuOpen" Size="Size.Small"/>
+                </MudButton>
+            </MudTh>
+        </RowTemplate>
+    </MudTable>
+}
 
 @code {
     protected override IObservable<EngineStateTableModelProjection> Select() =>
         Store.Select(EngineSelectors.SelectEngineStateTablePanelModel);
+    
+    private async Task ShowDialog(EngineOutput item)
+    {
+        var parameters = new DialogParameters
+        {
+            ["Index"] = item.Index,
+            ["Items"] = Model.EngineOutputs.ToArray(),
+            ["ChildContent"] = typeof(EngineStateDisplay),
+            ["ChildContentProps"] = (EngineOutput item) => new Dictionary<string, object>
+            {
+                ["EngineState"] = item
+            }
+        };
+        
+        var options = new DialogOptions
+        {
+            CloseButton = true,
+            CloseOnEscapeKey = true,
+        };
+
+        var dialog = await DialogService.ShowAsync<TreeItemDialog<EngineOutput>>("Engine Output", parameters, options);
+        var result = await dialog.Result;
+    }
 }

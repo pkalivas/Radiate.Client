@@ -18,9 +18,9 @@
             <MudButton OnClick="@CopyRun" Class="mr-2">
                 <MudIcon Icon="@Icons.Material.Outlined.ContentCopy" Size="Size.Small"/>
             </MudButton>
-            <MudButton OnClick="@OpenEngineTree" Class="mr-2">
-                <MudIcon Icon="@Icons.Material.Outlined.AccountTree" Size="Size.Small"/>
-            </MudButton>
+            @* <MudButton OnClick="@OpenEngineTree" Class="mr-2"> *@
+            @*     <MudIcon Icon="@Icons.Material.Outlined.AccountTree" Size="Size.Small"/> *@
+            @* </MudButton> *@
         </div>
     </div>
 </MudToolBar>
@@ -35,16 +35,16 @@
     
     private async Task OpenEngineTree()
     {
-        var options = new DialogOptions
-        {
-            MaxWidth = MaxWidth.Medium,
-            FullWidth = true,
-            CloseOnEscapeKey = true,
-            CloseButton = true,
-        };
-
-        var dialogRef = await DialogService.ShowAsync<EngineTreePanel>("Engine Tree", options);
-        await dialogRef.Result;
+        // var options = new DialogOptions
+        // {
+        //     MaxWidth = MaxWidth.Medium,
+        //     FullWidth = true,
+        //     CloseOnEscapeKey = true,
+        //     CloseButton = true,
+        // };
+        //
+        // var dialogRef = await DialogService.ShowAsync<EngineTreePanel>("Engine Tree", options);
+        // await dialogRef.Result;
     }
 
     private async Task CopyRun() => await Task.Run(() =>

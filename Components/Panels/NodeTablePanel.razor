@@ -98,11 +98,15 @@
 
     private async Task OpenNodeDialog(int index)
     {
-        var dialog = await DialogService.ShowAsync<NodeTreeDialog>("Node Dialog", new DialogParameters
+        var dialog = await DialogService.ShowAsync<TreeItemDialog<NodeItem>>("Node Path", new DialogParameters
         {
-            {"NodeGroup", Model!.NodeItems},
-            {"Index", index}
-            
+            ["Index"] = index,
+            ["Items"] = Model!.NodeItems,
+            ["ChildContent"] = typeof(NodeDisplay),
+            ["ChildContentProps"] = (NodeItem item) => new Dictionary<string, object>
+            {
+                ["Node"] = item
+            }
         }, 
         new DialogOptions
         {

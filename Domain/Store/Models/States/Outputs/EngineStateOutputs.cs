@@ -16,4 +16,6 @@ public record EngineOutput : ITreeItem
     public string State { get; init; } = "";
     public IEnumerable<int> Children { get; init; } = [];
     public ImmutableDictionary<string, MetricValueModel> Metrics { get; init; } = ImmutableDictionary<string, MetricValueModel>.Empty;
+
+    public bool IsCyclic() => true;
 }

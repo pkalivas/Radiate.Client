@@ -27,8 +27,4 @@
       <AdditionalFiles Include="Components\Panels\Shared\ToolBar.razor" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Domain\Store\Models\Interfaces\" />
-    </ItemGroup>
-
 </Project>

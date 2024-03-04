@@ -75,7 +75,8 @@ public static class EngineSelectors
         .Create<RootState, RunState, EngineStateTableModelProjection>(RunSelectors.SelectRun, run => new EngineStateTableModelProjection
         {
             RunId = run.RunId,
-            EngineOutputs = run.Outputs.EngineStateOutputs.EngineOutputs.ToList()
+            IsComplete = run.IsCompleted,
+            EngineOutputs = run.Outputs.EngineStateOutputs.EngineOutputs.ToArray()
         });
     
 }

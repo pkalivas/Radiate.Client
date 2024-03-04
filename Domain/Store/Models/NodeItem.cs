@@ -3,7 +3,7 @@ using Radiate.Extensions.Schema;
 
 namespace Radiate.Client.Domain.Store.Models;
 
-public record NodeItem
+public record NodeItem : ITreeItem
 {
     public Guid NodeId { get; init; }
     public int Index { get; init; }
@@ -16,4 +16,5 @@ public record NodeItem
     public HashSet<int> Incoming { get; init; } = new();
     public HashSet<int> Outgoing { get; init; } = new();
     public IEnumerable<int> Children { get; init; } = [];
+    public bool IsCyclic() => IsRecurrent;
 }

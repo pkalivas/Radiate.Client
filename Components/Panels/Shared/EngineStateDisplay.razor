@@ -1,5 +1,6 @@
 @using Radiate.Engines.Entities
 @using Radiate.Engines.Schema
+@using Radiate.Client.Domain.Store.Models.States.Outputs
 
 @if (EngineState == null)
 {
@@ -25,24 +26,23 @@ else
                 <strong>@(EngineState.Name[..3])</strong>
             </div>
             <div class="col">
-                <MudText Typo="Typo.body1">@EngineState.Metrics.Get(MetricNames.Run)?.Statistics?.Sum</MudText>
+                <MudText Typo="Typo.body1">@EngineState.Metrics[MetricNames.Run].Sum</MudText>
             </div>
             <div class="col">
-                <MudText Typo="Typo.body1">@(Math.Round(EngineState.Metrics.GetValue(MetricNames.Score), 5))</MudText>
+                <MudText Typo="Typo.body1">@EngineState.Metrics[MetricNames.Score].Value</MudText>
             </div>
             <div class="col">
-                <MudText Typo="Typo.body2">@FormatDuration(EngineState.Metrics.GetTime(MetricNames.Time))</MudText>
+                <MudText Typo="Typo.body2">@EngineState.Metrics[MetricNames.Time].Total</MudText>
             </div>
         </div>
         <MudDivider/>
     </div>
 }
 
-@code 
-{
-    [Parameter] public EngineState? EngineState { get; set; }
+@code {
+    [Parameter] public EngineOutput? EngineState { get; set; }
     
-    private static string GetIcon(EngineState state) => state.State switch
+    private static string GetIcon(EngineOutput state) => state.State switch
     {
         EngineStateTypes.Pending => Icons.Material.Filled.Pending,
         EngineStateTypes.Started => Icons.Material.Filled.Start,
@@ -51,7 +51,7 @@ else
         _ => Icons.Custom.FileFormats.FileCode
     };
 
-    private static Color GetColor(EngineState state) => state.State switch
+    private static Color GetColor(EngineOutput state) => state.State switch
     {
         EngineStateTypes.Pending => Color.Default,
         EngineStateTypes.Started => Color.Primary,
@@ -83,3 +83,22 @@ else
     @*     </div> *@
     @*     <MudDivider/> *@
     @* </div> *@
+    
+    
+            @* <div class="row"> *@
+            @*     <div class="col"> *@
+            @*         <MudIcon Icon="@GetIcon(EngineState)" Color="@GetColor(EngineState)" Size="Size.Small"/> *@
+            @*     </div> *@
+            @*     <div class="col"> *@
+            @*         <strong>@(EngineState.Name[..3])</strong> *@
+            @*     </div> *@
+            @*     <div class="col"> *@
+            @*         <MudText Typo="Typo.body1">@EngineState.Metrics.Get(MetricNames.Run)?.Statistics?.Sum</MudText> *@
+            @*     </div> *@
+            @*     <div class="col"> *@
+            @*         <MudText Typo="Typo.body1">@(Math.Round(EngineState.Metrics.GetValue(MetricNames.Score), 5))</MudText> *@
+            @*     </div> *@
+            @*     <div class="col"> *@
+            @*         <MudText Typo="Typo.body2">@FormatDuration(EngineState.Metrics.GetTime(MetricNames.Time))</MudText> *@
+            @*     </div> *@
+            @* </div> *@

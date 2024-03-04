@@ -1,14 +1,15 @@
 @using Radiate.Client.Services.Mappers
+@typeparam TItem where TItem : ITreeItem
 
 <MudDialog DisableSidePadding="true">
     <DialogContent>
         <MudContainer Style="max-height: 500px; overflow-y: scroll">
-            <MudTreeView Items="@Items" Dense="true" Hover="true" ExpandOnClick="true">
+            <MudTreeView Items="@_items" Dense="true" Hover="true" ExpandOnClick="true">
                 <ItemTemplate>
                     <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.TreeItems">
                         <Content>
                             <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChild"/>
-                            <NodeDisplay Node="@context.Data"/>
+                            <DynamicComponent Type="ChildContent" Parameters="@GetChildContentProps(context)"/>
                         </Content>
                     </MudTreeViewItem>
                 </ItemTemplate>
@@ -16,8 +17,8 @@
         </MudContainer>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@ExpandAll">
-            @if (_allExpanded)
+        <MudButton OnClick="@ToggleExpanded">
+            @if (_expanded)
             {
                 <MudText>Collapse All</MudText>
             }
@@ -31,23 +32,26 @@
 
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-
+    
     [Parameter] public int Index { get; set; }
-    [Parameter] public NodeItem[] NodeGroup { get; set; }
-
-    private HashSet<TreeItemData<NodeItem>> Items { get; set; }
-    private bool _allExpanded;
+    [Parameter] public TItem[] Items { get; set; }
+    [Parameter] public Type ChildContent { get; set; }
+    [Parameter] public Func<TItem, Dictionary<string, object>> ChildContentProps { get; set; }
+    
+    private HashSet<TreeItemData<TItem>> _items { get; set; } = new();
+    private bool _expanded = false;
 
     protected override Task OnInitializedAsync()
     {
-        Items = TreeItemMapper.NodeTree(Index, NodeGroup);
+        _items = TreeItemMapper.ToTree(Index, Items, _expanded);
         return base.OnInitializedAsync();
     }
 
-    private void ExpandAll()
+    private void ToggleExpanded()
     {
-        Items = TreeItemMapper.NodeTree(Index, NodeGroup, !_allExpanded);   
-        _allExpanded = !_allExpanded;
+        _expanded = !_expanded;
+        _items = TreeItemMapper.ToTree(Index, Items, _expanded);
     }
-
+    
+    private IDictionary<string, object> GetChildContentProps(TreeItemData<TItem> item) => ChildContentProps(item.Data);
 }

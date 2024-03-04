@@ -16,23 +16,25 @@
 }
 else
 {
-    <div class="d-flex justify-content-between">
-        <div class="d-inline-flex ml-1 mr-1" style="width: 75px;">
-            <MudIcon Icon="@GetIcon(EngineState)" Class="ml-0 mr-2" Color="@GetColor(EngineState)" Size="Size.Small"/>
-            <strong>@(EngineState.Name[..3])</strong>       
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <MudIcon Icon="@GetIcon(EngineState)" Color="@GetColor(EngineState)" Size="Size.Small"/>
+            </div>
+            <div class="col">
+                <strong>@(EngineState.Name[..3])</strong>
+            </div>
+            <div class="col">
+                <MudText Typo="Typo.body1">@EngineState.Metrics.Get(MetricNames.Run)?.Statistics?.Sum</MudText>
+            </div>
+            <div class="col">
+                <MudText Typo="Typo.body1">@(Math.Round(EngineState.Metrics.GetValue(MetricNames.Score), 5))</MudText>
+            </div>
+            <div class="col">
+                <MudText Typo="Typo.body2">@FormatDuration(EngineState.Metrics.GetTime(MetricNames.Time))</MudText>
+            </div>
         </div>
-        <div class="d-inline-flex ml-1 mr-1" style="width: 75px;">
-            <strong>Idx:</strong>
-            <div class="pl-1">@EngineState.Metrics.Get(MetricNames.Run)?.Statistics?.Sum</div>
-        </div>
-        <div class="d-inline-flex ml-1 mr-1" style="width: 75px;">
-            <MudIcon Icon="@Icons.Material.Filled.Star" Class="" Color="@Color.Default" Size="Size.Small"/>
-            <div class="pl-2">@(Math.Round(EngineState.Metrics.Get(MetricNames.Score)?.Statistics?.LastValue ?? 0, 4))</div>
-        </div>
-        <div class="d-inline-flex ml-1 mr-1" style="width: 75px;">
-            <MudIcon Icon="@Icons.Material.Filled.Schedule" Class="" Color="@Color.Default" Size="Size.Small"/>
-            <div class="pl-2">@FormatDuration(TimeSpan.FromMilliseconds(EngineState.Metrics.Get(MetricNames.Time)?.Time?.Sum ?? 0))</div>
-        </div>
+        <MudDivider/>
     </div>
 }
 
@@ -59,5 +61,25 @@ else
     };
     
     private string FormatDuration(TimeSpan duration) => duration.ToString("mm\\:ss\\:ffff");
-
 }
+
+
+    @* <div class="d-flex justify-content-between"> *@
+    @*     <div class="d-inline-flex ml-1 mr-1" style="width: 75px;"> *@
+    @*         <MudIcon Icon="@GetIcon(EngineState)" Class="ml-0 mr-2" Color="@GetColor(EngineState)" Size="Size.Small"/> *@
+    @*         <strong>@(EngineState.Name[..3])</strong>        *@
+    @*     </div> *@
+    @*     <div class="d-inline-flex ml-1 mr-1" style="width: 75px;"> *@
+    @*         <strong>Idx:</strong> *@
+    @*         <div class="pl-1">@EngineState.Metrics.Get(MetricNames.Run)?.Statistics?.Sum</div> *@
+    @*     </div> *@
+    @*     <div class="d-inline-flex ml-1 mr-1" style="width: 75px;"> *@
+    @*         <MudIcon Icon="@Icons.Material.Filled.Star" Class="" Color="@Color.Default" Size="Size.Small"/> *@
+    @*         <div class="pl-2">@(Math.Round(EngineState.Metrics.Get(MetricNames.Score)?.Statistics?.LastValue ?? 0, 4))</div> *@
+    @*     </div> *@
+    @*     <div class="d-inline-flex ml-1 mr-1" style="width: 75px;"> *@
+    @*         <MudIcon Icon="@Icons.Material.Filled.Schedule" Class="" Color="@Color.Default" Size="Size.Small"/> *@
+    @*         <div class="pl-2">@FormatDuration(TimeSpan.FromMilliseconds(EngineState.Metrics.Get(MetricNames.Time)?.Time?.Sum ?? 0))</div> *@
+    @*     </div> *@
+    @*     <MudDivider/> *@
+    @* </div> *@

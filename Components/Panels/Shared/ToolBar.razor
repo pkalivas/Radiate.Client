@@ -12,16 +12,15 @@
     </div>
     <div>
         <div class="d-flex align-items-center">
-            <MudIconButton Icon="@Icons.Material.Outlined.ContentCopy"
-                           Size="Size.Small"
-                           OnClick="@CopyRun"
-                           Class="mr-2"/>
-
-            <MudIconButton Icon="@Icons.Material.Outlined.AccountTree"
-                           Size="Size.Small"
-                           OnClick="@OpenEngineTree"
-                           Class="mr-2"/>
-
+            <div class="mr-2">
+                <TrainTestToggle/>
+            </div>
+            <MudButton OnClick="@CopyRun" Class="mr-2">
+                <MudIcon Icon="@Icons.Material.Outlined.ContentCopy" Size="Size.Small"/>
+            </MudButton>
+            <MudButton OnClick="@OpenEngineTree" Class="mr-2">
+                <MudIcon Icon="@Icons.Material.Outlined.AccountTree" Size="Size.Small"/>
+            </MudButton>
         </div>
     </div>
 </MudToolBar>
@@ -41,6 +40,7 @@
             MaxWidth = MaxWidth.Medium,
             FullWidth = true,
             CloseOnEscapeKey = true,
+            CloseButton = true,
         };
 
         var dialogRef = await DialogService.ShowAsync<EngineTreePanel>("Engine Tree", options);

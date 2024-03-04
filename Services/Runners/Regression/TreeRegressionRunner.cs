@@ -27,7 +27,7 @@ public class TreeRegressionRunner : TreeRunner
         
         var problem = Architect.Tree<float>()
             .ToCodex()
-            .ToRegressionProblem(frame);
+            .ToRegression(frame);
          
         var steepener = Engine.Genetic(problem).Async()
             .Setup(TreeSetup.Expression<float>(
@@ -43,7 +43,7 @@ public class TreeRegressionRunner : TreeRunner
          
         return Engine.Cyclic(
                 steepener.Limit(Limits.SteadyAccuracy(20)), 
-                windener.Limit(Limits.Iteration(2)))
+                windener.Limit(Limits.Iteration(1)))
             .Limit(Limits.Seconds(5), Limits.Accuracy(0.0001f), Limits.Iteration(inputs.LimitInputs.IterationLimit));
     }
 

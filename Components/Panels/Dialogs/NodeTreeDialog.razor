@@ -36,7 +36,7 @@
     [Parameter] public NodeItem[] NodeGroup { get; set; }
 
     private HashSet<TreeItemData<NodeItem>> Items { get; set; }
-    private bool _allExpanded = false;
+    private bool _allExpanded;
 
     protected override Task OnInitializedAsync()
     {

@@ -1,0 +1,18 @@
+@inherits StoreComponent<TrainTestToggleProjection> 
+
+<MudMenu Label="@Model.TrainTest"
+         Variant="Variant.Filled"
+         EndIcon="@Icons.Material.Filled.KeyboardArrowDown"
+         DisableElevation="true"
+         IconColor="Color.Primary">
+    <MudMenuItem OnClick="@SetTrainTestTrain">Train</MudMenuItem>
+    <MudMenuItem OnClick="@SetTrainTestTest">Test</MudMenuItem>
+</MudMenu>
+
+@code {
+    protected override IObservable<TrainTestToggleProjection> Select() => Store.Select(RunSelectors.SelectTrainTestToggleModel);
+
+    private void SetTrainTestTrain() => Store.Dispatch(new SetTrainTestTypeAction(Model!.RunId, TrainTestTypes.Train));
+    
+    private void SetTrainTestTest() => Store.Dispatch(new SetTrainTestTypeAction(Model!.RunId, TrainTestTypes.Test));
+}

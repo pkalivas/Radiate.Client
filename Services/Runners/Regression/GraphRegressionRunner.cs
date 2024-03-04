@@ -30,7 +30,7 @@ public class GraphRegressionRunner : GraphRunner
         var problem = Architect.Graph<float>()
             .SetOutputs(Ops.Linear<float>())
             .ToCodex(frame.CodexShape)
-            .ToRegression(frame).Complexity(50);
+            .ToRegression(frame, 50);
          
         var one = Engine.Genetic(problem).Async()
             .Setup(EngineSetup.Neat<float>(

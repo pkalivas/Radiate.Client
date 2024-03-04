@@ -14,7 +14,7 @@
       <PackageReference Include="Plotly.Blazor" Version="4.1.0" />
       <PackageReference Include="Radiate" Version="1.5.3" />
       <PackageReference Include="Radiate.Data" Version="1.0.4" />
-      <PackageReference Include="Radiate.Extensions" Version="1.0.8" />
+      <PackageReference Include="Radiate.Extensions" Version="1.0.9" />
       <PackageReference Include="Reflow" Version="1.3.0" />
       <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="2.1.1" />
       <PackageReference Include="System.Reactive" Version="6.0.0" />

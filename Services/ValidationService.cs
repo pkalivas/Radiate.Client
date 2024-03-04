@@ -48,8 +48,8 @@ public class ValidationService : IValidationService
             }
             case ModelTypes.Tree:
             {
-                var graph = outputs.TreeOutput.GetTrees<float>();
-                var validation = new ValidationHarness<ExpressionTree<float>>(graph, new MeanSquaredError()).Validate(data);
+                var tree = outputs.TreeOutput.GetTrees<float>();
+                var validation = new ValidationHarness<ExpressionTree<float>>(tree, new MeanSquaredError()).Validate(data);
 
                 return outputs with
                 {

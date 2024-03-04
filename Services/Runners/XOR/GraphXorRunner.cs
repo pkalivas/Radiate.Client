@@ -31,7 +31,7 @@ public class GraphXorRunner : GraphRunner
         var populationInputs = inputs.PopulationInputs;
         var graphInputs = inputs.GraphInputs;
         
-        var regression = Architect.Graph<float>().ToRegression(frame).Complexity(20);
+        var regression = Architect.Graph<float>().ToRegression(frame, 20);
          
         return Engine.Genetic(regression).Async()
             .PopulationSize(populationInputs.PopulationSize)

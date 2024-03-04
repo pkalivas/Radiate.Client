@@ -125,6 +125,14 @@ public static class RunSelectors
                     _ => new List<ITrace>()
                 }
             });
+
+    public static ISelector<RootState, TrainTestToggleProjection> SelectTrainTestToggleModel => Selectors
+        .Create<RootState, RunState, RunUiState, TrainTestToggleProjection>(SelectRun, RunUiSelectors.SelectRunUiState,
+            (runState, runUiState) => new TrainTestToggleProjection
+            {
+                RunId = runState.RunId,
+                TrainTest = runUiState.TrainTest
+            });
     
     private static ValidationPrediction Map(PredictionValidation val) => new()
     {

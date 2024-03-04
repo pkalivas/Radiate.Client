@@ -3,7 +3,7 @@ namespace Radiate.Client.Domain.Templates.Panels;
 public class AccordionPanel : Panel
 {
     public Type? Toolbar { get; init; } = null;
-    public List<AccordionPanelItem> Panels { get; init; } = new();
+    public override List<IPanel> ChildPanels { get; init; } = new();
 }
 
 public class AccordionPanelItem : Panel

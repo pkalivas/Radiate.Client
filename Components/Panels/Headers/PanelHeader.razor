@@ -9,9 +9,7 @@
     </div>
 </div>
 
-@code
-{
-    [Parameter] public List<string> Actions { get; set; } = new();
+@code {
     [Parameter] public string Title { get; set; }
 
     protected override IObservable<PanelToolbarProjection> Select() => 

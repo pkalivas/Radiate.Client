@@ -1,96 +1,114 @@
 @using Radiate.Client.Domain.Templates.Panels
+@using System.Text.Json
+@inherits StoreComponent<RunPanelState> 
 
-@if (Panel is GridPanel gridPanel)
+@if (Model != null)
 {
-    <MudGrid>
-        @foreach (var gridItem in gridPanel.Items)
-        {
-            <MudItem md="@gridItem.ColSpan" @key="@gridItem.Panel.Id">
-                <PanelDisplay Panel="@gridItem.Panel"/>
-            </MudItem>
-        }
-    </MudGrid>
-}
-else if (Panel is ToolbarPanel toolBarPanel)
-{
-    <MudPaper Elevation="2" Height="@($"{toolBarPanel.Height}px")" Class="h-full">
-        <ToolBar Title="@toolBarPanel.Title" Actions="@toolBarPanel.Actions"/>
-        <DynamicComponent Type="@toolBarPanel.Content"/>
-    </MudPaper>
-}
-else if (Panel is BoundedPaperPanel boundedPaperPanel)
-{
-    <MudPaper Elevation="2" Class="pa-3" Height="@($"{boundedPaperPanel.Height}px")" @key="boundedPaperPanel.Id">
-        @if (boundedPaperPanel.DisplayHeader)
-        {
-            <PanelHeader Title="@boundedPaperPanel.Title"/>
-        }
-        <DynamicComponent Type="@boundedPaperPanel.Content" Parameters="@boundedPaperPanel.Props"/>
-    </MudPaper>
-}
-else if (Panel is TabPanel tabPanel)
-{
-    <MudTabs Elevation="2" Centered="true" Rounded="false" @key="tabPanel.Id">
-        @foreach (var tabItem in tabPanel.Tabs)
-        {
-            <MudTabPanel Text="@tabItem.Title" @key="@tabItem.Id">
-                <PanelDisplay Panel="@tabItem"/>
-            </MudTabPanel>
-        }
-    </MudTabs>
-}
-else if (Panel is PaperPanel paperPanel)
-{
-    <MudPaper Elevation="2" Class="pa-3" @key="paperPanel.Id">
-        @if (paperPanel.DisplayHeader)
-        {
-            <PanelHeader Title="@paperPanel.Title"/>
-        }
-        <DynamicComponent Type="@paperPanel.Content" Parameters="@paperPanel.Props"/>
-    </MudPaper>
-}
-else if (Panel is CardPanel cardPanel)
-{
-    <MudCard Elevation="2" class="h-100">
-        <MudCardHeader>
-            <CardHeaderContent>
-                <MudText Typo="Typo.h6">@cardPanel.Title</MudText>
-            </CardHeaderContent>
-        </MudCardHeader>
-        <MudCardContent>
-            <DynamicComponent Type="@cardPanel.Content" Parameters="@cardPanel.Props" />
-       </MudCardContent>
-    </MudCard>
-}
-else if (Panel is AccordionPanel accordionPanel)
-{
-    @if (accordionPanel.Toolbar != null)
+    @if (Panel is GridPanel gridPanel)
     {
-        <DynamicComponent Type="accordionPanel.Toolbar!"/>
+        <MudGrid>
+            @foreach (var gridItem in gridPanel.Items)
+            {
+                <MudItem md="@gridItem.ColSpan" @key="@gridItem.Panel.Id">
+                    <PanelDisplay Panel="@gridItem.Panel"/>
+                </MudItem>
+            }
+        </MudGrid>
     }
-    <MudExpansionPanels Dense="true" MultiExpansion="true" @key="accordionPanel.Id">
-        @foreach (var exPanel in accordionPanel.Panels)
+    else if (Panel is ToolbarPanel toolBarPanel)
+    {
+        <MudPaper Elevation="2" Height="@($"{toolBarPanel.Height}px")" Class="h-full">
+            <ToolBar Title="@toolBarPanel.Title" Actions="@toolBarPanel.Actions"/>
+            <DynamicComponent Type="@toolBarPanel.Content"/>
+        </MudPaper>
+    }
+    else if (Panel is BoundedPaperPanel boundedPaperPanel)
+    {
+        <MudPaper Elevation="2" Class="pa-3" Height="@($"{boundedPaperPanel.Height}px")" @key="boundedPaperPanel.Id">
+            @if (boundedPaperPanel.DisplayHeader)
+            {
+                <PanelHeader Title="@boundedPaperPanel.Title"/>
+            }
+            <DynamicComponent Type="@boundedPaperPanel.Content" Parameters="@boundedPaperPanel.Props"/>
+        </MudPaper>
+    }
+    else if (Panel is TabPanel tabPanel)
+    {
+        <MudTabs Elevation="2" Centered="true" Rounded="false" @key="tabPanel.Id">
+            @foreach (var tabItem in tabPanel.ChildPanels)
+            {
+                <MudTabPanel Text="@tabItem.Title" @key="@tabItem.Id">
+                    <PanelDisplay Panel="@tabItem"/>
+                </MudTabPanel>
+            }
+        </MudTabs>
+    }
+    else if (Panel is PaperPanel paperPanel)
+    {
+        <MudPaper Elevation="2" Class="pa-3" @key="paperPanel.Id">
+            @if (paperPanel.DisplayHeader)
+            {
+                <PanelHeader Title="@paperPanel.Title"/>
+            }
+            <DynamicComponent Type="@paperPanel.Content" Parameters="@paperPanel.Props"/>
+        </MudPaper>
+    }
+    else if (Panel is CardPanel cardPanel)
+    {
+        <MudCard Elevation="2" class="h-100">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">@cardPanel.Title</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <DynamicComponent Type="@cardPanel.Content" Parameters="@cardPanel.Props" />
+           </MudCardContent>
+        </MudCard>
+    }
+    else if (Panel is AccordionPanel accordionPanel)
+    {
+        @if (accordionPanel.Toolbar != null)
         {
-            <MudExpansionPanel IsInitiallyExpanded="exPanel.Expanded" Dense="true" @key="exPanel.Id">
-                <TitleContent>
-                    <PanelHeader Title="@exPanel.Title"/>
-                </TitleContent>
-                <ChildContent>
-                    <DynamicComponent Type="@exPanel.Content"/>
-                </ChildContent>
-            </MudExpansionPanel>
+            <DynamicComponent Type="accordionPanel.Toolbar!"/>
         }
-    </MudExpansionPanels>
+        <MudExpansionPanels Dense="true" MultiExpansion="true" @key="accordionPanel.Id">
+            @foreach (var exPanel in accordionPanel.ChildPanels.OfType<AccordionPanelItem>())
+            {
+                <MudExpansionPanel IsInitiallyExpanded="exPanel.Expanded" Dense="true" @key="exPanel.Id">
+                    <TitleContent>
+                        <PanelHeader Title="@exPanel.Title"/>
+                    </TitleContent>
+                    <ChildContent>
+                        <DynamicComponent Type="@exPanel.Content"/>
+                    </ChildContent>
+                </MudExpansionPanel>
+            }
+        </MudExpansionPanels>
+    }
+    else
+    {
+        <MudPaper Elevation="2">
+            <MudText Typo="Typo.h6" Class="pa-2">
+                Panel type not supported
+            </MudText>
+        </MudPaper>
+    }
+    
+    <pre>@JsonSerializer.Serialize(Model, new JsonSerializerOptions { WriteIndented = true })</pre>
 }
 else
 {
     <MudPaper Elevation="2">
         <MudText Typo="Typo.h6" Class="pa-2">
-            Panel type not supported
+            Panel not found
         </MudText>
     </MudPaper>
 }
 
 @code {
     [Parameter] public IPanel Panel { get; set; }
+
+    protected override IObservable<RunPanelState> Select() => Store.Select(RunUiSelectors.SelectRunPanelState(Panel.Id));
+
 }

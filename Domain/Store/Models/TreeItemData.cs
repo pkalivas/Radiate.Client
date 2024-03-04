@@ -7,7 +7,7 @@ public interface ITreeItem
     public bool IsCyclic();
 }
 
-public class TreeItemData<T>
+public class TreeItemData<T> where T : ITreeItem
 {
     public T Data { get; init; }
     public HashSet<TreeItemData<T>> TreeItems { get; init; } = new();

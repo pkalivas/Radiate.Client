@@ -94,7 +94,7 @@ public class ImageUiTemplate : IRunUITemplate
                                 Panel = new TabPanel
                                 {
                                     Id = new Guid("9867301E-CD35-40B4-A411-4E9589CDB7DD"),
-                                    Tabs = 
+                                    ChildPanels = 
                                     [
                                          new PaperPanel
                                         {

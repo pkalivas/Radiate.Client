@@ -5,4 +5,4 @@ namespace Radiate.Client.Domain.Store.Actions;
 
 public record RunUiCreatedAction(RunUiState RunUi) : IAction;
 
-public record SetEngineTreeExpandedAction(Guid RunId, Dictionary<string, bool> Expanded) : IAction;
+public record RunUiPanelsCreatedAction(Guid RunId, RunPanelState[] Panels) : IAction;

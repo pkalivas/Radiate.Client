@@ -31,30 +31,30 @@ public class GraphUiTemplate : IRunUITemplate
                     {
                         Id = new Guid("598522C1-38DA-4E20-995A-B1DB1400BFEB"),
                         Toolbar = typeof(ToolBar),
-                        Panels =
+                        ChildPanels =
                         [
-                            new()
+                            new AccordionPanelItem
                             {
                                 Id = new Guid("88D6BD18-DD38-4AD9-8064-43D0665ADD99"),
                                 Expanded = true,
                                 Content = typeof(GraphInputsPanel),
                                 Title = "Inputs",
                             },
-                            new()
+                            new AccordionPanelItem
                             {
                                 Id = new Guid("0277DCC6-B002-409F-A62A-C9B29F564419"),
                                 Expanded = false,
                                 Content = typeof(TrainTestValidation),
                                 Title = "Train/Test"
                             },
-                            new()
+                            new AccordionPanelItem
                             {
                                 Expanded = false,
                                 Id = new Guid("4F263A18-446A-455D-BC37-698F67DE5846"),
                                 Content = typeof(NodeTablePanel),
                                 Title = "Nodes"
                             },
-                            new()
+                            new AccordionPanelItem
                             {
                                 Expanded = false,
                                 Id = new Guid("B5D9CE53-97D5-41AE-8C96-25DF851C57CF"),
@@ -111,7 +111,7 @@ public class GraphUiTemplate : IRunUITemplate
                                 Panel = new TabPanel
                                 {
                                     Id = new Guid("8ABC3316-1156-47EA-A573-381B2EDF7AE3"),
-                                    Tabs = 
+                                    ChildPanels = 
                                     [
                                         new BoundedPaperPanel
                                         {
@@ -146,7 +146,7 @@ public class GraphUiTemplate : IRunUITemplate
                                 Panel = new TabPanel
                                 {
                                     Id = new Guid("9867301E-CD35-40B4-A411-4E9589CDB7DD"),
-                                    Tabs = 
+                                    ChildPanels = 
                                     [
                                         new BoundedPaperPanel
                                         {

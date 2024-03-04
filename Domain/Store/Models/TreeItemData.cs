@@ -1,5 +1,11 @@
 namespace Radiate.Client.Domain.Store.Models;
 
+public interface ITreeItem
+{
+    public int Index { get; }
+    public IEnumerable<int> Children { get; }
+}
+
 public class TreeItemData<T>
 {
     public T Data { get; init; }

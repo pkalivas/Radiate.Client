@@ -71,4 +71,11 @@ public static class EngineSelectors
                 Duration = TimeSpan.FromMilliseconds(model?.CurrentEngineState?.Metrics.Get(MetricNames.Time)?.Time?.Sum ?? 0)
             });
     
+    public static readonly ISelector<RootState, EngineStateTableModelProjection> SelectEngineStateTablePanelModel = Selectors
+        .Create<RootState, RunState, EngineStateTableModelProjection>(RunSelectors.SelectRun, run => new EngineStateTableModelProjection
+        {
+            RunId = run.RunId,
+            EngineOutputs = run.Outputs.EngineStateOutputs.EngineOutputs.ToList()
+        });
+    
 }

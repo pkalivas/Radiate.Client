@@ -1,4 +1,5 @@
 using Radiate.Client.Domain.Store.Models.States;
+using Radiate.Client.Domain.Store.Models.States.Outputs;
 using Radiate.Client.Services.Schema;
 using Radiate.Engines.Harness;
 using Radiate.Extensions.Evolution.Programs;

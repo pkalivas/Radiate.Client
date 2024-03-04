@@ -1,0 +1,9 @@
+@using System.Text.Json
+@inherits StoreComponent<EngineStateTableModelProjection>
+
+<pre>@JsonSerializer.Serialize(Model, new JsonSerializerOptions { WriteIndented = true })</pre>
+
+@code {
+    protected override IObservable<EngineStateTableModelProjection> Select() =>
+        Store.Select(EngineSelectors.SelectEngineStateTablePanelModel);
+}

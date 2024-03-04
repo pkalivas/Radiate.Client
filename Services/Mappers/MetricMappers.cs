@@ -39,7 +39,7 @@ public static class MetricMappers
             {
                 Name = metric.Name,
                 MetricType = metric.MetricType,
-                Distribution = metric.Statistics.LastSequence.Select(val => (double)val).ToArray(),
+                Distribution = metric.Statistics.LastSequence.Select(val => (double) val).ToArray(),
                 Value = RoundMetric(metric, stat => stat.LastValue),
                 Min = RoundMetric(metric, stat => stat.Min),
                 Max = RoundMetric(metric, stat => stat.Max),
@@ -50,12 +50,12 @@ public static class MetricMappers
                 Sum = RoundMetric(metric, stat => stat.Sum),
                 Current = RoundTime(metric, val => val.LastValue),
                 Total = RoundTime(metric, val => val.Sum),
-                MeanTime = RoundTime(metric, val => (float)val.Mean),
-                MinTime = RoundTime(metric, val => (float)val.Min),
-                MaxTime = RoundTime(metric, val => (float)val.Max),
+                MeanTime = RoundTime(metric, val => (float) val.Mean),
+                MinTime = RoundTime(metric, val => (float) val.Min),
+                MaxTime = RoundTime(metric, val => (float) val.Max),
             };
         }
-        
+
         return new MetricValueModel
         {
             Name = metric.Name,
@@ -65,7 +65,9 @@ public static class MetricMappers
     }
 
     private static double RoundMetric(MetricValue metric, Func<FloatStatistics, double> selector) =>
-        Math.Round(metric.MetricType is MetricTypes.Time ? selector(metric.Time) : selector(metric.Statistics), 4);
+        Math.Round(metric.MetricType is MetricTypes.Time
+            ? CheckIsValidNumber(selector(metric.Time)) 
+            : CheckIsValidNumber(selector(metric.Statistics)), 4);
 
     private static TimeSpan RoundTime(MetricValue metric, Func<FloatStatistics, float> selector)
     {
@@ -75,5 +77,8 @@ public static class MetricMappers
             ? 0
             : value);
     }
+    
+    private static double CheckIsValidNumber(double value) => 
+        double.IsNaN(value) || double.IsPositiveInfinity(value) || double.IsNegativeInfinity(value) ? 0 : value;
 
 }

@@ -4,6 +4,7 @@ using System.Reactive.Subjects;
 using Radiate.Client.Domain.Store;
 using Radiate.Client.Domain.Store.Actions;
 using Radiate.Client.Domain.Store.Models.States;
+using Radiate.Client.Domain.Store.Models.States.Outputs;
 using Radiate.Client.Services.Mappers;
 using Radiate.Client.Services.Runners.Interfaces;
 using Radiate.Engines.Entities;
@@ -92,5 +93,30 @@ public abstract class EngineRunner<TEpoch, T> : IEngineRunner, IDisposable where
         ModelType = inputs.ModelType,
         EngineStates = output.EngineStates.ToImmutableDictionary(),
         Metrics = MetricMappers.GetMetricValues(output.Metrics).ToImmutableDictionary(key => key.Name),
+        EngineStateOutputs = Map(output.EngineStates)
     };
+
+    private static EngineStateOutputs Map(Dictionary<string, EngineState> engineStates)
+    {
+        var orderedStates = engineStates.Values
+            .Select((state, idx) => (state, idx))
+            .ToDictionary(key => key.state.EngineId, val => val);
+
+        return new EngineStateOutputs
+        {
+            EngineOutputs = orderedStates
+                .Select(pair => new EngineOutput
+                {
+                    Index = pair.Value.idx,
+                    Name = pair.Value.state.Name,
+                    EngineId = pair.Value.state.EngineId,
+                    State = pair.Value.state.State,
+                    Children = pair.Value.state.SubEngines
+                        .Select(subEngine => orderedStates[subEngine].idx)
+                        .ToList(),
+                    Metrics = MetricMappers.GetMetricValues(pair.Value.state.Metrics).ToImmutableDictionary(key => key.Name)   
+                })
+                .ToImmutableArray()
+        };
+    }
 }

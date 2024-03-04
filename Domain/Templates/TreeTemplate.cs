@@ -187,6 +187,17 @@ public class TreeUiTemplate : IRunUITemplate
                                         }
                                     ]
                                 }
+                            },
+                            new GridPanel.GridItem
+                            {
+                                ColSpan = 12,
+                                Panel = new PaperPanel
+                                {
+                                    Id = new Guid("48623FCA-577B-4DFE-98ED-AFE905D11CDB"),
+                                    Content = typeof(EngineStateTablePanel),
+                                    Title = "Engine States",
+                                    Height = 250,
+                                }
                             }
                         ]
                     }

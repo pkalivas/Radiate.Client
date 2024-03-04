@@ -4,8 +4,7 @@
 
 @code {
     [Parameter] public int Height { get; set; }
-
+    
     protected override IObservable<AccuracyChartPanelProjection> Select() => 
         Store.Select(RunSelectors.SelectAccuracyChartPanelModel);
-
 }

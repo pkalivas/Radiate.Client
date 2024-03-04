@@ -22,9 +22,7 @@
 
     <ItemGroup>
       <AdditionalFiles Include="Components\Panels\Shared\EngineStateDisplay.razor" />
-      <AdditionalFiles Include="Components\Panels\Shared\NewRunInputsDialog.razor" />
       <AdditionalFiles Include="Components\Panels\Shared\RunIcon.razor" />
-      <AdditionalFiles Include="Components\Panels\Shared\ToolBar.razor" />
     </ItemGroup>
 
 </Project>

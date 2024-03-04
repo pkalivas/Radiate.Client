@@ -60,10 +60,9 @@
             },
         };
         
-        if (Data.Any())
+        if (Data.Any() || Data.Count != data.Count)
         {
             data = Data;
-            chart?.Update();
         }
         else
         {
@@ -78,4 +77,15 @@
         
         base.OnParametersSet();
     }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            await chart.Update();
+        }
+        
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
 }

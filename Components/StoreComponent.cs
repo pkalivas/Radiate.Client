@@ -18,7 +18,7 @@ public abstract class StoreComponent<TModel> : ComponentBase, IDisposable
         _subscriptions.Add(Select()
             .Where(val => val != null)
             .DistinctUntilChanged()
-            .Subscribe(async val => await InvokeAsync(() =>
+            .Subscribe(val => InvokeAsync(() =>
             {
 	            Model = val;
 	            StateHasChanged();

@@ -81,10 +81,12 @@ else if (Panel is AccordionPanel accordionPanel)
     {
         <DynamicComponent Type="accordionPanel.Toolbar!"/>
     }
-    <MudExpansionPanels Dense="true" MultiExpansion="true" @key="Item.Data.Key">
+    <MudExpansionPanels Dense="true" MultiExpansion="true" @key="Item.Data.Key" >
         @foreach (var exPanel in Item.TreeItems)
         {
-            <MudExpansionPanel IsInitiallyExpanded="exPanel.Data.IsExpanded" Dense="true" @key="exPanel.Data.Key">
+            <MudExpansionPanel IsExpandedChanged="@((bool expanded) => OnPanelAction(exPanel.Data with { IsExpanded = expanded }))"
+                               Dense="true" 
+                               @key="exPanel.Data.Index">
                 <TitleContent>
                     <PanelHeader Title="@exPanel.Data.Panel.Title"/>
                 </TitleContent>
@@ -108,7 +110,14 @@ else
 }
 
 @code {
+    [Inject] public IStore<RootState> Store { get; set; }
+    
     [Parameter] public TreeItemData<PanelState, Guid> Item { get; set; }
     
     private IPanel? Panel => Item?.Data?.Panel;
+    
+    private async Task OnPanelAction(params PanelState[] updatePanels)
+    {
+        Store.Dispatch(new SetUiPanelStatesAction(updatePanels.First().RunId, updatePanels));
+    }
 }

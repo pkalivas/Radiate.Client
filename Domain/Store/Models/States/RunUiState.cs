@@ -26,10 +26,3 @@ public record PanelState : ITreeItem<Guid>
     
     public bool IsCyclic() => false;
 }
-
-public record PanelTreeNode : ITreeItem<Guid>
-{
-    public Guid Index { get; init; } = Guid.NewGuid();
-    public IEnumerable<Guid> Children { get; init; } = new List<Guid>();
-    public bool IsCyclic() => false;
-}

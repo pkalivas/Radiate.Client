@@ -10,7 +10,8 @@ public static class RunUiReducers
     [
         Reducer.On<RunUiCreatedAction, RootState>(AddRunUi),
         Reducer.On<SetTrainTestTypeAction, RootState>(SetTrainTestType),
-        Reducer.On<RunUiPanelsCreatedAction, RootState>(AddRunUiPanels)
+        Reducer.On<RunUiPanelsCreatedAction, RootState>(AddRunUiPanels),
+        Reducer.On<UiPanelStateUpdatedAction, RootState>(UpdatePanelStates)
     ];
 
     private static RootState AddRunUi(RootState state, RunUiCreatedAction action) => state
@@ -28,5 +29,9 @@ public static class RunUiReducers
             PanelStates = action.Panels.ToImmutableDictionary(p => p.Index),
         });
     
-    
+    private static RootState UpdatePanelStates(RootState state, UiPanelStateUpdatedAction action) => state
+        .UpdateRunUi(action.RunId, ui => ui with
+        {
+            PanelStates = action.Panel.ToImmutableDictionary(p => p.Index),
+        });
 }

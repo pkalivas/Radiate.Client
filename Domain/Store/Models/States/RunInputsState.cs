@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace Radiate.Client.Domain.Store.Models.States;
 
 public record RunInputsState 

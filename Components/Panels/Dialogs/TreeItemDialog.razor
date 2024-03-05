@@ -9,7 +9,7 @@
                 <ItemTemplate>
                     <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.ChildItems">
                         <Content>
-                            <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChild"/>
+                            <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.ChildItems.Any()"/>
                             <DynamicComponent Type="ChildContent" Parameters="@ChildContentProps(context.Data)"/>
                         </Content>
                     </MudTreeViewItem>
@@ -42,7 +42,7 @@
     [Parameter] public Type ChildContent { get; set; } = typeof(MudText);
     [Parameter] public Func<TItem, Dictionary<string, object>> ChildContentProps { get; set; } = (_) => new Dictionary<string, object> { { "Text", nameof(TItem) } };
 
-    private HashSet<TreeItemData<TItem, TKey>> _items { get; set; } = new();
+    private HashSet<TreeItem<TItem, TKey>> _items { get; set; } = new();
     private bool _expanded = false;
 
     protected override Task OnInitializedAsync()

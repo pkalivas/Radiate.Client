@@ -20,10 +20,9 @@ public record PanelState : ITreeItem<Guid>
     public IEnumerable<Guid> Children { get; init; } = new List<Guid>();
     public int Index { get; init; } = 0;
     public IPanel Panel { get; init; } = default!;
-    public bool IsVisible => Panel is not GridPanel.GridItem gridItem || gridItem.IsVisible;//{ get; init; } = false;
-    public bool IsExpanded => Panel is not AccordionPanelItem item || item.Expanded;//{ get; init; } = false;
-
-    public string TrackByKey => $"{RunId}_{Key}_{IsVisible}_{IsExpanded}";
     
+    public bool IsVisible => Panel is not GridPanel.GridItem gridItem || gridItem.IsVisible;
+    public bool IsExpanded => Panel is not AccordionPanelItem item || item.Expanded;
+    public string TrackByKey => $"{RunId}_{Key}_{IsVisible}_{IsExpanded}";
     public bool IsCyclic() => false;
 }

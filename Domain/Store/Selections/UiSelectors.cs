@@ -1,6 +1,5 @@
 using Radiate.Client.Domain.Store.Models.Projections;
 using Radiate.Client.Domain.Store.Models.States;
-using Radiate.Client.Domain.Templates.Panels;
 using Radiate.Client.Services.Mappers;
 using Reflow.Interfaces;
 using Reflow.Selectors;
@@ -21,18 +20,13 @@ public static class UiSelectors
                 return null;
             }
             
-            var isLoading = uiState.LoadingStates.GetValueOrDefault(runUi.RunId, true);
-            var orderedPanels = runUi.PanelStates.Values.OrderBy(val => val.Key).ToArray();
-
             return new StandardRunUiProjection
             {
                 RunId = runUi.RunId,
-                IsLoading = isLoading,
-                UiTemplate = runUi.RunTemplate!.UI,
+                IsLoading = uiState.LoadingStates.GetValueOrDefault(runUi.RunId, true),
                 PanelStates = runUi.RunTemplate.UI.Panels
                     .SelectMany(panel => TreeItemMapper.ToTree(runUi.PanelStates, panel.Id))
                     .ToArray(),
-                OrderedPanels = orderedPanels
             };
         });
 

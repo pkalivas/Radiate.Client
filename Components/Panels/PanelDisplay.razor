@@ -107,9 +107,9 @@ else
 @code {
     [Inject] public IStore<RootState> Store { get; set; }
     
-    [Parameter] public TreeItemData<PanelState, Guid> Item { get; set; }
+    [Parameter] public TreeItem<PanelState, Guid> Item { get; set; }
     
-    private IPanel? Panel => Item?.Data?.Panel;
+    private IPanel Panel => Item.Data.Panel;
     
     private void OnSetExpansionPanels(Guid runId, bool expanded, params Guid[] expandedPanels)
     {

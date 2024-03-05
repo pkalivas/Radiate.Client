@@ -1,5 +1,6 @@
 using Radiate.Client.Domain.Store.Models.Projections;
 using Radiate.Client.Domain.Store.Models.States;
+using Radiate.Client.Domain.Templates.Panels;
 using Reflow.Interfaces;
 using Reflow.Selectors;
 
@@ -36,6 +37,24 @@ public static class UiSelectors
             ModelType = run.Inputs.ModelType,
             DataSetType = run.Inputs.DataSetType,
             IsRunning = run.IsRunning,
+        });
+    
+    public static readonly ISelector<RootState, PanelStateDialogProjection> SelectPanelStateDialogModel = Selectors
+        .Create<RootState, RunState, RunUiState, PanelStateDialogProjection>(RunSelectors.SelectRun, RunUiSelectors.SelectRunUiState,
+            (runState, runUiState) => new PanelStateDialogProjection
+        {
+            RunId = runState.RunId,
+            Panels = runUiState.Panels.Values
+                .Select(panel => new PanelStateModel
+                {
+                    PanelId = panel.Id,
+                    PanelType = panel.GetType().Name,
+                    PanelName = panel.Title,
+                    IsVisible = panel is GridPanel.GridItem {IsVisible: true},
+                    IsExpanded = panel is AccordionPanelItem {Expanded: true},
+                    Panel = panel
+                })
+                .ToList()
         });
     
 

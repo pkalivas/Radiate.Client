@@ -18,13 +18,4 @@
 @code {
     private void OnExpandedChanged(bool expanded) => 
         Dispatch(new SetPanelsExpandedAction(RunId, [PanelId], expanded));
-
-    protected override void OnModelChanged(AccordionPanelItem previousMode, AccordionPanelItem newModel)
-    {
-        var prevEx = previousMode?.Expanded ?? false;
-        var newEx = newModel?.Expanded ?? false;
-        
-        base.OnModelChanged(previousMode, newModel);
-    }
-
 }

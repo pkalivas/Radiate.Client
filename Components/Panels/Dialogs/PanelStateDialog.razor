@@ -1,40 +1,40 @@
-@inherits StoreComponent<List<IPanel>> 
+@inherits StoreComponent<PanelStateDialogProjection> 
 
 <MudDialog>
     <DialogContent>
         <MudContainer>
-            <MudDataGrid Items="@Model" 
+            <MudDataGrid Items="@Model.Panels" 
                          Dense="true"
                          Elevation="0"
                          FixedHeader="true"
                          Height="400px" ColumnResizeMode="ResizeMode.Column">
                 <Columns>
-                    <HierarchyColumn T="IPanel" />
-                    <PropertyColumn Property="x => x.Id"/>
+                    <HierarchyColumn T="PanelStateModel" />
+                    <PropertyColumn Property="x => x.Panel.Id"/>
                     <TemplateColumn>
                         <CellTemplate>
-                            <MudText Typo="Typo.caption">@context.Item.GetType().Name</MudText>
+                            <MudText Typo="Typo.caption">@context.Item.PanelType</MudText>
                         </CellTemplate>
                     </TemplateColumn>
-                    <PropertyColumn Property="x => x.Title" Title="Title" />
+                    <PropertyColumn Property="x => x.PanelName" Title="Title" />
                     <TemplateColumn Title="Visible">
                         <CellTemplate>
                             <MudText Typo="Typo.caption">
-                                @(context.Item is GridPanel.GridItem gridItem ? gridItem.IsVisible : "")
+                                @context.Item.IsVisible
                             </MudText>
                         </CellTemplate>
                     </TemplateColumn>
                     <TemplateColumn Title="Expanded">
                         <CellTemplate>
                             <MudText Typo="Typo.caption">
-                                @(context.Item is AccordionPanelItem accItem ? accItem.Expanded : "")
+                                @context.Item.IsExpanded
                             </MudText>
                         </CellTemplate>
                     </TemplateColumn>                
                 </Columns>
                 <ChildRowContent>
                     <MudCard Elevation="1">
-                        <JsonData Data="context.Item"/>
+                        <JsonData Data="context.Item.Panel"/>
                     </MudCard>
                 </ChildRowContent>
             </MudDataGrid>
@@ -45,11 +45,6 @@
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
-    protected override IObservable<List<IPanel>> Select() => Store.Select(state =>
-    {
-        var currentRunId = state.CurrentRunId;
-        return state.RunUis.TryGetValue(currentRunId, out var currentUi) 
-            ? currentUi.Panels.Values.ToList() 
-            : [];
-    });
+    protected override IObservable<PanelStateDialogProjection> Select() => Store
+        .Select(UiSelectors.SelectPanelStateDialogModel);
 }

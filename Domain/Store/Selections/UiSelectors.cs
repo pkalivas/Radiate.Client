@@ -32,7 +32,7 @@ public static class UiSelectors
                 IsLoading = isLoading,
                 UiTemplate = runUi.RunTemplate!.UI,
                 Panels = runUi.RunTemplate.UI.Panels
-                    .SelectMany(panel => TreeItemMapper.ToTree(runUi.Panels[panel.Id].Index, orderedPanels))
+                    .SelectMany(panel => TreeItemMapper.ToTree(runUi.Panels[panel.Id].Index, orderedPanels.ToDictionary(key => key.Index)))
                     .ToHashSet(),
                 OrderedPanels = orderedPanels
             };

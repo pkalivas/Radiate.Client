@@ -13,7 +13,7 @@ public record RunUiState
     public IImmutableDictionary<Guid, RunPanelState> Panels { get; init; } = new Dictionary<Guid, RunPanelState>().ToImmutableDictionary();
 }
 
-public record RunPanelState : ITreeItem
+public record RunPanelState : ITreeItem<int>
 {
     public Guid Id => Panel.Id;
     public int Index { get; init; } = 0;
@@ -23,11 +23,3 @@ public record RunPanelState : ITreeItem
     public bool IsCyclic() => false;
 }
 
-public record PanelTreeItem : ITreeItem
-{
-    public Guid Id { get; init; } = Guid.NewGuid();
-    public int Index { get; init; } = 0;
-    public List<Guid> ChildIds { get; init; } = new();
-    public IEnumerable<int> Children { get; init; } = new List<int>();
-    public bool IsCyclic() => false;
-}

@@ -21,22 +21,22 @@
     
     private async Task OpenNodeDialog(int index)
     {
-        var dialog = await DialogService.ShowAsync<TreeItemDialog<RunPanelState>>("Node Path", new DialogParameters
-            {
-                ["Index"] = index,
-                ["Items"] = Model!.OrderedPanels.ToArray(),
-                ["ChildContent"] = typeof(JsonData),
-                ["ChildContentProps"] = (RunPanelState item) => new Dictionary<string, object>
-                {
-                    ["Data"] = item,
-                }
-            },
-            new DialogOptions
-            {
-                CloseButton = true,
-                CloseOnEscapeKey = true,
-            });
-        
-        await dialog.Result;
+        // var dialog = await DialogService.ShowAsync<TreeItemDialog<RunPanelState>>("Node Path", new DialogParameters
+        //     {
+        //         ["Index"] = index,
+        //         ["Items"] = Model!.OrderedPanels.ToArray(),
+        //         ["ChildContent"] = typeof(JsonData),
+        //         ["ChildContentProps"] = (RunPanelState item) => new Dictionary<string, object>
+        //         {
+        //             ["Data"] = item,
+        //         }
+        //     },
+        //     new DialogOptions
+        //     {
+        //         CloseButton = true,
+        //         CloseOnEscapeKey = true,
+        //     });
+        //
+        // await dialog.Result;
     }
 }

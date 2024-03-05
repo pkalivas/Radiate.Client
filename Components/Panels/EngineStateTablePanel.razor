@@ -57,7 +57,7 @@
             CloseOnEscapeKey = true,
         };
 
-        var dialog = await DialogService.ShowAsync<TreeItemDialog<EngineOutput>>("Engine Output", parameters, options);
+        var dialog = await DialogService.ShowAsync<TreeItemDialog<EngineOutput, int>>("Engine Output", parameters, options);
         
         await dialog.Result;
     }

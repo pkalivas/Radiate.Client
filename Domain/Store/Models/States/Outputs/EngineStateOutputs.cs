@@ -8,7 +8,7 @@ public record EngineStateOutputs
     public ImmutableArray<EngineOutput> EngineOutputs { get; init; } = ImmutableArray<EngineOutput>.Empty;
 }
 
-public record EngineOutput : ITreeItem
+public record EngineOutput : ITreeItem<int>
 {
     public int Index { get; init; }
     public string Name { get; init; } = "";

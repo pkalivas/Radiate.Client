@@ -1,16 +1,16 @@
 namespace Radiate.Client.Domain.Store.Models;
 
-public interface ITreeItem
+public interface ITreeItem<TKey>
 {
-    public int Index { get; }
-    public IEnumerable<int> Children { get; }
+    public TKey Index { get; }
+    public IEnumerable<TKey> Children { get; }
     public bool IsCyclic();
 }
 
-public class TreeItemData<T> where T : ITreeItem
+public class TreeItemData<T, TKey> where T : ITreeItem<TKey>
 {
     public T Data { get; init; }
-    public HashSet<TreeItemData<T>> TreeItems { get; init; } = new();
+    public HashSet<TreeItemData<T, TKey>> TreeItems { get; init; } = new();
     public bool IsExpanded { get; set; } = false;
 
     public TreeItemData(T data, bool isExpanded = false)

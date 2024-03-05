@@ -1,20 +1,21 @@
+using System.Diagnostics;
 using Radiate.Client.Domain.Store.Models;
 
 namespace Radiate.Client.Services.Mappers;
 
 public static class TreeItemMapper
 {
-    public static HashSet<TreeItemData<T>> ToTree<T>(int index, T[] items, bool expanded = false)
-        where T : ITreeItem
+    public static HashSet<TreeItemData<T, TKey>> ToTree<T, TKey>(TKey index, IReadOnlyDictionary<TKey, T> items, bool expanded = false)
+        where T : ITreeItem<TKey>
     {
-        if (items.Length == 0)
+        if (items.Count == 0)
         {
             return new();
         }
         
         var currentItem = items[index];
-        var seen = new HashSet<int>(new[] { index });
-        var root = new TreeItemData<T>(currentItem, expanded);
+        var seen = new HashSet<TKey>(new[] { index });
+        var root = new TreeItemData<T, TKey>(currentItem, expanded);
         
         foreach (var child in currentItem.Children)
         {
@@ -27,21 +28,21 @@ public static class TreeItemMapper
         return [root];
     }
     
-    private static HashSet<TreeItemData<T>> MapToTreeRecursive<T>(int baseIndex,
-        int currentIndex,
-        IReadOnlyList<T> items,
-        ISet<int> seen,
+    private static HashSet<TreeItemData<T, TKey>> MapToTreeRecursive<T, TKey>(TKey baseIndex,
+        TKey currentIndex,
+        IReadOnlyDictionary<TKey, T> items,
+        ISet<TKey> seen,
         bool expanded) 
-        where T : ITreeItem
+        where T : ITreeItem<TKey>
     {
-        if (baseIndex == currentIndex)
+        if (baseIndex!.Equals(currentIndex))
         {
-            return [];
+            return new();
         }
 
         var currentNode = items[currentIndex];
         seen.Add(currentIndex);
-        var currentTreeItem = new TreeItemData<T>(currentNode, expanded);
+        var currentTreeItem = new TreeItemData<T, TKey>(currentNode, expanded);
 
         foreach (var child in currentNode.Children)
         {

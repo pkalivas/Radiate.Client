@@ -1,5 +1,6 @@
 @using Radiate.Client.Services.Mappers
-@typeparam TItem where TItem : ITreeItem
+@typeparam TItem where TItem : ITreeItem<TKey>
+@typeparam TKey
 
 <MudDialog DisableSidePadding="true">
     <DialogContent>
@@ -36,23 +37,23 @@
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
-    [Parameter] public int Index { get; set; }
+    [Parameter] public TKey Index { get; set; }
     [Parameter] public TItem[] Items { get; set; }
     [Parameter] public Type ChildContent { get; set; }
     [Parameter] public Func<TItem, Dictionary<string, object>> ChildContentProps { get; set; }
 
-    private HashSet<TreeItemData<TItem>> _items { get; set; } = new();
+    private HashSet<TreeItemData<TItem, TKey>> _items { get; set; } = new();
     private bool _expanded = false;
 
     protected override Task OnInitializedAsync()
     {
-        _items = TreeItemMapper.ToTree(Index, Items, _expanded);
+        _items = TreeItemMapper.ToTree(Index, Items.ToDictionary(key => key.Index), _expanded);
         return base.OnInitializedAsync();
     }
 
     private void ToggleExpanded()
     {
         _expanded = !_expanded;
-        _items = TreeItemMapper.ToTree(Index, Items, _expanded);
+        _items = TreeItemMapper.ToTree(Index, Items.ToDictionary(key => key.Index), _expanded);
     }
 }

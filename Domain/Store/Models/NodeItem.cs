@@ -3,7 +3,7 @@ using Radiate.Extensions.Schema;
 
 namespace Radiate.Client.Domain.Store.Models;
 
-public record NodeItem : ITreeItem
+public record NodeItem : ITreeItem<int>
 {
     public Guid NodeId { get; init; }
     public int Index { get; init; }

@@ -15,11 +15,19 @@ public record RunUiState
 
 public record RunPanelState : ITreeItem
 {
-    public Guid Id { get; init; } = Guid.NewGuid();
+    public Guid Id => Panel.Id;
     public int Index { get; init; } = 0;
     public string PanelKey { get; init; } = "";
-    public bool Visible { get; init; } = true;
     public IPanel Panel { get; init; } = default!;
+    public IEnumerable<int> Children { get; init; } = new List<int>();
+    public bool IsCyclic() => false;
+}
+
+public record PanelTreeItem : ITreeItem
+{
+    public Guid Id { get; init; } = Guid.NewGuid();
+    public int Index { get; init; } = 0;
+    public List<Guid> ChildIds { get; init; } = new();
     public IEnumerable<int> Children { get; init; } = new List<int>();
     public bool IsCyclic() => false;
 }

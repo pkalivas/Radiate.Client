@@ -24,12 +24,17 @@ public static class UiSelectors
                 ? loadingState 
                 : true;
 
+            var orderedPanels = runUi.Panels.Values.OrderBy(val => val.Index).ToArray();
+            
             return new StandardRunUiProjection
             {
                 RunId = runUi.RunId,
                 IsLoading = isLoading,
                 UiTemplate = runUi.RunTemplate!.UI,
-                Panels = TreeItemMapper.ToTree(0, runUi.Panels.Values.ToArray(), true)
+                Panels = runUi.RunTemplate.UI.Panels
+                    .SelectMany(panel => TreeItemMapper.ToTree(runUi.Panels[panel.Id].Index, orderedPanels))
+                    .ToHashSet(),
+                OrderedPanels = orderedPanels
             };
         });
 

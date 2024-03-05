@@ -1,0 +1,35 @@
+@inherits StoreComponent<StandardRunUiProjection> 
+
+<MudDialog>
+    <DialogContent>
+        <MudContainer>
+            <MudDataGrid Items="@Model.OrderedPanels" 
+                         Dense="true"
+                         Elevation="0"
+                         FixedHeader="true"
+                         Height="400px" ColumnResizeMode="ResizeMode.Column">
+                <Columns>
+                    <HierarchyColumn T="RunPanelState" />
+                    <PropertyColumn Property="x => x.Index"/>
+                    <TemplateColumn>
+                        <CellTemplate>
+                            <MudText Typo="Typo.caption">@context.Item.Panel.GetType().Name</MudText>
+                        </CellTemplate>
+                    </TemplateColumn>
+                    <PropertyColumn Property="x => x.Panel.Title" Title="Title" />
+                </Columns>
+                <ChildRowContent>
+                    <MudCard Elevation="1">
+                        <JsonData Data="context.Item"/>
+                    </MudCard>
+                </ChildRowContent>
+            </MudDataGrid>
+        </MudContainer>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    protected override IObservable<StandardRunUiProjection> Select() => Store.Select(UiSelectors.SelectStandardRunUiModel);
+}

@@ -6,9 +6,11 @@ public class GridPanel : Panel
 
     public override List<IPanel> ChildPanels => Items.Select(i => i.Panel).ToList();
 
-    public class GridItem
+    public class GridItem : Panel
     {
         public int ColSpan { get; init; }
         public IPanel Panel { get; init; }
+
+        public override List<IPanel> ChildPanels => new List<IPanel> { Panel };
     }
 }

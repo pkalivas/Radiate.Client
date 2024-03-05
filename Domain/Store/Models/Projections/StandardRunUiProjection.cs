@@ -9,4 +9,5 @@ public record StandardRunUiProjection
     public bool IsLoading { get; init; } = true;
     public IRunUITemplate? UiTemplate { get; init; } = default!;
     public HashSet<TreeItemData<RunPanelState>> Panels { get; init; } = new();
+    public RunPanelState[] OrderedPanels { get; init; } = Array.Empty<RunPanelState>();
 }

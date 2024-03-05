@@ -17,6 +17,13 @@
             Inspect
         </MudButton>
     </MudMenuItem>
+        <MudMenuItem>
+            <MudButton OnClick="@InspectPanels"
+                       Size="Size.Small"
+                       StartIcon="@Icons.Material.Outlined.DisplaySettings">
+                Panels
+            </MudButton>
+        </MudMenuItem>
 </MudMenu>
 
 @code {
@@ -38,6 +45,13 @@
     {
         CloseButton = true,
         MaxWidth = MaxWidth.Large,
+        FullWidth = true,
+    });
+    
+    private async Task InspectPanels() => await DialogService.ShowAsync<PanelStateDialog>("Inspect Panels", new DialogOptions
+    {
+        CloseButton = true,
+        MaxWidth = MaxWidth.Medium,
         FullWidth = true,
     });
 }

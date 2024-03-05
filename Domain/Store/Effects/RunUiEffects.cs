@@ -38,19 +38,15 @@ public class RunUiEffects : IEffectRegistry<RootState>
             {
                 AccordionPanelItem accPanelItem => new RunPanelState
                 {
-                    Visible = accPanelItem.Expanded,
                     Panel = accPanelItem,
                     PanelKey = accPanelItem.Id.ToString() + accPanelItem.Expanded,
-                    Id = accPanelItem.Id,
                     Index = panelIndexLookup[accPanelItem.Id],
                     Children = accPanelItem.ChildPanels.Select(child => panelIndexLookup[child.Id])
                 },
                 _ => new RunPanelState
                 {
-                    Visible = true,
                     Panel = panel,
                     PanelKey = panel.Id.ToString(),
-                    Id = panel.Id,
                     Index = panelIndexLookup[panel.Id],
                     Children = panel.ChildPanels.Select(child => panelIndexLookup[child.Id])
                 }

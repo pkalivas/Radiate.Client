@@ -7,6 +7,11 @@ public static class TreeItemMapper
     public static HashSet<TreeItemData<T>> ToTree<T>(int index, T[] items, bool expanded = false)
         where T : ITreeItem
     {
+        if (items.Length == 0)
+        {
+            return new();
+        }
+        
         var currentItem = items[index];
         var seen = new HashSet<int>(new[] { index });
         var root = new TreeItemData<T>(currentItem, expanded);

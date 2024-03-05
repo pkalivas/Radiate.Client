@@ -7,7 +7,7 @@
                          Dense="true"
                          Elevation="0"
                          FixedHeader="true"
-                         Height="400px" ColumnResizeMode="ResizeMode.Column">
+                         Height="700px" ColumnResizeMode="ResizeMode.Column">
                 <Columns>
                     <HierarchyColumn T="PanelStateModel" />
                     <PropertyColumn Property="x => x.Panel.Id"/>
@@ -19,16 +19,32 @@
                     <PropertyColumn Property="x => x.PanelName" Title="Title" />
                     <TemplateColumn Title="Visible">
                         <CellTemplate>
-                            <MudText Typo="Typo.caption">
-                                @context.Item.IsVisible
-                            </MudText>
+                            @if (context.Item.Panel is GridPanel.GridItem)
+                            {
+                                @if (context.Item.IsVisible)
+                                {
+                                    <MudIcon Icon="@Icons.Material.Filled.Visibility" Color="Color.Success"/>
+                                }
+                                else
+                                {
+                                    <MudIcon Icon="@Icons.Material.Filled.VisibilityOff" Color="Color.Warning"/>
+                                }
+                            }
                         </CellTemplate>
                     </TemplateColumn>
                     <TemplateColumn Title="Expanded">
                         <CellTemplate>
-                            <MudText Typo="Typo.caption">
-                                @context.Item.IsExpanded
-                            </MudText>
+                            @if (context.Item.Panel is AccordionPanelItem)
+                            {
+                                @if (context.Item.IsExpanded)
+                                {
+                                    <MudIcon Icon="@Icons.Material.Filled.ExpandMore" Color="Color.Success"/>
+                                }
+                                else
+                                {
+                                    <MudIcon Icon="@Icons.Material.Filled.ExpandLess" Color="Color.Warning"/>
+                                }
+                            }
                         </CellTemplate>
                     </TemplateColumn>                
                 </Columns>

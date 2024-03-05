@@ -55,8 +55,8 @@ public static class UiSelectors
                     PanelId = panel.Id,
                     PanelType = panel.GetType().Name,
                     PanelName = panel.Title,
-                    IsVisible = panel is GridPanel.GridItem {IsVisible: true},
-                    IsExpanded = panel is AccordionPanelItem {Expanded: true},
+                    IsVisible = panel is not GridPanel.GridItem gridItem || gridItem.IsVisible,
+                    IsExpanded = panel is not AccordionPanelItem accPanel || accPanel.Expanded,
                     Panel = panel
                 })
                 .ToList()

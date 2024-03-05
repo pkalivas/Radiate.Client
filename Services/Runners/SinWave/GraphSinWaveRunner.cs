@@ -29,8 +29,8 @@ public class GraphSinWaveRunner : GraphRunner
         var graph = Architect.Graph<float>()
             .SetOutputs(Ops.Linear<float>())
             .Build(builder => builder.Lstm(1));
-        
-        var problem = new GraphCodex<float>(graph).ToRegression(frame).Complexity(50);
+
+        var problem = new GraphCodex<float>(graph).ToRegression(frame, graphInputs.NodeComplexity);
 
         return Engine.Genetic(problem).Async()
             .PopulationSize(populationInputs.PopulationSize)

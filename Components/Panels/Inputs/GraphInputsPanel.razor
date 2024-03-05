@@ -44,6 +44,12 @@
                          InputsChanged="@((float rate) => OnInputChange(Model, inputs => inputs.GraphInputs.AddMemoryRate = rate))"/>
     </MudItem>
     <MudItem md="3">
+        <IntInputField Label="Node Complexity"
+                         IsReadonly="@Model.IsReadonly"
+                         Value="@Model.Inputs.GraphInputs.NodeComplexity"
+                         InputsChanged="@((int rate) => OnInputChange(Model, inputs => inputs.GraphInputs.NodeComplexity = rate))"/>
+    </MudItem>
+    <MudItem md="3">
         <IntInputField Label="Iteration Limit"
                          IsReadonly="@Model.IsReadonly"
                          Value="@Model.Inputs.LimitInputs.IterationLimit"

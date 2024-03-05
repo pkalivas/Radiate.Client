@@ -32,7 +32,7 @@ public class GraphUiTemplate : IRunUITemplate
                     {
                         Id = new Guid("598522C1-38DA-4E20-995A-B1DB1400BFEB"),
                         Toolbar = typeof(ToolBar),
-                        ChildPanels =
+                        Items = 
                         [
                             new AccordionPanelItem
                             {

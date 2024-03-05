@@ -1,0 +1,16 @@
+@inherits PanelDisplayComponent<BoundedPaperPanel>
+
+@if (CanDisplay())
+{
+    <MudPaper Elevation="2" Class="pa-3" Height="@GetHeight()" @key="@TrackByKey()">
+        @if (Panel.DisplayHeader)
+        {
+            <PanelHeader Title="@Panel.Title"/>
+        }
+        <DynamicComponent Type="@Panel.Content" Parameters="@Panel.Props"/>
+    </MudPaper>
+}
+
+@code {
+    private string GetHeight() => $"{Panel.Height}px";
+}

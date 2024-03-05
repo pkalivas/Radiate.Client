@@ -1,0 +1,11 @@
+@inherits PanelDisplayComponent<GridPanel>
+
+@if (CanDisplay())
+{
+    <MudGrid>
+        @foreach (var (item, idx) in Panel.Items.Select((gridItem, idx) => (gridItem, idx)))
+        {
+            <PanelDisplay PanelId="@item.Id" @key="@TrackByKey(item, idx)"/>
+        }
+    </MudGrid>
+}

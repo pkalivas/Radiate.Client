@@ -10,7 +10,8 @@ public record RunUiState
     public Guid RunId { get; init; } = Guid.NewGuid();
     public IRunTemplate? RunTemplate { get; init; }
     public string TrainTest { get; init; } = TrainTestTypes.Train;
-    public IImmutableDictionary<Guid, PanelState> PanelStates { get; init; } = new Dictionary<Guid, PanelState>().ToImmutableDictionary();
+    public ImmutableDictionary<Guid, IPanel> Panels { get; init; } = ImmutableDictionary<Guid, IPanel>.Empty;
+    // public IImmutableDictionary<Guid, PanelState> PanelStates { get; init; } = new Dictionary<Guid, PanelState>().ToImmutableDictionary();
 }
 
 public record PanelState : ITreeItem<Guid>

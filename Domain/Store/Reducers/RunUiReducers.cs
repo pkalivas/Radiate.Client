@@ -26,12 +26,12 @@ public static class RunUiReducers
     private static RootState AddRunUiPanels(RootState state, RunUiPanelsCreatedAction action) => state
         .UpdateRunUi(action.RunId, ui => ui with
         {
-            PanelStates = action.Panels.ToImmutableDictionary(p => p.Key),
+            Panels = action.Panels.ToImmutableDictionary(p => p.Id),
         });
     
     private static RootState UpdatePanelStates(RootState state, UiPanelStateUpdatedAction action) => state
         .UpdateRunUi(action.RunId, ui => ui with
         {
-            PanelStates = action.Panel.ToImmutableDictionary(p => p.Key),
+            Panels = action.Panels.ToImmutableDictionary(p => p.Id),
         });
 }

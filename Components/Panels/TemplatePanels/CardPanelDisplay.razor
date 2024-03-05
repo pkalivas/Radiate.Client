@@ -1,0 +1,15 @@
+@inherits PanelDisplayComponent<CardPanel>
+
+@if (CanDisplay())
+{
+    <MudCard Elevation="2" Class="h-100">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">@Panel.Title</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <DynamicComponent Type="@Panel.Content" Parameters="@Panel.Props"/>
+        </MudCardContent>
+    </MudCard>
+}

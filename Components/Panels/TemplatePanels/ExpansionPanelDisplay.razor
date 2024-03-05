@@ -1,0 +1,21 @@
+@inherits PanelDisplayComponent<AccordionPanelItem>
+
+@if (CanDisplay())
+{
+    <MudExpansionPanel Dense="true"
+                       IsInitiallyExpanded="@Panel.Expanded"
+                       IsExpandedChanged="@((bool expanded) => OnExpandedChanged(expanded))"
+                       @key="TrackByKey()">
+        <TitleContent>
+            <PanelHeader Title="@Panel.Title"/>
+        </TitleContent>
+        <ChildContent>
+            <DynamicComponent Type="@Panel.Content"/>
+        </ChildContent>
+    </MudExpansionPanel>
+}
+
+@code {
+    private void OnExpandedChanged(bool expanded) => 
+        Dispatch(new SetPanelsExpandedAction(RunId, [Panel.Id], expanded));
+}

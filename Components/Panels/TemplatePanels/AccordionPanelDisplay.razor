@@ -1,0 +1,15 @@
+@inherits PanelDisplayComponent<AccordionPanel>
+
+@if (CanDisplay())
+{
+    if (Panel.Toolbar != null)
+    {
+        <DynamicComponent Type="Panel.Toolbar" />
+    }
+    <MudExpansionPanels Dense="true" MultiExpansion="true" @key="TrackByKey()">
+        @foreach (var (exItem, idx) in Panel.Items.Select((item, idx) => (item, idx)))
+        {
+            <PanelDisplay PanelId="@exItem.Id" @key="@TrackByKey(exItem, idx)"/>
+        }
+    </MudExpansionPanels>
+}

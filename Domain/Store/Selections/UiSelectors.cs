@@ -1,6 +1,5 @@
 using Radiate.Client.Domain.Store.Models.Projections;
 using Radiate.Client.Domain.Store.Models.States;
-using Radiate.Client.Services.Mappers;
 using Reflow.Interfaces;
 using Reflow.Selectors;
 
@@ -15,7 +14,7 @@ public static class UiSelectors
         .Create<RootState, UiState, RunUiState, StandardRunUiProjection>(SelectUiState, RunUiSelectors.SelectRunUiState,
             (uiState, runUi) =>
         {
-            if (runUi.RunTemplate is null || runUi.PanelStates.Count == 0)
+            if (runUi.RunTemplate is null || runUi.Panels.Count == 0)
             {
                 return null;
             }
@@ -24,9 +23,9 @@ public static class UiSelectors
             {
                 RunId = runUi.RunId,
                 IsLoading = uiState.LoadingStates.GetValueOrDefault(runUi.RunId, true),
-                PanelStates = runUi.RunTemplate.UI.Panels
-                    .SelectMany(panel => TreeItemMapper.ToTree(runUi.PanelStates, panel.Id))
-                    .ToArray(),
+                PanelIds = runUi.RunTemplate.UI.Panels
+                    .Select(panel => panel.Id)
+                    .ToList()
             };
         });
 

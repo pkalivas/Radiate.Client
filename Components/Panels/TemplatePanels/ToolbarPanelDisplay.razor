@@ -1,0 +1,16 @@
+@inherits PanelDisplayComponent<ToolbarPanel>
+
+@if (CanDisplay())
+{
+    <MudPaper Elevation="2"
+              Height="@GetHeight()"
+              Class="h-full"
+              @key="@TrackByKey()">
+        <ToolBar Title="@Panel.Title" Actions="@Panel.Actions"/>
+        <DynamicComponent Type="@Panel.Content"/>
+    </MudPaper>
+}
+
+@code {
+    private string GetHeight() => $"{Panel.Height}px";
+}

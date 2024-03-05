@@ -1,0 +1,14 @@
+@inherits PanelDisplayComponent<PaperPanel>
+
+@if (CanDisplay())
+{
+    <MudPaper Elevation="2"
+              Class="pa-3"
+              @key="@TrackByKey()">
+        @if (Panel.DisplayHeader)
+        {
+            <PanelHeader Title="@Panel.Title"/>
+        }
+        <DynamicComponent Type="@Panel.Content" Parameters="@Panel.Props"/>
+    </MudPaper>
+}

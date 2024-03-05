@@ -1,6 +1,5 @@
 using System.Reactive.Linq;
 using Radiate.Client.Domain.Store.Actions;
-using Radiate.Client.Domain.Store.Models.States;
 using Radiate.Client.Domain.Templates.Panels;
 using Radiate.Client.Services.Mappers;
 using Reflow.Interfaces;
@@ -30,14 +29,7 @@ public class RunUiEffects : IEffectRegistry<RootState>
             var (_, action) = pair;
             var runUi = action.RunUi;
             
-            return new RunUiPanelsCreatedAction(runUi.RunId, PanelMapper.Flatten(runUi.RunTemplate!.UI.Panels)
-                .Select((panel, index) =>  new PanelState
-                {
-                    RunId = runUi.RunId,
-                    Index = index,
-                    Panel = panel,
-                })
-                .ToArray());
+            return new RunUiPanelsCreatedAction(runUi.RunId, PanelMapper.Flatten(runUi.RunTemplate!.UI.Panels).ToArray());
         }), true);
     
     private IEffect<RootState> SetUiPanelsExpandedEffect => CreateEffect<RootState>(store => store
@@ -48,23 +40,20 @@ public class RunUiEffects : IEffectRegistry<RootState>
             var (runId, panelIds, isExpanded) = action;
 
             var panelStates = state.RunUis.TryGetValue(runId, out var runUi)
-                ? runUi.PanelStates.Values.ToDictionary(key => key.Key)
-                : new Dictionary<Guid, PanelState>();
+                ? runUi.Panels.Values.ToDictionary(key => key.Id)
+                : new Dictionary<Guid, IPanel>();
 
             foreach (var panelId in panelIds)
             {
                 if (panelStates.TryGetValue(panelId, out var panel))
                 {
-                    panelStates[panel.Key] = panel with
+                    panelStates[panel.Id] = panel switch
                     {
-                        Panel = panel.Panel switch
+                        AccordionPanelItem accordionPanelItem => accordionPanelItem with
                         {
-                            AccordionPanelItem accordionPanelItem => accordionPanelItem with
-                            {
-                                Expanded = isExpanded
-                            },
-                            _ => panel.Panel
-                        }
+                            Expanded = isExpanded
+                        },
+                        _ => panel
                     };
                 }
             }
@@ -79,28 +68,25 @@ public class RunUiEffects : IEffectRegistry<RootState>
             var (state, action) = pair;
 
             var panelStates = state.RunUis.TryGetValue(action.RunId, out var runUi)
-                ? runUi.PanelStates.Values.ToDictionary(key => key.Key)
-                : new Dictionary<Guid, PanelState>();
+                ? runUi.Panels.Values.ToDictionary(key => key.Id)
+                : new Dictionary<Guid, IPanel>();
 
             foreach (var panelId in panelStates.Keys)
             {
                 if (panelStates.TryGetValue(panelId, out var panel))
                 {
-                    panelStates[panel.Key] = panel with
+                    panelStates[panel.Id] = panel switch
                     {
-                        Panel = panel.Panel switch
+                        GridPanel.GridItem gridItem => gridItem with
                         {
-                            GridPanel.GridItem gridItem => gridItem with
-                            {
-                                IsVisible = true,
-                            },
-                            AccordionPanelItem accordionPanelItem => accordionPanelItem with
-                            {
-                                Expanded = true
-                            },
-                            _ => panel.Panel
-                        }
-                    };                 
+                            IsVisible = true,
+                        },
+                        AccordionPanelItem accordionPanelItem => accordionPanelItem with
+                        {
+                            Expanded = true
+                        },
+                        _ => panel
+                    };
                 }
             }
                 

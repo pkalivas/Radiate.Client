@@ -20,16 +20,16 @@ public abstract class StoreComponent<TModel> : ComponentBase, IDisposable
             .DistinctUntilChanged()
             .Subscribe(val => InvokeAsync(() =>
             {
+                OnModelChanged(Model ?? default!, val);
 	            Model = val;
 	            StateHasChanged();
             })));
-        OnSubscribed();
         return base.OnInitializedAsync();
     }
 
     protected virtual IObservable<TModel> Select() => Observable.Empty<TModel>();
     
-    protected virtual void OnSubscribed() { }
+    protected virtual void OnModelChanged(TModel previousMode, TModel newModel) { }
     
     protected void Dispatch<TAction>(TAction action)
 	    where TAction : IAction => Store.Dispatch(action);

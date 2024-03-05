@@ -1,4 +1,4 @@
-@inherits StoreComponent<List<PanelState>> 
+@inherits StoreComponent<List<IPanel>> 
 
 <MudDialog>
     <DialogContent>
@@ -9,16 +9,28 @@
                          FixedHeader="true"
                          Height="400px" ColumnResizeMode="ResizeMode.Column">
                 <Columns>
-                    <HierarchyColumn T="PanelState" />
-                    <PropertyColumn Property="x => x.Key"/>
+                    <HierarchyColumn T="IPanel" />
+                    <PropertyColumn Property="x => x.Id"/>
                     <TemplateColumn>
                         <CellTemplate>
-                            <MudText Typo="Typo.caption">@context.Item.Panel.GetType().Name</MudText>
+                            <MudText Typo="Typo.caption">@context.Item.GetType().Name</MudText>
                         </CellTemplate>
                     </TemplateColumn>
-                    <PropertyColumn Property="x => x.Panel.Title" Title="Title" />
-                    <PropertyColumn Property="x => x.IsVisible" Title="Visible" />
-                    <PropertyColumn Property="x => x.IsExpanded" Title="Expanded" />
+                    <PropertyColumn Property="x => x.Title" Title="Title" />
+                    <TemplateColumn Title="Visible">
+                        <CellTemplate>
+                            <MudText Typo="Typo.caption">
+                                @(context.Item is GridPanel.GridItem gridItem ? gridItem.IsVisible : "")
+                            </MudText>
+                        </CellTemplate>
+                    </TemplateColumn>
+                    <TemplateColumn Title="Expanded">
+                        <CellTemplate>
+                            <MudText Typo="Typo.caption">
+                                @(context.Item is AccordionPanelItem accItem ? accItem.Expanded : "")
+                            </MudText>
+                        </CellTemplate>
+                    </TemplateColumn>                
                 </Columns>
                 <ChildRowContent>
                     <MudCard Elevation="1">
@@ -33,11 +45,11 @@
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
-    protected override IObservable<List<PanelState>> Select() => Store.Select(state =>
+    protected override IObservable<List<IPanel>> Select() => Store.Select(state =>
     {
         var currentRunId = state.CurrentRunId;
         return state.RunUis.TryGetValue(currentRunId, out var currentUi) 
-            ? currentUi.PanelStates.Values.OrderBy(val => val.Index).ToList() 
+            ? currentUi.Panels.Values.ToList() 
             : [];
     });
 }

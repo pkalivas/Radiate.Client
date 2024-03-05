@@ -4,12 +4,14 @@
 
 @if (Model is not null && !Model.IsLoading)
 {
-    <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
-        @foreach (var panel in Model!.PanelStates)
-        {
-            <PanelDisplay Item="@panel" @key="panel.Data.TrackByKey"/>
-        }
-    </MudContainer>
+    <CascadingValue Name="RunId" Value="RunId">
+        <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
+            @foreach (var panel in Model!.PanelIds)
+            {
+                <PanelDisplay PanelId="@panel" @key="panel"/>
+            }
+        </MudContainer>
+    </CascadingValue>
 }
 
 @code {

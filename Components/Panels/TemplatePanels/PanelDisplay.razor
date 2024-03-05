@@ -3,59 +3,50 @@
 @using System.Reactive.Linq
 @inherits StoreComponent<IPanel>
 
-@if (Model != null)
+@if (Model is null)
 {
-    if (Model is GridPanel gridPanel)
-    {
-        <GridPanelDisplay Panel="gridPanel"/>
-    }
-    else if (Model is GridPanel.GridItem gridItem)
-    {
-        <GridItemPanelDisplay Panel="gridItem"/>
-    }
-    else if (Model is ToolbarPanel toolbarPanel)
-    {
-        <ToolbarPanelDisplay Panel="toolbarPanel"/>
-    }
-    else if (Model is BoundedPaperPanel boundedPaperPanel)
-    {
-        <BoundedPaperPanelDisplay Panel="boundedPaperPanel"/>
-    }
-    else if (Model is TabPanel tabPanel)
-    {
-        <TabPanelDisplay Panel="tabPanel"/>
-    }
-    else if (Model is PaperPanel paperPanel)
-    {
-        <PaperPanelDisplay Panel="paperPanel"/>
-    }
-    else if (Model is CardPanel cardPanel)
-    {
-        <CardPanelDisplay Panel="cardPanel"/>
-    }
-    else if (Model is AccordionPanel accordionPanel)
-    {
-        <AccordionPanelDisplay Panel="accordionPanel"/>
-    }
-    else if (Model is AccordionPanelItem accordionPanelItem)
-    {
-        <ExpansionPanelDisplay Panel="accordionPanelItem"/>
-    }
-    else
-    {
-        <MudPaper Elevation="2">
-            <MudText Typo="Typo.h6" Class="pa-2">
-                Panel @typeof(Panel) not supported
-            </MudText>
-        </MudPaper>
-    }
+    <div>Loading...</div>
+}
+else
+{
+    <DynamicComponent Type="@GetDisplayComponentType()" Parameters="@GetDisplayComponentParameters()"/>
 }
 
 @code {
     [CascadingParameter] public Guid RunId { get; set; }
-    
     [Parameter] public Guid PanelId { get; set; }
 
-    protected override IObservable<IPanel> Select() => Store
-        .Select(RunUiSelectors.SelectPanel(PanelId));
+    protected override IObservable<IPanel> Select() => Store.Select(RunUiSelectors.SelectPanel(PanelId));
+    
+    private Type GetDisplayComponentType() => Model switch
+    {
+        GridPanel => typeof(GridPanelDisplay),
+        GridPanel.GridItem => typeof(GridItemPanelDisplay),
+        ToolbarPanel => typeof(ToolbarPanelDisplay),
+        BoundedPaperPanel => typeof(BoundedPaperPanelDisplay),
+        TabPanel => typeof(TabPanelDisplay),
+        PaperPanel => typeof(PaperPanelDisplay),
+        CardPanel => typeof(CardPanelDisplay),
+        AccordionPanel => typeof(AccordionPanelDisplay),
+        AccordionPanelItem => typeof(ExpansionPanelDisplay),
+        _ => throw new Exception($"Panel {Model} not supported")
+    };
+
+    private Dictionary<string, object> GetDisplayComponentParameters() => new()
+    {
+        ["Panel"] = Model switch
+        {
+            GridPanel gridPanel => gridPanel,
+            GridPanel.GridItem gridItem => gridItem,
+            ToolbarPanel tabPanel => tabPanel,
+            BoundedPaperPanel boundedPaperPanel => boundedPaperPanel,
+            TabPanel tabPanel => tabPanel,
+            PaperPanel paperPanel => paperPanel,
+            CardPanel cardPanel => cardPanel,
+            AccordionPanel accordionPanel => accordionPanel,
+            AccordionPanelItem accordionPanelItem => accordionPanelItem,
+            _ => throw new Exception($"Panel {Model} not supported")
+        }
+    };
+
 }

@@ -14,9 +14,6 @@ public abstract class PanelDisplayComponent<TPanel> : StoreComponent<TPanel>
     
     protected string TrackByKey() => Hash.Of(typeof(TPanel)).And(Panel).Value.ToString();
 
-    protected string TrackByKey<T>(T item) => 
-        $"{TrackByKey()}_{Hash.Of(typeof(T)).And(item).Value.ToString()}";
-
     protected string TrackByKey<T>(T item, int index) =>
         $"{TrackByKey()}_{Hash.Of(typeof(T)).And(item).Value.ToString()}_{index}";
 }

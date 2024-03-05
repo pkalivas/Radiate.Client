@@ -1,9 +1,11 @@
+using System.Text.Json.Serialization;
+
 namespace Radiate.Client.Domain.Templates.Panels;
 
 public record PaperPanel : Panel
 {
     public bool DisplayHeader { get; init; } = true;
-    public Type Content { get; init; }
+    [JsonIgnore] public Type Content { get; init; }
     public Dictionary<string, object> Props { get; init; } = new();
 }
 

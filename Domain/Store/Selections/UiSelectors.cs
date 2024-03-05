@@ -24,7 +24,7 @@ public static class UiSelectors
                 RunId = runUi.RunId,
                 IsLoading = uiState.LoadingStates.GetValueOrDefault(runUi.RunId, true),
                 PanelIds = runUi.RunTemplate.UI.Panels
-                    .Select(panel => panel.Id)
+                    .Select(panel => runUi.Panels[panel.Id].Id)
                     .ToList()
             };
         });

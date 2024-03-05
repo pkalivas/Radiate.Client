@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Radiate.Client.Domain.Templates.Panels;
 
 public record AccordionPanel : Panel
@@ -10,5 +12,5 @@ public record AccordionPanel : Panel
 public record AccordionPanelItem : Panel
 {
     public bool Expanded { get; init; } = false;
-    public Type Content { get; init; } = typeof(Panel);
+    [JsonIgnore] public Type Content { get; init; } = typeof(Panel);
 }

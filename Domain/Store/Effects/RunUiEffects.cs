@@ -16,7 +16,8 @@ public class RunUiEffects : IEffectRegistry<RootState>
         {
             RunCreatedEffect,
             CreateUiPanelsEffect,
-            SetUiPanelStatesEffect
+            SetUiPanelStatesEffect,
+            SetUiPanelStatesVisibleEffect
         };
 
     private IEffect<RootState> RunCreatedEffect => CreateEffect<RootState>(state => state
@@ -37,7 +38,7 @@ public class RunUiEffects : IEffectRegistry<RootState>
                     Index = panel.Id,
                     Children = panel.ChildPanels.Select(child => child.Id),
                     Panel = panel,
-                    IsVisible = true,
+                    IsVisible = panel is not GridPanel.GridItem gridItem || gridItem.IsVisible,
                     IsExpanded = panel is not AccordionPanelItem item || item.Expanded
                 })
                 .ToArray());
@@ -61,6 +62,31 @@ public class RunUiEffects : IEffectRegistry<RootState>
                     {
                         IsVisible = updatePanel.IsVisible,
                         IsExpanded = updatePanel.IsExpanded
+                    };
+                }
+            }
+                
+            return new UiPanelStateUpdatedAction(action.RunId, panelStates.Values.ToArray());
+        }), true);
+    
+    private IEffect<RootState> SetUiPanelStatesVisibleEffect => CreateEffect<RootState>(state => state
+        .OnAction<StartEngineAction>()
+        .Select(pair =>
+        {
+            var (state, action) = pair;
+
+            var panelStates = state.RunUis.TryGetValue(action.RunId, out var runUi)
+                ? runUi.PanelStates.Values.ToDictionary(key => key.Index)
+                : new Dictionary<Guid, PanelState>();
+
+            foreach (var panelId in panelStates.Keys)
+            {
+                if (panelStates.TryGetValue(panelId, out var panel))
+                {
+                    panelStates[panel.Index] = panel with
+                    {
+                        IsVisible = true,
+                        IsExpanded = true,
                     };                     
                 }
             }

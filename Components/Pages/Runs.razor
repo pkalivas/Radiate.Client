@@ -6,21 +6,22 @@
 @if (Model is not null && !Model.IsLoading)
 {
     <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
-        @foreach (var panel in Model!.PanelStates)//Model!.UiTemplate!.Panels)
+        @foreach (var panel in Model!.PanelStates)
         {
             <PanelDisplay Item="@panel" @key="panel.Data.Key"/>
         }
     </MudContainer>
     
-    <JsonData Data="@Model.PanelStates" />
+    @* <JsonData Data="@Model.OrderedPanels" /> *@
 }
 
 @code {
     [Parameter] public Guid RunId { get; set; }
     [Parameter] public string ModelType { get; set; }
 
-    protected override IObservable<StandardRunUiProjection> Select() => Store.Select(UiSelectors.SelectStandardRunUiModel);
-    
+    protected override IObservable<StandardRunUiProjection> Select() => 
+        Store.Select(UiSelectors.SelectStandardRunUiModel);
+
     private async Task OpenNodeDialog(int index)
     {
         // var dialog = await DialogService.ShowAsync<TreeItemDialog<RunPanelState>>("Node Path", new DialogParameters

@@ -9,6 +9,7 @@ public class GridPanel : Panel
     public class GridItem : Panel
     {
         public int ColSpan { get; init; }
+        public bool IsVisible { get; init; } = true;
         public IPanel Panel { get; init; }
 
         public override List<IPanel> ChildPanels => new List<IPanel> { Panel };

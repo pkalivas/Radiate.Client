@@ -28,6 +28,9 @@ public record RootState : IState
         var currentRunUi = RunUis.TryGetValue(runId, out var runUi) ? runUi : new();
         var newRunUis = RunUis.ToDictionary(); 
         newRunUis[runId] = update(currentRunUi);
-        return this with { RunUis = newRunUis.ToImmutableDictionary() };
+        return this with
+        {
+            RunUis = newRunUis.ToImmutableDictionary() 
+        };
     }
 }

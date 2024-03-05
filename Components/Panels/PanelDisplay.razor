@@ -6,20 +6,14 @@
     <MudGrid>
         @foreach (var child in Item.TreeItems)
         {
-            if (child.Data.Panel is GridPanel.GridItem gridItem)
+            if (child.Data.Panel is GridPanel.GridItem gridItem && child.Data.IsVisible)
             {
                 <MudItem md="@gridItem.ColSpan" @key="@child.Data.Key">
                     @foreach (var subChild in child.TreeItems)
                     {
-                        <PanelDisplay Item="@subChild"/>
+                        <PanelDisplay Item="@subChild" @key="@child.Data.Key"/>
                     }
-                </MudItem>
-            }
-            else
-            {
-                <MudItem md="12" @key="@child.Data.Key">
-                    <PanelDisplay Item="@child"/>
-                </MudItem>
+                </MudItem>   
             }
         }
     </MudGrid>
@@ -81,12 +75,13 @@ else if (Panel is AccordionPanel accordionPanel)
     {
         <DynamicComponent Type="accordionPanel.Toolbar!"/>
     }
-    <MudExpansionPanels Dense="true" MultiExpansion="true" @key="Item.Data.Key" >
+    <MudExpansionPanels Dense="true" MultiExpansion="true" @key="Item.Data.Key">
         @foreach (var exPanel in Item.TreeItems)
         {
-            <MudExpansionPanel IsExpandedChanged="@((bool expanded) => OnPanelAction(exPanel.Data with { IsExpanded = expanded }))"
-                               Dense="true" 
-                               @key="exPanel.Data.Index">
+            <MudExpansionPanel IsInitiallyExpanded="@exPanel.Data.IsExpanded"
+                    IsExpandedChanged="@((bool expanded) => OnPanelAction(exPanel.Data with { IsExpanded = expanded }))"
+                    Dense="true" 
+                    @key="exPanel.Data.Key">
                 <TitleContent>
                     <PanelHeader Title="@exPanel.Data.Panel.Title"/>
                 </TitleContent>

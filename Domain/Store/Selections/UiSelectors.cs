@@ -18,7 +18,7 @@ public static class UiSelectors
         {
             if (runUi.RunTemplate is null || runUi.PanelStates.Count == 0)
             {
-                return new StandardRunUiProjection();
+                return null;
             }
             
             var isLoading = uiState.LoadingStates.TryGetValue(runUi.RunId, out var loadingState) 
@@ -26,6 +26,8 @@ public static class UiSelectors
                 : true;
 
             var orderedPanels = runUi.PanelStates.Values.OrderBy(val => val.Index).ToArray();
+
+            var t = orderedPanels.Where(val => !val.IsVisible).ToArray();
             
             return new StandardRunUiProjection
             {

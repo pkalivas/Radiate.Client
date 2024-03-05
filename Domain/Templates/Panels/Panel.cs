@@ -9,7 +9,7 @@ public interface IPanel
 
 public abstract class Panel : IPanel
 {
-    public Guid Id { get; init; }
+    public Guid Id { get; init; } = Guid.NewGuid();
     public string Title { get; init; } = string.Empty;
     public virtual List<IPanel> ChildPanels { get; init; } = new();
 }

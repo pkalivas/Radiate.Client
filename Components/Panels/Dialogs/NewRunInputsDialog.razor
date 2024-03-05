@@ -44,12 +44,22 @@
 @code 
 {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public string ModelType { get; set; }
+    [Parameter] public string DataSetType { get; set; }
 
     private RunState RunState { get; set; }
 
     protected override void OnInitialized()
     {
-        RunState = new RunState();
+        RunState = new RunState
+        {
+            Inputs = new RunInputsState
+            {
+                ModelType = ModelType,
+                DataSetType = DataSetType
+            }
+        };
+        
         base.OnInitialized();
     }
 

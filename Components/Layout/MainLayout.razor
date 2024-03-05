@@ -32,6 +32,9 @@
 @code 
 {
     bool _drawerOpen = true;
+
+    private string ModelType { get; set; } = ModelTypes.Graph;
+    private string DataSetType { get; set; } = DataSetTypes.Xor;
     
     [Inject] private IStore<RootState> Store { get; set; }
     
@@ -56,12 +59,21 @@
             CloseOnEscapeKey = true
         };
 
-        var dialogRef = await DialogService.ShowAsync<NewRunInputsDialog>("New Run", options);
+        var parameters = new DialogParameters
+        {
+            ["ModelType"] = ModelType,
+            ["DataSetType"] = DataSetType
+        };
+
+        var dialogRef = await DialogService.ShowAsync<NewRunInputsDialog>("New Run", parameters, options);
         var result = await dialogRef.Result;
 
         if (!result.Canceled)
         {
             var run = (RunState) result.Data;
+            
+            DataSetType = run.Inputs.DataSetType;
+            ModelType = run.Inputs.ModelType;
             
             NavigationManager.NavigateTo($"/runs/{run.RunId}/{run.Inputs.ModelType.ToLower()}");
 

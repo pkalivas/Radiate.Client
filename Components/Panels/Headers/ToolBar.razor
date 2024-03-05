@@ -15,10 +15,13 @@
     </div>
     <div>
         <div class="d-flex align-items-center">
-            <div class="mr-2">
-                <TrainTestToggle/>
-            </div>
-            <span class="spacer mr-2">|</span>
+            @if (Model.ModelType is (ModelTypes.Graph or ModelTypes.Tree))
+            {
+                <div class="mr-2">
+                    <TrainTestToggle/>
+                </div>
+                <span class="spacer mr-2">|</span>
+            }
             <ActionsMenu/>
         </div>
     </div>

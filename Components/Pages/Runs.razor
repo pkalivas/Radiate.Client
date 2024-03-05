@@ -2,13 +2,13 @@
 @rendermode InteractiveServer
 @inherits StoreComponent<StandardRunUiProjection>
 
-@if (Model is not null && !Model.IsLoading)
+@if (Model.PanelIds.Any() && !Model.IsLoading)
 {
-    <CascadingValue Name="RunId" Value="RunId">
+    <CascadingValue Name="RunId" Value="@RunId">
         <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
             @foreach (var panel in Model!.PanelIds)
             {
-                <PanelDisplay PanelId="@panel" @key="panel"/>
+                <PanelDisplay PanelId="@panel" @key="@panel"/>
             }
         </MudContainer>
     </CascadingValue>

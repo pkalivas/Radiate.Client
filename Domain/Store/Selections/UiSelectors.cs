@@ -17,7 +17,12 @@ public static class UiSelectors
         {
             if (runUi.RunTemplate is null || runUi.Panels.Count == 0)
             {
-                return null;
+                return new StandardRunUiProjection
+                {
+                    RunId = runUi.RunId,
+                    IsLoading = true,
+                    PanelIds = new()
+                };
             }
             
             return new StandardRunUiProjection

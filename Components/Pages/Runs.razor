@@ -1,6 +1,5 @@
 @page "/runs/{runId:guid}/{modelType}"
 @rendermode InteractiveServer
-@inject IDialogService DialogService
 @inherits StoreComponent<StandardRunUiProjection>
 
 @if (Model is not null && !Model.IsLoading)
@@ -11,8 +10,6 @@
             <PanelDisplay Item="@panel" @key="panel.Data.TrackByKey"/>
         }
     </MudContainer>
-    
-    @* <JsonData Data="@Model.OrderedPanels" /> *@
 }
 
 @code {
@@ -21,25 +18,4 @@
 
     protected override IObservable<StandardRunUiProjection> Select() => 
         Store.Select(UiSelectors.SelectStandardRunUiModel);
-
-    private async Task OpenNodeDialog(int index)
-    {
-        // var dialog = await DialogService.ShowAsync<TreeItemDialog<RunPanelState>>("Node Path", new DialogParameters
-        //     {
-        //         ["Index"] = index,
-        //         ["Items"] = Model!.OrderedPanels.ToArray(),
-        //         ["ChildContent"] = typeof(JsonData),
-        //         ["ChildContentProps"] = (RunPanelState item) => new Dictionary<string, object>
-        //         {
-        //             ["Data"] = item,
-        //         }
-        //     },
-        //     new DialogOptions
-        //     {
-        //         CloseButton = true,
-        //         CloseOnEscapeKey = true,
-        //     });
-        //
-        // await dialog.Result;
-    }
 }

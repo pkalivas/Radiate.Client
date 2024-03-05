@@ -34,8 +34,6 @@ public class RunUiEffects : IEffectRegistry<RootState>
                 .Select((panel, index) =>  new PanelState
                 {
                     RunId = runUi.RunId,
-                    Key = panel.Id,
-                    Children = panel.ChildPanels.Select(child => child.Id),
                     Index = index,
                     Panel = panel,
                 })

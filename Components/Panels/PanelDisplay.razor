@@ -6,14 +6,14 @@
     <MudGrid>
         @foreach (var child in Item.ChildItems)
         {
-            if (child.Data.Panel is GridPanel.GridItem gridItem && child.Data.IsVisible)
+            if (child.Data is { Panel: GridPanel.GridItem gridItem, IsVisible: true })
             {
                 <MudItem md="@gridItem.ColSpan" @key="@child.Data.TrackByKey">
                     @foreach (var subChild in child.ChildItems)
                     {
                         <PanelDisplay Item="@subChild" @key="@child.Data.TrackByKey"/>
                     }
-                </MudItem>   
+                </MudItem>
             }
         }
     </MudGrid>

@@ -36,7 +36,7 @@
                             <h3>@_selectedItem.Text</h3>
                             <MudDivider/>
                             <div style="max-height: 400px; width: 700px; overflow-y: auto; overflow-x: auto;">
-                                <pre>@JsonSerializer.Serialize(_selectedValue, new JsonSerializerOptions {WriteIndented = true})</pre>
+                                <JsonData Data="_selectedValue"/>
                             </div>
                         }
                     </div>

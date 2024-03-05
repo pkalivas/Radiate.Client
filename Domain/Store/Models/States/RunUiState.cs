@@ -16,11 +16,11 @@ public record RunUiState
 public record PanelState : ITreeItem<Guid>
 {
     public Guid RunId { get; init; } = Guid.NewGuid();
-    public Guid Key { get; init; } = Guid.NewGuid();
-    public IEnumerable<Guid> Children { get; init; } = new List<Guid>();
     public int Index { get; init; } = 0;
     public IPanel Panel { get; init; } = default!;
-    
+
+    public Guid Key => Panel.Id;
+    public IEnumerable<Guid> Children => Panel.ChildPanels.Select(child => child.Id);
     public bool IsVisible => Panel is not GridPanel.GridItem gridItem || gridItem.IsVisible;
     public bool IsExpanded => Panel is not AccordionPanelItem item || item.Expanded;
     public string TrackByKey => $"{RunId}_{Key}_{IsVisible}_{IsExpanded}";

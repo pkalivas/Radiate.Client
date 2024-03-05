@@ -72,32 +72,6 @@ public class GraphXorRunner : GraphRunner
         }
         
         return BuildEngine3(engineInputs, frame);
-
-        
-        
-        // foreach (var engineInputId in inputs.EngineInputs.Keys.OrderBy(key => key))
-        // {
-        //     var engineInputs = inputs.EngineInputs[engineInputId];
-        //     
-        //     seen.Add(engineInputId);
-        //
-        //     if (engineInputs.EngineType is EngineTypes.Cyclic or EngineTypes.Concat)
-        //     {
-        //         var subEngines = new List<IEngine<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>>>();
-        //         foreach (var subEngineId in engineInputs.SubEngineInputIndexes)
-        //         {
-        //             if (seen.Contains(subEngineId))
-        //             {
-        //                 continue;
-        //             }
-        //             
-        //             var subEngineInputs = inputs.EngineInputs[subEngineId];
-        //         }
-        //     }
-        //     
-        //     var engine = BuildEngine(inputs, frame);
-        //     
-        // }
     }
     
     private IEngine<GeneticEpoch<GraphGene<float>>, PerceptronGraph<float>> BuildEngine3(EngineInputs inputs, TensorFrame frame)

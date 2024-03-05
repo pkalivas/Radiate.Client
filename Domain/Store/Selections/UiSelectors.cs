@@ -1,5 +1,6 @@
 using Radiate.Client.Domain.Store.Models.Projections;
 using Radiate.Client.Domain.Store.Models.States;
+using Radiate.Client.Domain.Templates.Panels;
 using Radiate.Client.Services.Mappers;
 using Reflow.Interfaces;
 using Reflow.Selectors;
@@ -15,25 +16,25 @@ public static class UiSelectors
         .Create<RootState, UiState, RunUiState, StandardRunUiProjection>(SelectUiState, RunUiSelectors.SelectRunUiState,
             (uiState, runUi) =>
         {
-            if (runUi.RunTemplate is null)
+            if (runUi.RunTemplate is null || runUi.PanelStates.Count == 0)
             {
-                return null;
+                return new StandardRunUiProjection();
             }
             
             var isLoading = uiState.LoadingStates.TryGetValue(runUi.RunId, out var loadingState) 
                 ? loadingState 
                 : true;
 
-            var orderedPanels = runUi.Panels.Values.OrderBy(val => val.Index).ToArray();
+            var orderedPanels = runUi.PanelStates.Values.OrderBy(val => val.Index).ToArray();
             
             return new StandardRunUiProjection
             {
                 RunId = runUi.RunId,
                 IsLoading = isLoading,
                 UiTemplate = runUi.RunTemplate!.UI,
-                Panels = runUi.RunTemplate.UI.Panels
-                    .SelectMany(panel => TreeItemMapper.ToTree(runUi.Panels[panel.Id].Index, orderedPanels.ToDictionary(key => key.Index)))
-                    .ToHashSet(),
+                PanelStates = runUi.RunTemplate.UI.Panels
+                    .SelectMany(panel => TreeItemMapper.ToTree(panel.Id, runUi.PanelStates))
+                    .ToArray(),
                 OrderedPanels = orderedPanels
             };
         });
@@ -46,5 +47,7 @@ public static class UiSelectors
             DataSetType = run.Inputs.DataSetType,
             IsRunning = run.IsRunning,
         });
+    
+
 }
         

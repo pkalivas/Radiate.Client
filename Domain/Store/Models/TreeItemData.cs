@@ -1,6 +1,6 @@
 namespace Radiate.Client.Domain.Store.Models;
 
-public interface ITreeItem<TKey>
+public interface ITreeItem<out TKey>
 {
     public TKey Index { get; }
     public IEnumerable<TKey> Children { get; }

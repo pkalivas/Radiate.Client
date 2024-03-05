@@ -8,6 +8,6 @@ public record StandardRunUiProjection
     public Guid RunId { get; init; } = Guid.NewGuid();
     public bool IsLoading { get; init; } = true;
     public IRunUITemplate? UiTemplate { get; init; } = default!;
-    public HashSet<TreeItemData<RunPanelState, int>> Panels { get; init; } = new();
-    public RunPanelState[] OrderedPanels { get; init; } = Array.Empty<RunPanelState>();
+    public PanelState[] OrderedPanels { get; init; } = Array.Empty<PanelState>();
+    public TreeItemData<PanelState, Guid>[] PanelStates { get; init; } = Array.Empty<TreeItemData<PanelState, Guid>>();
 }

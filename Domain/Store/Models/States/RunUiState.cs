@@ -10,16 +10,26 @@ public record RunUiState
     public Guid RunId { get; init; } = Guid.NewGuid();
     public IRunTemplate? RunTemplate { get; init; }
     public string TrainTest { get; init; } = TrainTestTypes.Train;
-    public IImmutableDictionary<Guid, RunPanelState> Panels { get; init; } = new Dictionary<Guid, RunPanelState>().ToImmutableDictionary();
+    public IImmutableDictionary<Guid, PanelState> PanelStates { get; init; } = new Dictionary<Guid, PanelState>().ToImmutableDictionary();
 }
 
-public record RunPanelState : ITreeItem<int>
+public record PanelState : ITreeItem<Guid>
 {
-    public Guid Id => Panel.Id;
-    public int Index { get; init; } = 0;
-    public string PanelKey { get; init; } = "";
+    public Guid RunId { get; init; } = Guid.NewGuid();
+    public Guid Index { get; init; } = Guid.NewGuid();
+    public IEnumerable<Guid> Children { get; init; } = new List<Guid>();
     public IPanel Panel { get; init; } = default!;
-    public IEnumerable<int> Children { get; init; } = new List<int>();
+    public bool IsVisible { get; init; } = false;
+    public bool IsExpanded { get; init; } = false;
+
+    public string Key => $"{RunId}_{Index}_{IsVisible}_{IsExpanded}";
+    
     public bool IsCyclic() => false;
 }
 
+public record PanelTreeNode : ITreeItem<Guid>
+{
+    public Guid Index { get; init; } = Guid.NewGuid();
+    public IEnumerable<Guid> Children { get; init; } = new List<Guid>();
+    public bool IsCyclic() => false;
+}

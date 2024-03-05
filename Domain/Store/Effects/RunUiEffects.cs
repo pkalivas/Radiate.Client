@@ -29,27 +29,16 @@ public class RunUiEffects : IEffectRegistry<RootState>
             var (_, action) = pair;
             var runUi = action.RunUi;
             
-            var flattenedPanels = PanelMapper.Flatten(runUi.RunTemplate!.UI.Panels);
-            var panelIndexLookup = flattenedPanels
-                .Select((panel, index) => (panel, index))
-                .ToDictionary(pair => pair.panel.Id, pair => pair.index);
-
-            return new RunUiPanelsCreatedAction(runUi.RunId, flattenedPanels.Select(panel => panel switch
-            {
-                AccordionPanelItem accPanelItem => new RunPanelState
+            return new RunUiPanelsCreatedAction(runUi.RunId, PanelMapper.Flatten(runUi.RunTemplate!.UI.Panels)
+                .Select(panel =>  new PanelState
                 {
-                    Panel = accPanelItem,
-                    PanelKey = accPanelItem.Id.ToString() + accPanelItem.Expanded,
-                    Index = panelIndexLookup[accPanelItem.Id],
-                    Children = accPanelItem.ChildPanels.Select(child => panelIndexLookup[child.Id])
-                },
-                _ => new RunPanelState
-                {
+                    RunId = runUi.RunId,
+                    Index = panel.Id,
+                    Children = panel.ChildPanels.Select(child => child.Id),
                     Panel = panel,
-                    PanelKey = panel.Id.ToString(),
-                    Index = panelIndexLookup[panel.Id],
-                    Children = panel.ChildPanels.Select(child => panelIndexLookup[child.Id])
-                }
-            }).ToArray());
+                    IsVisible = true,
+                    IsExpanded = panel is not AccordionPanelItem item || item.Expanded
+                })
+                .ToArray());
         }), true);
 }

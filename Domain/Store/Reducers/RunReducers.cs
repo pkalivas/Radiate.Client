@@ -17,7 +17,8 @@ public static class RunReducers
         Reducer.On<PauseEngineRunAction, RootState>(PauseEngine),
         Reducer.On<ResumeEngineRunAction, RootState>(ResumeEngine),
         Reducer.On<CancelEngineRunAction, RootState>(CancelEngine),
-        Reducer.On<SetRunScoresAction, RootState>(AddRunScores)
+        Reducer.On<SetRunScoresAction, RootState>(AddRunScores),
+        Reducer.On<SetDisplayImageDimensions, RootState>(SetDisplayImageDimensions)
     ];
 
     private static RootState AddRun(RootState state, RunCreatedAction action) =>
@@ -91,5 +92,18 @@ public static class RunReducers
             IsPaused = false,
             IsRunning = false,
             IsCompleted = true
+        });
+    
+    private static RootState SetDisplayImageDimensions(RootState state, SetDisplayImageDimensions action) =>
+        state.UpdateRun(action.RunId, run => run with
+        {
+            Inputs = run.Inputs with
+            {
+                ImageInputs = run.Inputs.ImageInputs with
+                {
+                    DisplayWidth = action.Width,
+                    DisplayHeight = action.Height
+                }
+            }
         });
 }

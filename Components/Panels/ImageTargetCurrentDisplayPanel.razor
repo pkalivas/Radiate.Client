@@ -3,7 +3,10 @@
 @if (!Model.Image.IsEmpty)
 {
     <div Class="d-flex justify-content-center">
-        <ImageDisplay ImageWidth="500" ImageUrl="@Model?.Image.ImageDisplay" ImageTitle="@Model?.ImageType"/>
+        <ImageDisplay ImageWidth="@Model.DisplayWidth" 
+                      ImageHeight="@Model.DisplayHeight" 
+                      ImageUrl="@Model?.Image.ImageDisplay"
+                      ImageTitle="@Model?.ImageType"/>
     </div>
 }
 

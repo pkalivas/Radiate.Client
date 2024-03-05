@@ -5,7 +5,7 @@
     <MudCard Elevation="2" Class="h-100">
         <MudCardHeader>
             <CardHeaderContent>
-                <PanelHeader Title="@Model.Title"/>
+                <DynamicComponent Type="@Model.Header" Parameters="@Model.HeaderProps"/>
             </CardHeaderContent>
         </MudCardHeader>
         <MudCardContent>

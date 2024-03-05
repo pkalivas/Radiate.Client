@@ -27,6 +27,10 @@ public static class ImageSelectors
                 IsComplete = run.IsCompleted,
                 IsRunning = run.IsRunning,
                 ImageType = imageType,
+                Width = run.Inputs.ImageInputs.Width,
+                Height = run.Inputs.ImageInputs.Height,
+                DisplayWidth = run.Inputs.ImageInputs.DisplayWidth,
+                DisplayHeight = run.Inputs.ImageInputs.DisplayHeight,
                 Image = imageType switch
                 {
                     ImageTypes.Target => run.Inputs.ImageInputs.TargetImage,
@@ -34,5 +38,26 @@ public static class ImageSelectors
                     _ => new ImageEntity()
                 } 
             });
+    
+    public static ISelector<RootState, ImageHeaderProjection> SelectPanelToolbarModel(string imageType) => Selectors
+        .Create<RootState, RunState, ImageHeaderProjection>(RunSelectors.SelectRun, control => new ImageHeaderProjection
+        {
+            RunId = control.RunId,
+            IsRunning = control.IsRunning,
+            IsPaused = control.IsPaused,
+            IsComplete = control.IsCompleted,
+            Height = control.Inputs.ImageInputs.Height,
+            Width = control.Inputs.ImageInputs.Width,
+            ImageType = imageType,
+            Image = imageType switch
+            {
+                ImageTypes.Target => control.Inputs.ImageInputs.TargetImage,
+                ImageTypes.Current => control.Outputs.ImageOutput.Image,
+                _ => new ImageEntity()
+            },
+            DisplayWidth = control.Inputs.ImageInputs.DisplayWidth,
+            DisplayHeight = control.Inputs.ImageInputs.DisplayHeight
+        });
+
 
 }

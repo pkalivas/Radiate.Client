@@ -1,4 +1,5 @@
 using Radiate.Client.Components.Panels;
+using Radiate.Client.Components.Panels.Actions;
 using Radiate.Client.Components.Panels.Charts;
 using Radiate.Client.Components.Panels.Headers;
 using Radiate.Client.Components.Panels.Images;
@@ -107,6 +108,7 @@ public class ImageUiTemplate : IRunUITemplate
                                 {
                                     Id = new Guid("F53A706E-A837-4DDD-81AD-CA32D1A9C053"),
                                     Title = ImageTypes.Target,
+                                    Header = typeof(ImageHeader),
                                     Content = typeof(ImageTargetCurrentDisplayPanel),
                                     Actions = typeof(ImageActions),
                                     Props = new Dictionary<string, object>
@@ -114,6 +116,10 @@ public class ImageUiTemplate : IRunUITemplate
                                         ["ImageType"] = ImageTypes.Target
                                     },
                                     ActionsProps = new Dictionary<string, object>
+                                    {
+                                        ["ImageType"] = ImageTypes.Target
+                                    },
+                                    HeaderProps = new Dictionary<string, object>
                                     {
                                         ["ImageType"] = ImageTypes.Target
                                     }
@@ -127,6 +133,7 @@ public class ImageUiTemplate : IRunUITemplate
                                 {
                                     Id = new Guid("69DECA60-B9C5-45C1-AB22-91C7236B2573"),
                                     Title = ImageTypes.Current,
+                                    Header = typeof(ImageHeader),
                                     Content = typeof(ImageTargetCurrentDisplayPanel),
                                     Actions = typeof(ImageActions),
                                     Props = new Dictionary<string, object>
@@ -134,6 +141,10 @@ public class ImageUiTemplate : IRunUITemplate
                                         ["ImageType"] = ImageTypes.Current
                                     },
                                     ActionsProps = new Dictionary<string, object>
+                                    {
+                                        ["ImageType"] = ImageTypes.Current
+                                    },
+                                    HeaderProps = new Dictionary<string, object>
                                     {
                                         ["ImageType"] = ImageTypes.Current
                                     }

@@ -1,0 +1,30 @@
+@inherits StoreComponent<ImageDisplayPanelProjection>
+
+<div class="container">
+    <div class="row">
+        @if (!Model.Image.IsEmpty)
+        {
+            <div class="col justify-content-start align-content-center">
+                <IntInputField Label="Display Width"
+                               Step="1"
+                               Value="@Model.DisplayWidth"
+                               IsReadonly="@Model.IsRunning"
+                               InputsChanged="@((int width) => Dispatch(new SetDisplayImageDimensions(Model.RunId, width, Model.DisplayHeight)))"/>
+            </div>
+            <div class="col justify-content-start align-content-center">
+                <IntInputField Label="Display Height"
+                               Step="1"
+                               Value="@Model.DisplayHeight"
+                               IsReadonly="@Model.IsRunning"
+                               InputsChanged="@((int height) => Dispatch(new SetDisplayImageDimensions(Model.RunId, Model.DisplayWidth, height)))"/>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public string ImageType { get; set; }
+
+    protected override IObservable<ImageDisplayPanelProjection> Select() =>
+        Store.Select(ImageSelectors.SelectImageDisplayPanelModel(ImageType));
+}

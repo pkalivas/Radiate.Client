@@ -41,6 +41,8 @@ public record ImageInputs
 {
     public int Height { get; set; } = 50;
     public int Width { get; set; } = 50;
+    public int DisplayHeight { get; init; } = 500;
+    public int DisplayWidth { get; init; } = 500;
     public int NumShapes { get; set; } = 150;
     public int NumVertices { get; set; } = 4;
     public ImageEntity TargetImage { get; set; } = new();

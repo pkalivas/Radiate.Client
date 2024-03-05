@@ -3,19 +3,28 @@
 @if (CanDisplay())
 {
     <MudExpansionPanel Dense="true"
-                       IsInitiallyExpanded="@Panel.Expanded"
+                       IsInitiallyExpanded="@Model.Expanded"
                        IsExpandedChanged="@((bool expanded) => OnExpandedChanged(expanded))"
-                       @key="TrackByKey()">
+                       @key="@TrackByKey()">
         <TitleContent>
-            <PanelHeader Title="@Panel.Title"/>
+            <PanelHeader Title="@Model.Title"/>
         </TitleContent>
         <ChildContent>
-            <DynamicComponent Type="@Panel.Content"/>
+            <DynamicComponent Type="@Model.Content"/>
         </ChildContent>
     </MudExpansionPanel>
 }
 
 @code {
     private void OnExpandedChanged(bool expanded) => 
-        Dispatch(new SetPanelsExpandedAction(RunId, [Panel.Id], expanded));
+        Dispatch(new SetPanelsExpandedAction(RunId, [PanelId], expanded));
+
+    protected override void OnModelChanged(AccordionPanelItem previousMode, AccordionPanelItem newModel)
+    {
+        var prevEx = previousMode?.Expanded ?? false;
+        var newEx = newModel?.Expanded ?? false;
+        
+        base.OnModelChanged(previousMode, newModel);
+    }
+
 }

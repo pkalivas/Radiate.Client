@@ -6,11 +6,11 @@
               Height="@GetHeight()"
               Class="h-full"
               @key="@TrackByKey()">
-        <ToolBar Title="@Panel.Title" Actions="@Panel.Actions"/>
-        <DynamicComponent Type="@Panel.Content"/>
+        <ToolBar Title="@Model.Title" Actions="@Model.Actions"/>
+        <DynamicComponent Type="@Model.Content"/>
     </MudPaper>
 }
 
 @code {
-    private string GetHeight() => $"{Panel.Height}px";
+    private string GetHeight() => $"{Model.Height}px";
 }

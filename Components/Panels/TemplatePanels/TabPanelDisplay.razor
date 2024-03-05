@@ -2,11 +2,8 @@
 
 @if (CanDisplay())
 {
-    <MudTabs Elevation="2"
-             Centered="true"
-             Rounded="false"
-             @key="@TrackByKey()">
-        @foreach (var (item, idx) in Panel.ChildPanels.Select((tab, idx) => (tab, idx)))
+    <MudTabs Elevation="2" Centered="true" Rounded="false" @key="@TrackByKey()">
+        @foreach (var (item, idx) in Model.ChildPanels.Select((tab, idx) => (tab, idx)))
         {
             <MudTabPanel Text="@item.Title" @key="@TrackByKey(item, idx)">
                 <PanelDisplay PanelId="@item.Id"/>

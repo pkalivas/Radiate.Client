@@ -2,12 +2,12 @@
 
 @if (CanDisplay())
 {
-    if (Panel.Toolbar != null)
+    if (Model.Toolbar != null)
     {
-        <DynamicComponent Type="Panel.Toolbar" />
+        <DynamicComponent Type="Model.Toolbar" />
     }
     <MudExpansionPanels Dense="true" MultiExpansion="true" @key="TrackByKey()">
-        @foreach (var (exItem, idx) in Panel.Items.Select((item, idx) => (item, idx)))
+        @foreach (var (exItem, idx) in Model.Items.Select((item, idx) => (item, idx)))
         {
             <PanelDisplay PanelId="@exItem.Id" @key="@TrackByKey(exItem, idx)"/>
         }

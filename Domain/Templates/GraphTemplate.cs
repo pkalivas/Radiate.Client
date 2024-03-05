@@ -44,21 +44,18 @@ public class GraphUiTemplate : IRunUITemplate
                             new AccordionPanelItem
                             {
                                 Id = new Guid("0277DCC6-B002-409F-A62A-C9B29F564419"),
-                                Expanded = false,
                                 Content = typeof(TrainTestValidation),
                                 Title = "Train/Test"
                             },
                             new AccordionPanelItem
                             {
                                 Id = new Guid("4F263A18-446A-455D-BC37-698F67DE5846"),
-                                Expanded = false,
                                 Content = typeof(NodeTablePanel),
                                 Title = "Nodes"
                             },
                             new AccordionPanelItem
                             {
                                 Id = new Guid("B5D9CE53-97D5-41AE-8C96-25DF851C57CF"),
-                                Expanded = false,
                                 Content = typeof(MetricsDataGridPanel),
                                 Title = "Metrics"
                             }
@@ -126,7 +123,6 @@ public class GraphUiTemplate : IRunUITemplate
                                             Content = typeof(AccuracyChartPanel),
                                             Title = "Accuracy",
                                             Height = 250,
-                                            DisplayHeader = false,
                                             Props = new Dictionary<string, object>
                                             {
                                                 ["Height"] = 200
@@ -138,7 +134,6 @@ public class GraphUiTemplate : IRunUITemplate
                                             Content = typeof(ScorePanel),
                                             Title = "Score",
                                             Height = 250,
-                                            DisplayHeader = false,
                                             Props = new Dictionary<string, object>
                                             {
                                                 ["Height"] = 200

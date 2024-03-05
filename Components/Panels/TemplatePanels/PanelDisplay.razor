@@ -1,7 +1,7 @@
 @using Radiate.Client.Domain.Templates.Panels
 @using System.Text.Json
 @using System.Reactive.Linq
-@inherits StoreComponent<IPanel>
+@inherits StoreComponent<PanelDisplayProjection>
 
 @if (Model is null)
 {
@@ -9,44 +9,13 @@
 }
 else
 {
-    <DynamicComponent Type="@GetDisplayComponentType()" Parameters="@GetDisplayComponentParameters()"/>
+    <DynamicComponent Type="@Model.Component" Parameters="@Model.Props"/>
 }
 
 @code {
     [CascadingParameter] public Guid RunId { get; set; }
     [Parameter] public Guid PanelId { get; set; }
 
-    protected override IObservable<IPanel> Select() => Store.Select(RunUiSelectors.SelectPanel(PanelId));
-    
-    private Type GetDisplayComponentType() => Model switch
-    {
-        GridPanel => typeof(GridPanelDisplay),
-        GridPanel.GridItem => typeof(GridItemPanelDisplay),
-        ToolbarPanel => typeof(ToolbarPanelDisplay),
-        BoundedPaperPanel => typeof(BoundedPaperPanelDisplay),
-        TabPanel => typeof(TabPanelDisplay),
-        PaperPanel => typeof(PaperPanelDisplay),
-        CardPanel => typeof(CardPanelDisplay),
-        AccordionPanel => typeof(AccordionPanelDisplay),
-        AccordionPanelItem => typeof(ExpansionPanelDisplay),
-        _ => throw new Exception($"Panel {Model} not supported")
-    };
-
-    private Dictionary<string, object> GetDisplayComponentParameters() => new()
-    {
-        ["Panel"] = Model switch
-        {
-            GridPanel gridPanel => gridPanel,
-            GridPanel.GridItem gridItem => gridItem,
-            ToolbarPanel tabPanel => tabPanel,
-            BoundedPaperPanel boundedPaperPanel => boundedPaperPanel,
-            TabPanel tabPanel => tabPanel,
-            PaperPanel paperPanel => paperPanel,
-            CardPanel cardPanel => cardPanel,
-            AccordionPanel accordionPanel => accordionPanel,
-            AccordionPanelItem accordionPanelItem => accordionPanelItem,
-            _ => throw new Exception($"Panel {Model} not supported")
-        }
-    };
-
+    protected override IObservable<PanelDisplayProjection> Select() => Store
+        .Select(RunUiSelectors.SelectPanelDisplayProjection(PanelId));
 }

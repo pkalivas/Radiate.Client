@@ -3,14 +3,14 @@
 @if (CanDisplay())
 {
     <MudPaper Elevation="2" Class="pa-3" Height="@GetHeight()" @key="@TrackByKey()">
-        @if (Panel.DisplayHeader)
+        @if (Model.DisplayHeader)
         {
-            <PanelHeader Title="@Panel.Title"/>
+            <PanelHeader Title="@Model.Title"/>
         }
-        <DynamicComponent Type="@Panel.Content" Parameters="@Panel.Props"/>
+        <DynamicComponent Type="@Model.Content" Parameters="@Model.Props"/>
     </MudPaper>
 }
 
 @code {
-    private string GetHeight() => $"{Panel.Height}px";
+    private string GetHeight() => $"{Model.Height}px";
 }

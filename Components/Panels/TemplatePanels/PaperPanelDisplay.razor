@@ -2,13 +2,11 @@
 
 @if (CanDisplay())
 {
-    <MudPaper Elevation="2"
-              Class="pa-3"
-              @key="@TrackByKey()">
-        @if (Panel.DisplayHeader)
+    <MudPaper Elevation="2" Class="pa-3"@key="@TrackByKey()">
+        @if (Model.DisplayHeader)
         {
-            <PanelHeader Title="@Panel.Title"/>
+            <PanelHeader Title="@Model.Title"/>
         }
-        <DynamicComponent Type="@Panel.Content" Parameters="@Panel.Props"/>
+        <DynamicComponent Type="@Model.Content" Parameters="@Model.Props"/>
     </MudPaper>
 }

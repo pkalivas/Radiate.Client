@@ -16,8 +16,8 @@ public class RunUiEffects : IEffectRegistry<RootState>
         {
             RunCreatedEffect,
             CreateUiPanelsEffect,
-            SetUiPanelStatesEffect,
-            SetUiPanelStatesVisibleEffect
+            OpenAllPanelsEffect,
+            SetUiPanelsExpandedEffect
         };
 
     private IEffect<RootState> RunCreatedEffect => CreateEffect<RootState>(state => state
@@ -32,36 +32,42 @@ public class RunUiEffects : IEffectRegistry<RootState>
             var runUi = action.RunUi;
             
             return new RunUiPanelsCreatedAction(runUi.RunId, PanelMapper.Flatten(runUi.RunTemplate!.UI.Panels)
-                .Select(panel =>  new PanelState
+                .Select((panel, index) =>  new PanelState
                 {
                     RunId = runUi.RunId,
-                    Index = panel.Id,
+                    Key = panel.Id,
                     Children = panel.ChildPanels.Select(child => child.Id),
+                    Index = index,
                     Panel = panel,
-                    IsVisible = panel is not GridPanel.GridItem gridItem || gridItem.IsVisible,
-                    IsExpanded = panel is not AccordionPanelItem item || item.Expanded
                 })
                 .ToArray());
         }), true);
     
-    private IEffect<RootState> SetUiPanelStatesEffect => CreateEffect<RootState>(state => state
-        .OnAction<SetUiPanelStatesAction>()
+    private IEffect<RootState> SetUiPanelsExpandedEffect => CreateEffect<RootState>(store => store
+        .OnAction<SetPanelsExpandedAction>()
         .Select(pair =>
         {
             var (state, action) = pair;
+            var (runId, panelIds, isExpanded) = action;
 
-            var panelStates = state.RunUis.TryGetValue(action.RunId, out var runUi)
-                ? runUi.PanelStates.Values.ToDictionary(key => key.Index)
+            var panelStates = state.RunUis.TryGetValue(runId, out var runUi)
+                ? runUi.PanelStates.Values.ToDictionary(key => key.Key)
                 : new Dictionary<Guid, PanelState>();
 
-            foreach (var updatePanel in action.Panels)
+            foreach (var panelId in panelIds)
             {
-                if (panelStates.TryGetValue(updatePanel.Index, out var panel))
+                if (panelStates.TryGetValue(panelId, out var panel))
                 {
-                    panelStates[panel.Index] = panel with
+                    panelStates[panel.Key] = panel with
                     {
-                        IsVisible = updatePanel.IsVisible,
-                        IsExpanded = updatePanel.IsExpanded
+                        Panel = panel.Panel switch
+                        {
+                            AccordionPanelItem accordionPanelItem => accordionPanelItem with
+                            {
+                                Expanded = isExpanded
+                            },
+                            _ => panel.Panel
+                        }
                     };
                 }
             }
@@ -69,25 +75,35 @@ public class RunUiEffects : IEffectRegistry<RootState>
             return new UiPanelStateUpdatedAction(action.RunId, panelStates.Values.ToArray());
         }), true);
     
-    private IEffect<RootState> SetUiPanelStatesVisibleEffect => CreateEffect<RootState>(state => state
+    private IEffect<RootState> OpenAllPanelsEffect => CreateEffect<RootState>(store => store
         .OnAction<StartEngineAction>()
         .Select(pair =>
         {
             var (state, action) = pair;
 
             var panelStates = state.RunUis.TryGetValue(action.RunId, out var runUi)
-                ? runUi.PanelStates.Values.ToDictionary(key => key.Index)
+                ? runUi.PanelStates.Values.ToDictionary(key => key.Key)
                 : new Dictionary<Guid, PanelState>();
 
             foreach (var panelId in panelStates.Keys)
             {
                 if (panelStates.TryGetValue(panelId, out var panel))
                 {
-                    panelStates[panel.Index] = panel with
+                    panelStates[panel.Key] = panel with
                     {
-                        IsVisible = true,
-                        IsExpanded = true,
-                    };                     
+                        Panel = panel.Panel switch
+                        {
+                            GridPanel.GridItem gridItem => gridItem with
+                            {
+                                IsVisible = true,
+                            },
+                            AccordionPanelItem accordionPanelItem => accordionPanelItem with
+                            {
+                                Expanded = true
+                            },
+                            _ => panel.Panel
+                        }
+                    };                 
                 }
             }
                 

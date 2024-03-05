@@ -7,7 +7,7 @@ public record NodeItem : ITreeItem<int>
 {
     public Guid NodeId { get; init; }
     public int Index { get; init; }
-    public IOp<float> Op { get; init; }
+    public IOp<float> Op { get; init; } = new Op<float>();
     public NodeTypes NodeType { get; init; }
     public DirectionTypes Direction { get; init; }
     public bool IsValid { get; init; }
@@ -17,4 +17,5 @@ public record NodeItem : ITreeItem<int>
     public HashSet<int> Outgoing { get; init; } = new();
     public IEnumerable<int> Children { get; init; } = [];
     public bool IsCyclic() => IsRecurrent;
+    public int Key => Index;
 }

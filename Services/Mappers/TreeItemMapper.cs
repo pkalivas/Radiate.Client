@@ -5,7 +5,7 @@ namespace Radiate.Client.Services.Mappers;
 
 public static class TreeItemMapper
 {
-    public static HashSet<TreeItemData<T, TKey>> ToTree<T, TKey>(TKey index, IReadOnlyDictionary<TKey, T> items, bool expanded = false)
+    public static HashSet<TreeItemData<T, TKey>> ToTree<T, TKey>(IReadOnlyDictionary<TKey, T> items, TKey index = default!, bool expanded = false)
         where T : ITreeItem<TKey>
     {
         if (items.Count == 0)
@@ -21,7 +21,7 @@ public static class TreeItemMapper
         {
             foreach (var item in MapToTreeRecursive(index, child, items, seen, expanded))
             {
-                root.TreeItems.Add(item);
+                root.ChildItems.Add(item);
             }
         }
         
@@ -53,7 +53,7 @@ public static class TreeItemMapper
             
             foreach (var item in MapToTreeRecursive(baseIndex, child, items, seen, expanded))
             {
-                currentTreeItem.TreeItems.Add(item);
+                currentTreeItem.ChildItems.Add(item);
             }
         }
 

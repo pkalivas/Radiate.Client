@@ -26,6 +26,7 @@ public class ImageUiTemplate : IRunUITemplate
             [
                 new GridPanel.GridItem
                 {
+                    Id = new Guid("CCB59EA0-9313-4909-AD08-9B341395AAC5"),
                     ColSpan = 12,
                     Panel = new ToolbarPanel
                     {
@@ -41,6 +42,7 @@ public class ImageUiTemplate : IRunUITemplate
                 },
                 new GridPanel.GridItem
                 {
+                    Id = new Guid("497AB58C-22F0-481A-92EF-57A91A05CD19"),
                     ColSpan = 7,
                     Panel = new BoundedPaperPanel
                     {
@@ -52,6 +54,7 @@ public class ImageUiTemplate : IRunUITemplate
                 },
                 new GridPanel.GridItem
                 {
+                    Id = new Guid("B4EEF23B-56AA-4E13-8C8F-3A0B55DDBD8B"),
                     ColSpan = 3,
                     Panel = new CardPanel
                     {
@@ -62,6 +65,7 @@ public class ImageUiTemplate : IRunUITemplate
                 },
                 new GridPanel.GridItem
                 {
+                    Id = new Guid("AA68E870-1D32-4C68-8321-599BE00FFF5F"),
                     ColSpan = 2,
                     Panel = new CardPanel
                     {
@@ -72,6 +76,7 @@ public class ImageUiTemplate : IRunUITemplate
                 },
                 new GridPanel.GridItem
                 {
+                    Id = new Guid("5ACEE98E-7C98-4B4F-8ABF-000E1FC60B5F"),
                     ColSpan = 8,
                     Panel = new CardPanel
                     {
@@ -82,6 +87,7 @@ public class ImageUiTemplate : IRunUITemplate
                 },
                 new GridPanel.GridItem
                 {
+                    Id = new Guid("1CECAA7A-FBD1-4CD8-A47C-EDFD87D72EDC"),
                     ColSpan = 4,
                     Panel = new GridPanel
                     {
@@ -90,6 +96,7 @@ public class ImageUiTemplate : IRunUITemplate
                         [
                             new GridPanel.GridItem
                             {
+                                Id = new Guid("73BE7336-EB25-455A-BABF-241E2A3D18AD"),
                                 ColSpan = 12,
                                 Panel = new TabPanel
                                 {

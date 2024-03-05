@@ -26,8 +26,8 @@ public class GraphUiTemplate : IRunUITemplate
             [
                 new GridPanel.GridItem
                 {
-                    ColSpan = 7,
                     Id = new Guid("D50724F1-9386-4FAB-A0D0-F19A52BFE4F8"),
+                    ColSpan = 7,
                     Panel = new AccordionPanel
                     {
                         Id = new Guid("598522C1-38DA-4E20-995A-B1DB1400BFEB"),

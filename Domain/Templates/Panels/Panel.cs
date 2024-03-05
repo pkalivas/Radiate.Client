@@ -7,7 +7,7 @@ public interface IPanel
     List<IPanel> ChildPanels { get; }
 }
 
-public abstract class Panel : IPanel
+public abstract record Panel : IPanel
 {
     public Guid Id { get; init; } = Guid.NewGuid();
     public string Title { get; init; } = string.Empty;

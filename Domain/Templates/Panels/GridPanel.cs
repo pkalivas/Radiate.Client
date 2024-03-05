@@ -1,17 +1,17 @@
 namespace Radiate.Client.Domain.Templates.Panels;
 
-public class GridPanel : Panel
+public record GridPanel : Panel
 {
-    public List<GridItem> Items { get; set; } = new();
+    public List<GridItem> Items { get; init; } = new();
 
     public override List<IPanel> ChildPanels => Items.Cast<IPanel>().ToList();
 
-    public class GridItem : Panel
+    public record GridItem : Panel
     {
         public int ColSpan { get; init; }
         public bool IsVisible { get; init; } = true;
-        public IPanel Panel { get; init; }
+        public IPanel Panel { get; init; } = default!;
 
-        public override List<IPanel> ChildPanels => new List<IPanel> { Panel };
+        public override List<IPanel> ChildPanels => [Panel];
     }
 }

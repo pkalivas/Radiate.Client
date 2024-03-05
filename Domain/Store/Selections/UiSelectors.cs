@@ -21,21 +21,16 @@ public static class UiSelectors
                 return null;
             }
             
-            var isLoading = uiState.LoadingStates.TryGetValue(runUi.RunId, out var loadingState) 
-                ? loadingState 
-                : true;
+            var isLoading = uiState.LoadingStates.GetValueOrDefault(runUi.RunId, true);
+            var orderedPanels = runUi.PanelStates.Values.OrderBy(val => val.Key).ToArray();
 
-            var orderedPanels = runUi.PanelStates.Values.OrderBy(val => val.Index).ToArray();
-
-            var t = orderedPanels.Where(val => !val.IsVisible).ToArray();
-            
             return new StandardRunUiProjection
             {
                 RunId = runUi.RunId,
                 IsLoading = isLoading,
                 UiTemplate = runUi.RunTemplate!.UI,
                 PanelStates = runUi.RunTemplate.UI.Panels
-                    .SelectMany(panel => TreeItemMapper.ToTree(panel.Id, runUi.PanelStates))
+                    .SelectMany(panel => TreeItemMapper.ToTree(runUi.PanelStates, panel.Id))
                     .ToArray(),
                 OrderedPanels = orderedPanels
             };

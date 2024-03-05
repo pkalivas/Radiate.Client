@@ -7,7 +7,7 @@
         <MudContainer Style="max-height: 500px; overflow-y: scroll">
             <MudTreeView Items="@_items" Dense="true" Hover="true" ExpandOnClick="true">
                 <ItemTemplate>
-                    <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.TreeItems">
+                    <MudTreeViewItem @bind-Expanded="@context.IsExpanded" Items="@context.ChildItems">
                         <Content>
                             <MudTreeViewItemToggleButton @bind-Expanded="@context.IsExpanded" Visible="@context.HasChild"/>
                             <DynamicComponent Type="ChildContent" Parameters="@ChildContentProps(context.Data)"/>
@@ -35,25 +35,25 @@
 </MudDialog>
 
 @code {
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
 
-    [Parameter] public TKey Index { get; set; }
-    [Parameter] public TItem[] Items { get; set; }
-    [Parameter] public Type ChildContent { get; set; }
-    [Parameter] public Func<TItem, Dictionary<string, object>> ChildContentProps { get; set; }
+    [Parameter] public TKey Index { get; set; } = default!;
+    [Parameter] public TItem[] Items { get; set; } = Array.Empty<TItem>();
+    [Parameter] public Type ChildContent { get; set; } = typeof(MudText);
+    [Parameter] public Func<TItem, Dictionary<string, object>> ChildContentProps { get; set; } = (_) => new Dictionary<string, object> { { "Text", nameof(TItem) } };
 
     private HashSet<TreeItemData<TItem, TKey>> _items { get; set; } = new();
     private bool _expanded = false;
 
     protected override Task OnInitializedAsync()
     {
-        _items = TreeItemMapper.ToTree(Index, Items.ToDictionary(key => key.Index), _expanded);
+        _items = TreeItemMapper.ToTree(Items.ToDictionary(key => key.Key), Index, _expanded);
         return base.OnInitializedAsync();
     }
 
     private void ToggleExpanded()
     {
         _expanded = !_expanded;
-        _items = TreeItemMapper.ToTree(Index, Items.ToDictionary(key => key.Index), _expanded);
+        _items = TreeItemMapper.ToTree(Items.ToDictionary(key => key.Key), Index, _expanded);
     }
 }

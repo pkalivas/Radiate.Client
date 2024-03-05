@@ -4,14 +4,14 @@
 @if (Panel is GridPanel)
 {
     <MudGrid>
-        @foreach (var child in Item.TreeItems)
+        @foreach (var child in Item.ChildItems)
         {
             if (child.Data.Panel is GridPanel.GridItem gridItem && child.Data.IsVisible)
             {
-                <MudItem md="@gridItem.ColSpan" @key="@child.Data.Key">
-                    @foreach (var subChild in child.TreeItems)
+                <MudItem md="@gridItem.ColSpan" @key="@child.Data.TrackByKey">
+                    @foreach (var subChild in child.ChildItems)
                     {
-                        <PanelDisplay Item="@subChild" @key="@child.Data.Key"/>
+                        <PanelDisplay Item="@subChild" @key="@child.Data.TrackByKey"/>
                     }
                 </MudItem>   
             }
@@ -37,10 +37,10 @@ else if (Panel is BoundedPaperPanel boundedPaperPanel)
 }
 else if (Panel is TabPanel)
 {
-    <MudTabs Elevation="2" Centered="true" Rounded="false" @key="Item.Data.Key">
-        @foreach (var tabItem in Item.TreeItems)
+    <MudTabs Elevation="2" Centered="true" Rounded="false" @key="Item.Data.TrackByKey">
+        @foreach (var tabItem in Item.ChildItems)
         {
-            <MudTabPanel Text="@tabItem.Data.Panel.Title" @key="@tabItem.Data.Key">
+            <MudTabPanel Text="@tabItem.Data.Panel.Title" @key="@tabItem.Data.TrackByKey">
                 <PanelDisplay Item="@tabItem"/>
             </MudTabPanel>
         }
@@ -75,13 +75,13 @@ else if (Panel is AccordionPanel accordionPanel)
     {
         <DynamicComponent Type="accordionPanel.Toolbar!"/>
     }
-    <MudExpansionPanels Dense="true" MultiExpansion="true" @key="Item.Data.Key">
-        @foreach (var exPanel in Item.TreeItems)
+    <MudExpansionPanels Dense="true" MultiExpansion="true" @key="Item.Data.TrackByKey">
+        @foreach (var exPanel in Item.ChildItems)
         {
             <MudExpansionPanel IsInitiallyExpanded="@exPanel.Data.IsExpanded"
-                    IsExpandedChanged="@((bool expanded) => OnPanelAction(exPanel.Data with { IsExpanded = expanded }))"
+                    IsExpandedChanged="@((bool expanded) => OnSetExpansionPanels(exPanel.Data.RunId, expanded, exPanel.Data.Panel.Id))"
                     Dense="true" 
-                    @key="exPanel.Data.Key">
+                    @key="exPanel.Data.TrackByKey">
                 <TitleContent>
                     <PanelHeader Title="@exPanel.Data.Panel.Title"/>
                 </TitleContent>
@@ -111,8 +111,8 @@ else
     
     private IPanel? Panel => Item?.Data?.Panel;
     
-    private async Task OnPanelAction(params PanelState[] updatePanels)
+    private void OnSetExpansionPanels(Guid runId, bool expanded, params Guid[] expandedPanels)
     {
-        Store.Dispatch(new SetUiPanelStatesAction(updatePanels.First().RunId, updatePanels));
+        Store.Dispatch(new SetPanelsExpandedAction(runId, expandedPanels, expanded));
     }
 }

@@ -18,4 +18,5 @@ public record EngineOutput : ITreeItem<int>
     public ImmutableDictionary<string, MetricValueModel> Metrics { get; init; } = ImmutableDictionary<string, MetricValueModel>.Empty;
 
     public bool IsCyclic() => true;
+    public int Key => Index;
 }

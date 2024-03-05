@@ -25,6 +25,7 @@ public class MultiObjectiveUiTemplate : IRunUITemplate
             [
                 new GridPanel.GridItem
                 {
+                    Id = new Guid("24E888E2-C06F-4728-80E7-648415F577EA"),
                     ColSpan = 7,
                     Panel = new ToolbarPanel
                     {
@@ -40,6 +41,7 @@ public class MultiObjectiveUiTemplate : IRunUITemplate
                 },
                 new GridPanel.GridItem
                 {
+                    Id = new Guid("D92AE6D6-4F87-4561-BFED-E811BC84EBFC"),
                     ColSpan = 3,
                     Panel = new PaperPanel
                     {
@@ -50,6 +52,7 @@ public class MultiObjectiveUiTemplate : IRunUITemplate
                 },
                 new GridPanel.GridItem
                 {
+                    Id = new Guid("35B6A650-F3B3-476D-B576-378005BBA14C"),
                     ColSpan = 2,
                     Panel = new PaperPanel
                     {
@@ -60,6 +63,7 @@ public class MultiObjectiveUiTemplate : IRunUITemplate
                 },
                 new GridPanel.GridItem
                 {
+                    Id = new Guid("7718CC03-C027-4CDF-82FC-8C12F7F4E452"),
                     ColSpan = 8,
                     Panel = new BoundedPaperPanel
                     {
@@ -71,6 +75,7 @@ public class MultiObjectiveUiTemplate : IRunUITemplate
                 },
                 new GridPanel.GridItem
                 {
+                    Id = new Guid("FE87E4FB-16F5-4126-9B75-78018545C825"),
                     ColSpan = 4,
                     Panel = new BoundedPaperPanel
                     {

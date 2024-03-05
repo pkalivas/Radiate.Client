@@ -1,16 +1,16 @@
-@inherits StoreComponent<StandardRunUiProjection> 
+@inherits StoreComponent<List<PanelState>> 
 
 <MudDialog>
     <DialogContent>
         <MudContainer>
-            <MudDataGrid Items="@Model.OrderedPanels" 
+            <MudDataGrid Items="@Model" 
                          Dense="true"
                          Elevation="0"
                          FixedHeader="true"
                          Height="400px" ColumnResizeMode="ResizeMode.Column">
                 <Columns>
                     <HierarchyColumn T="PanelState" />
-                    <PropertyColumn Property="x => x.Index"/>
+                    <PropertyColumn Property="x => x.Key"/>
                     <TemplateColumn>
                         <CellTemplate>
                             <MudText Typo="Typo.caption">@context.Item.Panel.GetType().Name</MudText>
@@ -33,5 +33,11 @@
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
-    protected override IObservable<StandardRunUiProjection> Select() => Store.Select(UiSelectors.SelectStandardRunUiModel);
+    protected override IObservable<List<PanelState>> Select() => Store.Select(state =>
+    {
+        var currentRunId = state.CurrentRunId;
+        return state.RunUis.TryGetValue(currentRunId, out var currentUi) 
+            ? currentUi.PanelStates.Values.OrderBy(val => val.Index).ToList() 
+            : [];
+    });
 }

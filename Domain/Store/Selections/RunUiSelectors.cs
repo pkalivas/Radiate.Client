@@ -34,6 +34,7 @@ public static class RunUiSelectors
                     CardPanel => typeof(CardPanelDisplay),
                     AccordionPanel => typeof(AccordionPanelDisplay),
                     AccordionPanelItem => typeof(ExpansionPanelDisplay),
+                    DivPanel => typeof(DivPanelDisplay),
                     _ => throw new Exception($"Panel {panel.GetType()} not supported")
                 };
                 

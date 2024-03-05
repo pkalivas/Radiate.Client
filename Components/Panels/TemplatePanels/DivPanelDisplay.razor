@@ -1,0 +1,8 @@
+@inherits PanelDisplayComponent<DivPanel>
+
+@if (CanDisplay())
+{
+    <div>
+        <DynamicComponent Type="@Model.Content" Parameters="@Model.Props"/>
+    </div>
+}

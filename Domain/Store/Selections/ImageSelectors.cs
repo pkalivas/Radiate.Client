@@ -26,6 +26,7 @@ public static class ImageSelectors
                 RunId = run.RunId,
                 IsComplete = run.IsCompleted,
                 IsRunning = run.IsRunning,
+                IsPaused = run.IsPaused,
                 ImageType = imageType,
                 Width = run.Inputs.ImageInputs.Width,
                 Height = run.Inputs.ImageInputs.Height,

@@ -1,3 +1,4 @@
+@using System.Reactive.Linq
 @inherits StoreComponent<ToolBarProjection>
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
@@ -17,13 +18,16 @@
             Inspect
         </MudButton>
     </MudMenuItem>
-        <MudMenuItem>
-            <MudButton OnClick="@InspectPanels"
-                       Size="Size.Small"
-                       StartIcon="@Icons.Material.Outlined.DisplaySettings">
-                Panels
-            </MudButton>
-        </MudMenuItem>
+    <MudMenuItem>
+        <MudButton OnClick="@InspectPanels"
+                   Size="Size.Small"
+                   StartIcon="@Icons.Material.Outlined.DisplaySettings">
+            Panels
+        </MudButton>
+    </MudMenuItem>
+    <MudMenuItem>
+        <ModelDownloader/>
+    </MudMenuItem>
 </MudMenu>
 
 @code {

@@ -26,10 +26,13 @@
         </div>
     </div>
 </MudToolBar>
-<MudProgressLinear Indeterminate="@Model.IsRunning" 
-                   Rounded="true" 
-                   Color="Color.Success" 
-                   Size="Size.Small"/>
+@if (Model.IsRunning)
+{
+    <MudProgressLinear Indeterminate="@Model.IsRunning" 
+                       Rounded="true" 
+                       Color="Color.Success" 
+                       Size="Size.Small"/>
+}
 
 @code 
 {

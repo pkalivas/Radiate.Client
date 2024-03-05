@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Radiate.Client.Domain.Store.Models;
 using Radiate.Client.Domain.Store.Models.Projections;
 using Radiate.Client.Domain.Store.Models.States;
@@ -44,5 +45,25 @@ public static class ModelSelectors
                     Children = node.GetChildren()
                 })
                 .ToArray();
+    
+    public static readonly ISelector<RootState, ModelDownloadProjection> SelectModelDownload = Selectors
+        .Create<RootState, RunState, ModelDownloadProjection>(RunSelectors.SelectRun, run =>
+            new ModelDownloadProjection
+            {
+                RunId = run.RunId,
+                IsRunning = run.IsRunning,
+                JsonData = run.Inputs.ModelType switch
+                {
+                    ModelTypes.Graph => JsonSerializer.Serialize(run.Outputs.GraphOutput.GetGraph<float>(), new JsonSerializerOptions
+                    {
+                        WriteIndented = true
+                    }),
+                    ModelTypes.Tree => JsonSerializer.Serialize(run.Outputs.TreeOutput.GetTrees<float>(), new JsonSerializerOptions
+                    {
+                        WriteIndented = true
+                    }),
+                    _ => ""
+                }
+            });
 
 }

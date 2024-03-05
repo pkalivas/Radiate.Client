@@ -1,0 +1,50 @@
+@using System.Reactive.Linq
+@using System.Text
+@inject IJSRuntime JS
+@inherits StoreComponent<ModelDownloadProjection>
+
+@if (!Model.IsRunning)
+{
+    <ButtonTemplate>
+        <MudButton
+                   HtmlTag="download"
+                   Size="Size.Small"
+                   Disabled="@Model.IsRunning"
+                   StartIcon="@Icons.Material.Outlined.Download"
+                   OnClick="@DownloadModel">
+            Save
+        </MudButton>
+    </ButtonTemplate>
+}
+
+<script>
+  window.downloadJson = async (fileName, contentStreamReference) => {
+    const arrayBuffer = await contentStreamReference.arrayBuffer();
+    const blob = new Blob([arrayBuffer]);
+    const url = URL.createObjectURL(blob);
+    const anchorElement = document.createElement('a');
+    anchorElement.href = url;
+    anchorElement.download = fileName ?? '';
+    anchorElement.click();
+    anchorElement.remove();
+    URL.revokeObjectURL(url);
+  }
+</script>
+
+@code {
+
+    protected override IObservable<ModelDownloadProjection> Select() => Store
+        .Select(ModelSelectors.SelectModelDownload)
+        .Where(model => !model.IsRunning);
+    
+    private async Task DownloadModel()
+    {
+        var fileName = "model.json";
+        var fileAsStream = Encoding.UTF8.GetBytes(Model.JsonData);        
+        using var memoryStream = new MemoryStream(fileAsStream);
+        using var streamRef = new DotNetStreamReference(memoryStream);
+        
+        await JS.InvokeVoidAsync("downloadJson", fileName, streamRef);
+    }
+
+}

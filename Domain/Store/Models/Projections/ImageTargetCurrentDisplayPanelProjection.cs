@@ -8,3 +8,12 @@ public record ImageTargetCurrentDisplayPanelProjection
     public ImageEntity TargetImage { get; set; } = new();
     public ImageEntity CurrentImage { get; set; } = new();
 }
+
+public record ImageDisplayPanelProjection
+{
+    public Guid RunId { get; init; } = Guid.NewGuid();
+    public string ImageType { get; init; } = "";
+    public bool IsComplete { get; set; } = false;
+    public bool IsRunning { get; set; } = false;
+    public ImageEntity Image { get; set; } = new();
+}

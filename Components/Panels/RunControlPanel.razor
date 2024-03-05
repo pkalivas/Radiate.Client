@@ -63,13 +63,6 @@
 					Start
 				</MudButton>
 			</div>
-			
-			@if (Model.ModelType == ModelTypes.Image && Model.IsCompleted)
-			{
-				<div class="mt-2">
-					<ImageDownload IsDisabled="@(!Model.IsCompleted)" Image="@Model.Image"/>
-				</div>
-			}
 		}
 	</div>
 </div>

@@ -1,22 +1,16 @@
-@inherits StoreComponent<ImageTargetCurrentDisplayPanelProjection>
+@inherits StoreComponent<ImageDisplayPanelProjection>
 
-<div class="mt-3 mb-3">
-    <MudGrid>
-        <MudItem md="6">
-            <div Class="d-flex justify-content-center">
-                <ImageDisplay ImageUrl="@Model?.TargetImage.ImageDisplay" ImageTitle="Target"/>
-            </div>
-        </MudItem>
-        <MudItem md="6">
-            <div Class="d-flex justify-content-center">
-                <ImageDisplay ImageUrl="@Model?.CurrentImage.ImageDisplay" ImageTitle="Current"/>
-            </div>
-        </MudItem>
-    </MudGrid>
-</div>
+@if (!Model.Image.IsEmpty)
+{
+    <div Class="d-flex justify-content-center">
+        <ImageDisplay ImageWidth="500" ImageUrl="@Model?.Image.ImageDisplay" ImageTitle="@Model?.ImageType"/>
+    </div>
+}
 
 @code
 {
-    protected override IObservable<ImageTargetCurrentDisplayPanelProjection> Select() => 
-        Store.Select(ImageSelectors.SelectTargetCurrentDisplayPanelModel);
+    [Parameter] public string ImageType { get; set; }
+    
+    protected override IObservable<ImageDisplayPanelProjection> Select() => 
+        Store.Select(ImageSelectors.SelectImageDisplayPanelModel(ImageType));
 }

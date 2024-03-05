@@ -1,6 +1,6 @@
 @inherits StoreComponent<InputsPanelModelProjection>
 
-<MudGrid Class="px-4 mt-3">
+<MudGrid Class="mb-3">
     <MudItem md="3">
         <IntInputField Label="Population Size"
                        IsReadonly="@Model.IsReadonly"
@@ -8,13 +8,13 @@
                        InputsChanged="@((int val) => OnInputChange(Model, inputs => inputs.PopulationInputs.PopulationSize = val))"/>
     </MudItem>
     <MudItem md="3">
-<FloatInputField Label="Mutation Rate"
+        <FloatInputField Label="Mutation Rate"
                          IsReadonly="@Model.IsReadonly"
                          Value="@Model.Inputs.PopulationInputs.MutationRate"
                          InputsChanged="@((float rate) => OnInputChange(Model, inputs => inputs.PopulationInputs.MutationRate = rate))"/>
     </MudItem>
     <MudItem md="3">
-<FloatInputField Label="Crossover Rate"
+        <FloatInputField Label="Crossover Rate"
                          IsReadonly="@Model.IsReadonly"
                          Value="@Model.Inputs.PopulationInputs.CrossoverRate"
                          InputsChanged="@((float rate) => OnInputChange(Model, inputs => inputs.PopulationInputs.CrossoverRate = rate))"/>

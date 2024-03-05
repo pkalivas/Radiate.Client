@@ -8,9 +8,8 @@
             Variant="Variant.Filled"
             Color="Color.Tertiary"
             Disabled="@IsDisabled.Value"
-            StartIcon="@Icons.Material.Filled.Download"
+            StartIcon="@Icons.Material.Outlined.Download"
             OnClick="@DownloadImage">
-        Download
     </MudButton>
 </ButtonTemplate>
 
@@ -28,8 +27,7 @@
   }
 </script>
 
-@code
-{
+@code {
     [Parameter] public bool? IsDisabled { get; set; } = false;
     [Parameter] public ImageEntity Image { get; set; }
 

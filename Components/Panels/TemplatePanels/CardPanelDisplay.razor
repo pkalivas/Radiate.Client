@@ -5,11 +5,17 @@
     <MudCard Elevation="2" Class="h-100">
         <MudCardHeader>
             <CardHeaderContent>
-                <MudText Typo="Typo.h6">@Model.Title</MudText>
+                <PanelHeader Title="@Model.Title"/>
             </CardHeaderContent>
         </MudCardHeader>
         <MudCardContent>
             <DynamicComponent Type="@Model.Content" Parameters="@Model.Props"/>
         </MudCardContent>
+        <MudCardActions>
+            @if (Model.Actions != null)
+            {
+                <DynamicComponent Type="@Model.Actions" Parameters="@Model.ActionsProps"/>
+            }
+        </MudCardActions>
     </MudCard>
 }

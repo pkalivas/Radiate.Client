@@ -6,9 +6,9 @@
 @if (Model is not null && !Model.IsLoading)
 {
     <MudContainer Class="mt-4 px-8" MaxWidth="MaxWidth.False">
-        @foreach (var panel in Model!.UiTemplate!.Panels)
+        @foreach (var panel in Model!.PanelStates)//Model!.UiTemplate!.Panels)
         {
-            <PanelDisplay Panel="@panel" @key="panel.Id"/>
+            <PanelDisplay Item="@panel" @key="panel.Data.Key"/>
         }
     </MudContainer>
     

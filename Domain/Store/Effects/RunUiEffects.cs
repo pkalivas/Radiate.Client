@@ -28,6 +28,18 @@ public class RunUiEffects : IEffectRegistry<RootState>
         {
             var (_, action) = pair;
             var runUi = action.RunUi;
+
+            var t = PanelMapper.Flatten(runUi.RunTemplate!.UI.Panels)
+                .Select(panel => new PanelState
+                {
+                    RunId = runUi.RunId,
+                    Index = panel.Id,
+                    Children = panel.ChildPanels.Select(child => child.Id),
+                    Panel = panel,
+                    IsVisible = true,
+                    IsExpanded = panel is not AccordionPanelItem item || item.Expanded
+                })
+                .ToArray();
             
             return new RunUiPanelsCreatedAction(runUi.RunId, PanelMapper.Flatten(runUi.RunTemplate!.UI.Panels)
                 .Select(panel =>  new PanelState

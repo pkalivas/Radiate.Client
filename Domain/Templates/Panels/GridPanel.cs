@@ -4,7 +4,7 @@ public class GridPanel : Panel
 {
     public List<GridItem> Items { get; set; } = new();
 
-    public override List<IPanel> ChildPanels => Items.Select(i => i.Panel).ToList();
+    public override List<IPanel> ChildPanels => Items.Cast<IPanel>().ToList();
 
     public class GridItem : Panel
     {

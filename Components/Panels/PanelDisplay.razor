@@ -1,14 +1,26 @@
 @using Radiate.Client.Domain.Templates.Panels
 @using System.Text.Json
 
-@if (Panel is GridPanel gridPanel)
+@if (Panel is GridPanel)
 {
     <MudGrid>
-        @foreach (var gridItem in gridPanel.Items)
+        @foreach (var child in Item.TreeItems)
         {
-            <MudItem md="@gridItem.ColSpan" @key="@gridItem.Panel.Id">
-                <PanelDisplay Panel="@gridItem.Panel"/>
-            </MudItem>
+            if (child.Data.Panel is GridPanel.GridItem gridItem)
+            {
+                <MudItem md="@gridItem.ColSpan" @key="@child.Data.Key">
+                    @foreach (var subChild in child.TreeItems)
+                    {
+                        <PanelDisplay Item="@subChild"/>
+                    }
+                </MudItem>
+            }
+            else
+            {
+                <MudItem md="12" @key="@child.Data.Key">
+                    <PanelDisplay Item="@child"/>
+                </MudItem>
+            }
         }
     </MudGrid>
 }
@@ -29,13 +41,13 @@ else if (Panel is BoundedPaperPanel boundedPaperPanel)
         <DynamicComponent Type="@boundedPaperPanel.Content" Parameters="@boundedPaperPanel.Props"/>
     </MudPaper>
 }
-else if (Panel is TabPanel tabPanel)
+else if (Panel is TabPanel)
 {
-    <MudTabs Elevation="2" Centered="true" Rounded="false" @key="tabPanel.Id">
-        @foreach (var tabItem in tabPanel.ChildPanels)
+    <MudTabs Elevation="2" Centered="true" Rounded="false" @key="Item.Data.Key">
+        @foreach (var tabItem in Item.TreeItems)
         {
-            <MudTabPanel Text="@tabItem.Title" @key="@tabItem.Id">
-                <PanelDisplay Panel="@tabItem"/>
+            <MudTabPanel Text="@tabItem.Data.Panel.Title" @key="@tabItem.Data.Key">
+                <PanelDisplay Item="@tabItem"/>
             </MudTabPanel>
         }
     </MudTabs>
@@ -69,15 +81,18 @@ else if (Panel is AccordionPanel accordionPanel)
     {
         <DynamicComponent Type="accordionPanel.Toolbar!"/>
     }
-    <MudExpansionPanels Dense="true" MultiExpansion="true" @key="accordionPanel.Id">
-        @foreach (var exPanel in accordionPanel.ChildPanels.OfType<AccordionPanelItem>())
+    <MudExpansionPanels Dense="true" MultiExpansion="true" @key="Item.Data.Key">
+        @foreach (var exPanel in Item.TreeItems)
         {
-            <MudExpansionPanel IsInitiallyExpanded="exPanel.Expanded" Dense="true" @key="exPanel.Id">
+            <MudExpansionPanel IsInitiallyExpanded="exPanel.Data.IsExpanded" Dense="true" @key="exPanel.Data.Key">
                 <TitleContent>
-                    <PanelHeader Title="@exPanel.Title"/>
+                    <PanelHeader Title="@exPanel.Data.Panel.Title"/>
                 </TitleContent>
                 <ChildContent>
-                    <DynamicComponent Type="@exPanel.Content"/>
+                    @if (exPanel.Data.Panel is AccordionPanelItem accordionPanelItem)
+                    {
+                        <DynamicComponent Type="@accordionPanelItem.Content"/>
+                    }
                 </ChildContent>
             </MudExpansionPanel>
         }
@@ -93,5 +108,7 @@ else
 }
 
 @code {
-    [Parameter] public IPanel Panel { get; set; }
+    [Parameter] public TreeItemData<PanelState, Guid> Item { get; set; }
+    
+    private IPanel? Panel => Item?.Data?.Panel;
 }

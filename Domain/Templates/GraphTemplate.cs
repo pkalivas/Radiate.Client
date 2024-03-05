@@ -27,6 +27,7 @@ public class GraphUiTemplate : IRunUITemplate
                 new GridPanel.GridItem
                 {
                     ColSpan = 7,
+                    Id = new Guid("D50724F1-9386-4FAB-A0D0-F19A52BFE4F8"),
                     Panel = new AccordionPanel
                     {
                         Id = new Guid("598522C1-38DA-4E20-995A-B1DB1400BFEB"),
@@ -67,6 +68,7 @@ public class GraphUiTemplate : IRunUITemplate
                 new GridPanel.GridItem
                 {
                     ColSpan = 5,
+                    Id = Guid.NewGuid(),
                     Panel = new GridPanel
                     {
                         Id = new Guid("11F7F65E-9BE1-4D61-AD61-62C8D93A592B"),
@@ -75,6 +77,7 @@ public class GraphUiTemplate : IRunUITemplate
                             new GridPanel.GridItem
                             {
                                 ColSpan = 12,
+                                Id = Guid.NewGuid(),
                                 Panel = new GridPanel
                                 {
                                     Id = new Guid("403E7206-2E73-4D1A-BCC9-19E1C28267F6"),
@@ -83,6 +86,7 @@ public class GraphUiTemplate : IRunUITemplate
                                         new GridPanel.GridItem
                                         {
                                             ColSpan = 7,
+                                            Id = Guid.NewGuid(),
                                             Panel = new BoundedPaperPanel
                                             {
                                                 Id = new Guid("B3234C56-9806-4E4E-ABF2-2471D90B5D91"),
@@ -94,6 +98,7 @@ public class GraphUiTemplate : IRunUITemplate
                                         new GridPanel.GridItem
                                         {
                                             ColSpan = 5,
+                                            Id = Guid.NewGuid(),
                                             Panel = new BoundedPaperPanel
                                             {
                                                 Id = new Guid("365C357D-3A47-418B-84A8-7CBE2DAE1B29"),
@@ -108,6 +113,7 @@ public class GraphUiTemplate : IRunUITemplate
                             new GridPanel.GridItem
                             {
                                 ColSpan = 12,
+                                Id = Guid.NewGuid(),
                                 Panel = new TabPanel
                                 {
                                     Id = new Guid("8ABC3316-1156-47EA-A573-381B2EDF7AE3"),
@@ -143,6 +149,7 @@ public class GraphUiTemplate : IRunUITemplate
                             new GridPanel.GridItem
                             {
                                 ColSpan = 12,
+                                Id = Guid.NewGuid(),
                                 Panel = new TabPanel
                                 {
                                     Id = new Guid("9867301E-CD35-40B4-A411-4E9589CDB7DD"),
@@ -193,6 +200,7 @@ public class GraphUiTemplate : IRunUITemplate
                             new GridPanel.GridItem
                             {
                                 ColSpan = 12,
+                                Id = Guid.NewGuid(),
                                 Panel = new PaperPanel
                                 {
                                     Id = new Guid("48623FCA-577B-4DFE-98ED-AFE905D11CDB"),

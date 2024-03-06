@@ -1,11 +1,11 @@
 @inherits StoreComponent<TrainTestToggleProjection> 
 
 <MudMenu Label="@Model.TrainTest"
-         Variant="Variant.Filled"
-         EndIcon="@Icons.Material.Filled.KeyboardArrowDown"
+         EndIcon="@Icons.Material.Outlined.KeyboardArrowDown"
          DisableElevation="true"
          Dense="true">
     <MudMenuItem OnClick="@SetTrainTestTrain">Train</MudMenuItem>
+    <MudDivider/>
     <MudMenuItem OnClick="@SetTrainTestTest">Test</MudMenuItem>
 </MudMenu>
 

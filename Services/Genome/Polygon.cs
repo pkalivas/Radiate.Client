@@ -26,8 +26,6 @@ public class Polygon : IMean<Polygon>, IFactory<Polygon>, IDrawable
         _data = data;
     }
     
-    public int Length => _length;
-    
     public Polygon Mean(Polygon other)
     {
         var result = NewRandom(_length);
@@ -95,12 +93,18 @@ public class Polygon : IMean<Polygon>, IFactory<Polygon>, IDrawable
         result._data[2] = (float)random.NextDouble(); // b
         result._data[3] = Math.Max(0.2f, (float)(random.NextDouble() * random.NextDouble())); // a
         
-        var px = 0.5f;
-        var py = 0.5f;
+        // var px = 0.5f;
+        // var py = 0.5f;
+        var px = (float)(random.NextDouble() * 2 - 1);
+        var py = (float)(random.NextDouble() * 2 - 1);
+        
         for (var k = 0; k < length; k++)
         {
-            result._data[4 + 2 * k] = px = Clamp(px + (float)(random.NextDouble() - 0.5f));
-            result._data[5 + 2 * k] = py = Clamp(py + (float)(random.NextDouble() - 0.5f));
+            px += (float) (random.NextDouble() - 0.5f);// * 0.5f;
+            py += (float) (random.NextDouble() - 0.5f);// * 0.5f;
+            
+            result._data[4 + 2 * k] = px = Clamp(px);
+            result._data[5 + 2 * k] = py = Clamp(py);            
         }
         
         return result;

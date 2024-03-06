@@ -6,4 +6,5 @@ public record ToolBarProjection
     public string ModelType { get; init; } = "";
     public string DataSetType { get; init; } = "";
     public bool IsRunning { get; init; } = false;
+    public bool IsComplete { get; init; } = false;
 }

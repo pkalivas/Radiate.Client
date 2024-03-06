@@ -3,11 +3,10 @@
 @inject IJSRuntime JS
 @inherits StoreComponent<ModelDownloadProjection>
 
-@if (!Model.IsRunning)
+@if (Model is { IsRunning: false })
 {
     <ButtonTemplate>
-        <MudButton
-                   HtmlTag="download"
+        <MudButton HtmlTag="download"
                    Size="Size.Small"
                    Disabled="@Model.IsRunning"
                    StartIcon="@Icons.Material.Outlined.Download"
@@ -34,8 +33,7 @@
 @code {
 
     protected override IObservable<ModelDownloadProjection> Select() => Store
-        .Select(ModelSelectors.SelectModelDownload)
-        .Where(model => !model.IsRunning);
+        .Select(ModelSelectors.SelectModelDownload);
     
     private async Task DownloadModel()
     {

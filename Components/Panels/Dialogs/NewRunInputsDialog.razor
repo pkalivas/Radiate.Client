@@ -9,7 +9,7 @@
                                HelperText="Model To Run"
                                T="string"
                                Label="Model"
-                               Variant="Variant.Text">
+                               Variant="Variant.Filled">
                         @foreach (var model in StateOptions.ModelNames)
                         {
                             <MudSelectItem Value="@model"/>
@@ -23,7 +23,7 @@
                                HelperText="DataSet To Run"
                                T="string"
                                Label="DataSet"
-                               Variant="Variant.Text">
+                               Variant="Variant.Filled">
                         
                         @foreach (var data in StateOptions.GetModelDataSets(RunState.Inputs.ModelType))
                         {
@@ -36,8 +36,8 @@
         </div>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Submit">Start</MudButton>
+        <MudButton Variant="Variant.Filled" OnClick="Cancel">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Submit">Start</MudButton>
     </DialogActions>
 </MudDialog>
 

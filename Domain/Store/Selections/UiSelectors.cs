@@ -42,6 +42,7 @@ public static class UiSelectors
             ModelType = run.Inputs.ModelType,
             DataSetType = run.Inputs.DataSetType,
             IsRunning = run.IsRunning,
+            IsComplete = run.IsCompleted
         });
     
     public static readonly ISelector<RootState, PanelStateDialogProjection> SelectPanelStateDialogModel = Selectors

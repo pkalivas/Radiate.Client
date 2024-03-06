@@ -43,8 +43,6 @@ public class ImageChromosome<TGene, TAllele> : IChromosome<TGene>
     public TGene GetGene(int index = 0) => _genes[index];
 
     public void SetGene(int index, TGene newGene) => _genes[index] = newGene;
-
-    public T As<T>() => (T) Convert.ChangeType(this, typeof(T));
     
     public IEnumerator<TGene> GetEnumerator() => ((IEnumerable<TGene>)_genes).GetEnumerator();
 
@@ -52,10 +50,9 @@ public class ImageChromosome<TGene, TAllele> : IChromosome<TGene>
     
     public ImageEntity Draw(int imageWidth, int imageHeight)
     {
-        var format = "image/argb";
-        
         using var image = new Image<Rgba32>(imageWidth, imageHeight);
         image.Mutate(x => x.Fill(Color.White));
+        
         foreach (var circle in this.Select(gene => gene.Allele))
         {
             circle.Draw(image, imageWidth, imageHeight);
